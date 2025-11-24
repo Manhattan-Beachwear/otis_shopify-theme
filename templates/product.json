@@ -173,6 +173,19 @@
               },
               "blocks": {}
             },
+            "product_inventory_BEeQGN": {
+              "type": "product-inventory",
+              "name": "t:names.product_inventory",
+              "settings": {
+                "inventory_threshold": 10,
+                "show_inventory_quantity": true,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "variant_picker_cl_HHnpk6": {
               "type": "variant-picker-cl",
               "name": "Combined Listing Picker",
@@ -252,6 +265,7 @@
           "block_order": [
             "group_icgrde",
             "divider_VJhene",
+            "product_inventory_BEeQGN",
             "variant_picker_cl_HHnpk6",
             "buy_buttons_eYQEYi",
             "text_aEtTtq"
