@@ -11,6 +11,20 @@
   "type": "footer",
   "name": "t:names.footer",
   "sections": {
+    "divider_zdYqKY": {
+      "type": "divider",
+      "name": "t:names.divider_section",
+      "settings": {
+        "color_scheme": "",
+        "section_width": "full-width",
+        "thickness": 1,
+        "corner_radius": "square",
+        "width_percent": 100,
+        "alignment_horizontal": "center",
+        "padding-block-start": 16,
+        "padding-block-end": 16
+      }
+    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -371,6 +385,7 @@
     }
   },
   "order": [
+    "divider_zdYqKY",
     "footer",
     "utilities"
   ]
