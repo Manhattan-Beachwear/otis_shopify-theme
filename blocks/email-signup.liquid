@@ -54,7 +54,7 @@
             aria-hidden="true"
             class="email-signup__button-icon"
           >
-            {% render 'icon', icon: 'arrow' %}
+            {% render 'icon', icon: block_settings.display_type %}
           </svg>
         {% endif %}
       </button>
@@ -134,7 +134,7 @@
     gap: var(--gap-xs);
   }
 
-  .email-signup__input-group:not(:has(.email-signup__button--arrow)) {
+  .email-signup__input-group:not(:has(.email-signup__button--arrow)):not(:has(.email-signup__button--envelope)) {
     @media screen and (max-width: 749px) {
       grid-template-columns: 1fr;
     }
@@ -201,7 +201,8 @@
     --button-actual-width: var(--button-size);
   }
 
-  .email-signup__input:has(+ .email-signup__button--arrow.email-signup__button--integrated) {
+  .email-signup__input:has(+ .email-signup__button--arrow.email-signup__button--integrated),
+  .email-signup__input:has(+ .email-signup__button--envelope.email-signup__button--integrated) {
     padding-inline-end: calc(var(--button-size) + var(--padding-sm));
 
     @media screen and (max-width: 749px) {
@@ -230,7 +231,8 @@
     }
   }
 
-  .email-signup__button--arrow {
+  .email-signup__button--arrow,
+  .email-signup__button--envelope {
     aspect-ratio: 1;
     padding-inline: var(--padding-xs);
 
@@ -536,6 +538,10 @@
         {
           "value": "arrow",
           "label": "t:options.arrow"
+        },
+        {
+          "value": "envelope",
+          "label": "t:options.envelope"
         }
       ],
       "default": "text"
