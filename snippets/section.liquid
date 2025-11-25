@@ -7,6 +7,7 @@
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
+  id="Section-{{ section.id }}"
   class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
   data-testid="ui-test-section"
 
@@ -28,13 +29,14 @@
      {% endif %}
   "
 >
-  <div class="custom-section-background">
+  <div class="custom-section-background"{% if section.settings.image_zoom_fade_animation %} data-zoom-fade-animation="true"{% endif %}>
     {% render 'background-media',
       background_media: section.settings.background_media,
       background_video: section.settings.video,
       background_video_position: section.settings.video_position,
       background_image: section.settings.background_image,
-      background_image_position: section.settings.background_image_position
+      background_image_position: section.settings.background_image_position,
+      image_zoom_fade_animation: section.settings.image_zoom_fade_animation
     %}
   </div>
 
@@ -93,5 +95,23 @@
 
   .custom-section-content {
     z-index: var(--layer-flat);
+  }
+
+  @keyframes zoom-fade {
+    from {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .custom-section-background[data-zoom-fade-animation="true"] .collection-hero__image.lazyloaded {
+      animation: zoom-fade 2.5s cubic-bezier(0.26, 0.54, 0.32, 1) 0s forwards;
+      transition: none;
+    }
   }
 {% endstylesheet %}
