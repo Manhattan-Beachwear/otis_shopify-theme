@@ -390,17 +390,21 @@
   }
 
   .header[data-sticky-state] {
-    transition: opacity var(--animation-speed) var(--animation-easing);
+    transform: translateZ(0);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                opacity var(--animation-speed) var(--animation-easing);
     opacity: 1;
   }
 
   .header[data-sticky-state='active'] {
     view-transition-name: sticky-header;
+    transform: translateY(0);
   }
 
   .header[data-sticky-state='idle'],
   .header[data-sticky-state='active'][data-animating] {
     opacity: 0;
+    transform: translateY(-100%);
   }
 
   .header__row {
