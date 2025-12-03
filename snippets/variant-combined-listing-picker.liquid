@@ -1558,9 +1558,7 @@
           </div>
         {%- else -%}
           {%- comment -%} Render colors as buttons {%- endcomment -%}
-          <fieldset 
-            class="variant-picker-cl-dual__fieldset variant-picker-cl-dual__fieldset--color{% if settings.variant_button_width == 'equal-width-buttons' %} variant-picker-cl-dual__fieldset--equal-width-buttons{% endif %}"
-          >
+          <fieldset class="variant-option variant-option--buttons">
             {%- liquid
               # Determine if text labels should be shown for colors
               assign show_color_text_labels = false
@@ -1572,15 +1570,10 @@
               <legend>
                 {{ color_option_name | escape }}:
                 {%- if current_color_value != blank and current_color_value != '' -%}
-                  <span class="variant-picker-cl-dual__swatch-value">{{ current_color_value | escape }}</span>
+                  <span class="variant-option__swatch-value">{{ current_color_value | escape }}</span>
                 {%- endif %}
               </legend>
             {%- endif %}
-            <div 
-              class="variant-picker-cl-dual__options" 
-              data-option-type="color" 
-              data-fieldset-index="0"
-            >
             {% assign colors_array = unique_colors | split: '|||' %}
             {% for color_value_item in colors_array %}
               {%- liquid
@@ -1622,12 +1615,8 @@
                   endif
                 -%}
                 <label
-                  class="variant-picker-cl-dual__label{% if is_current_color %} variant-picker-cl-dual__label--current{% endif %}"
-                  {% if color_is_available == false %}
-                    data-option-available="false"
-                  {% else %}
-                    data-option-available="true"
-                  {% endif %}
+                  data-option-available="{{ color_is_available }}"
+                  class="variant-option__button-label"
                   {% if first_available_variant_url != blank %}
                     on:pointerenter="product-card/previewVariant/{{ first_available_variant_id }}"
                     on:pointerleave="product-card/resetVariant"
@@ -1635,50 +1624,25 @@
                 >
                   <input
                     type="radio"
-                    id="cl-dual-color-{{ section.id }}-{{ block.id }}-{{ color_value_item | handleize }}"
-                    name="color_selection-{{ block.id }}"
+                    name="{{ color_option_name | escape }}-{{ product_resource.id }}-button"
                     value="{{ color_value_item | escape }}"
-                    data-option-type="color"
-                    data-fieldset-index="0"
-                    data-input-index="{{ forloop.index0 }}"
-                    data-previous-checked="false"
+                    aria-label="{{ color_value_item | escape }}"
+                    data-input-id="1-{{ forloop.index0 }}"
                     data-option-available="{{ color_is_available }}"
                     {% if first_available_variant_url != blank %}
                       data-connected-product-url="{{ first_available_variant_url }}"
                     {% endif %}
                     {% if is_current_color %}
-                      data-current-checked="true"
                       checked
-                    {% else %}
-                      data-current-checked="false"
                     {% endif %}
-                    {% if color_is_available == false %}
-                      aria-disabled="true"
-                    {% endif %}
-                    aria-label="{{ color_value_item | escape }}"
                     data-available-count="{% if color_is_available %}1{% else %}0{% endif %}"
                     data-variant-id="{{ first_available_variant_id }}"
                     data-first-available-or-first-variant-id="{{ first_available_variant_id }}"
                   >
-                  {% if color_is_available == true %}
-                    <span class="variant-picker-cl-dual__pill"></span>
-                  {% endif %}
-                  <span class="variant-picker-cl-dual__text">{{ color_value_item | escape }}</span>
-                  {% unless color_is_available %}
-                    <svg
-                      viewBox="0 0 100 46"
-                      preserveAspectRatio="xMidYMid slice"
-                    >
-                      {% # 25deg %}
-                      <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                      {% # duplicate line for motion overlay %}
-                      <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                    </svg>
-                  {% endunless %}
+                  <span class="variant-option__button-label__text">{{ color_value_item | escape }}</span>
                 </label>
               {%- endunless -%}
             {% endfor %}
-            </div>
           </fieldset>
         {%- endif -%}
       {%- endif -%}
