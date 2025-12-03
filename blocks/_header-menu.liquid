@@ -402,27 +402,12 @@
   }
 
   .menu-list__submenu-inner {
-    position: static;
+    position: relative;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     opacity: var(--submenu-content-opacity);
     transition: var(--submenu-content-animation);
-  }
-
-  /* For simple text submenus, align content to the left edge */
-  .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__submenu > .menu-list__submenu-inner {
-    grid-column: unset;
-    padding-inline: var(--padding-lg);
-    min-width: 200px;
-  }
-
-  /* For megamenus, center align to ensure all items are visible */
-  .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__submenu:has(.mega-menu__grid) {
-    left: 0;
-    transform: translateX(0);
-    width: max-content;
-    max-width: min(100vw - var(--padding-inline) * 2, var(--full-page-width, 100%));
   }
 
   .mega-menu__link {
