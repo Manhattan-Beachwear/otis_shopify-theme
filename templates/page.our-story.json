@@ -625,10 +625,10 @@
         "padding-block-end": 40
       }
     },
-    "section_rQyp4z": {
+    "section_nA7Ggp": {
       "type": "section",
       "blocks": {
-        "image_KrEYXj": {
+        "image_GLMznE": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/ABOUTweb_begins.webp",
@@ -650,7 +650,7 @@
           },
           "blocks": {}
         },
-        "group_6JzRPt": {
+        "group_UpMJcg": {
           "type": "group",
           "settings": {
             "content_direction": "column",
@@ -689,7 +689,7 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_jXdzA7": {
+            "text_mqnHf7": {
               "type": "text",
               "name": "t:names.heading",
               "settings": {
@@ -715,7 +715,7 @@
               },
               "blocks": {}
             },
-            "text_TzrhCN": {
+            "text_mpKiUw": {
               "type": "text",
               "settings": {
                 "text": "<p>John Malloy officially starts Creatures of Leisure selling Leashes and Boardcovers that were all made in Yallingup, Western Australia. He had been innovating surf equipment for almost a decade already.</p>",
@@ -742,14 +742,14 @@
             }
           },
           "block_order": [
-            "text_jXdzA7",
-            "text_TzrhCN"
+            "text_mqnHf7",
+            "text_mpKiUw"
           ]
         }
       },
       "block_order": [
-        "image_KrEYXj",
-        "group_6JzRPt"
+        "image_GLMznE",
+        "group_UpMJcg"
       ],
       "name": "t:names.image_with_text",
       "settings": {
@@ -1341,6 +1341,162 @@
         "padding-block-start": 40,
         "padding-block-end": 40
       }
+    },
+    "section_rQyp4z": {
+      "type": "section",
+      "blocks": {
+        "image_KrEYXj": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ABOUTweb_BearingSwivel.webp",
+            "link": "",
+            "image_ratio": "square",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "group_6JzRPt": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "custom",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_jXdzA7": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>2003</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h3",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_TzrhCN": {
+              "type": "text",
+              "settings": {
+                "text": "<p>John invents a long-lasting swivel that won't seize up in saltwater. The Stainless Steel Bearing Swivel with acetal plastic remains industry standard in the best surf leashes across the globe, no matter what the brand.</p>",
+                "width": "fit-content",
+                "max_width": "narrow",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_jXdzA7",
+            "text_TzrhCN"
+          ]
+        }
+      },
+      "block_order": [
+        "image_KrEYXj",
+        "group_6JzRPt"
+      ],
+      "name": "t:names.image_with_text",
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 32,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
     }
   },
   "order": [
@@ -1350,8 +1506,9 @@
     "section_bb8yQg",
     "section_UtKijB",
     "section_dgahnr",
-    "section_rQyp4z",
+    "section_nA7Ggp",
     "section_UcJmtE",
-    "section_JGjkCD"
+    "section_JGjkCD",
+    "section_rQyp4z"
   ]
 }
