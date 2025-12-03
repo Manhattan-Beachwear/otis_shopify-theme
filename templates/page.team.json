@@ -2891,7 +2891,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/KERBY_AMBASSADOR_1.jpg",
+                "image": "shopify://shop_images/JAI_TEAM_PAGE_202319.jpg",
                 "link": "",
                 "image_ratio": "adapt",
                 "width": "fill",
@@ -2952,7 +2952,7 @@
                 "text_9YpbHe": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Kerby Brown</p>",
+                    "text": "<p>Jai Glindeman</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
