@@ -312,7 +312,7 @@
                   "settings": {
                     "heading": "Shipping",
                     "open_by_default": false,
-                    "icon": "none",
+                    "icon": "truck",
                     "width": 20
                   },
                   "blocks": {
@@ -350,6 +350,16 @@
               "block_order": [
                 "accordion_row_UHBiHH"
               ]
+            },
+            "size_chart_qGm8dz": {
+              "type": "size-chart",
+              "name": "Size chart",
+              "settings": {
+                "size_chart": "{{ closest.product.metafields.custom.board_dimensions.value }}",
+                "display_mode": "popover",
+                "color_scheme": ""
+              },
+              "blocks": {}
             }
           },
           "block_order": [
@@ -359,7 +369,8 @@
             "product_inventory_BEeQGN",
             "buy_buttons_eYQEYi",
             "text_aEtTtq",
-            "accordion_YqXdQT"
+            "accordion_YqXdQT",
+            "size_chart_qGm8dz"
           ]
         }
       },
