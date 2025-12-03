@@ -833,8 +833,8 @@
                   "type": "button",
                   "name": "t:names.button",
                   "settings": {
-                    "label": "@ mfanno",
-                    "link": "https://www.instagram.com/mfanno",
+                    "label": "@ griffin_cola",
+                    "link": "https://www.instagram.com/griffin_cola",
                     "open_in_new_tab": true,
                     "style_class": "button-secondary",
                     "width": "fit-content",
