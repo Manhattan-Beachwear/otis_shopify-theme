@@ -11,6 +11,10 @@
   Settings (from block.settings or global settings):
   - show_size_swatches {boolean} - Show size swatches when dual picker mode is enabled (default: false)
   - show_swatch_text_labels {boolean} - Show text labels for swatches (default: false)
+  - enable_swatch_assets_backup {boolean} - Enable assets folder backup for swatches (passed to swatch component)
+  - swatch_file_extension {string} - Swatch file extension (passed to swatch component)
+  - show_variant_image {boolean} - Show variant image fallback (passed to swatch component)
+  - variant_swatch_width {number} - Variant swatch width (passed to swatch component)
 {%- enddoc -%}
 {% liquid
   # Handle blank block (for sections that don't use blocks)
@@ -43,6 +47,35 @@
     assign show_swatch_text_labels_setting = true
   elsif settings.show_swatch_text_labels
     assign show_swatch_text_labels_setting = true
+  endif
+  
+  # Get swatch-related settings to pass to swatch component (priority: block settings > global settings)
+  assign swatch_enable_assets_backup = blank
+  if block != blank and block_settings != blank and block_settings.enable_swatch_assets_backup != blank
+    assign swatch_enable_assets_backup = block_settings.enable_swatch_assets_backup
+  elsif settings.enable_swatch_assets_backup != blank
+    assign swatch_enable_assets_backup = settings.enable_swatch_assets_backup
+  endif
+  
+  assign swatch_file_extension_setting = blank
+  if block != blank and block_settings != blank and block_settings.swatch_file_extension != blank
+    assign swatch_file_extension_setting = block_settings.swatch_file_extension
+  elsif settings.swatch_file_extension != blank
+    assign swatch_file_extension_setting = settings.swatch_file_extension
+  endif
+  
+  assign swatch_show_variant_image = blank
+  if block != blank and block_settings != blank and block_settings.show_variant_image != blank
+    assign swatch_show_variant_image = block_settings.show_variant_image
+  elsif settings.show_variant_image != blank
+    assign swatch_show_variant_image = settings.show_variant_image
+  endif
+  
+  assign swatch_variant_width = blank
+  if block != blank and block_settings != blank and block_settings.variant_swatch_width != blank
+    assign swatch_variant_width = block_settings.variant_swatch_width
+  elsif settings.variant_swatch_width != blank
+    assign swatch_variant_width = settings.variant_swatch_width
   endif
 
   # Check for combined listings metafield on current product
@@ -1283,13 +1316,21 @@
                       {% render 'swatch',
                         swatch: swatch_to_render,
                         variant_image: featured_media,
-                        option_value_name: option_value_name_for_swatch
+                        option_value_name: option_value_name_for_swatch,
+                        enable_swatch_assets_backup: swatch_enable_assets_backup,
+                        swatch_file_extension: swatch_file_extension_setting,
+                        show_variant_image: swatch_show_variant_image,
+                        variant_swatch_width: swatch_variant_width
                       %}
                     {% else %}
                       {% render 'swatch',
                         swatch: blank,
                         variant_image: featured_media,
-                        option_value_name: option_value_name_for_swatch
+                        option_value_name: option_value_name_for_swatch,
+                        enable_swatch_assets_backup: swatch_enable_assets_backup,
+                        swatch_file_extension: swatch_file_extension_setting,
+                        show_variant_image: swatch_show_variant_image,
+                        variant_swatch_width: swatch_variant_width
                       %}
                     {% endif %}
                   {% endif %}
@@ -1849,13 +1890,21 @@
                     {% render 'swatch',
                       swatch: swatch_to_render,
                       variant_image: hover_media,
-                      option_value_name: option_value_name_for_swatch
+                      option_value_name: option_value_name_for_swatch,
+                      enable_swatch_assets_backup: swatch_enable_assets_backup,
+                      swatch_file_extension: swatch_file_extension_setting,
+                      show_variant_image: swatch_show_variant_image,
+                      variant_swatch_width: swatch_variant_width
                     %}
                   {% else %}
                     {% render 'swatch',
                       swatch: blank,
                       variant_image: hover_media,
-                      option_value_name: option_value_name_for_swatch
+                      option_value_name: option_value_name_for_swatch,
+                      enable_swatch_assets_backup: swatch_enable_assets_backup,
+                      swatch_file_extension: swatch_file_extension_setting,
+                      show_variant_image: swatch_show_variant_image,
+                      variant_swatch_width: swatch_variant_width
                     %}
                   {% endif %}
                 {% endif %}
