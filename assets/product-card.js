@@ -298,14 +298,18 @@ export class ProductCard extends Component {
   /**
    * Previews a variant.
    * @param {string} id - The id of the variant to preview.
+   * @param {PointerEvent} [event] - The pointer event that triggered the preview.
    */
-  previewVariant(id) {
+  previewVariant(id, event) {
     const { slideshow } = this.refs;
 
     if (!slideshow) return;
 
     this.resetVariant.cancel();
     slideshow.select({ id }, undefined, { animate: false });
+
+    // Update badge visibility based on variant availability
+    this.#updateBadgeVisibility(event);
   }
 
   /**
@@ -359,6 +363,8 @@ export class ProductCard extends Component {
       const id = this.variantPicker.selectedOption.dataset.optionMediaId;
       if (id) {
         slideshow.select({ id }, undefined, { animate: false });
+        // Reset badge to product's default availability
+        this.#resetBadgeVisibility();
         return;
       }
     }
@@ -368,12 +374,120 @@ export class ProductCard extends Component {
     const slideId = initialSlide?.getAttribute('slide-id');
     if (initialSlide && slideshow.slides?.includes(initialSlide) && slideId) {
       slideshow.select({ id: slideId }, undefined, { animate: false });
+      // Reset badge to product's default availability
+      this.#resetBadgeVisibility();
       return;
     }
 
     // No valid initial slide or selected variant - go to previous
     slideshow.previous(undefined, { animate: false });
+    // Reset badge to product's default availability
+    this.#resetBadgeVisibility();
   };
+
+  /**
+   * Updates the badge visibility based on the variant being previewed.
+   * @param {PointerEvent} [event] - The pointer event that triggered the preview.
+   */
+  #updateBadgeVisibility(event) {
+    const badgeContainer = this.querySelector('.product-badges');
+    if (!badgeContainer) return;
+
+    // Get availability from the label that triggered the event
+    let isAvailable = true;
+    if (event?.target) {
+      // The event target might be the label itself or a child element
+      const label = event.target.closest('label[data-option-available]') || 
+                    (event.target.tagName === 'LABEL' && event.target.hasAttribute('data-option-available') ? event.target : null);
+      
+      if (label) {
+        const available = label.dataset.optionAvailable;
+        isAvailable = available === 'true';
+      } else {
+        // Fallback: check the input element within the label
+        const input = event.target.closest('label')?.querySelector('input[data-option-available]');
+        if (input) {
+          isAvailable = input.dataset.optionAvailable === 'true';
+        }
+      }
+    }
+
+    // Find or create the sold out badge
+    let soldOutBadge = badgeContainer.querySelector('.product-badges__badge--sold-out-preview');
+    
+    if (!isAvailable) {
+      // Show sold out badge
+      if (!soldOutBadge) {
+        // Create the badge if it doesn't exist
+        soldOutBadge = document.createElement('div');
+        soldOutBadge.className = 'product-badges__badge product-badges__badge--rectangle product-badges__badge--sold-out-preview';
+        
+        // Get color scheme from badge container data attribute (set in Liquid template)
+        const colorScheme = badgeContainer.dataset.badgeSoldOutColorScheme || 'scheme-5';
+        soldOutBadge.classList.add(`color-${colorScheme}`);
+        
+        soldOutBadge.textContent = this.#getSoldOutText();
+        badgeContainer.appendChild(soldOutBadge);
+      }
+      soldOutBadge.style.display = 'flex';
+      
+      // Hide other badges if they exist
+      const otherBadges = badgeContainer.querySelectorAll('.product-badges__badge:not(.product-badges__badge--sold-out-preview)');
+      otherBadges.forEach(badge => {
+        badge.style.display = 'none';
+      });
+    } else {
+      // Hide sold out badge if variant is available
+      if (soldOutBadge) {
+        soldOutBadge.style.display = 'none';
+      }
+      
+      // Show other badges
+      const otherBadges = badgeContainer.querySelectorAll('.product-badges__badge:not(.product-badges__badge--sold-out-preview)');
+      otherBadges.forEach(badge => {
+        badge.style.display = '';
+      });
+    }
+  }
+
+  /**
+   * Resets the badge visibility to the product's default state.
+   */
+  #resetBadgeVisibility() {
+    const badgeContainer = this.querySelector('.product-badges');
+    if (!badgeContainer) return;
+
+    // Hide the preview sold out badge
+    const soldOutBadge = badgeContainer.querySelector('.product-badges__badge--sold-out-preview');
+    if (soldOutBadge) {
+      soldOutBadge.style.display = 'none';
+    }
+
+    // Show other badges (restore original state)
+    const otherBadges = badgeContainer.querySelectorAll('.product-badges__badge:not(.product-badges__badge--sold-out-preview)');
+    otherBadges.forEach(badge => {
+      badge.style.display = '';
+    });
+  }
+
+  /**
+   * Gets the sold out text from the theme translations.
+   * @returns {string} The sold out text.
+   */
+  #getSoldOutText() {
+    // Try to get from existing badge or use default
+    const existingBadge = this.querySelector('.product-badges__badge');
+    if (existingBadge && existingBadge.textContent.includes('Sold out')) {
+      return existingBadge.textContent.trim();
+    }
+    // Try to get from theme translations
+    const themeTranslations = window.Shopify?.theme?.translations;
+    if (themeTranslations?.content?.product_badge_sold_out) {
+      return themeTranslations.content.product_badge_sold_out;
+    }
+    // Fallback to common translations
+    return 'Sold out';
+  }
 
   /**
    * Intercepts the click event on the product card anchor, we want

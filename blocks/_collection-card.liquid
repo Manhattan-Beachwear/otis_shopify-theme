@@ -8,25 +8,16 @@
   {% endif %}
 {% endstyle %}
 
-{% liquid
-  # Get custom title and image from block settings, fallback to collection defaults
-  assign custom_title = block.settings.custom_title
-  assign custom_image = block.settings.custom_image
-%}
-
 {% capture card_image %}
   {% content_for 'block',
     type: '_collection-card-image',
     id: 'collection-card-image',
     closest.collection: collection,
-    parent_block_id: block.id,
-    custom_image: custom_image %}
+    parent_block_id: block.id %}
 {% endcapture %}
 
 {% capture children %}
-  {% content_for 'blocks', 
-    closest.collection: collection,
-    custom_title: custom_title %}
+  {% content_for 'blocks', closest.collection: collection %}
 {% endcapture %}
 
 {% render 'collection-card',
@@ -62,22 +53,6 @@
     {
       "type": "paragraph",
       "content": "t:content.resource_reference_collection_card"
-    },
-    {
-      "type": "header",
-      "content": "t:content.custom_content"
-    },
-    {
-      "type": "text",
-      "id": "custom_title",
-      "label": "Custom title",
-      "info": "Override the collection title. Leave blank to use the collection's default title."
-    },
-    {
-      "type": "image_picker",
-      "id": "custom_image",
-      "label": "Custom image",
-      "info": "Override the collection image. Leave blank to use the collection's default image."
     },
     {
       "type": "header",

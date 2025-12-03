@@ -17,7 +17,7 @@
 %}
 
 {% capture class %}
-  image-block image-block--{{ block.id }} image-block--height-{{ block_settings.height }} spacing-style size-style
+  image-block image-block--{{ block.id }} image-block--height-{{ block_settings.height }} spacing-style size-style{% if block_settings.hover_scale %} image-block--hover-scale{% endif %}
 {% endcapture %}
 
 {% capture style %}
@@ -105,6 +105,23 @@
     object-fit: cover;
     aspect-ratio: var(--ratio);
   }
+
+  /* Hover scale effect */
+  @media (any-pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .image-block--hover-scale {
+      overflow: hidden;
+    }
+
+    .image-block--hover-scale .image-block__image,
+    .image-block--hover-scale .placeholder-image {
+      transition: transform var(--hover-transition-duration, 0.25s) var(--hover-transition-timing, ease-out);
+    }
+
+    .image-block--hover-scale:hover .image-block__image,
+    .image-block--hover-scale:hover .placeholder-image {
+      transform: scale(var(--hover-scale-amount, 1.03));
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -121,6 +138,13 @@
       "type": "url",
       "id": "link",
       "label": "t:settings.link"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_scale",
+      "label": "Enable hover scale effect",
+      "default": false,
+      "info": "Adds a slight scale effect on hover (desktop only)"
     },
     {
       "type": "header",

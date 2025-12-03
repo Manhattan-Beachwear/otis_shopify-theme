@@ -2,8 +2,30 @@
   assign block_settings = block.settings
   for product_option in closest.product.options_with_values
     assign swatch_count = product_option.values | map: 'swatch' | compact | size
+    
+    # Check if any option values have assets folder files (for backup swatch feature)
+    assign assets_swatch_count = 0
+    assign enable_backup_check = settings.enable_swatch_assets_backup
+    if enable_backup_check == blank
+      assign enable_backup_check = true
+    endif
+    
+    if enable_backup_check
+      for product_option_value in product_option.values
+        if product_option_value.name != blank
+          assign swatch_file_extension = settings.swatch_file_extension | default: 'png'
+          assign color_file_name = product_option_value.name | handle | append: '.' | append: swatch_file_extension
+          if images[color_file_name] != blank
+            assign assets_swatch_count = assets_swatch_count | plus: 1
+          endif
+        endif
+      endfor
+    endif
+    
+    # Use swatches if we have metaobject swatches OR assets folder swatches
+    assign total_swatch_count = swatch_count | plus: assets_swatch_count
 
-    if swatch_count > 0
+    if total_swatch_count > 0
       assign product_has_swatches = true
     endif
   endfor

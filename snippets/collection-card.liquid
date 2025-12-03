@@ -27,45 +27,6 @@
   endif
 %}
 
-{% assign collection = closest.collection %}
-
-{% style %}
-  {% if request.visual_preview_mode %}
-    .collection-card {
-      min-width: 250px;
-    }
-  {% endif %}
-{% endstyle %}
-
-{% liquid
-  # Get custom title and image from block settings, fallback to collection defaults
-  assign custom_title = block.settings.custom_title
-  assign custom_image = block.settings.custom_image
-%}
-
-{% capture card_image %}
-  {% content_for 'block',
-    type: '_collection-card-image',
-    id: 'collection-card-image',
-    closest.collection: collection,
-    parent_block_id: block.id,
-    custom_image: custom_image %}
-{% endcapture %}
-
-{% capture children %}
-  {% content_for 'blocks', 
-    closest.collection: collection,
-    custom_title: custom_title %}
-{% endcapture %}
-
-{% render 'collection-card',
-  card_image: card_image,
-  children: children,
-  block: block,
-  collection: collection,
-  section: section
-%}
-
 <div
   class="
     collection-card
@@ -94,14 +55,7 @@
       href="{{ collection.url }}"
     {% endunless %}
   >
-    {% liquid
-      # Use custom title if available, otherwise use collection title
-      assign link_title = collection.title
-      if block_settings.custom_title != blank
-        assign link_title = block_settings.custom_title
-      endif
-    %}
-    <span class="visually-hidden">{{ link_title }}</span>
+    <span class="visually-hidden">{{ collection.title }}</span>
   </a>
   <div class="collection-card__inner">
     {{ card_image }}

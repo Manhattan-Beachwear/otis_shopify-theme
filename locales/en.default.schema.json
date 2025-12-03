@@ -136,6 +136,7 @@
     // Section header for text positioning settings
     "text": "Text",
     "text_presets": "Text presets",
+    "hover_animation": "Hover animation",
     "thumbnails": "Thumbnails",
     "transparent_background": "Transparent background",
     "typography": "Typography",
@@ -417,6 +418,7 @@
     "apple": "Apple",
     "arrow": "Arrow",
     "arrows": "Arrows",
+    "envelope": "Envelope",
     "arrows_large": "Large arrows",
     "aspect_ratio": "Aspect ratio",
     "auto": "Auto",
@@ -683,6 +685,7 @@
     "stopwatch": "Stopwatch",
     "subheading": "Subheading",
     "subtle_zoom": "Zoom",
+    "shimmer": "Shimmer",
     "swatches": "Swatches",
     // Third-level option in font/typography hierarchy
     "tertiary": "Tertiary",
@@ -760,6 +763,7 @@
     "bottom_row": "Bottom row",
     "bottom_padding": "Bottom padding",
     "button": "Button",
+    "button_hover_effect": "Button hover effect",
     "button_text_case": "Text case",
 
     "card_hover_effect": "Card hover effect",

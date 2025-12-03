@@ -141,6 +141,7 @@
       {% elsif content_type == 'collections' %}
         collection-card__image
       {% endif %}
+      {% if block_settings.hover_scale %}image-block--hover-scale{% endif %}
       spacing-style border-style
       {% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}
     "
@@ -170,6 +171,7 @@
       {% elsif content_type == 'collections' %}
         collection-card__image collection-card__image--placeholder
       {% endif %}
+      {% if block_settings.hover_scale %}image-block--hover-scale{% endif %}
       spacing-style border-style
       {% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}
     "

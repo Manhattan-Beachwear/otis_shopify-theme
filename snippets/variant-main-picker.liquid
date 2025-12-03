@@ -37,8 +37,30 @@
         {%- liquid
           assign swatch_count = product_option.values | map: 'swatch' | compact | size
           assign variant_style = block_settings.variant_style
+          
+          # Check if any option values have assets folder files (for backup swatch feature)
+          assign assets_swatch_count = 0
+          assign enable_backup_check = settings.enable_swatch_assets_backup
+          if enable_backup_check == blank
+            assign enable_backup_check = true
+          endif
+          
+          if enable_backup_check and block_settings.show_swatches
+            for product_option_value in product_option.values
+              if product_option_value.name != blank
+                assign swatch_file_extension = settings.swatch_file_extension | default: 'png'
+                assign color_file_name = product_option_value.name | handle | append: '.' | append: swatch_file_extension
+                if images[color_file_name] != blank
+                  assign assets_swatch_count = assets_swatch_count | plus: 1
+                endif
+              endif
+            endfor
+          endif
+          
+          # Use swatches if we have metaobject swatches OR assets folder swatches
+          assign total_swatch_count = swatch_count | plus: assets_swatch_count
 
-          if swatch_count > 0 and block_settings.show_swatches
+          if total_swatch_count > 0 and block_settings.show_swatches
             if block_settings.variant_style == 'dropdown'
               assign variant_style = 'swatch_dropdown'
             else
@@ -52,6 +74,7 @@
             assign longest_value = 0
           endif
         -%}
+        
 
         {%- if variant_style == 'swatch' or block_settings.variant_style == 'buttons' -%}
           {%- assign fieldset_index = forloop.index0 -%}
@@ -101,20 +124,54 @@
                 >
                 {% if variant_style == 'swatch' %}
                   {% liquid
-                    assign featured_media = product_option_value.variant.featured_media
-
-                    # If the variant has no featured media, and we have a combined listing product, then fall back to
-                    # using the featured media of the child product that is linked to this option value.
-                    if featured_media == blank and product_option_value.product_url
-                      assign featured_media = product_option_value.variant.product.featured_media
+                    # Priority 1: Check for swatch (custom color or swatch image) - highest priority
+                    # Only pass variant_image if swatch doesn't have color or image
+                    assign swatch_has_color_or_image = false
+                    if product_option_value.swatch != blank
+                      if product_option_value.swatch.color != blank
+                        assign swatch_has_color_or_image = true
+                      elsif product_option_value.swatch.image != blank
+                        assign swatch_has_color_or_image = true
+                      endif
                     endif
+                    
+                    # Priority 2 & 3: Get variant image as fallback (only if no swatch color/image)
+                    assign variant_image_for_swatch = ''
+                    unless swatch_has_color_or_image
+                      # Try variant's featured media first
+                      assign featured_media = product_option_value.variant.featured_media
+                      
+                      # If the variant has no featured media, and we have a combined listing product, then fall back to
+                      # using the featured media of the child product that is linked to this option value.
+                      if featured_media == blank and product_option_value.product_url
+                        assign featured_media = product_option_value.variant.product.featured_media
+                      endif
+                      
+                      if featured_media != blank
+                        assign variant_image_for_swatch = featured_media
+                      else
+                        # Fall back to product's first image
+                        if product_option_value.variant.product.featured_media != blank
+                          assign variant_image_for_swatch = product_option_value.variant.product.featured_media
+                        endif
+                      endif
+                    endunless
                   %}
 
-                  {% render 'swatch',
-                    swatch: product_option_value.swatch,
-                    variant_image: featured_media,
-                    mode: 'unscaled'
-                  %}
+                  {% if variant_image_for_swatch != blank %}
+                    {% render 'swatch',
+                      swatch: product_option_value.swatch,
+                      variant_image: variant_image_for_swatch,
+                      mode: 'unscaled',
+                      option_value_name: product_option_value.name
+                    %}
+                  {% else %}
+                    {% render 'swatch',
+                      swatch: product_option_value.swatch,
+                      mode: 'unscaled',
+                      option_value_name: product_option_value.name
+                    %}
+                  {% endif %}
                 {% else %}
                   {% if product_option_value.available == true %}
                     <span class="variant-option__button-label__pill"></span>

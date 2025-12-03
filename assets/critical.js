@@ -485,9 +485,29 @@ function updateTransparentHeaderOffset() {
   document.body.style.setProperty('--transparent-header-offset-boolean', shouldApplyOffset);
 }
 
+/**
+ * Removes transparent attribute from header if no hero images exist
+ * Runs early to prevent FOUC (Flash of Unstyled Content)
+ */
+function checkHeroAndDisableTransparent() {
+  const header = document.querySelector('#header-component[transparent][data-check-hero]');
+  if (!header) return; // Early exit if no header needs checking
+
+  // Quick check for hero images - uses attribute selector for speed
+  const hasHeroImage = document.querySelector('[id^="Hero-"] .hero__image');
+
+  if (!hasHeroImage) {
+    header.removeAttribute('transparent');
+    header.removeAttribute('data-check-hero');
+    // Update the offset boolean since transparency changed
+    document.body.style.setProperty('--transparent-header-offset-boolean', '0');
+  }
+}
+
 export function updateAllHeaderCustomProperties() {
   updateHeaderHeights();
   updateTransparentHeaderOffset();
+  checkHeroAndDisableTransparent();
 }
 
 // Run both functions on page load

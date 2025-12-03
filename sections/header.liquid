@@ -12,15 +12,19 @@
     assign search_style = 'modal'
   endif
 
+  assign check_hero = false
   if section.settings.enable_transparent_header_home and template.name == 'index'
     assign transparent = 'always'
     assign transparent_color_scheme = section.settings.home_color_scheme
+    assign check_hero = true
   elsif section.settings.enable_transparent_header_product and template.name == 'product'
     assign transparent = 'always'
     assign transparent_color_scheme = section.settings.product_color_scheme
+    assign check_hero = true
   elsif section.settings.enable_transparent_header_collection and template.name == 'collection'
     assign transparent = 'always'
     assign transparent_color_scheme = section.settings.collection_color_scheme
+    assign check_hero = true
   endif
 
   if section.settings.enable_sticky_header == 'always'
@@ -188,6 +192,7 @@
   class="{{ class }}"
   {% if transparent %}
     transparent="{{ transparent }}"
+    {% if check_hero %}data-check-hero="true"{% endif %}
   {% endif %}
   {% if sticky %}
     sticky="{{ sticky }}"
@@ -293,6 +298,7 @@
     --language-button-border-color: transparent;
 
     /* used to apply transparency to .header__row, will only ever be transparent or unset */
+    /* Note: JavaScript in critical.js removes [transparent] attribute if no hero images exist */
     --header-bg-color: transparent;
 
     /* used to display the appropriate logo based on transparency state */
@@ -390,17 +396,21 @@
   }
 
   .header[data-sticky-state] {
-    transition: opacity var(--animation-speed) var(--animation-easing);
+    transform: translateZ(0);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                opacity var(--animation-speed-slow) var(--animation-easing);
     opacity: 1;
   }
 
   .header[data-sticky-state='active'] {
     view-transition-name: sticky-header;
+    transform: translateY(0);
   }
 
   .header[data-sticky-state='idle'],
   .header[data-sticky-state='active'][data-animating] {
     opacity: 0;
+    transform: translateY(-100%);
   }
 
   .header__row {

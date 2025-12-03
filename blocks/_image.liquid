@@ -21,6 +21,7 @@
   <image-block
     ratio="{{ block_settings.ratio }}"
     height="{{ block_settings.height }}"
+    {% if block_settings.hover_scale %}hover-scale{% endif %}
     style="--border-radius: {{ block_settings.border_radius }}px;"
     {{ block.shopify_attributes }}
   >
@@ -34,6 +35,7 @@
   <image-block
     ratio="{{ block_settings.ratio }}"
     height="{{ block_settings.height }}"
+    {% if block_settings.hover_scale %}hover-scale{% endif %}
     style="--border-radius: {{ block_settings.border_radius }}px;"
     {{ block.shopify_attributes }}
   >
@@ -102,6 +104,22 @@
       aspect-ratio: var(--ratio);
       border-radius: var(--border-radius);
     }
+
+    /* Hover scale effect */
+    @media (any-pointer: fine) and (prefers-reduced-motion: no-preference) {
+      &[hover-scale] {
+        overflow: hidden;
+      }
+
+      &[hover-scale] img {
+        transition: transform var(--hover-transition-duration, 0.25s) var(--hover-transition-timing, ease-out);
+        will-change: transform;
+      }
+
+      &[hover-scale]:hover img {
+        transform: scale(var(--hover-scale-amount, 1.03));
+      }
+    }
   }
 {% endstylesheet %}
 
@@ -113,6 +131,13 @@
     {
       "type": "paragraph",
       "content": "t:content.resource_reference_collection_card_image"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_scale",
+      "label": "Enable hover scale effect",
+      "default": false,
+      "info": "Adds a slight scale effect on hover (desktop only)"
     },
     {
       "type": "select",

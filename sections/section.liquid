@@ -299,6 +299,14 @@
       "visible_if": "{{ section.settings.background_media == 'image' }}"
     },
     {
+      "type": "checkbox",
+      "id": "image_zoom_fade_animation",
+      "label": "Enable zoom-fade animation",
+      "default": false,
+      "info": "Adds a zoom and fade animation when the background image loads",
+      "visible_if": "{{ section.settings.background_media == 'image' }}"
+    },
+    {
       "type": "select",
       "id": "border",
       "label": "t:settings.borders",

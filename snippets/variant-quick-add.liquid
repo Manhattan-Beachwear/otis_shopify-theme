@@ -13,8 +13,30 @@
     {%- liquid
       assign swatch_count = product_option.values | map: 'swatch' | compact | size
       assign variant_style = ''
+      
+      # Check if any option values have assets folder files (for backup swatch feature)
+      assign assets_swatch_count = 0
+      assign enable_backup_check = settings.enable_swatch_assets_backup
+      if enable_backup_check == blank
+        assign enable_backup_check = true
+      endif
+      
+      if enable_backup_check
+        for product_option_value in product_option.values
+          if product_option_value.name != blank
+            assign swatch_file_extension = settings.swatch_file_extension | default: 'png'
+            assign color_file_name = product_option_value.name | handle | append: '.' | append: swatch_file_extension
+            if images[color_file_name] != blank
+              assign assets_swatch_count = assets_swatch_count | plus: 1
+            endif
+          endif
+        endfor
+      endif
+      
+      # Use swatches if we have metaobject swatches OR assets folder swatches
+      assign total_swatch_count = swatch_count | plus: assets_swatch_count
 
-      if swatch_count > 0
+      if total_swatch_count > 0
         assign variant_style = 'swatch'
       else
         assign fieldset_id = section.id | append: '-' | append: product_resource.id | append: '-' | append: product_option.name | handleize
@@ -78,7 +100,11 @@
             {% endif %}
           >
           {% if variant_style == 'swatch' %}
-            {% render 'swatch', swatch: product_option_value.swatch, variant_image: featured_media %}
+            {% render 'swatch',
+              swatch: product_option_value.swatch,
+              variant_image: featured_media,
+              option_value_name: product_option_value.name
+            %}
           {% else %}
             <span>{{ product_option_value | escape }}</span>
           {% endif %}

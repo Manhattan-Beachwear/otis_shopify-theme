@@ -26,7 +26,7 @@
 
 {% if block_settings.collection.featured_image %}
   <div
-    class="collection-image spacing-style collection-image-{{ block.id }}"
+    class="collection-image spacing-style collection-image-{{ block.id }}{% if block_settings.hover_scale %} collection-image--hover-scale{% endif %}"
     style="--ratio: {{ ratio }}; --image-width: {{ image_width }}%; {% render 'spacing-style', settings: block_settings %}"
   >
     {% liquid
@@ -53,6 +53,22 @@
     aspect-ratio: var(--ratio);
     object-fit: cover;
   }
+
+  /* Hover scale effect */
+  @media (any-pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .collection-image--hover-scale {
+      overflow: hidden;
+    }
+
+    .collection-image--hover-scale .collection-image__featured-image {
+      transition: transform var(--hover-transition-duration, 0.25s) var(--hover-transition-timing, ease-out);
+      will-change: transform;
+    }
+
+    .collection-image--hover-scale:hover .collection-image__featured-image {
+      transform: scale(var(--hover-scale-amount, 1.03));
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -64,6 +80,13 @@
       "type": "collection",
       "id": "collection",
       "label": "t:settings.collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_scale",
+      "label": "Enable hover scale effect",
+      "default": false,
+      "info": "Adds a slight scale effect on hover (desktop only)"
     },
     {
       "type": "select",

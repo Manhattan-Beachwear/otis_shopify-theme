@@ -45,6 +45,11 @@
         ref="menuitem"
       >
         <span class="menu-list__link-title">{{- link.title -}}</span>
+        {%- if link.links != blank -%}
+          <span class="svg-wrapper icon-caret menu-list__link-chevron">
+            {{- 'icon-caret.svg' | inline_asset_content -}}
+          </span>
+        {%- endif -%}
       </a>
       {%- if link.links != blank -%}
         <div class="menu-list__submenu{{ color_scheme_classes }}" ref="submenu[]">
