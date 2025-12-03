@@ -3542,7 +3542,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/BRONTE_TEAM_PAGE_20239.jpg",
+                "image": "shopify://shop_images/RASMUS_TEAM_PAGE_202315.jpg",
                 "link": "",
                 "image_ratio": "adapt",
                 "width": "fill",
@@ -3603,7 +3603,7 @@
                 "text_Q89ymy": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Bronte MaCaulay</p>",
+                    "text": "<p>Rasmus King</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
