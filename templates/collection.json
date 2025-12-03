@@ -15,7 +15,7 @@
         "text_bepqR3": {
           "type": "text",
           "settings": {
-            "text": "<h1>New arrivals</h1>",
+            "text": "<p>{{ collection.title }}</p>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
