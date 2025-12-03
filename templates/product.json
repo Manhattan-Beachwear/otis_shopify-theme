@@ -312,7 +312,7 @@
                   "settings": {
                     "heading": "Shipping",
                     "open_by_default": false,
-                    "icon": "none",
+                    "icon": "truck",
                     "width": 20
                   },
                   "blocks": {
