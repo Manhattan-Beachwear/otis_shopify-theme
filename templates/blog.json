@@ -106,6 +106,7 @@
               "type": "_blog-post-image",
               "static": true,
               "settings": {
+                "hover_scale": true,
                 "height": "large",
                 "border": "none",
                 "border_width": 1,
