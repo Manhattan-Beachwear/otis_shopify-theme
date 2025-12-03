@@ -2633,8 +2633,8 @@
                   "type": "button",
                   "name": "t:names.button",
                   "settings": {
-                    "label": "@ IMAIKALANI_DEVAULT",
-                    "link": "https://www.instagram.com/IMAIKALANI_DEVAULT",
+                    "label": "@ jay_davies",
+                    "link": "https://www.instagram.com/JAY_DAVIES",
                     "open_in_new_tab": true,
                     "style_class": "button-secondary",
                     "width": "fit-content",
