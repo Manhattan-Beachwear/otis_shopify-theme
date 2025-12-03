@@ -6,7 +6,11 @@
   Renders a combined listing variant picker that displays each related product as a single variant option.
 
   @param {object} product_resource - The product object.
-  @param {object} [block] - The block object
+  @param {object} [block] - The block object with settings (optional)
+  
+  Settings (from block.settings or global settings):
+  - show_size_swatches {boolean} - Show size swatches when dual picker mode is enabled (default: false)
+  - show_swatch_text_labels {boolean} - Show text labels for swatches (default: false)
 {%- enddoc -%}
 {% liquid
   # Handle blank block (for sections that don't use blocks)
@@ -23,6 +27,22 @@
     assign alignment_value = block_settings.alignment
   else
     assign alignment_value = alignment_default
+  endif
+  
+  # Get show_size_swatches setting (priority: block settings > global settings)
+  assign show_size_swatches_setting = false
+  if block != blank and block_settings != blank and block_settings.show_size_swatches
+    assign show_size_swatches_setting = true
+  elsif settings.show_size_swatches
+    assign show_size_swatches_setting = true
+  endif
+  
+  # Get show_swatch_text_labels setting (priority: block settings > global settings)
+  assign show_swatch_text_labels_setting = false
+  if block != blank and block_settings != blank and block_settings.show_swatch_text_labels
+    assign show_swatch_text_labels_setting = true
+  elsif settings.show_swatch_text_labels
+    assign show_swatch_text_labels_setting = true
   endif
 
   # Check for combined listings metafield on current product
@@ -977,13 +997,8 @@
     <form>
       <fieldset class="variant-option variant-option--buttons variant-option--swatches">
         {%- liquid
-          # Check if text labels for swatches is enabled
-          assign show_text_labels = false
-          if block != blank and block.settings.show_swatch_text_labels
-            assign show_text_labels = true
-          elsif settings.show_swatch_text_labels
-            assign show_text_labels = true
-          endif
+          # Use the show_swatch_text_labels_setting variable set at the top
+          assign show_text_labels = show_swatch_text_labels_setting
         -%}
         {%- if show_text_labels -%}
           <legend>
@@ -1298,13 +1313,8 @@
       </fieldset>
       
       {%- liquid
-        # Check if size swatches should be shown
-        assign show_size_swatches = false
-        if block != blank and block.settings.show_size_swatches
-          assign show_size_swatches = true
-        elsif settings.show_size_swatches
-          assign show_size_swatches = true
-        endif
+        # Use the show_size_swatches_setting variable set at the top
+        assign show_size_swatches = show_size_swatches_setting
       -%}
       
       {%- if show_size_swatches and unique_sizes != '' and size_option_name != '' -%}
@@ -1551,13 +1561,8 @@
     <form>
       <fieldset class="variant-option variant-option--buttons variant-option--swatches">
         {%- liquid
-          # Check if text labels for swatches is enabled
-          assign show_text_labels = false
-          if block != blank and block.settings.show_swatch_text_labels
-            assign show_text_labels = true
-          elsif settings.show_swatch_text_labels
-            assign show_text_labels = true
-          endif
+          # Use the show_swatch_text_labels_setting variable set at the top
+          assign show_text_labels = show_swatch_text_labels_setting
         -%}
         {%- if show_text_labels -%}
           <legend>
