@@ -181,6 +181,21 @@
                   -%}
                     <dl class="cart-items__variants">
                       {%- if item.product.has_only_default_variant == false and item.item_components.size == 0 -%}
+                        {%- liquid
+                          # First, count how many valid (non-skipped) options we have
+                          assign valid_count = 0
+                          for option in item.options_with_values
+                            assign option_value_str = option.value | append: ''
+                            assign should_skip = false
+                            if option.value == blank or option.value == 0 or option_value_str == '' or option_value_str == '0' or option_value_str == 'null'
+                              assign should_skip = true
+                            endif
+                            unless should_skip
+                              assign valid_count = valid_count | plus: 1
+                            endunless
+                          endfor
+                          assign current_valid_index = 0
+                        -%}
                         {%- for option in item.options_with_values -%}
                           {%- liquid
                             # Skip option values that are blank, null, 0 (number), "0" (string), or "null" (string)
@@ -191,13 +206,14 @@
                             endif
                           -%}
                           {%- unless should_skip -%}
-                          <div class="cart-items__variant">
-                            <dt class="visually-hidden">{{ option.name }}:</dt>
-                            <dd>
-                              {{- option.value -}}
-                              {%- if forloop.last != true %},&nbsp;{% endif -%}
-                            </dd>
-                          </div>
+                            {%- assign current_valid_index = current_valid_index | plus: 1 -%}
+                            <div class="cart-items__variant">
+                              <dt class="visually-hidden">{{ option.name }}:</dt>
+                              <dd>
+                                {{- option.value -}}
+                                {%- if current_valid_index < valid_count %},&nbsp;{% endif -%}
+                              </dd>
+                            </div>
                           {%- endunless -%}
                         {%- endfor -%}
                       {%- endif -%}
