@@ -670,7 +670,7 @@
         "group_BxFUtE",
         "group_GVk4a4"
       ],
-      "name": "t:names.icons_with_text",
+      "name": "Team Row",
       "settings": {
         "content_direction": "row",
         "vertical_on_mobile": true,
