@@ -287,6 +287,7 @@
           "settings": {
             "source": "uploaded",
             "video": "shopify://files/videos/Y2Mate.is - PROTO™1.4 - MORE GRIP LESS WASTE-LV3anblBxxQ-1080p-1655056211220.mp4",
+            "video_url": "",
             "video_autoplay": true,
             "video_loop": true,
             "alt": "",
@@ -438,6 +439,7 @@
           "settings": {
             "source": "uploaded",
             "video": "shopify://files/videos/Y2Mate.is - MULTI-LOC™-v8vNGuDo2OY-1080p-1655073769175.mp4",
+            "video_url": "",
             "video_autoplay": true,
             "video_loop": true,
             "alt": "",
@@ -513,6 +515,7 @@
           "settings": {
             "source": "uploaded",
             "video": "shopify://files/videos/Y2Mate.is - RECOIL KICK-ofqXhskHR7k-1080p-1655008993047.mp4",
+            "video_url": "",
             "video_autoplay": true,
             "video_loop": true,
             "alt": "",
@@ -588,6 +591,7 @@
           "settings": {
             "source": "uploaded",
             "video": "shopify://files/videos/Y2Mate.is - PRO-FORM ARCH-xZS6s0zbHKs-1080p-1655074223020.mp4",
+            "video_url": "",
             "video_autoplay": true,
             "video_loop": true,
             "alt": "",
