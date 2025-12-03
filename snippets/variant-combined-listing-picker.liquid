@@ -986,6 +986,15 @@
         <div class="variant-picker-cl-dual__options" data-option-type="color" data-fieldset-index="0">
           {% assign colors_array = unique_colors | split: '|||' %}
           {% for color_value_item in colors_array %}
+            {%- liquid
+              # Skip option values that are blank, null, 0 (number), "0" (string), or "null" (string)
+              assign color_value_str = color_value_item | append: ''
+              assign should_skip_color = false
+              if color_value_item == blank or color_value_item == 0 or color_value_str == '' or color_value_str == '0' or color_value_str == 'null'
+                assign should_skip_color = true
+              endif
+            -%}
+            {%- unless should_skip_color -%}
             {% if color_value_item != blank and color_value_item != '' %}
               {% liquid
                 assign is_current_color = false
@@ -1204,6 +1213,7 @@
                 {% endif %}
               </label>
             {% endif %}
+            {%- endunless -%}
           {% endfor %}
         </div>
       </fieldset>
@@ -1252,6 +1262,15 @@
         >
           {% assign sizes_array = unique_sizes | split: '|||' %}
           {% for size_value_item in sizes_array %}
+            {%- liquid
+              # Skip option values that are blank, null, 0 (number), "0" (string), or "null" (string)
+              assign size_value_str = size_value_item | append: ''
+              assign should_skip_size = false
+              if size_value_item == blank or size_value_item == 0 or size_value_str == '' or size_value_str == '0' or size_value_str == 'null'
+                assign should_skip_size = true
+              endif
+            -%}
+            {%- unless should_skip_size -%}
             {% if size_value_item != blank and size_value_item != '' %}
               {% liquid
                 assign is_current_size = false
@@ -1341,6 +1360,7 @@
                 {% endunless %}
               </label>
             {% endif %}
+            {%- endunless -%}
           {% endfor %}
         </div>
       </fieldset>

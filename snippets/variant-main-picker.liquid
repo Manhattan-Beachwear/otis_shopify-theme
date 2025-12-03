@@ -92,10 +92,10 @@
             </legend>
             {%- for product_option_value in product_option.values -%}
               {%- liquid
-                # Skip option values that are blank, null, or "0"
+                # Skip option values that are blank, null, 0 (number), "0" (string), or "null" (string)
                 assign option_value_str = product_option_value | append: ''
                 assign should_skip = false
-                if option_value_str == blank or option_value_str == '' or option_value_str == '0'
+                if product_option_value == blank or product_option_value == 0 or option_value_str == '' or option_value_str == '0' or option_value_str == 'null'
                   assign should_skip = true
                 endif
               -%}
