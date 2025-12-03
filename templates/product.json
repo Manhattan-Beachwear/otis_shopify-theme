@@ -287,6 +287,109 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "accordion_YqXdQT": {
+              "type": "accordion",
+              "name": "t:names.accordion",
+              "settings": {
+                "icon": "caret",
+                "dividers": true,
+                "type_preset": "h6",
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "accordion_row_UHBiHH": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Shipping",
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text_xC7mHC": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Creatures of Leisure uses UPS Ground Shipping on all domestic orders, USPS to HI/PR and PO Boxes. If you would like your item faster, we can offer UPS 3-day, 2-day, and Overnight options. This will require manual input to obtain shipping rates. If you require expedited shipping, please call our office or email customer service.</p><p>Orders over $200 will receive FREE ground freight.</p><p><strong>SHIPPING AND HANDLING CHARGES</strong></p><p>All shipping and handling charges can be viewed at time of checkout. In the rare case that shipping and handling charges exceed the amount shown, we will notify you. The state or province may require tax to be applied to shipping and handling charges. Any shipping carrier may be used and will depend upon the location of fulfillment.</p><p>For further info, please contact our Customer Service team at <a href=\"mailto:contact@leisurecollectiveinc.com?subject=OTIS%20Customer%20Service\">contact@leisurecollectiveinc.com</a></p><p>Creatures of Leisure USA does not currently ship to locations outside of the USA. We will be shipping to Canada and South America in the future. Please sign up for our newsletter to stay in the loop on all things Creatures of Leisure.</p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "custom",
+                        "font": "var(--font-body--family)",
+                        "font_size": "0.75rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text_xC7mHC"
+                  ]
+                },
+                "accordion_row_MBBURY": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Return policy",
+                    "open_by_default": true,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text_3H4UFT": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Our goal is for every customer to be totally satisfied with their purchase. If this isn't the case, let us know and we'll do our best to work with you to make it right.</p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text_3H4UFT"
+                  ]
+                }
+              },
+              "block_order": [
+                "accordion_row_UHBiHH",
+                "accordion_row_MBBURY"
+              ]
             }
           },
           "block_order": [
@@ -295,7 +398,8 @@
             "variant_picker_cl_HHnpk6",
             "product_inventory_BEeQGN",
             "buy_buttons_eYQEYi",
-            "text_aEtTtq"
+            "text_aEtTtq",
+            "accordion_YqXdQT"
           ]
         }
       },
