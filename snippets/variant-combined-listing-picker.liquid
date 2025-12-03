@@ -1053,8 +1053,19 @@
       {% comment %} Color Picker {% endcomment %}
       <fieldset class="variant-option variant-option--buttons variant-option--swatches">
         {%- liquid
-          # Use the show_swatch_text_labels_setting variable set at the top
-          assign show_text_labels = show_swatch_text_labels_setting
+          # Always show labels on product pages, otherwise respect the setting
+          assign is_product_page = false
+          if request.page_type == 'product'
+            assign is_product_page = true
+          endif
+          
+          # Show labels if on product page OR if setting is enabled
+          assign show_text_labels = false
+          if is_product_page
+            assign show_text_labels = true
+          elsif show_swatch_text_labels_setting
+            assign show_text_labels = true
+          endif
         -%}
         {%- if show_text_labels -%}
           <legend>
@@ -1690,8 +1701,19 @@
     <form>
       <fieldset class="variant-option variant-option--buttons variant-option--swatches">
         {%- liquid
-          # Use the show_swatch_text_labels_setting variable set at the top
-          assign show_text_labels = show_swatch_text_labels_setting
+          # Always show labels on product pages, otherwise respect the setting
+          assign is_product_page = false
+          if request.page_type == 'product'
+            assign is_product_page = true
+          endif
+          
+          # Show labels if on product page OR if setting is enabled
+          assign show_text_labels = false
+          if is_product_page
+            assign show_text_labels = true
+          elsif show_swatch_text_labels_setting
+            assign show_text_labels = true
+          endif
         -%}
         {%- if show_text_labels -%}
           <legend>
@@ -2245,6 +2267,15 @@
   /* Ensure swatches in dual picker follow global swatch styling */
   .variant-picker-cl-dual .variant-option--swatches {
     overflow: visible;
+    /* Match padding from blocks/swatches.liquid for consistency */
+    padding-block: calc(
+        var(--product-swatches-padding-block-start) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px)
+      )
+      calc(var(--product-swatches-padding-block-end) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px));
+    padding-inline: calc(
+        var(--product-swatches-padding-inline-start) + var(--focus-outline-offset) + (1.5 * var(--focus-outline-width)) + var(--style-border-swatch-width, 1px)
+      )
+      calc(var(--product-swatches-padding-inline-end) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px));
   }
 
   .variant-picker-cl-dual .variant-option__swatch {
@@ -2274,6 +2305,17 @@
   .variant-picker-cl-dual .variant-option__button-label--has-swatch .swatch {
     pointer-events: none;
     z-index: 0;
+  }
+
+  /* Match overflow-list styling from blocks/swatches.liquid */
+  .variant-picker-cl-dual .variant-option--swatches {
+    overflow-list::part(list) {
+      gap: var(--gap-sm);
+    }
+
+    overflow-list[defer]::part(list) {
+      flex-wrap: nowrap;
+    }
   }
 
   .variant-picker-cl-dual__fieldset {
