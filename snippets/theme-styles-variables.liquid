@@ -255,19 +255,22 @@
           assign preset_font = '--font-body--family'
           assign preset_style = '--font-body--style'
           assign preset_case = '--font-body--case'
-          assign preset_letter_spacing = 'body-normal'
+          assign preset_letter_spacing_raw = settings.type_letter_spacing_paragraph | default: "0.1" | times: 1.0
+          assign preset_letter_spacing_value = preset_letter_spacing_raw | minus: 0.1
 
           echo '--font-[preset_name]--weight: [preset_weight_setting];' | replace: '[preset_name]', preset_name | replace: '[preset_weight_setting]', preset_weight_setting
-          echo '--font-[preset_name]--letter-spacing: var(--letter-spacing--[preset_letter_spacing]);' | replace: '[preset_name]', preset_name | replace: '[preset_letter_spacing]', preset_letter_spacing
+          echo '--font-[preset_name]--letter-spacing: [preset_letter_spacing_value]em;' | replace: '[preset_name]', preset_name | replace: '[preset_letter_spacing_value]', preset_letter_spacing_value
         else
           assign preset_font_id = 'type_font_[preset_name]' | replace: '[preset_name]', preset_name
           assign preset_font = '--font-[preset_font]--family' | replace: '[preset_font]', settings[preset_font_id]
           assign preset_style = '--font-[preset_font]--style' | replace: '[preset_font]', settings[preset_font_id]
           assign preset_case = 'type_case_[preset_name]' | replace: '[preset_name]', preset_name
-          assign preset_letter_spacing = 'type_letter_spacing_[preset_name]' | replace: '[preset_name]', preset_name
+          assign preset_letter_spacing_id = 'type_letter_spacing_[preset_name]' | replace: '[preset_name]', preset_name
+          assign preset_letter_spacing_raw = settings[preset_letter_spacing_id] | default: "0.1" | times: 1.0
+          assign preset_letter_spacing_value = preset_letter_spacing_raw | minus: 0.1
 
           echo '--font-[preset_name]--weight: [preset_weight_setting];' | replace: '[preset_name]', preset_name | replace: '[preset_weight_setting]', preset_weight_setting
-          echo '--font-[preset_name]--letter-spacing: var(--letter-spacing--[preset_letter_spacing]);' | replace: '[preset_name]', preset_name | replace: '[preset_letter_spacing]', settings[preset_letter_spacing]
+          echo '--font-[preset_name]--letter-spacing: [preset_letter_spacing_value]em;' | replace: '[preset_name]', preset_name | replace: '[preset_letter_spacing_value]', preset_letter_spacing_value
         endif
 
         echo '--font-[preset_name]--size: var([preset_size]);' | replace: '[preset_name]', preset_name | replace: '[preset_size]', preset_size
@@ -485,6 +488,10 @@
     --button-text-case: {{ settings.button_text_case }};
     --button-text-case-primary: {{ settings.button_text_case_primary }};
     --button-text-case-secondary: {{ settings.button_text_case_secondary }};
+
+    /* Button letter spacing */
+    --button-letter-spacing-primary: {{ settings.button_letter_spacing_primary | default: 0 }}em;
+    --button-letter-spacing-secondary: {{ settings.button_letter_spacing_secondary | default: 0 }}em;
 
     /* Borders */
     --border-color: rgb(var(--color-border-rgb) / var(--opacity-50));

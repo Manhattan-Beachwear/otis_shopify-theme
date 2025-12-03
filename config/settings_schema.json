@@ -464,6 +464,16 @@
         "default": "400"
       },
       {
+        "type": "range",
+        "id": "type_letter_spacing_paragraph",
+        "label": "t:settings.letter_spacing",
+        "min": 0,
+        "max": 0.5,
+        "step": 0.1,
+        "unit": "em",
+        "default": 0.1
+      },
+      {
         "type": "header",
         "content": "t:options.h1"
       },
@@ -576,24 +586,14 @@
         "default": "display-normal"
       },
       {
-        "type": "select",
+        "type": "range",
         "id": "type_letter_spacing_h1",
         "label": "t:settings.letter_spacing",
-        "options": [
-          {
-            "value": "heading-tight",
-            "label": "t:options.tight"
-          },
-          {
-            "value": "heading-normal",
-            "label": "t:options.normal"
-          },
-          {
-            "value": "heading-loose",
-            "label": "t:options.loose"
-          }
-        ],
-        "default": "heading-normal"
+        "min": 0,
+        "max": 0.5,
+        "step": 0.1,
+        "unit": "em",
+        "default": 0.1
       },
       {
         "type": "select",
@@ -752,24 +752,14 @@
         "default": "display-normal"
       },
       {
-        "type": "select",
+        "type": "range",
         "id": "type_letter_spacing_h2",
         "label": "t:settings.letter_spacing",
-        "options": [
-          {
-            "value": "heading-tight",
-            "label": "t:options.tight"
-          },
-          {
-            "value": "heading-normal",
-            "label": "t:options.normal"
-          },
-          {
-            "value": "heading-loose",
-            "label": "t:options.loose"
-          }
-        ],
-        "default": "heading-normal"
+        "min": 0,
+        "max": 0.5,
+        "step": 0.1,
+        "unit": "em",
+        "default": 0.1
       },
       {
         "type": "select",
@@ -936,24 +926,14 @@
         "default": "display-normal"
       },
       {
-        "type": "select",
+        "type": "range",
         "id": "type_letter_spacing_h3",
         "label": "t:settings.letter_spacing",
-        "options": [
-          {
-            "value": "heading-tight",
-            "label": "t:options.tight"
-          },
-          {
-            "value": "heading-normal",
-            "label": "t:options.normal"
-          },
-          {
-            "value": "heading-loose",
-            "label": "t:options.loose"
-          }
-        ],
-        "default": "heading-normal"
+        "min": 0,
+        "max": 0.5,
+        "step": 0.1,
+        "unit": "em",
+        "default": 0.1
       },
       {
         "type": "select",
@@ -1120,24 +1100,14 @@
         "default": "display-normal"
       },
       {
-        "type": "select",
+        "type": "range",
         "id": "type_letter_spacing_h4",
         "label": "t:settings.letter_spacing",
-        "options": [
-          {
-            "value": "heading-tight",
-            "label": "t:options.tight"
-          },
-          {
-            "value": "heading-normal",
-            "label": "t:options.normal"
-          },
-          {
-            "value": "heading-loose",
-            "label": "t:options.loose"
-          }
-        ],
-        "default": "heading-normal"
+        "min": 0,
+        "max": 0.5,
+        "step": 0.1,
+        "unit": "em",
+        "default": 0.1
       },
       {
         "type": "select",
@@ -1304,24 +1274,14 @@
         "default": "display-normal"
       },
       {
-        "type": "select",
+        "type": "range",
         "id": "type_letter_spacing_h5",
         "label": "t:settings.letter_spacing",
-        "options": [
-          {
-            "value": "heading-tight",
-            "label": "t:options.tight"
-          },
-          {
-            "value": "heading-normal",
-            "label": "t:options.normal"
-          },
-          {
-            "value": "heading-loose",
-            "label": "t:options.loose"
-          }
-        ],
-        "default": "heading-normal"
+        "min": 0,
+        "max": 0.5,
+        "step": 0.1,
+        "unit": "em",
+        "default": 0.1
       },
       {
         "type": "select",
@@ -1488,24 +1448,14 @@
         "default": "display-normal"
       },
       {
-        "type": "select",
+        "type": "range",
         "id": "type_letter_spacing_h6",
         "label": "t:settings.letter_spacing",
-        "options": [
-          {
-            "value": "heading-tight",
-            "label": "t:options.tight"
-          },
-          {
-            "value": "heading-normal",
-            "label": "t:options.normal"
-          },
-          {
-            "value": "heading-loose",
-            "label": "t:options.loose"
-          }
-        ],
-        "default": "heading-normal"
+        "min": 0,
+        "max": 0.5,
+        "step": 0.1,
+        "unit": "em",
+        "default": 0.1
       },
       {
         "type": "select",
@@ -1809,6 +1759,16 @@
         "default": "default"
       },
       {
+        "type": "range",
+        "id": "button_letter_spacing_primary",
+        "label": "t:settings.letter_spacing",
+        "min": -0.1,
+        "max": 0.5,
+        "step": 0.1,
+        "unit": "em",
+        "default": 0
+      },
+      {
         "type": "header",
         "content": "t:options.button_secondary"
       },
@@ -1891,6 +1851,16 @@
           }
         ],
         "default": "default"
+      },
+      {
+        "type": "range",
+        "id": "button_letter_spacing_secondary",
+        "label": "t:settings.letter_spacing",
+        "min": -0.1,
+        "max": 0.5,
+        "step": 0.1,
+        "unit": "em",
+        "default": 0
       },
       {
         "type": "header",

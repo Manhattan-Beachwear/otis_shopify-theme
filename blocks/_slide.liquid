@@ -51,11 +51,37 @@
       -%}
 
       {%- if block_settings.media_type_1 == 'image' -%}
-        {{
-          block_settings.image_1
-          | image_url: width: 3840
-          | image_tag: height: height, sizes: sizes, widths: widths, class: 'slide__image', loading: loading, fetchpriority: fetchpriority
-        }}
+        {%- liquid
+          assign has_mobile_image = false
+          if block_settings.image_1_mobile != blank
+            assign has_mobile_image = true
+          endif
+          
+          assign mobile_widths = '416, 600, 800, 1200, 1600'
+          assign sizes_mobile = media_width_mobile
+        -%}
+        
+        {%- if has_mobile_image -%}
+          {{
+            block_settings.image_1
+            | image_url: width: 3840
+            | image_tag: height: height, sizes: sizes, widths: widths, class: 'slide__image slide__image--desktop', loading: loading, fetchpriority: fetchpriority
+          }}
+          {%- liquid
+            assign mobile_height = block_settings.image_1_mobile.width | divided_by: block_settings.image_1_mobile.aspect_ratio | round
+          -%}
+          {{
+            block_settings.image_1_mobile
+            | image_url: width: 1600
+            | image_tag: height: mobile_height, sizes: sizes_mobile, widths: mobile_widths, class: 'slide__image slide__image--mobile', loading: loading, fetchpriority: fetchpriority
+          }}
+        {%- else -%}
+          {{
+            block_settings.image_1
+            | image_url: width: 3840
+            | image_tag: height: height, sizes: sizes, widths: widths, class: 'slide__image', loading: loading, fetchpriority: fetchpriority
+          }}
+        {%- endif -%}
       {%- else -%}
         {%- if block_settings.video_1.preview_image -%}
 
@@ -156,6 +182,25 @@
   .slide__image-container > .slide__video-poster {
     position: absolute;
   }
+
+  /* Mobile/Desktop image visibility */
+  .slide__image--mobile {
+    display: none;
+  }
+
+  .slide__image--desktop {
+    display: block;
+  }
+
+  @media screen and (max-width: 749px) {
+    .slide__image--desktop {
+      display: none;
+    }
+
+    .slide__image--mobile {
+      display: block;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -191,6 +236,12 @@
       "type": "image_picker",
       "id": "image_1",
       "label": "t:settings.image",
+      "visible_if": "{{ block.settings.media_type_1 == 'image' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1_mobile",
+      "label": "Mobile image (optional)",
       "visible_if": "{{ block.settings.media_type_1 == 'image' }}"
     },
     {

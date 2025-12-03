@@ -1335,6 +1335,7 @@ button.shopify-payment-button__button--unbranded {
   font-family: var(--button-font-family-primary);
   font-weight: var(--button-font-weight-primary);
   text-transform: var(--button-text-case-primary);
+  letter-spacing: var(--button-letter-spacing-primary);
   border-radius: var(--style-border-radius-buttons-primary);
 }
 
@@ -1346,6 +1347,7 @@ button.shopify-payment-button__button--unbranded {
   font-family: var(--button-font-family-secondary);
   font-weight: var(--button-font-weight-secondary);
   text-transform: var(--button-text-case-secondary);
+  letter-spacing: var(--button-letter-spacing-secondary);
   border-radius: var(--style-border-radius-buttons-secondary);
 }
 
@@ -1353,6 +1355,7 @@ button.shopify-payment-button__button--unbranded {
   font-family: var(--button-font-family-primary);
   font-weight: var(--button-font-weight-primary);
   text-transform: var(--button-text-case-primary);
+  letter-spacing: var(--button-letter-spacing-primary);
 }
 
 textarea,
