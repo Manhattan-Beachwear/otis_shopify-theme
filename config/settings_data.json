@@ -73,7 +73,7 @@
     "button_font_weight_secondary": "default",
     "button_text_case_secondary": "uppercase",
     "button_letter_spacing_secondary": 0.2,
-    "button_hover_effect": "shimmer",
+    "button_hover_effect": "none",
     "cart_type": "drawer",
     "cart_price_font": "subheading",
     "show_cart_note": false,
