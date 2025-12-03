@@ -312,15 +312,6 @@
     },
     "176409858003aa0707": {
       "type": "_blocks",
-      "blocks": {
-        "klaviyo_reviews_product_reviews_6t89Fm": {
-          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "klaviyo_reviews_product_reviews_6t89Fm"
-      ],
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,

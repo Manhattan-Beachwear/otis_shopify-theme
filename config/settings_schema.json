@@ -436,44 +436,6 @@
         "default": "body-normal"
       },
       {
-        "type": "select",
-        "id": "type_font_weight_paragraph",
-        "label": "t:settings.font_weight",
-        "options": [
-          {
-            "value": "300",
-            "label": "300 (Light)"
-          },
-          {
-            "value": "400",
-            "label": "400 (Regular)"
-          },
-          {
-            "value": "500",
-            "label": "500 (Medium)"
-          },
-          {
-            "value": "600",
-            "label": "600 (Semi-bold)"
-          },
-          {
-            "value": "700",
-            "label": "700 (Bold)"
-          }
-        ],
-        "default": "400"
-      },
-      {
-        "type": "range",
-        "id": "type_letter_spacing_paragraph",
-        "label": "t:settings.letter_spacing",
-        "min": 0,
-        "max": 0.5,
-        "step": 0.1,
-        "unit": "em",
-        "default": 0.1
-      },
-      {
         "type": "header",
         "content": "t:options.h1"
       },
@@ -586,14 +548,24 @@
         "default": "display-normal"
       },
       {
-        "type": "range",
+        "type": "select",
         "id": "type_letter_spacing_h1",
         "label": "t:settings.letter_spacing",
-        "min": 0,
-        "max": 0.5,
-        "step": 0.1,
-        "unit": "em",
-        "default": 0.1
+        "options": [
+          {
+            "value": "heading-tight",
+            "label": "t:options.tight"
+          },
+          {
+            "value": "heading-normal",
+            "label": "t:options.normal"
+          },
+          {
+            "value": "heading-loose",
+            "label": "t:options.loose"
+          }
+        ],
+        "default": "heading-normal"
       },
       {
         "type": "select",
@@ -610,34 +582,6 @@
           }
         ],
         "default": "none"
-      },
-      {
-        "type": "select",
-        "id": "type_font_weight_h1",
-        "label": "t:settings.font_weight",
-        "options": [
-          {
-            "value": "300",
-            "label": "300 (Light)"
-          },
-          {
-            "value": "400",
-            "label": "400 (Regular)"
-          },
-          {
-            "value": "500",
-            "label": "500 (Medium)"
-          },
-          {
-            "value": "600",
-            "label": "600 (Semi-bold)"
-          },
-          {
-            "value": "700",
-            "label": "700 (Bold)"
-          }
-        ],
-        "default": "400"
       },
       {
         "type": "header",
@@ -752,14 +696,24 @@
         "default": "display-normal"
       },
       {
-        "type": "range",
+        "type": "select",
         "id": "type_letter_spacing_h2",
         "label": "t:settings.letter_spacing",
-        "min": 0,
-        "max": 0.5,
-        "step": 0.1,
-        "unit": "em",
-        "default": 0.1
+        "options": [
+          {
+            "value": "heading-tight",
+            "label": "t:options.tight"
+          },
+          {
+            "value": "heading-normal",
+            "label": "t:options.normal"
+          },
+          {
+            "value": "heading-loose",
+            "label": "t:options.loose"
+          }
+        ],
+        "default": "heading-normal"
       },
       {
         "type": "select",
@@ -776,34 +730,6 @@
           }
         ],
         "default": "none"
-      },
-      {
-        "type": "select",
-        "id": "type_font_weight_h2",
-        "label": "t:settings.font_weight",
-        "options": [
-          {
-            "value": "300",
-            "label": "300 (Light)"
-          },
-          {
-            "value": "400",
-            "label": "400 (Regular)"
-          },
-          {
-            "value": "500",
-            "label": "500 (Medium)"
-          },
-          {
-            "value": "600",
-            "label": "600 (Semi-bold)"
-          },
-          {
-            "value": "700",
-            "label": "700 (Bold)"
-          }
-        ],
-        "default": "400"
       },
       {
         "type": "header",
@@ -926,14 +852,24 @@
         "default": "display-normal"
       },
       {
-        "type": "range",
+        "type": "select",
         "id": "type_letter_spacing_h3",
         "label": "t:settings.letter_spacing",
-        "min": 0,
-        "max": 0.5,
-        "step": 0.1,
-        "unit": "em",
-        "default": 0.1
+        "options": [
+          {
+            "value": "heading-tight",
+            "label": "t:options.tight"
+          },
+          {
+            "value": "heading-normal",
+            "label": "t:options.normal"
+          },
+          {
+            "value": "heading-loose",
+            "label": "t:options.loose"
+          }
+        ],
+        "default": "heading-normal"
       },
       {
         "type": "select",
@@ -950,34 +886,6 @@
           }
         ],
         "default": "none"
-      },
-      {
-        "type": "select",
-        "id": "type_font_weight_h3",
-        "label": "t:settings.font_weight",
-        "options": [
-          {
-            "value": "300",
-            "label": "300 (Light)"
-          },
-          {
-            "value": "400",
-            "label": "400 (Regular)"
-          },
-          {
-            "value": "500",
-            "label": "500 (Medium)"
-          },
-          {
-            "value": "600",
-            "label": "600 (Semi-bold)"
-          },
-          {
-            "value": "700",
-            "label": "700 (Bold)"
-          }
-        ],
-        "default": "400"
       },
       {
         "type": "header",
@@ -1100,14 +1008,24 @@
         "default": "display-normal"
       },
       {
-        "type": "range",
+        "type": "select",
         "id": "type_letter_spacing_h4",
         "label": "t:settings.letter_spacing",
-        "min": 0,
-        "max": 0.5,
-        "step": 0.1,
-        "unit": "em",
-        "default": 0.1
+        "options": [
+          {
+            "value": "heading-tight",
+            "label": "t:options.tight"
+          },
+          {
+            "value": "heading-normal",
+            "label": "t:options.normal"
+          },
+          {
+            "value": "heading-loose",
+            "label": "t:options.loose"
+          }
+        ],
+        "default": "heading-normal"
       },
       {
         "type": "select",
@@ -1124,34 +1042,6 @@
           }
         ],
         "default": "none"
-      },
-      {
-        "type": "select",
-        "id": "type_font_weight_h4",
-        "label": "t:settings.font_weight",
-        "options": [
-          {
-            "value": "300",
-            "label": "300 (Light)"
-          },
-          {
-            "value": "400",
-            "label": "400 (Regular)"
-          },
-          {
-            "value": "500",
-            "label": "500 (Medium)"
-          },
-          {
-            "value": "600",
-            "label": "600 (Semi-bold)"
-          },
-          {
-            "value": "700",
-            "label": "700 (Bold)"
-          }
-        ],
-        "default": "400"
       },
       {
         "type": "header",
@@ -1274,14 +1164,24 @@
         "default": "display-normal"
       },
       {
-        "type": "range",
+        "type": "select",
         "id": "type_letter_spacing_h5",
         "label": "t:settings.letter_spacing",
-        "min": 0,
-        "max": 0.5,
-        "step": 0.1,
-        "unit": "em",
-        "default": 0.1
+        "options": [
+          {
+            "value": "heading-tight",
+            "label": "t:options.tight"
+          },
+          {
+            "value": "heading-normal",
+            "label": "t:options.normal"
+          },
+          {
+            "value": "heading-loose",
+            "label": "t:options.loose"
+          }
+        ],
+        "default": "heading-normal"
       },
       {
         "type": "select",
@@ -1298,34 +1198,6 @@
           }
         ],
         "default": "none"
-      },
-      {
-        "type": "select",
-        "id": "type_font_weight_h5",
-        "label": "t:settings.font_weight",
-        "options": [
-          {
-            "value": "300",
-            "label": "300 (Light)"
-          },
-          {
-            "value": "400",
-            "label": "400 (Regular)"
-          },
-          {
-            "value": "500",
-            "label": "500 (Medium)"
-          },
-          {
-            "value": "600",
-            "label": "600 (Semi-bold)"
-          },
-          {
-            "value": "700",
-            "label": "700 (Bold)"
-          }
-        ],
-        "default": "400"
       },
       {
         "type": "header",
@@ -1448,14 +1320,24 @@
         "default": "display-normal"
       },
       {
-        "type": "range",
+        "type": "select",
         "id": "type_letter_spacing_h6",
         "label": "t:settings.letter_spacing",
-        "min": 0,
-        "max": 0.5,
-        "step": 0.1,
-        "unit": "em",
-        "default": 0.1
+        "options": [
+          {
+            "value": "heading-tight",
+            "label": "t:options.tight"
+          },
+          {
+            "value": "heading-normal",
+            "label": "t:options.normal"
+          },
+          {
+            "value": "heading-loose",
+            "label": "t:options.loose"
+          }
+        ],
+        "default": "heading-normal"
       },
       {
         "type": "select",
@@ -1472,34 +1354,6 @@
           }
         ],
         "default": "none"
-      },
-      {
-        "type": "select",
-        "id": "type_font_weight_h6",
-        "label": "t:settings.font_weight",
-        "options": [
-          {
-            "value": "300",
-            "label": "300 (Light)"
-          },
-          {
-            "value": "400",
-            "label": "400 (Regular)"
-          },
-          {
-            "value": "500",
-            "label": "500 (Medium)"
-          },
-          {
-            "value": "600",
-            "label": "600 (Semi-bold)"
-          },
-          {
-            "value": "700",
-            "label": "700 (Bold)"
-          }
-        ],
-        "default": "400"
       }
     ]
   },
@@ -1714,34 +1568,7 @@
         ],
         "default": "body"
       },
-      {
-        "type": "select",
-        "id": "button_font_weight_primary",
-        "label": "t:settings.font_weight",
-        "options": [
-          {
-            "value": "300",
-            "label": "300 (Light)"
-          },
-          {
-            "value": "400",
-            "label": "400 (Regular)"
-          },
-          {
-            "value": "500",
-            "label": "500 (Medium)"
-          },
-          {
-            "value": "600",
-            "label": "600 (Semi-bold)"
-          },
-          {
-            "value": "700",
-            "label": "700 (Bold)"
-          }
-        ],
-        "default": "400"
-      },
+
       {
         "type": "select",
         "id": "button_text_case_primary",
@@ -1757,16 +1584,6 @@
           }
         ],
         "default": "default"
-      },
-      {
-        "type": "range",
-        "id": "button_letter_spacing_primary",
-        "label": "t:settings.letter_spacing",
-        "min": -0.1,
-        "max": 0.5,
-        "step": 0.1,
-        "unit": "em",
-        "default": 0
       },
       {
         "type": "header",
@@ -1808,34 +1625,7 @@
         ],
         "default": "body"
       },
-      {
-        "type": "select",
-        "id": "button_font_weight_secondary",
-        "label": "t:settings.font_weight",
-        "options": [
-          {
-            "value": "300",
-            "label": "300 (Light)"
-          },
-          {
-            "value": "400",
-            "label": "400 (Regular)"
-          },
-          {
-            "value": "500",
-            "label": "500 (Medium)"
-          },
-          {
-            "value": "600",
-            "label": "600 (Semi-bold)"
-          },
-          {
-            "value": "700",
-            "label": "700 (Bold)"
-          }
-        ],
-        "default": "400"
-      },
+
       {
         "type": "select",
         "id": "button_text_case_secondary",
@@ -1851,49 +1641,6 @@
           }
         ],
         "default": "default"
-      },
-      {
-        "type": "range",
-        "id": "button_letter_spacing_secondary",
-        "label": "t:settings.letter_spacing",
-        "min": -0.1,
-        "max": 0.5,
-        "step": 0.1,
-        "unit": "em",
-        "default": 0
-      },
-      {
-        "type": "header",
-        "content": "t:content.hover_animation"
-      },
-      {
-        "type": "select",
-        "id": "button_hover_effect",
-        "label": "t:settings.button_hover_effect",
-        "options": [
-          {
-            "value": "none",
-            "label": "t:options.none"
-          },
-          {
-            "value": "lift",
-            "label": "t:options.lift"
-          },
-          {
-            "value": "scale",
-            "label": "t:options.scale"
-          },
-          {
-            "value": "subtle-zoom",
-            "label": "t:options.subtle_zoom"
-          },
-          {
-            "value": "shimmer",
-            "label": "t:options.shimmer"
-          }
-        ],
-        "default": "none",
-        "info": "t:info.hover_effects"
       },
       {
         "type": "header",
@@ -2489,21 +2236,6 @@
         "label": "t:settings.border_opacity",
         "default": 10,
         "visible_if": "{{ settings.variant_swatch_border_style != 'none' }}"
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_swatch_assets_backup",
-        "label": "Enable assets folder backup",
-        "default": true,
-        "info": "When enabled, swatches will check the assets folder for image files when metafields are not set. Files should be named using the option value handle (e.g., 'navy-blue.png')."
-      },
-      {
-        "type": "text",
-        "id": "swatch_file_extension",
-        "label": "Swatch file extension",
-        "default": "png",
-        "info": "File extension for swatch images in the assets folder (e.g., 'png', 'jpg', 'webp').",
-        "visible_if": "{{ settings.enable_swatch_assets_backup }}"
       }
     ]
   },
