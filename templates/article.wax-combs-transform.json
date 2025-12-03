@@ -99,7 +99,8 @@
           "type": "_slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1620_WEBSITE_1_2.jpg",
+            "image_1": "shopify://shop_images/June2025_Update_38.jpg",
+            "image_1_mobile": "shopify://shop_images/W4W_Mobile.jpg",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -159,35 +160,10 @@
                 "padding-inline-end": 48
               },
               "blocks": {
-                "text_pbjfGT": {
-                  "type": "text",
-                  "settings": {
-                    "text": "<h2>The best pack lists for surfers</h2>",
-                    "width": "fit-content",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "rte",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "color": "var(--color-foreground)",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
                 "text_DCr9cH": {
                   "type": "text",
                   "settings": {
-                    "text": "<h1>Travel Ready</h1>",
+                    "text": "<h1>Wax Combs Transform Lombok Community</h1>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -211,7 +187,6 @@
                 }
               },
               "block_order": [
-                "text_pbjfGT",
                 "text_DCr9cH"
               ]
             }
@@ -220,11 +195,11 @@
             "group_TDi7jr"
           ]
         },
-        "slide_M4yWQk": {
+        "slide_9gJimg": {
           "type": "_slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1620_WEBSITE_2_1.jpg",
+            "image_1": "shopify://shop_images/June2025_Update_35.jpg",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -245,7 +220,7 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "group_WxeDWN": {
+            "group_8T9aDK": {
               "type": "group",
               "settings": {
                 "content_direction": "column",
@@ -284,35 +259,10 @@
                 "padding-inline-end": 48
               },
               "blocks": {
-                "text_dEcWqU": {
+                "text_pVk8Yx": {
                   "type": "text",
                   "settings": {
-                    "text": "<h2>The best pack lists for surfers</h2>",
-                    "width": "fit-content",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "rte",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "color": "var(--color-foreground)",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "text_k3kftd": {
-                  "type": "text",
-                  "settings": {
-                    "text": "<h1>Travel Ready</h1>",
+                    "text": "<h1>Wax Combs Transform Lombok Community</h1>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -336,19 +286,18 @@
                 }
               },
               "block_order": [
-                "text_dEcWqU",
-                "text_k3kftd"
+                "text_pVk8Yx"
               ]
             }
           },
           "block_order": [
-            "group_WxeDWN"
+            "group_8T9aDK"
           ]
         }
       },
       "block_order": [
         "slide_KrbePP",
-        "slide_M4yWQk"
+        "slide_9gJimg"
       ],
       "name": "t:names.slideshow",
       "settings": {
@@ -366,37 +315,11 @@
     "section_Jriece": {
       "type": "section",
       "blocks": {
-        "text_PxwtAd": {
-          "type": "text",
-          "name": "t:names.text",
-          "settings": {
-            "text": "<p>It’s a heartbreaking feeling. Arriving, all excited to surf and realising you left your boardshorts at home. Or leashes. Or fins. You’re now that guy who has to beg, borrow or steal something from your friends. We’ve all done it.</p><p>To avoid packing too light (without going heavy) we’ve put together a series of packing lists for any strike mission. First up is warm water and cold water trips.</p>",
-            "width": "100%",
-            "max_width": "none",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
         "text_Y4q9kC": {
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>DOWNLOAD/PRINT OR TAKE A SCREENSHOT</h2>",
+            "text": "<h2>WAVES FOR WATER X CREATURES OF LEISURE</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -418,91 +341,11 @@
           },
           "blocks": {}
         },
-        "button_Eh8YFV": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "warm water pack list",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
-        },
-        "button_MrgkLp": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "COLD WATER PACK LIST",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
-        },
-        "image_EjttMt": {
-          "type": "image",
-          "name": "t:names.image",
-          "settings": {
-            "image": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1410_WEBSITE_2.jpg",
-            "link": "",
-            "hover_scale": true,
-            "image_ratio": "adapt",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "text_DApPUb": {
-          "type": "text",
-          "name": "t:names.heading",
-          "settings": {
-            "text": "<h2>WARM WATER SURF TRIP PACKING LIST</h2>",
-            "width": "100%",
-            "max_width": "none",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 48,
-            "padding-block-end": 24,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "text_kVYfPP": {
+        "text_PxwtAd": {
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Indo, Mexico, Fiji. All dream surf destinations with balmy water and barrels for days. While each has their own nuances, you’re often packing similar things for these kinds of places. Stretch boardshorts, sun protection, probably some gastro meds to help combat the bugs that seem to breed in the tropics. There’s plenty more things too that are easy to forget. Here’s your <a href=\"https://cdn.shopify.com/s/files/1/0661/1319/files/2_3_WHEELY_JUNE_2025_PACKLIST_A4__04.pdf?v=1751417058\" target=\"_blank\" title=\"Warm water packing list for surfers\">printable warm water surf trip packing list,</a> with a few blank spots to fill in with your personal essentials. </p><p>A nice little practical psych up for your next epic strike mission…</p>",
+            "text": "<p>Little tools can make a big difference. When we partnered with Waves For Water last year on donating a portion of every sale from our <a href=\"https://creatures.com.au/products/waves-for-water-wax-comb?_pos=1&_psq=wax-comb&_ss=e&_v=1.0\"><span style=\"text-decoration:underline\">upcycled wax combs</span></a>, we didn’t quite realise how big.</p><p>But, every bit adds up! Especially when a lot of surfers around the globe use wax combs.</p><p>The funds collected from wax comb sales is continually channelled directly to helping people in need to gain access to clean water and sanitation. Something that will serve their community and the surrounding area for years to come. </p><p>Read the latest updates below...</p>",
             "width": "100%",
             "max_width": "none",
             "alignment": "left",
@@ -517,8 +360,8 @@
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
-            "padding-block-start": 24,
-            "padding-block-end": 48,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
@@ -526,13 +369,8 @@
         }
       },
       "block_order": [
-        "text_PxwtAd",
         "text_Y4q9kC",
-        "button_Eh8YFV",
-        "button_MrgkLp",
-        "image_EjttMt",
-        "text_DApPUb",
-        "text_kVYfPP"
+        "text_PxwtAd"
       ],
       "name": "t:names.rich_text_section",
       "settings": {
@@ -571,7 +409,7 @@
           "type": "_slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1410_WEBSITE_3.jpg",
+            "image_1": "shopify://shop_images/June2025_Update_2.jpg",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -597,33 +435,7 @@
           "type": "_slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1410_WEBSITE_4.jpg",
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "slide_qd9gxe": {
-          "type": "_slide",
-          "settings": {
-            "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1410_WEBSITE_6_1.jpg",
+            "image_1": "shopify://shop_images/June2025_Update_3.jpg",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -648,8 +460,7 @@
       },
       "block_order": [
         "slide_WnXhB8",
-        "slide_YbqRJk",
-        "slide_qd9gxe"
+        "slide_YbqRJk"
       ],
       "name": "t:names.slideshow",
       "settings": {
@@ -664,232 +475,14 @@
         "padding-block-end": 0
       }
     },
-    "product_list_UBd7eq": {
-      "type": "product-list",
-      "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "t:names.header",
-          "static": true,
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 48,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_TEpaUA": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
-              "settings": {
-                "text": "<h2>{{ closest.collection.title }}</h2>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_list_button_BfJY8P": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "button-secondary",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_TEpaUA",
-            "product_list_button_BfJY8P"
-          ]
-        },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
-          "settings": {
-            "product_card_gap": 4,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_EhbBpq": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_E84zdH": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_4RxK4f": {
-              "type": "price",
-              "name": "t:names.product_price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "color": "var(--color-foreground)",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_EhbBpq",
-            "product_title_E84zdH",
-            "price_4RxK4f"
-          ]
-        }
-      },
-      "name": "t:names.products_grid",
-      "settings": {
-        "collection": "travel",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 48,
-        "padding-block-end": 48
-      }
-    },
     "section_jHCijY": {
       "type": "section",
       "blocks": {
-        "image_UdYm47": {
-          "type": "image",
-          "name": "t:names.image",
-          "settings": {
-            "image": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1410_WEBSITE_1_1_fee7ceb5-b272-4688-81ad-eb2855b3129f.jpg",
-            "link": "",
-            "hover_scale": false,
-            "image_ratio": "adapt",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
         "text_bLjKqR": {
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Cold Water Surf Trip Packing List</h2>",
+            "text": "<h2>JUNE 2025 UPDATE</h2>",
             "width": "100%",
             "max_width": "none",
             "alignment": "left",
@@ -915,7 +508,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Ireland, Iceland, Victoria and Tasmania. Cold water spots that enjoy thumping waves and next-level adventure. While each has their own nuances, you’re often packing similar things for places like this. Jackets, ugg boots, more rubber than a tyre convention. There’s plenty more things too that are easy to forget. Here’s your <a href=\"https://cdn.shopify.com/s/files/1/0661/1319/files/2_3_WHEELY_JUNE_2025_PACKLIST_A4__05.pdf?v=1751417058\" target=\"_blank\" title=\"Cold water packing list for surfers\">printable cold water surf trip packing list</a>, with a few blank spots to fill in with your personal essentials. </p>",
+            "text": "<p>Clean water is the foundation of life. It’s hard to state just how important it is for people to survive. And yet, not everyone has easy access to it. This month, our Brand Director Beau Campi travelled to Pendangen – a remote village in Lombok, Indonesia – to reconnect with the work we’re supporting through our ongoing partnership with Waves For Water. The project has now helped 50 more families get life’s true essentials on (filtered) tap.</p><p>What Beau witnessed was powerful - real people, real challenges, and real solutions. </p><p>We sat down with him to hear firsthand how clean water is changing lives, and why this mission remains close to our hearts. Read the full interview below.</p><p></p><p><strong>What single moment from your visit made the biggest impact on you?  </strong><em>Beau: There where a lot of moments where I just said 'wow' inside my head, but the biggest impact was when we where getting ready to leave. I had each and everyone from the village, and mean everyone came up to me and shook my hand in genuine appreciation and overwhelming emotion. It was really moving. It really cemented in my mind we are truly aligned with a program with fantastic core principals driven by Waves for Water with actions that make true positive impacts.<br/><br/></em><strong>Did you see clean water coming out of the filters? - Can you describe the feeling in the community when clean water started flowing?</strong>   <em>Beau: Absolutely! Looking around to all the villagers it was kinda a look of confusion, really. The fact a filter the size of your hand filters visually murky and imperfect water to crystal clear water. It's simple and effective<br/><br/></em><strong>What surprised you the most about the reality of water access in the communities you visited? </strong><em>Beau: Every single community is basically dealt a water card, each with challenges depending on location and outside impacts. There is no government mains water system. Just about every waterway in Indonesia is impacted by plastic rubbish pollution. That’s a major issue, but not necessarily the source of disease, bacteria and overall hygiene health. It's the upstream effects of compounding stagnant waters, mosquitoes, algal bacteria, farming pesticides and heavy metals from illegal mining. They could be affected by all of these or just one, but it all impacts their access to clean drinking water.</em></p>",
             "width": "100%",
             "max_width": "none",
             "alignment": "left",
@@ -937,27 +530,141 @@
           },
           "blocks": {}
         },
-        "button_pkNBac": {
-          "type": "button",
-          "name": "t:names.button",
+        "image_BG9Dgb": {
+          "type": "image",
+          "name": "t:names.image",
           "settings": {
-            "label": "Shop now",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "width": "fit-content",
+            "image": "shopify://shop_images/June2025_Update_38.jpg",
+            "link": "",
+            "hover_scale": true,
+            "image_ratio": "adapt",
+            "width": "fill",
             "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_e8mC8X": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p><strong>How does something as simple as a water filter change daily life for these families? </strong><em>Beau: Dramatically! By using this filter to its full potential, they can now have clean water to firstly drink, then to cook with and wash with for overall hygiene. It's a true life line.</em></p><p><strong>Where did you see CREATURES impact most clearly on the ground? </strong><em>Beau: Look it's Waves For Water that are the impact driver, we are just fortunate enough to help facilitate the amazing job that they do for these communities. It was cool to see the amenities block that we help fund to build last year in Penggal though. This coupled with the water filters and a proper human waste set-up provides complete village hygiene. There is over 200 villagers that now have a two toilets that never used to at all - you can use your imagination of what it was like prior.</em></p><p><strong>How does the partnership with Waves For Water align with our values as a brand? </strong><em>Beau: At its core we where both born from surfing adventure and exploration, so right away we are a community. We have all travelled to different countries, experienced lesser economic positions than our own and maybe paid it forward by supporting that community by buying food, souveniers or even given your clothes or surfboard away. I'd like to think surfers want to help people and the environment and not exploit.</em></p><p><strong>What do you wish every customer who bought a wax comb could see or understand from your trip? </strong><em>Beau: The appreciation and smiles on the faces - it's undeniable. They don't know you, what a waxcomb is or what CREATURES OF LEISURE is or does, but they'll remember the day they received clean water.</em></p><p><strong>What did this experience teach you about the power of small actions - like buying a wax comb - adding up?</strong> <em>Beau: I knew the program was making an impact, but seeing it first hand was even more eye-opening than I expected. Y'know a small thing like a waxcomb that we all have in our surf kit is helpful for you, but the contribution to Waves For Water from that waxcomb is truly helping the lives and health of people for years to come.</em></p><p><strong>What opportunities do you see for us to grow this impact even further in the future?  </strong><em>Beau: It's endless really, but simple. Raise more money, implement more filters and systems and change lives for the better.</em></p><p><strong>If you could deliver one message back to our surf community from the people you met, what would it be? </strong><em>Beau: Share the fortune and don't take clean water for granted.</em></p><p>To support Waves4Water you can <a href=\"https://www.wavesforwater.org/donate\"><span style=\"text-decoration:underline\">give directly on their website</span></a>. Every sale of <a href=\"https://creatures.com.au/products/waves-for-water-wax-comb\"><span style=\"text-decoration:underline\">Creatures’ W4W wax combs</span></a> also contributes to the cause. Little tools can make a BIG difference.</p>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 48,
+            "padding-block-end": 48,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "image_UWWWmh": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/W4W_JAN_2025_WEBSITE_JOURNAL_8.jpg",
+            "link": "",
+            "hover_scale": false,
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_xDEm6n": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p><strong> \"This project has empowered Panggel to take control of their health for a stronger, more sustainable future.\"</strong></p><p><em>- Kain Sissons, Director - Waves For Water Australia</em></p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_GUpKcD": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>The village of Panggel was identified by Waves For Water Australia as a community in urgent need of clean water access and basic hygiene facilities due to recurring illnesses. The village's remote location—homes are scattered along a mountain ridge—makes delivering supplies and implementing improvements challenging.</p><p>To tackle these issues, W4W went to work to:</p><ul><li>Provide the community with bucket water filtration systems to ensure safe drinking water.</li></ul><p></p><ul><li>Construct a water tank to increase clean water storage capacity and provide a more reliable supply.</li></ul><p></p><ul><li>Train local leaders in the use and maintenance of these systems, empowering the community to sustain these improvements.</li></ul>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 24,
+            "padding-block-end": 48,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
           },
           "blocks": {}
         }
       },
       "block_order": [
-        "image_UdYm47",
         "text_bLjKqR",
         "text_3M8XUU",
-        "button_pkNBac"
+        "image_BG9Dgb",
+        "text_e8mC8X",
+        "image_UWWWmh",
+        "text_xDEm6n",
+        "text_GUpKcD"
       ],
       "name": "t:names.rich_text_section",
       "settings": {
@@ -996,7 +703,7 @@
           "type": "_slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1410_WEBSITE_10.jpg",
+            "image_1": "shopify://shop_images/W4W_JAN_2025_WEBSITE_JOURNAL_4.jpg",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -1022,7 +729,7 @@
           "type": "_slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1410_WEBSITE_9_f58ac699-8d5b-424f-a4dd-a9dc6df4dc06.jpg",
+            "image_1": "shopify://shop_images/W4W_JAN_2025_WEBSITE_JOURNAL_5.jpg",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -1062,788 +769,16 @@
         "padding-block-end": 0
       }
     },
-    "collection_list_pFLxxM": {
-      "type": "collection-list",
-      "blocks": {
-        "group_kfTjyJ": {
-          "type": "group",
-          "name": "t:names.header",
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "text_MqkDBF": {
-              "type": "text",
-              "name": "t:names.text",
-              "settings": {
-                "text": "<h2>Purpose-built surf leashes</h2>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 16,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "button_dxbdEi": {
-              "type": "button",
-              "name": "t:names.button",
-              "settings": {
-                "label": "View all Leashes",
-                "link": "shopify://collections/leashes",
-                "open_in_new_tab": false,
-                "style_class": "button-secondary",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "text_MqkDBF",
-            "button_dxbdEi"
-          ]
-        },
-        "static-collection-card": {
-          "type": "_collection-card",
-          "name": "t:names.collection_card",
-          "static": true,
-          "settings": {
-            "placement": "on_image",
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "flex-start",
-            "collection_card_gap": 8,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0
-          },
-          "blocks": {
-            "collection_title_q6FCxP": {
-              "type": "collection-title",
-              "name": "t:names.collection_title",
-              "settings": {
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": true,
-                "background_color": "#ffffff",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 4,
-                "padding-inline-start": 8,
-                "padding-inline-end": 8
-              },
-              "blocks": {}
-            },
-            "collection-card-image": {
-              "type": "_collection-card-image",
-              "name": "t:names.collection_card_image",
-              "static": true,
-              "settings": {
-                "image_ratio": "square",
-                "hover_scale": true,
-                "toggle_overlay": true,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "collection_title_q6FCxP"
-          ]
-        }
-      },
-      "block_order": [
-        "group_kfTjyJ"
-      ],
-      "name": "t:names.collections_grid",
-      "settings": {
-        "collection_list": [
-          "reliance-2-0",
-          "longboard",
-          "reliance-leashes"
-        ],
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "columns": 3,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "bento_gap": 8,
-        "rows_gap": 8,
-        "max_collections": 4,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "gap": 12,
-        "color_scheme": "",
-        "padding-block-start": 48,
-        "padding-block-end": 48
-      }
-    },
-    "slideshow_7gijF3": {
-      "type": "slideshow",
-      "blocks": {
-        "slide_VPLYxz": {
-          "type": "_slide",
-          "settings": {
-            "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1410_WEBSITE_11.jpg",
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "slide_APVjbY": {
-          "type": "_slide",
-          "settings": {
-            "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1410_WEBSITE_15.jpg",
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "slide_mfEC3N": {
-          "type": "_slide",
-          "settings": {
-            "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1410_WEBSITE_13.jpg",
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "slide_VPLYxz",
-        "slide_APVjbY",
-        "slide_mfEC3N"
-      ],
-      "name": "t:names.slideshow",
-      "settings": {
-        "icons_style": "arrows_large",
-        "slideshow_controls_style": "dots",
-        "color_scheme": "",
-        "autoplay": false,
-        "autoplay_speed": 4,
-        "section_width": "full-width",
-        "slide_height": "medium",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
-    "product_list_ew9TPR": {
-      "type": "product-list",
-      "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "t:names.header",
-          "static": true,
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 48,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_Ubkzk8": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
-              "settings": {
-                "text": "<h2>{{ closest.collection.title }}</h2>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_list_button_KiMUYH": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "button-secondary",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_Ubkzk8",
-            "product_list_button_KiMUYH"
-          ]
-        },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
-          "settings": {
-            "product_card_gap": 4,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_wYQjaN": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "square",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_NnPUcf": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_tpxPXM": {
-              "type": "price",
-              "name": "t:names.product_price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "color": "var(--color-foreground)",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_wYQjaN",
-            "product_title_NnPUcf",
-            "price_tpxPXM"
-          ]
-        }
-      },
-      "name": "t:names.products_grid",
-      "settings": {
-        "collection": "surf-essentials",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 48,
-        "padding-block-end": 48
-      }
-    },
-    "slideshow_FKBtpj": {
-      "type": "slideshow",
-      "blocks": {
-        "slide_8aWfkQ": {
-          "type": "_slide",
-          "settings": {
-            "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1620_WEBSITE_1_11b46236-6ec5-47ba-8439-e7b01ab86ac9.jpg",
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "slide_LnCiAe": {
-          "type": "_slide",
-          "settings": {
-            "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1410_WEBSITE_6_1.jpg",
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "slide_df8chd": {
-          "type": "_slide",
-          "settings": {
-            "media_type_1": "image",
-            "image_1": "shopify://shop_images/TRAVEL_READY_JUNE_2025_2880X1620_WEBSITE_2_6a132655-d2d4-41ba-9a39-2c57102257e2.jpg",
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "slide_8aWfkQ",
-        "slide_LnCiAe",
-        "slide_df8chd"
-      ],
-      "name": "t:names.slideshow",
-      "settings": {
-        "icons_style": "arrows_large",
-        "slideshow_controls_style": "dots",
-        "color_scheme": "",
-        "autoplay": false,
-        "autoplay_speed": 4,
-        "section_width": "full-width",
-        "slide_height": "medium",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
-    "product_list_wzz3M8": {
-      "type": "product-list",
-      "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "t:names.header",
-          "static": true,
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 48,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_NycVAN": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
-              "settings": {
-                "text": "<h2>Straps & Racks</h2>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_list_button_TPzH8A": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "button-secondary",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_NycVAN",
-            "product_list_button_TPzH8A"
-          ]
-        },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
-          "settings": {
-            "product_card_gap": 4,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_gT3iAY": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "square",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_FiVizn": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_6EikyK": {
-              "type": "price",
-              "name": "t:names.product_price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "color": "var(--color-foreground)",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_gT3iAY",
-            "product_title_FiVizn",
-            "price_6EikyK"
-          ]
-        }
-      },
-      "name": "t:names.products_grid",
-      "settings": {
-        "collection": "auto",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 48,
-        "padding-block-end": 48
-      }
-    },
-    "section_WqKRty": {
+    "section_zCXqgA": {
       "type": "section",
       "blocks": {
-        "text_4YUxNw": {
+        "text_Xmb7eW": {
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Need more packing Inspiration?</h2>",
+            "text": "<h2>EXPANDING FOCUS TO HYGIENE FACILITIES</h2>",
             "width": "fit-content",
-            "max_width": "normal",
+            "max_width": "none",
             "alignment": "left",
             "type_preset": "rte",
             "font": "var(--font-body--family)",
@@ -1856,19 +791,69 @@
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
+            "padding-block-start": 48,
+            "padding-block-end": 24,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {}
         },
-        "text_yGg3Px": {
+        "text_pXkAz9": {
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Watch Harrison Roach pack a magic quiver below.</p>",
-            "width": "fit-content",
+            "text": "<p>Village elders highlighted the need for basic sanitation facilities, such as toilets, showers, and handwashing stations. They recognized the connection between hygiene and health, noting that open defecation in fields and rivers was spreading diseases like cholera and typhoid. This issue persisted despite improved access to clean water.</p><p>The community’s request was specific: hygiene facilities needed to be placed near the mosque and central gathering spots, as these locations experience population spikes of up to 600 people during cultural events.</p>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 24,
+            "padding-block-end": 48,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "image_98QJw9": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/W4W_JAN_2025_WEBSITE_JOURNAL_7_efbddc6f-110a-475f-9b81-25fe3cef1866.jpg",
+            "link": "",
+            "hover_scale": true,
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_AjQaww": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>\"lITTLE TOOLS MAKE A BIG DIFFERENCE\"</h2>",
+            "width": "100%",
             "max_width": "normal",
             "alignment": "left",
             "type_preset": "rte",
@@ -1882,33 +867,154 @@
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
+            "padding-block-start": 48,
+            "padding-block-end": 24,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {}
         },
-        "button_DQgrEM": {
-          "type": "button",
-          "name": "t:names.button",
+        "text_ka6RtQ": {
+          "type": "text",
+          "name": "t:names.text",
           "settings": {
-            "label": "Check out the entire Packed video Series",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": true,
-            "style_class": "button",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
+            "text": "<p>In 2023, we launched the initiative \"Little Tools Can Make a Big Difference,\" donating proceeds from every wax comb sold to Waves For Water Australia to fund Panggel’s hygiene facility project. The partnership aimed to:</p><ul><li>Build essential facilities, including a toilet, shower, and handwashing station, to enhance the community’s health and hygiene.</li></ul><p></p><ul><li>Collaborate with local volunteers who contributed their labor, fostering a strong sense of ownership over the project.</li></ul>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 24,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_7cqYEJ": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>TRANSFORMING THE COMMUNITY</h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 48,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_j7KdzR": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>The impact of these efforts has been profound. With access to clean water and sanitation, Panggel is noticeably healthier, and cases of cholera, typhoid, and diarrhea have significantly decreased. Residents take pride in maintaining the new facilities, and younger generations are teaching elders how to use them.</p><p>Even one instance of open defecation can contaminate a water source, so our work goes beyond building infrastructure. We partner with residents to raise awareness and encourage lasting behavior changes around</p>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 24,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_GGzyRG": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>Looking Ahead</h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 48,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_XqEpwL": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Community elders have already requested additional hygiene facilities, inspiring us to expand our focus beyond clean water to address evolving needs. This project is about more than infrastructure—it’s about empowering Panggel to take control of their health and build a sustainable future.</p>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 24,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
           },
           "blocks": {}
         }
       },
       "block_order": [
-        "text_4YUxNw",
-        "text_yGg3Px",
-        "button_DQgrEM"
+        "text_Xmb7eW",
+        "text_pXkAz9",
+        "image_98QJw9",
+        "text_AjQaww",
+        "text_ka6RtQ",
+        "text_7cqYEJ",
+        "text_j7KdzR",
+        "text_GGzyRG",
+        "text_XqEpwL"
       ],
       "name": "t:names.rich_text_section",
       "settings": {
@@ -1917,11 +1023,11 @@
         "horizontal_alignment": "flex-start",
         "vertical_alignment": "center",
         "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
+        "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 25,
         "section_width": "page-width",
-        "section_height": "small",
+        "section_height": "",
         "section_height_custom": 50,
         "color_scheme": "",
         "background_media": "none",
@@ -1940,18 +1046,18 @@
         "padding-block-end": 48
       }
     },
-    "section_yGRYeG": {
+    "section_LmdXMm": {
       "type": "section",
       "blocks": {
-        "video_pFwfmY": {
+        "video_VMKB6D": {
           "type": "video",
           "name": "t:names.video",
           "settings": {
             "source": "url",
-            "video_url": "https://youtu.be/xQfTcKHtzho",
+            "video_url": "https://www.youtube.com/watch?v=MeeCI64DX50",
             "video_autoplay": false,
             "video_loop": false,
-            "alt": "Watch Harrison Roach pack for a day surfing",
+            "alt": "Waves for Water Trip to Lombok",
             "custom_width": 100,
             "custom_width_mobile": 100,
             "aspect_ratio": "16/9",
@@ -1968,7 +1074,7 @@
         }
       },
       "block_order": [
-        "video_pFwfmY"
+        "video_VMKB6D"
       ],
       "name": "t:names.video_section",
       "settings": {
@@ -2006,15 +1112,9 @@
     "slideshow_3hJmJC",
     "section_Jriece",
     "slideshow_pUATzi",
-    "product_list_UBd7eq",
     "section_jHCijY",
     "slideshow_LFEnzq",
-    "collection_list_pFLxxM",
-    "slideshow_7gijF3",
-    "product_list_ew9TPR",
-    "slideshow_FKBtpj",
-    "product_list_wzz3M8",
-    "section_WqKRty",
-    "section_yGRYeG"
+    "section_zCXqgA",
+    "section_LmdXMm"
   ]
 }
