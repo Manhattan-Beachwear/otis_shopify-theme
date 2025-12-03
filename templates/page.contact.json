@@ -43,7 +43,7 @@
           "name": "t:names.content",
           "settings": {
             "text": "{{ closest.page.content }}",
-            "width": "100%",
+            "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
             "type_preset": "rte",
