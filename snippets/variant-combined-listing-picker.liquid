@@ -1029,27 +1029,36 @@
 %}
 
 {% if dual_picker_mode and dual_variant_data != '' %}
-  {% comment %} RENDER COLOR SWATCHES ONLY (no size picker) - using global swatch styling {% endcomment %}
-  <swatches-variant-picker-component
+  {% comment %} DUAL PICKER MODE: Render Color + Size pickers {% endcomment %}
+  {% liquid
+    assign button_background_brightness = section.settings.color_scheme.settings.foreground | color_brightness
+    if button_background_brightness < 105
+      assign strikethrough_color_mix = '#000'
+    else
+      assign strikethrough_color_mix = '#fff'
+    endif
+  %}
+  <variant-picker-cl-dual
+    class="variant-picker-cl-dual spacing-style variant-picker-cl-dual--{{ alignment_value }}"
+    style="--color-strikethrough-mix: {{ strikethrough_color_mix }}; {% render 'spacing-style', settings: block_settings %}"
+    data-section-id="{{ section.id }}"
     data-product-id="{{ product_resource.id }}"
-    data-product-url="{{ product_resource.url }}"
-    ref="swatchesVariantPicker"
+    data-block-id="{{ block.id }}"
+    data-combinations="{{ dual_variant_data | escape }}"
+    data-current-color="{{ current_color_value | escape }}"
+    data-current-size="{{ current_size_value | escape }}"
+    {{ block.shopify_attributes }}
   >
-    <form>
-      <fieldset class="variant-option variant-option--buttons variant-option--swatches">
-        {%- liquid
-          # Use the show_swatch_text_labels_setting variable set at the top
-          assign show_text_labels = show_swatch_text_labels_setting
-        -%}
-        {%- if show_text_labels -%}
-          <legend>
-            {{ color_option_name | escape }}:
-            {%- if current_color_value != blank and current_color_value != '' -%}
-              <span class="variant-option__swatch-value">{{ current_color_value | escape }}</span>
-            {%- endif %}
-          </legend>
-        {%- endif %}
-        {% capture children %}
+    <form class="variant-picker-cl-dual__form">
+      {% comment %} Color Picker {% endcomment %}
+      <fieldset class="variant-picker-cl-dual__fieldset variant-picker-cl-dual__fieldset--color">
+        <legend>
+          {{ color_option_name | escape }}
+          {%- if current_color_value != blank and current_color_value != '' -%}
+            <span class="variant-picker-cl-dual__swatch-value">{{ current_color_value | escape }}</span>
+          {%- endif %}
+        </legend>
+        <div class="variant-picker-cl-dual__options" data-option-type="color" data-fieldset-index="0">
           {% assign colors_array = unique_colors | split: '|||' %}
           {% for color_value_item in colors_array %}
             {%- liquid
@@ -1196,26 +1205,34 @@
                   assign has_swatch_to_render = true
                 endif
                 
-                # Check if this color has any available variants
-                assign color_is_available = false
-                if dual_variant_data != ''
-                  assign combinations_check = dual_variant_data | split: '|||'
-                  for combination_entry in combinations_check
-                    if combination_entry != blank and combination_entry != ''
-                      assign combo_parts = combination_entry | split: '|'
-                      if combo_parts.size >= 6
-                        assign combo_color = combo_parts[2] | strip
-                        assign combo_available = combo_parts[5] | strip
-                        assign color_value_normalized = color_value_item | strip
-                        
-                        # Check if this color matches and is available
-                        if combo_color == color_value_normalized and combo_available == 'true'
-                          assign color_is_available = true
-                          break
+                # Check if this color has the currently selected size available
+                # If a size is selected, check if this color has that size
+                assign color_is_available = true
+                if current_size_value != blank and current_size_value != ''
+                  assign color_has_size = false
+                  if dual_variant_data != ''
+                    assign combinations_check = dual_variant_data | split: '|||'
+                    for combination_entry in combinations_check
+                      if combination_entry != blank and combination_entry != ''
+                        assign combo_parts = combination_entry | split: '|'
+                        if combo_parts.size >= 6
+                          assign combo_color = combo_parts[2] | strip
+                          assign combo_size = combo_parts[3] | strip
+                          assign color_value_normalized = color_value_item | strip
+                          assign current_size_normalized = current_size_value | strip
+                          
+                          # Check if this color matches and has the selected size (normalized for comparison)
+                          if combo_color == color_value_normalized and combo_size == current_size_normalized
+                            assign color_has_size = true
+                            break
+                          endif
                         endif
                       endif
-                    endif
-                  endfor
+                    endfor
+                  endif
+                  if color_has_size == false
+                    assign color_is_available = false
+                  endif
                 endif
                 
                 # Find the first available variant for this color to get variant ID and URL
@@ -1287,78 +1304,61 @@
                 endif
               %}
               
-              <li class="variant-option__swatch">
-                <label
-                  {% if featured_media != blank %}
-                    data-media-id="{{ featured_media.id }}"
-                  {% endif %}
+              <label
+                class="variant-picker-cl-dual__label{% if has_swatch_to_render %} variant-picker-cl-dual__label--has-swatch{% endif %}{% if is_current_color %} variant-picker-cl-dual__label--current{% endif %}"
+                {% if color_is_available == false %}
+                  data-option-available="false"
+                {% else %}
+                  data-option-available="true"
+                {% endif %}
+              >
+                <input
+                  type="radio"
+                  id="cl-dual-color-{{ section.id }}-{{ block.id }}-{{ color_value_item | handleize }}"
+                  name="color_selection-{{ block.id }}"
+                  value="{{ color_value_item | escape }}"
+                  data-option-type="color"
+                  data-fieldset-index="0"
+                  data-input-index="{{ forloop.index0 }}"
+                  data-previous-checked="false"
                   data-option-available="{{ color_is_available }}"
-                  class="variant-option__button-label variant-option__button-label--has-swatch swatch-rounded"
-                  {% if featured_media != blank %}
-                    on:pointerenter="product-card/previewVariant/{{ featured_media.id }}"
-                    on:pointerleave="product-card/resetVariant"
+                  {% if is_current_color %}
+                    data-current-checked="true"
+                    checked
+                  {% else %}
+                    data-current-checked="false"
                   {% endif %}
+                  {% if color_is_available == false %}
+                    aria-disabled="true"
+                  {% endif %}
+                  aria-label="{{ color_value_item | escape }}"
                 >
-                  <input
-                    type="radio"
-                    name="{{ color_option_name | escape }}-{{ product_resource.id }}-swatch"
-                    value="{{ color_value_item | escape }}"
-                    aria-label="{{ color_value_item | escape }}"
-                    data-input-id="1-{{ forloop.index0 }}"
-                    {% if featured_media != blank %}
-                      data-option-media-id="{{ featured_media.id }}"
-                    {% endif %}
-                    data-option-available="{{ color_is_available }}"
-                    {% if first_available_variant_url != blank %}
-                      data-connected-product-url="{{ first_available_variant_url }}"
-                    {% endif %}
-                    {% if is_current_color %}
-                      checked
-                    {% endif %}
-                    data-available-count="{% if color_is_available %}1{% else %}0{% endif %}"
-                    data-variant-id="{{ first_available_variant_id }}"
-                    data-first-available-or-first-variant-id="{{ first_available_variant_id }}"
-                  >
-                  {% if has_swatch_to_render %}
-                    {% if swatch_to_render != blank %}
-                      {% render 'swatch',
-                        swatch: swatch_to_render,
-                        variant_image: featured_media,
-                        option_value_name: option_value_name_for_swatch,
-                        enable_swatch_assets_backup: swatch_enable_assets_backup,
-                        swatch_file_extension: swatch_file_extension_setting,
-                        show_variant_image: swatch_show_variant_image,
-                        variant_swatch_width: swatch_variant_width
-                      %}
-                    {% else %}
-                      {% render 'swatch',
-                        swatch: blank,
-                        variant_image: featured_media,
-                        option_value_name: option_value_name_for_swatch,
-                        enable_swatch_assets_backup: swatch_enable_assets_backup,
-                        swatch_file_extension: swatch_file_extension_setting,
-                        show_variant_image: swatch_show_variant_image,
-                        variant_swatch_width: swatch_variant_width
-                      %}
-                    {% endif %}
+                {% if has_swatch_to_render %}
+                  {% if swatch_to_render != blank %}
+                    {% render 'swatch',
+                      swatch: swatch_to_render,
+                      mode: 'unscaled',
+                      option_value_name: option_value_name_for_swatch
+                    %}
+                  {% else %}
+                    {% render 'swatch',
+                      swatch: blank,
+                      variant_image: featured_media,
+                      mode: 'unscaled',
+                      option_value_name: option_value_name_for_swatch
+                    %}
                   {% endif %}
-                </label>
-              </li>
+                {% else %}
+                  {% if color_is_available == true %}
+                    <span class="variant-picker-cl-dual__pill"></span>
+                  {% endif %}
+                  <span class="variant-picker-cl-dual__text">{{ color_value_item | escape }}</span>
+                {% endif %}
+              </label>
             {% endif %}
             {%- endunless -%}
           {% endfor %}
-          <li
-            slot="more"
-          >
-            <button
-              class="hidden-swatches__count"
-              aria-label="{{ 'actions.show_all_options' | t }}"
-              on:click="/showAllSwatches"
-            ></button>
-          </li>
-        {% endcapture %}
-
-        {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
+        </div>
       </fieldset>
       
       {%- liquid
@@ -1376,241 +1376,263 @@
         endif
       -%}
       
+      {% comment %} Size Picker {% endcomment %}
+      {% liquid
+        # Calculate longest size value for button width distribution
+        assign longest_size_value = 0
+        assign size_fieldset_id = ''
+        assign size_option_id_attribute = ''
+        if settings.variant_button_width == 'equal-width-buttons'
+          assign size_fieldset_id = section.id | append: '-' | append: product_resource.id | append: '-' | append: size_option_name | handleize
+          assign size_option_id_attribute = 'data-option-id="' | append: size_fieldset_id | append: '"'
+          assign sizes_array_for_length = unique_sizes | split: '|||'
+          for size_value_check in sizes_array_for_length
+            if size_value_check != blank and size_value_check != ''
+              assign size_length = size_value_check.size
+              if size_length > longest_size_value
+                assign longest_size_value = size_length
+              endif
+            endif
+          endfor
+        endif
+      %}
+      {%- liquid
+        # Only show sizes on product pages
+        # On collection/category pages (product cards), always hide sizes
+        assign is_product_page = false
+        if request.page_type == 'product'
+          assign is_product_page = true
+        endif
+        
+        # Show sizes only if: on product page
+        assign should_show_sizes = false
+        if is_product_page
+          assign should_show_sizes = true
+        endif
+      -%}
       {%- if unique_sizes != '' and size_option_name != '' and should_show_sizes -%}
-        {%- if show_size_swatches_setting -%}
-        <fieldset class="variant-option variant-option--buttons variant-option--swatches">
-          {%- if show_text_labels -%}
-            <legend>
-              {{ size_option_name | escape }}:
-              {%- if current_size_value != blank and current_size_value != '' -%}
-                <span class="variant-option__swatch-value">{{ current_size_value | escape }}</span>
-              {%- endif %}
-            </legend>
-          {%- endif %}
-          {% capture size_children %}
-            {% assign sizes_array = unique_sizes | split: '|||' %}
-            {% for size_value_item in sizes_array %}
-              {%- liquid
-                # Skip option values that are blank, null, 0 (number), "0" (string), or "null" (string)
-                assign size_value_str = size_value_item | append: ''
-                assign should_skip_size = false
-                if size_value_item == blank or size_value_item == 0 or size_value_str == '' or size_value_str == '0' or size_value_str == 'null'
-                  assign should_skip_size = true
-                endif
-              -%}
-              {%- unless should_skip_size -%}
-              {% if size_value_item != blank and size_value_item != '' %}
-                {% liquid
-                  assign is_current_size = false
-                  if size_value_item == current_size_value
-                    assign is_current_size = true
-                  endif
-                  
-                  # Check if this size has any available combinations
-                  # If a color is selected, check combinations with that color
-                  # Otherwise, check all combinations for this size
-                  assign size_is_available = false
-                  if dual_variant_data != ''
-                    assign combinations_check = dual_variant_data | split: '|||'
-                    for combination_entry in combinations_check
-                      if combination_entry != blank and combination_entry != ''
-                        assign combo_parts = combination_entry | split: '|'
-                        if combo_parts.size >= 6
-                          assign combo_size = combo_parts[3] | strip
-                          assign combo_color = combo_parts[2] | strip
-                          assign combo_available = combo_parts[5] | strip
-                          
-                          # Check if this size matches
-                          if combo_size == size_value_item
-                            # If color is selected, only check combinations with that color
-                            if current_color_value != blank and current_color_value != ''
-                              if combo_color == current_color_value and combo_available == 'true'
-                                assign size_is_available = true
-                                break
-                              endif
-                            else
-                              # No color selected, check if any combination with this size is available
-                              if combo_available == 'true'
-                                assign size_is_available = true
-                                break
+        {%- if variant_style_setting == 'dropdowns' -%}
+          {%- comment -%} Render sizes as dropdown {%- endcomment -%}
+          <div class="variant-option variant-option--dropdowns">
+            <label for="Size-{{ product_resource.id }}-{{ block.id }}">{{ size_option_name | escape }}</label>
+            <div class="variant-option__select-wrapper">
+              <select
+                id="Size-{{ product_resource.id }}-{{ block.id }}"
+                name="options[{{ size_option_name | escape }}]"
+                class="variant-option__select"
+              >
+                {% assign sizes_array = unique_sizes | split: '|||' %}
+                {% for size_value_item in sizes_array %}
+                  {%- liquid
+                    assign size_value_str = size_value_item | append: ''
+                    assign should_skip_size = false
+                    if size_value_item == blank or size_value_item == 0 or size_value_str == '' or size_value_str == '0' or size_value_str == 'null'
+                      assign should_skip_size = true
+                    endif
+                  -%}
+                  {%- unless should_skip_size -%}
+                    {%- liquid
+                      assign size_is_available = false
+                      assign first_available_size_variant_id = ''
+                      assign first_available_size_variant_url = ''
+                      if dual_variant_data != ''
+                        assign combinations_check = dual_variant_data | split: '|||'
+                        for combination_entry in combinations_check
+                          if combination_entry != blank and combination_entry != ''
+                            assign combo_parts = combination_entry | split: '|'
+                            if combo_parts.size >= 6
+                              assign combo_size = combo_parts[3] | strip
+                              assign combo_color = combo_parts[2] | strip
+                              assign combo_available = combo_parts[5] | strip
+
+                              if combo_size == size_value_item
+                                if current_color_value != blank and current_color_value != ''
+                                  if combo_color == current_color_value and combo_available == 'true'
+                                    assign size_is_available = true
+                                    assign first_available_size_variant_id = combo_parts[1] | strip
+                                    assign first_available_size_variant_url = combo_parts[4] | strip
+                                    break
+                                  endif
+                                else
+                                  if combo_available == 'true'
+                                    assign size_is_available = true
+                                    assign first_available_size_variant_id = combo_parts[1] | strip
+                                    assign first_available_size_variant_url = combo_parts[4] | strip
+                                    break
+                                  endif
+                                endif
                               endif
                             endif
                           endif
-                        endif
+                        endfor
                       endif
-                    endfor
-                  endif
-                  
-                  # Find the first available variant for this size to get variant ID and URL
-                  assign first_available_size_variant_id = ''
-                  assign first_available_size_variant_url = ''
-                  assign size_variant_for_hover = ''
-                  if dual_variant_data != '' and size_is_available
-                    assign combinations_check = dual_variant_data | split: '|||'
-                    for combination_entry in combinations_check
-                      if combination_entry != blank and combination_entry != ''
-                        assign combo_parts = combination_entry | split: '|'
-                        if combo_parts.size >= 6
-                          assign combo_size = combo_parts[3] | strip
-                          assign combo_variant_id = combo_parts[1] | strip
-                          assign combo_url = combo_parts[4] | strip
-                          assign combo_available = combo_parts[5] | strip
-                          assign size_value_normalized = size_value_item | strip
-                          
-                          if combo_size == size_value_normalized and combo_available == 'true'
-                            # If color is selected, only use combinations with that color
-                            if current_color_value != blank and current_color_value != ''
-                              assign combo_color = combo_parts[2] | strip
-                              if combo_color == current_color_value
-                                assign first_available_size_variant_id = combo_variant_id
-                                assign first_available_size_variant_url = combo_url
-                                
-                                # Try to find the actual variant object for hover preview
-                                if matching_product_for_fallback != ''
-                                  assign variant_id_as_number = combo_variant_id | plus: 0
-                                  assign variant_id_as_string = combo_variant_id | append: ''
-                                  for variant in matching_product_for_fallback.variants
-                                    if variant.id == variant_id_as_number or variant.id == variant_id_as_string or variant.id == combo_variant_id
-                                      assign size_variant_for_hover = variant
-                                      break
-                                    endif
-                                  endfor
-                                endif
-                                
-                                # If not found in matching product, check all linked products
-                                if size_variant_for_hover == blank
-                                  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
-                                    for linked_product in combined_listings_metafield.value
-                                      assign variant_id_as_number = combo_variant_id | plus: 0
-                                      assign variant_id_as_string = combo_variant_id | append: ''
-                                      for variant in linked_product.variants
-                                        if variant.id == variant_id_as_number or variant.id == variant_id_as_string or variant.id == combo_variant_id
-                                          assign size_variant_for_hover = variant
-                                          break
-                                        endif
-                                      endfor
-                                      if size_variant_for_hover != blank
-                                        break
-                                      endif
-                                    endfor
-                                  endif
-                                endif
-                                
-                                break
-                              endif
-                            else
-                              # No color selected, use first available size
-                              assign first_available_size_variant_id = combo_variant_id
-                              assign first_available_size_variant_url = combo_url
-                              
-                              # Try to find the actual variant object for hover preview
-                              if matching_product_for_fallback != ''
-                                assign variant_id_as_number = combo_variant_id | plus: 0
-                                assign variant_id_as_string = combo_variant_id | append: ''
-                                for variant in matching_product_for_fallback.variants
-                                  if variant.id == variant_id_as_number or variant.id == variant_id_as_string or variant.id == combo_variant_id
-                                    assign size_variant_for_hover = variant
-                                    break
-                                  endif
-                                endfor
-                              endif
-                              
-                              # If not found in matching product, check all linked products
-                              if size_variant_for_hover == blank
-                                if combined_listings_metafield != blank and combined_listings_metafield.value != blank
-                                  for linked_product in combined_listings_metafield.value
-                                    assign variant_id_as_number = combo_variant_id | plus: 0
-                                    assign variant_id_as_string = combo_variant_id | append: ''
-                                    for variant in linked_product.variants
-                                      if variant.id == variant_id_as_number or variant.id == variant_id_as_string or variant.id == combo_variant_id
-                                        assign size_variant_for_hover = variant
-                                        break
-                                      endif
-                                    endfor
-                                    if size_variant_for_hover != blank
-                                      break
-                                    endif
-                                  endfor
-                                endif
-                              endif
-                              
+                    -%}
+                    <option
+                      value="{{ size_value_item | escape }}"
+                      data-input-id="2-{{ forloop.index0 }}"
+                      data-option-value-id="{{ first_available_size_variant_id }}"
+                      data-variant-id="{{ first_available_size_variant_id }}"
+                      {% if first_available_size_variant_url != blank %}
+                        data-connected-product-url="{{ first_available_size_variant_url }}"
+                      {% endif %}
+                      {% if size_value_item == current_size_value %}
+                        selected="selected"
+                      {% endif %}
+                      {% if size_is_available == false %}
+                        disabled
+                      {% endif %}
+                    >
+                      {% if size_is_available == false %}
+                        {{ size_value_item | escape }} - {{ 'content.unavailable' | t }}
+                      {% else %}
+                        {{ size_value_item | escape }}
+                      {% endif %}
+                    </option>
+                  {%- endunless -%}
+                {% endfor %}
+              </select>
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                class="icon icon-caret"
+                viewBox="0 0 10 6"
+              >
+                {%- render 'icon', icon: 'caret' -%}
+              </svg>
+            </div>
+          </div>
+        {%- else -%}
+          {%- comment -%} Render sizes as buttons {%- endcomment -%}
+          <fieldset 
+            class="variant-picker-cl-dual__fieldset variant-picker-cl-dual__fieldset--size{% if settings.variant_button_width == 'equal-width-buttons' %} variant-picker-cl-dual__fieldset--equal-width-buttons{% endif %}"
+            {{ size_option_id_attribute }}
+          >
+            <legend>
+              {{ size_option_name | escape }}
+              {%- if current_size_value != blank and current_size_value != '' -%}
+                <span class="variant-picker-cl-dual__swatch-value">{{ current_size_value | escape }}</span>
+              {%- endif %}
+            </legend>
+            {% if size_option_id_attribute and longest_size_value > 0 %}
+              {% style %}
+                [data-option-id="{{ size_fieldset_id }}"] {
+                  --variant-ch: {{ longest_size_value }}ch;
+                }
+              {% endstyle %}
+            {% endif %}
+            <div 
+              class="variant-picker-cl-dual__options" 
+              data-option-type="size" 
+              data-fieldset-index="1"
+            >
+              {% assign sizes_array = unique_sizes | split: '|||' %}
+              {% for size_value_item in sizes_array %}
+            {%- liquid
+              # Skip option values that are blank, null, 0 (number), "0" (string), or "null" (string)
+              assign size_value_str = size_value_item | append: ''
+              assign should_skip_size = false
+              if size_value_item == blank or size_value_item == 0 or size_value_str == '' or size_value_str == '0' or size_value_str == 'null'
+                assign should_skip_size = true
+              endif
+            -%}
+            {%- unless should_skip_size -%}
+            {% if size_value_item != blank and size_value_item != '' %}
+              {% liquid
+                assign is_current_size = false
+                if size_value_item == current_size_value
+                  assign is_current_size = true
+                endif
+                
+                # Check if this size has any available combinations
+                # If a color is selected, check combinations with that color
+                # Otherwise, check all combinations for this size
+                assign size_is_available = false
+                if dual_variant_data != ''
+                  assign combinations_check = dual_variant_data | split: '|||'
+                  for combination_entry in combinations_check
+                    if combination_entry != blank and combination_entry != ''
+                      assign combo_parts = combination_entry | split: '|'
+                      if combo_parts.size >= 6
+                        assign combo_size = combo_parts[3]
+                        assign combo_color = combo_parts[2]
+                        assign combo_available = combo_parts[5]
+                        
+                        # Check if this size matches
+                        if combo_size == size_value_item
+                          # If color is selected, only check combinations with that color
+                          if current_color_value != blank and current_color_value != ''
+                            if combo_color == current_color_value and combo_available == 'true'
+                              assign size_is_available = true
+                              break
+                            endif
+                          else
+                            # No color selected, check if any combination with this size is available
+                            if combo_available == 'true'
+                              assign size_is_available = true
                               break
                             endif
                           endif
                         endif
                       endif
-                    endfor
-                  endif
-                  
-                  # Get featured media for hover preview
-                  assign size_featured_media = ''
-                  if size_variant_for_hover != blank and size_variant_for_hover.featured_media != blank
-                    assign size_featured_media = size_variant_for_hover.featured_media
-                  elsif matching_product_for_fallback != '' and matching_product_for_fallback.featured_media != blank
-                    assign size_featured_media = matching_product_for_fallback.featured_media
-                  endif
-                %}
-                
-                <li class="variant-option__swatch">
-                  <label
-                    {% if size_featured_media != blank %}
-                      data-media-id="{{ size_featured_media.id }}"
-                    {% endif %}
-                    data-option-available="{{ size_is_available }}"
-                    class="variant-option__button-label variant-option__button-label--has-swatch swatch-rounded"
-                    {% if size_featured_media != blank %}
-                      on:pointerenter="product-card/previewVariant/{{ size_featured_media.id }}"
-                      on:pointerleave="product-card/resetVariant"
-                    {% endif %}
+                    endif
+                  endfor
+                endif
+              %}
+              
+              <label
+                class="variant-picker-cl-dual__label{% if is_current_size %} variant-picker-cl-dual__label--current{% endif %}"
+                {% if size_is_available == false %}
+                  data-option-available="false"
+                {% else %}
+                  data-option-available="true"
+                {% endif %}
+              >
+                <input
+                  type="radio"
+                  id="cl-dual-size-{{ section.id }}-{{ block.id }}-{{ size_value_item | handleize }}"
+                  name="size_selection-{{ block.id }}"
+                  value="{{ size_value_item | escape }}"
+                  data-option-type="size"
+                  data-fieldset-index="1"
+                  data-input-index="{{ forloop.index0 }}"
+                  data-previous-checked="false"
+                  data-option-available="{{ size_is_available }}"
+                  {% if is_current_size %}
+                    data-current-checked="true"
+                    checked
+                  {% else %}
+                    data-current-checked="false"
+                  {% endif %}
+                  {% if size_is_available == false %}
+                    aria-disabled="true"
+                  {% endif %}
+                  aria-label="{{ size_value_item | escape }}"
+                >
+                {% if size_is_available == true %}
+                  <span class="variant-picker-cl-dual__pill"></span>
+                {% endif %}
+                <span class="variant-picker-cl-dual__text">{{ size_value_item | escape }}</span>
+                {% unless size_is_available %}
+                  <svg
+                    viewBox="0 0 100 46"
+                    preserveAspectRatio="xMidYMid slice"
                   >
-                    <input
-                      type="radio"
-                      name="{{ size_option_name | escape }}-{{ product_resource.id }}-swatch"
-                      value="{{ size_value_item | escape }}"
-                      aria-label="{{ size_value_item | escape }}"
-                      data-input-id="2-{{ forloop.index0 }}"
-                      {% if size_featured_media != blank %}
-                        data-option-media-id="{{ size_featured_media.id }}"
-                      {% endif %}
-                      data-option-available="{{ size_is_available }}"
-                      {% if first_available_size_variant_url != blank %}
-                        data-connected-product-url="{{ first_available_size_variant_url }}"
-                      {% endif %}
-                      {% if is_current_size %}
-                        checked
-                      {% endif %}
-                      data-available-count="{% if size_is_available %}1{% else %}0{% endif %}"
-                      data-variant-id="{{ first_available_size_variant_id }}"
-                      data-first-available-or-first-variant-id="{{ first_available_size_variant_id }}"
-                    >
-                    <span class="swatch swatch--unscaled" style="--swatch-background: transparent; border: var(--style-border-swatch-width) var(--style-border-swatch-style) var(--color-border);">
-                      <span style="display: inline-block; padding: 4px 8px; font-size: 0.875rem;">{{ size_value_item | escape }}</span>
-                    </span>
-                  </label>
-                </li>
-              {% endif %}
-              {%- endunless -%}
-            {% endfor %}
-            <li
-              slot="more"
-            >
-              <button
-                class="hidden-swatches__count"
-                aria-label="{{ 'actions.show_all_options' | t }}"
-                on:click="/showAllSwatches"
-              ></button>
-            </li>
-          {% endcapture %}
-
-          {% render 'overflow-list', children: size_children, ref: 'overflowListSize', defer: true %}
-        </fieldset>
+                    {% # 25deg %}
+                    <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
+                    {% # duplicate line for motion overlay %}
+                    <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
+                  </svg>
+                {% endunless %}
+              </label>
+            {% endif %}
+            {%- endunless -%}
+          {% endfor %}
+            </div>
+          </fieldset>
+        {%- endif -%}
       {%- endif -%}
-      
-      <script type="application/json">
-        {{ product_resource.selected_or_first_available_variant | json }}
-      </script>
     </form>
-  </swatches-variant-picker-component>
+  </variant-picker-cl-dual>
 {% elsif sorted_products != '' %}
   {% comment %} SINGLE PICKER MODE: Render color swatches only using global swatch styling {% endcomment %}
   <swatches-variant-picker-component
