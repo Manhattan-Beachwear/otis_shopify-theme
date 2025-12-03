@@ -197,6 +197,7 @@
               "static": true,
               "settings": {
                 "image_ratio": "adapt",
+                "hover_scale": true,
                 "toggle_overlay": false,
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
