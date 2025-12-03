@@ -42,16 +42,13 @@
   endif
   
   # Get show_swatches setting (priority: block settings > global settings)
+  # Use block_settings.show_swatches directly like variant-main-picker.liquid does
   # Checkbox: true when checked, false when unchecked
-  # Default to true if not explicitly set
+  # Default to true if not set (schema default is true)
   assign show_swatches_setting = true
-  if block != blank and block_settings != blank
-    # Check if show_swatches setting exists (it will be true or false, never blank for checkboxes)
-    # In Shopify, unchecked checkboxes are false, checked are true
-    if block_settings.show_swatches == false or block_settings.show_swatches == true
-      assign show_swatches_setting = block_settings.show_swatches
-    endif
-  elsif settings.show_swatches == false or settings.show_swatches == true
+  if block != blank and block_settings != blank and block_settings.show_swatches != blank
+    assign show_swatches_setting = block_settings.show_swatches
+  elsif settings.show_swatches != blank
     assign show_swatches_setting = settings.show_swatches
   endif
   
@@ -1065,7 +1062,18 @@
   >
     <form class="variant-picker-cl-dual__form">
       {% comment %} Color Picker {% endcomment %}
-      {%- if show_swatches_setting == true -%}
+      {%- liquid
+        # Use block_settings.show_swatches directly like variant-main-picker.liquid does
+        # Priority: block settings > global settings
+        assign use_swatches = true
+        if block != blank and block_settings != blank
+          # Use block_settings.show_swatches directly (same pattern as variant-main-picker.liquid line 48, 63)
+          assign use_swatches = block_settings.show_swatches
+        elsif settings.show_swatches != blank
+          assign use_swatches = settings.show_swatches
+        endif
+      -%}
+      {%- if use_swatches -%}
         <fieldset class="variant-option variant-option--buttons variant-option--swatches">
         {%- liquid
           # Always show labels on product pages, otherwise respect the setting
@@ -1913,7 +1921,18 @@
   </variant-picker-cl-dual>
 {% elsif sorted_products != '' %}
   {% comment %} SINGLE PICKER MODE: Render color swatches or buttons/dropdowns {% endcomment %}
-  {%- if show_swatches_setting == true -%}
+  {%- liquid
+    # Use block_settings.show_swatches directly like variant-main-picker.liquid does
+    # Priority: block settings > global settings
+    assign use_swatches = true
+    if block != blank and block_settings != blank
+      # Use block_settings.show_swatches directly (same pattern as variant-main-picker.liquid line 48, 63)
+      assign use_swatches = block_settings.show_swatches
+    elsif settings.show_swatches != blank
+      assign use_swatches = settings.show_swatches
+    endif
+  -%}
+  {%- if use_swatches -%}
     <swatches-variant-picker-component
       data-product-id="{{ product_resource.id }}"
       data-product-url="{{ product_resource.url }}"
