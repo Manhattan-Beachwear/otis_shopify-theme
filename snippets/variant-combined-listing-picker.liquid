@@ -110,6 +110,16 @@
 %}
 
 {% if should_fallback %}
+  {% comment %}
+    Pass the block object to variant-main-picker.
+    The block object includes all settings:
+    - block.settings.variant_style (dropdowns/buttons)
+    - block.settings.show_swatches (true/false)
+    - block.settings.alignment (left/center/right)
+    - block.settings.padding-* (all padding settings)
+    
+    variant-main-picker will access these via block.settings
+  {% endcomment %}
   {% render 'variant-main-picker', product_resource: product_resource, block: block %}
 {% else %}
 
@@ -987,6 +997,7 @@
                 assign swatch_to_render = ''
                 assign variant_image_for_swatch = ''
                 assign matching_product_for_fallback = ''
+                assign option_value_name_for_swatch = color_value_item
                 
                 # Check current product first
                 for option in product_resource.options_with_values
@@ -995,6 +1006,9 @@
                     for value in option.values
                       assign value_str = value | append: ''
                       if value_str == color_value_item
+                        # Use the actual option value name for assets folder backup
+                        assign option_value_name_for_swatch = value.name
+                        
                         # Priority 1: Check for swatch (custom color or swatch image) - highest priority
                         if value.swatch != blank
                           if value.swatch.color != blank or value.swatch.image != blank
@@ -1033,6 +1047,9 @@
                           for value in option.values
                             assign value_str = value | append: ''
                             if value_str == color_value_item
+                              # Use the actual option value name for assets folder backup
+                              assign option_value_name_for_swatch = value.name
+                              
                               # Priority 1: Check for swatch (custom color or swatch image) - highest priority
                               if value.swatch != blank
                                 if value.swatch.color != blank or value.swatch.image != blank
@@ -1074,12 +1091,33 @@
                   endif
                 endif
                 
+                # Check assets folder for backup swatch file (Priority 1 in swatch.liquid)
+                assign assets_file_exists = false
+                if option_value_name_for_swatch != blank
+                  assign enable_backup = settings.enable_swatch_assets_backup
+                  if enable_backup == blank
+                    assign enable_backup = true
+                  endif
+                  
+                  if enable_backup
+                    assign swatch_file_extension = settings.swatch_file_extension | default: 'png'
+                    assign color_file_name = option_value_name_for_swatch | handle | append: '.' | append: swatch_file_extension
+                    if images[color_file_name] != blank
+                      assign assets_file_exists = true
+                    endif
+                  endif
+                endif
+                
+                # Set has_swatch_to_render - include assets folder check
                 assign has_swatch_to_render = false
                 if swatch_to_render != blank
                   # We have a swatch with color or image
                   assign has_swatch_to_render = true
                 elsif variant_image_for_swatch != blank
                   # We have a variant image or product fallback image
+                  assign has_swatch_to_render = true
+                elsif assets_file_exists
+                  # Assets folder file exists - swatch.liquid will handle rendering it
                   assign has_swatch_to_render = true
                 endif
                 
@@ -1147,13 +1185,15 @@
                   {% if swatch_to_render != blank %}
                     {% render 'swatch',
                       swatch: swatch_to_render,
-                      mode: 'unscaled'
+                      mode: 'unscaled',
+                      option_value_name: option_value_name_for_swatch
                     %}
                   {% else %}
                     {% render 'swatch',
                       swatch: blank,
                       variant_image: variant_image_for_swatch,
-                      mode: 'unscaled'
+                      mode: 'unscaled',
+                      option_value_name: option_value_name_for_swatch
                     %}
                   {% endif %}
                 {% else %}
@@ -1462,6 +1502,7 @@
               # and match by the option value name (like "Black", "Military Black")
               assign swatch_to_render = ''
               assign variant_image_for_swatch = ''
+              assign option_value_name_for_swatch = color_option_value
               
               if display_product != '' and color_option_value != blank and color_option_value != ''
                 # Iterate through all options (like the original code does)
@@ -1472,6 +1513,9 @@
                     # In Liquid, value when compared directly is the value name
                     assign value_str = value | append: ''
                     if value_str == color_option_value
+                      # Use the actual option value name for assets folder backup
+                      assign option_value_name_for_swatch = value.name
+                      
                       # Priority 1: Check for swatch (custom color or swatch image) - highest priority
                       if value.swatch != blank
                         if value.swatch.color != blank or value.swatch.image != blank
@@ -1509,13 +1553,33 @@
                 endif
               endif
               
-              # Set flag for rendering
+              # Check assets folder for backup swatch file (Priority 1 in swatch.liquid)
+              assign assets_file_exists_single = false
+              if option_value_name_for_swatch != blank
+                assign enable_backup_single = settings.enable_swatch_assets_backup
+                if enable_backup_single == blank
+                  assign enable_backup_single = true
+                endif
+                
+                if enable_backup_single
+                  assign swatch_file_extension_single = settings.swatch_file_extension | default: 'png'
+                  assign color_file_name_single = option_value_name_for_swatch | handle | append: '.' | append: swatch_file_extension_single
+                  if images[color_file_name_single] != blank
+                    assign assets_file_exists_single = true
+                  endif
+                endif
+              endif
+              
+              # Set flag for rendering - include assets folder check
               assign has_swatch_to_render = false
               if swatch_to_render != blank
                 # We have a swatch with color or image
                 assign has_swatch_to_render = true
               elsif variant_image_for_swatch != blank
                 # We have a variant image or product fallback image
+                assign has_swatch_to_render = true
+              elsif assets_file_exists_single
+                # Assets folder file exists - swatch.liquid will handle rendering it
                 assign has_swatch_to_render = true
               endif
             %}
@@ -1538,13 +1602,15 @@
                   {% if swatch_to_render != blank %}
                     {% render 'swatch',
                       swatch: swatch_to_render,
-                      mode: 'unscaled'
+                      mode: 'unscaled',
+                      option_value_name: option_value_name_for_swatch
                     %}
                   {% else %}
                     {% render 'swatch',
                       swatch: blank,
                       variant_image: variant_image_for_swatch,
-                      mode: 'unscaled'
+                      mode: 'unscaled',
+                      option_value_name: option_value_name_for_swatch
                     %}
                   {% endif %}
                 {% else %}

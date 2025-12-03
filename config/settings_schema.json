@@ -2489,6 +2489,21 @@
         "label": "t:settings.border_opacity",
         "default": 10,
         "visible_if": "{{ settings.variant_swatch_border_style != 'none' }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_swatch_assets_backup",
+        "label": "Enable assets folder backup",
+        "default": true,
+        "info": "When enabled, swatches will check the assets folder for image files when metafields are not set. Files should be named using the option value handle (e.g., 'navy-blue.png')."
+      },
+      {
+        "type": "text",
+        "id": "swatch_file_extension",
+        "label": "Swatch file extension",
+        "default": "png",
+        "info": "File extension for swatch images in the assets folder (e.g., 'png', 'jpg', 'webp').",
+        "visible_if": "{{ settings.enable_swatch_assets_backup }}"
       }
     ]
   },

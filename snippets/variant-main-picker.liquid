@@ -37,8 +37,30 @@
         {%- liquid
           assign swatch_count = product_option.values | map: 'swatch' | compact | size
           assign variant_style = block_settings.variant_style
+          
+          # Check if any option values have assets folder files (for backup swatch feature)
+          assign assets_swatch_count = 0
+          assign enable_backup_check = settings.enable_swatch_assets_backup
+          if enable_backup_check == blank
+            assign enable_backup_check = true
+          endif
+          
+          if enable_backup_check and block_settings.show_swatches
+            for product_option_value in product_option.values
+              if product_option_value.name != blank
+                assign swatch_file_extension = settings.swatch_file_extension | default: 'png'
+                assign color_file_name = product_option_value.name | handle | append: '.' | append: swatch_file_extension
+                if images[color_file_name] != blank
+                  assign assets_swatch_count = assets_swatch_count | plus: 1
+                endif
+              endif
+            endfor
+          endif
+          
+          # Use swatches if we have metaobject swatches OR assets folder swatches
+          assign total_swatch_count = swatch_count | plus: assets_swatch_count
 
-          if swatch_count > 0 and block_settings.show_swatches
+          if total_swatch_count > 0 and block_settings.show_swatches
             if block_settings.variant_style == 'dropdown'
               assign variant_style = 'swatch_dropdown'
             else
@@ -52,6 +74,7 @@
             assign longest_value = 0
           endif
         -%}
+        
 
         {%- if variant_style == 'swatch' or block_settings.variant_style == 'buttons' -%}
           {%- assign fieldset_index = forloop.index0 -%}
@@ -139,12 +162,14 @@
                     {% render 'swatch',
                       swatch: product_option_value.swatch,
                       variant_image: variant_image_for_swatch,
-                      mode: 'unscaled'
+                      mode: 'unscaled',
+                      option_value_name: product_option_value.name
                     %}
                   {% else %}
                     {% render 'swatch',
                       swatch: product_option_value.swatch,
-                      mode: 'unscaled'
+                      mode: 'unscaled',
+                      option_value_name: product_option_value.name
                     %}
                   {% endif %}
                 {% else %}
