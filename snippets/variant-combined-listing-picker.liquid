@@ -976,21 +976,23 @@
   >
     <form>
       <fieldset class="variant-option variant-option--buttons variant-option--swatches">
-        <legend>
-          {{ color_option_name | escape }}:
-          {%- liquid
-            # Check if text labels for swatches is enabled
-            assign show_text_labels = false
-            if block != blank and block.settings.show_swatch_text_labels
-              assign show_text_labels = true
-            elsif settings.show_swatch_text_labels
-              assign show_text_labels = true
-            endif
-          -%}
-          {%- if show_text_labels and current_color_value != blank and current_color_value != '' -%}
-            <span class="variant-option__swatch-value">{{ current_color_value | escape }}</span>
-          {%- endif %}
-        </legend>
+        {%- liquid
+          # Check if text labels for swatches is enabled
+          assign show_text_labels = false
+          if block != blank and block.settings.show_swatch_text_labels
+            assign show_text_labels = true
+          elsif settings.show_swatch_text_labels
+            assign show_text_labels = true
+          endif
+        -%}
+        {%- if show_text_labels -%}
+          <legend>
+            {{ color_option_name | escape }}:
+            {%- if current_color_value != blank and current_color_value != '' -%}
+              <span class="variant-option__swatch-value">{{ current_color_value | escape }}</span>
+            {%- endif %}
+          </legend>
+        {%- endif %}
         {% capture children %}
           {% assign colors_array = unique_colors | split: '|||' %}
           {% for color_value_item in colors_array %}
@@ -1308,21 +1310,23 @@
   >
     <form>
       <fieldset class="variant-option variant-option--buttons variant-option--swatches">
-        <legend>
-          {{ variant_option_name | escape }}:
-          {%- liquid
-            # Check if text labels for swatches is enabled
-            assign show_text_labels = false
-            if block != blank and block.settings.show_swatch_text_labels
-              assign show_text_labels = true
-            elsif settings.show_swatch_text_labels
-              assign show_text_labels = true
-            endif
-          -%}
-          {%- if show_text_labels and selected_color_value != blank and selected_color_value != '' -%}
-            <span class="variant-option__swatch-value">{{ selected_color_value | escape }}</span>
-          {%- endif %}
-        </legend>
+        {%- liquid
+          # Check if text labels for swatches is enabled
+          assign show_text_labels = false
+          if block != blank and block.settings.show_swatch_text_labels
+            assign show_text_labels = true
+          elsif settings.show_swatch_text_labels
+            assign show_text_labels = true
+          endif
+        -%}
+        {%- if show_text_labels -%}
+          <legend>
+            {{ variant_option_name | escape }}:
+            {%- if selected_color_value != blank and selected_color_value != '' -%}
+              <span class="variant-option__swatch-value">{{ selected_color_value | escape }}</span>
+            {%- endif %}
+          </legend>
+        {%- endif %}
         {% capture children %}
           {% assign final_products = sorted_products | split: '|||' %}
           {% for product_item in final_products %}
