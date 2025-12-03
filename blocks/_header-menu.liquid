@@ -166,6 +166,7 @@
   .menu-list__list-item {
     flex-shrink: 0;
     white-space: nowrap;
+    position: relative;
   }
 
   .menu-list__list-item[aria-hidden='true'] {
@@ -289,7 +290,8 @@
     visibility: hidden;
     background-color: var(--color-background);
     position: absolute;
-    width: 100%;
+    width: auto;
+    min-width: max-content;
     left: 0;
     top: calc(100% - 1px + var(--border-bottom-width));
     z-index: var(--layer-header-menu);
@@ -408,6 +410,13 @@
     flex-wrap: wrap;
     opacity: var(--submenu-content-opacity);
     transition: var(--submenu-content-animation);
+  }
+
+  /* For simple text submenus, align content to the left edge */
+  .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__submenu > .menu-list__submenu-inner {
+    grid-column: unset;
+    padding-inline: var(--padding-lg);
+    min-width: 200px;
   }
 
   .mega-menu__link {
