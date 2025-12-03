@@ -3129,6 +3129,18 @@ fly-to-cart {
   }
 }
 
+@keyframes riseUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes modalSlideInTop {
   from {
     transform: translateY(var(--padding-sm));
