@@ -996,6 +996,56 @@
             "padding-inline-end": 0
           },
           "blocks": {}
+        },
+        "image_9V9LTy": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/TOMDESOUZA_SOLOINDO_2880x1440_JOURNAL.jpg",
+            "link": "",
+            "hover_scale": true,
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_fEMr8V": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Back on the road and heading home.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
@@ -1029,7 +1079,9 @@
         "text_8AJNJh",
         "image_RUyhgh",
         "text_NX3YqD",
-        "text_nWkrEL"
+        "text_nWkrEL",
+        "image_9V9LTy",
+        "text_fEMr8V"
       ],
       "name": "t:names.rich_text_section",
       "settings": {
