@@ -140,7 +140,15 @@ export class ProductCard extends Component {
       this.variantPicker?.updateVariantPicker(event.detail.data.html);
     }
 
-    this.#updateVariantImages();
+    // Check if this is a combined listing product change (new product)
+    const newProduct = event.detail.data?.newProduct;
+    if (newProduct) {
+      // Product changed - update the entire product card gallery/slideshow
+      this.#updateProductCardImages(event);
+    } else {
+      // Same product, just variant changed - update variant images only
+      this.#updateVariantImages();
+    }
     this.#previousSlideIndex = null;
 
     // Remove attribute after re-rendering since a variant selection has been made
@@ -240,6 +248,56 @@ export class ProductCard extends Component {
 
     if (addToCartButton instanceof HTMLButtonElement) {
       addToCartButton.disabled = !enable;
+    }
+  }
+
+  /**
+   * Updates the product card images when the product changes (combined listings).
+   * @param {VariantUpdateEvent} event - The variant update event.
+   */
+  #updateProductCardImages(event) {
+    const html = event.detail.data?.html;
+    if (!html) return;
+
+    // Find the new product card in the response
+    const newProductCard = html.querySelector('product-card');
+    if (!newProductCard) return;
+
+    // Find the new product card's gallery/slideshow
+    const newCardGallery = newProductCard.querySelector('card-gallery, .card-gallery');
+    const currentCardGallery = this.querySelector('card-gallery, .card-gallery');
+
+    if (newCardGallery && currentCardGallery) {
+      // Morph the gallery to update images
+      morph(currentCardGallery, newCardGallery);
+    }
+
+    // Also update the slideshow if it exists
+    const newSlideshow = newProductCard.querySelector('slideshow-component');
+    const currentSlideshow = this.refs.slideshow;
+
+    if (newSlideshow && currentSlideshow) {
+      // Morph the slideshow to update all slides
+      morph(currentSlideshow, newSlideshow);
+
+      // Select the first slide (featured image of new product)
+      requestYieldCallback(() => {
+        if (currentSlideshow.slides && currentSlideshow.slides.length > 0) {
+          currentSlideshow.select(0, undefined, { animate: false });
+        }
+      });
+    }
+
+    // Update product-card-link featured media URL if it exists
+    const productCardLink = this.closest('product-card-link');
+    if (productCardLink) {
+      const newProductCardLink = html.querySelector('product-card-link');
+      if (newProductCardLink) {
+        const newFeaturedMediaUrl = newProductCardLink.getAttribute('data-featured-media-url');
+        if (newFeaturedMediaUrl) {
+          productCardLink.setAttribute('data-featured-media-url', newFeaturedMediaUrl);
+        }
+      }
     }
   }
 
@@ -397,9 +455,10 @@ export class ProductCard extends Component {
     let isAvailable = true;
     if (event?.target) {
       // The event target might be the label itself or a child element
-      const label = event.target.closest('label[data-option-available]') || 
-                    (event.target.tagName === 'LABEL' && event.target.hasAttribute('data-option-available') ? event.target : null);
-      
+      const label =
+        event.target.closest('label[data-option-available]') ||
+        (event.target.tagName === 'LABEL' && event.target.hasAttribute('data-option-available') ? event.target : null);
+
       if (label) {
         const available = label.dataset.optionAvailable;
         isAvailable = available === 'true';
@@ -414,26 +473,29 @@ export class ProductCard extends Component {
 
     // Find or create the sold out badge
     let soldOutBadge = badgeContainer.querySelector('.product-badges__badge--sold-out-preview');
-    
+
     if (!isAvailable) {
       // Show sold out badge
       if (!soldOutBadge) {
         // Create the badge if it doesn't exist
         soldOutBadge = document.createElement('div');
-        soldOutBadge.className = 'product-badges__badge product-badges__badge--rectangle product-badges__badge--sold-out-preview';
-        
+        soldOutBadge.className =
+          'product-badges__badge product-badges__badge--rectangle product-badges__badge--sold-out-preview';
+
         // Get color scheme from badge container data attribute (set in Liquid template)
         const colorScheme = badgeContainer.dataset.badgeSoldOutColorScheme || 'scheme-5';
         soldOutBadge.classList.add(`color-${colorScheme}`);
-        
+
         soldOutBadge.textContent = this.#getSoldOutText();
         badgeContainer.appendChild(soldOutBadge);
       }
       soldOutBadge.style.display = 'flex';
-      
+
       // Hide other badges if they exist
-      const otherBadges = badgeContainer.querySelectorAll('.product-badges__badge:not(.product-badges__badge--sold-out-preview)');
-      otherBadges.forEach(badge => {
+      const otherBadges = badgeContainer.querySelectorAll(
+        '.product-badges__badge:not(.product-badges__badge--sold-out-preview)'
+      );
+      otherBadges.forEach((badge) => {
         badge.style.display = 'none';
       });
     } else {
@@ -441,10 +503,12 @@ export class ProductCard extends Component {
       if (soldOutBadge) {
         soldOutBadge.style.display = 'none';
       }
-      
+
       // Show other badges
-      const otherBadges = badgeContainer.querySelectorAll('.product-badges__badge:not(.product-badges__badge--sold-out-preview)');
-      otherBadges.forEach(badge => {
+      const otherBadges = badgeContainer.querySelectorAll(
+        '.product-badges__badge:not(.product-badges__badge--sold-out-preview)'
+      );
+      otherBadges.forEach((badge) => {
         badge.style.display = '';
       });
     }
@@ -464,8 +528,10 @@ export class ProductCard extends Component {
     }
 
     // Show other badges (restore original state)
-    const otherBadges = badgeContainer.querySelectorAll('.product-badges__badge:not(.product-badges__badge--sold-out-preview)');
-    otherBadges.forEach(badge => {
+    const otherBadges = badgeContainer.querySelectorAll(
+      '.product-badges__badge:not(.product-badges__badge--sold-out-preview)'
+    );
+    otherBadges.forEach((badge) => {
       badge.style.display = '';
     });
   }
@@ -596,6 +662,11 @@ class SwatchesVariantPickerComponent extends VariantPicker {
     const availableCount = parseInt(clickedSwatch.dataset.availableCount || '0');
     const firstAvailableVariantId = clickedSwatch.dataset.firstAvailableOrFirstVariantId;
 
+    // Check if this swatch points to a different product (combined listing)
+    const connectedProductUrl = clickedSwatch.dataset.connectedProductUrl;
+    const currentProductUrl = this.dataset.productUrl?.split('?')[0];
+    const isDifferentProduct = connectedProductUrl && connectedProductUrl !== currentProductUrl;
+
     // For swatch inputs, check if we need special handling
     if (isSwatchInput && availableCount > 0 && firstAvailableVariantId) {
       // If this is an unavailable variant but there are available alternatives
@@ -606,7 +677,7 @@ class SwatchesVariantPickerComponent extends VariantPicker {
       this.updateSelectedOption(clickedSwatch);
 
       // Build request URL with the first available variant
-      const productUrl = this.dataset.productUrl?.split('?')[0];
+      const productUrl = connectedProductUrl || this.dataset.productUrl?.split('?')[0];
 
       if (!productUrl) return;
 
@@ -620,7 +691,36 @@ class SwatchesVariantPickerComponent extends VariantPicker {
       this.pendingVariantId = firstAvailableVariantId;
 
       // Use parent's fetch method
-      this.fetchUpdatedSection(requestUrl);
+      // If it's a different product, we need to morph the entire product card
+      this.fetchUpdatedSection(requestUrl, isDifferentProduct);
+      return;
+    }
+
+    // For combined listings with different products, update the product card image
+    if (isDifferentProduct && this.parentProductCard instanceof ProductCard) {
+      // Get the media ID from the swatch label (set by variant-combined-listing-picker)
+      const swatchLabel = clickedSwatch.closest('label');
+      const mediaId = swatchLabel?.dataset.mediaId || clickedSwatch.dataset.optionMediaId;
+
+      // If we have a media ID, try to update the slideshow immediately
+      if (mediaId && this.parentProductCard.refs.slideshow) {
+        const slideshow = this.parentProductCard.refs.slideshow;
+        const mediaIdStr = mediaId.toString();
+
+        // Try to find the slide with this media ID
+        const slide = Array.from(slideshow.slides || []).find((s) => s.getAttribute('slide-id') === mediaIdStr);
+
+        if (slide) {
+          // Slide exists - select it immediately for instant feedback
+          slideshow.select({ id: mediaIdStr }, undefined, { animate: false });
+        }
+      }
+
+      // Fetch the updated section to update other product card data
+      // The #updateProductCardImages method will handle updating the slideshow if the slide doesn't exist
+      const selectedOption = event.target instanceof HTMLInputElement ? event.target : event.target;
+      const requestUrl = this.buildRequestUrl(selectedOption);
+      this.fetchUpdatedSection(requestUrl, false);
       return;
     }
 

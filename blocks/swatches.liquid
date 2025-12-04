@@ -96,7 +96,7 @@
     "
     {{ block.shopify_attributes }}
   >
-    {% render 'variant-combined-listing-picker', product_resource: closest.product, block: block %}
+    {% render 'variant-combined-listing-swatches', product_resource: closest.product, block: block %}
   </product-swatches>
 {% elsif product_has_swatches %}
   <product-swatches

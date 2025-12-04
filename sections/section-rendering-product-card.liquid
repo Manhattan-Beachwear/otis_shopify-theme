@@ -70,10 +70,22 @@
     ref="productCardLink"
   >
     {% render 'variant-quick-add', product_resource: product %}
-    {% if has_combined_listing and enable_combined %}
-      {% render 'variant-combined-listing-picker', product_resource: product, block: blank %}
-    {% else %}
-      {% render 'variant-swatches', product_resource: product, has_option_selected: true %}
+    {%- liquid
+      # Check if swatches block exists in the section
+      assign has_swatches_block = false
+      for block_item in section.blocks
+        if block_item.type == 'swatches'
+          assign has_swatches_block = true
+          break
+        endif
+      endfor
+    -%}
+    {% if has_swatches_block %}
+      {% if has_combined_listing and enable_combined %}
+        {% render 'variant-combined-listing-swatches', product_resource: product, block: blank %}
+      {% else %}
+        {% render 'variant-swatches', product_resource: product, has_option_selected: true %}
+      {% endif %}
     {% endif %}
 
     <product-price>
