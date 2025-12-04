@@ -482,7 +482,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h2>Introducing Reliance 2.0</h2>",
+                "text": "<h3>Introducing Reliance 2.0</h3>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
