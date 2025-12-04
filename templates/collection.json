@@ -9,17 +9,18 @@
  */
 {
   "sections": {
-    "hero_cVXTdp": {
-      "type": "hero",
+    "section_GrLN7C": {
+      "type": "section",
       "blocks": {
-        "text_bepqR3": {
+        "text_qG8Uh8": {
           "type": "text",
+          "name": "t:names.heading",
           "settings": {
-            "text": "<p>{{ collection.title }}</p>",
+            "text": "<h1>{{ closest.collection.title }}</h1>",
             "width": "fit-content",
-            "max_width": "narrow",
+            "max_width": "normal",
             "alignment": "left",
-            "type_preset": "h2",
+            "type_preset": "rte",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",
@@ -39,19 +40,10 @@
         }
       },
       "block_order": [
-        "text_bepqR3"
+        "text_qG8Uh8"
       ],
-      "name": "t:names.hero",
+      "name": "t:names.rich_text_section",
       "settings": {
-        "media_type_1": "image",
-        "image_1": "{{ collection.image }}",
-        "media_type_2": "image",
-        "stack_media_on_mobile": false,
-        "custom_mobile_media": false,
-        "media_type_1_mobile": "image",
-        "media_type_2_mobile": "image",
-        "link": "",
-        "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "flex-start",
@@ -59,20 +51,25 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 16,
+        "gap": 25,
         "section_width": "page-width",
         "section_height": "small",
         "section_height_custom": 50,
-        "color_scheme": "scheme-5",
-        "toggle_overlay": true,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
         "overlay_color": "#00000026",
-        "overlay_style": "gradient",
+        "overlay_style": "solid",
         "gradient_direction": "to top",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "image_zoom_fade_animation": true,
-        "padding-block-start": 40,
-        "padding-block-end": 40
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     },
     "main": {
@@ -399,7 +396,7 @@
     }
   },
   "order": [
-    "hero_cVXTdp",
+    "section_GrLN7C",
     "main",
     "collection_list_A7dfPn"
   ]
