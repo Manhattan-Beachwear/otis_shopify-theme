@@ -215,6 +215,7 @@
         "gradient_direction": "to top",
         "blurred_reflection": false,
         "reflection_opacity": 75,
+        "image_zoom_fade_animation": true,
         "padding-block-start": 40,
         "padding-block-end": 40
       }
@@ -573,6 +574,7 @@
           "settings": {
             "image": "shopify://shop_images/ABOUTweb_Urethane.webp",
             "link": "",
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -633,6 +635,7 @@
           "settings": {
             "image": "shopify://shop_images/ABOUTweb_begins.webp",
             "link": "",
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -830,6 +833,7 @@
               "settings": {
                 "image": "shopify://shop_images/bodyboarding_1_web_540x_90af27c7-5924-4573-bdad-6b0d1f9e25e2.jpg",
                 "link": "",
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -952,6 +956,7 @@
               "settings": {
                 "image": "shopify://shop_images/ABOUTweb_Traction2.webp",
                 "link": "",
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -1074,6 +1079,7 @@
               "settings": {
                 "image": "shopify://shop_images/ABOUTweb_sigTraction.jpg",
                 "link": "",
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -1290,6 +1296,7 @@
           "settings": {
             "image": "shopify://shop_images/ABOUTweb_MICK.webp",
             "link": "",
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -1350,6 +1357,7 @@
           "settings": {
             "image": "shopify://shop_images/ABOUTweb_BearingSwivel.webp",
             "link": "",
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -1602,6 +1610,7 @@
           "settings": {
             "image": "shopify://shop_images/ABOUTweb_Steph_SlimFit.webp",
             "link": "",
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -1662,6 +1671,7 @@
           "settings": {
             "image": "shopify://shop_images/ABOUTweb_DNA.jpg",
             "link": "",
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -1859,6 +1869,7 @@
               "settings": {
                 "image": "shopify://shop_images/ABOUTweb_SureFire2_360x_eb55081a-a83b-4ee1-9ff9-0ec56c46ab35.webp",
                 "link": "",
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -1981,6 +1992,7 @@
               "settings": {
                 "image": "shopify://shop_images/ABOUTweb_NonSlip_360x_7cc1f061-eb07-40e5-864f-0993ec38107a.webp",
                 "link": "",
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -2103,6 +2115,7 @@
               "settings": {
                 "image": "shopify://shop_images/ABOUTweb_ThermoLite_360x_3f9575f4-98e1-4261-81b2-9f392d78ae1f.webp",
                 "link": "",
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -2319,6 +2332,7 @@
           "settings": {
             "image": "shopify://shop_images/ABOUTweb_DiamondTec.webp",
             "link": "",
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -2379,6 +2393,7 @@
           "settings": {
             "image": "shopify://shop_images/ABOUTweb_SUPERLITE.webp",
             "link": "",
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -2631,6 +2646,7 @@
           "settings": {
             "image": "shopify://shop_images/ABOUTweb_BearingSwivel.webp",
             "link": "",
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,

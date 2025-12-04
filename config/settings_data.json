@@ -73,7 +73,7 @@
     "button_font_weight_secondary": "default",
     "button_text_case_secondary": "uppercase",
     "button_letter_spacing_secondary": 0.2,
-    "button_hover_effect": "none",
+    "button_hover_effect": "shimmer",
     "cart_type": "drawer",
     "cart_price_font": "subheading",
     "show_cart_note": false,
@@ -102,6 +102,18 @@
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
     "content_for_index": [],
+    "blocks": {
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      },
+      "11349500561483629931": {
+        "type": "shopify://apps/notify-me/blocks/app-embed/b399b727-6c85-44fc-9e21-63114bd72054",
+        "disabled": false,
+        "settings": {}
+      }
+    },
     "color_schemes": {
       "scheme-1": {
         "settings": {

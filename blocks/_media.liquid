@@ -28,6 +28,13 @@
       "visible_if": "{{ block.settings.media_type == 'image' }}"
     },
     {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image (optional)",
+      "info": "Optional alternate image to display on mobile devices",
+      "visible_if": "{{ block.settings.media_type == 'image' }}"
+    },
+    {
       "type": "url",
       "id": "link",
       "label": "t:settings.link",

@@ -40,11 +40,31 @@
   {%- if show_image -%}
     {% capture image_tag %}
       {% if block_settings.image != blank %}
-        {% render 'image',
-          image: block_settings.image,
-          class: 'media-block__media border-style',
-          unset_image_tag: unset_image_tag
-        %}
+        {%- liquid
+          assign has_mobile_image = false
+          if block_settings.image_mobile != blank
+            assign has_mobile_image = true
+          endif
+        -%}
+        
+        {%- if has_mobile_image -%}
+          {% render 'image',
+            image: block_settings.image,
+            class: 'media-block__media media-block__media--desktop border-style',
+            unset_image_tag: unset_image_tag
+          %}
+          {% render 'image',
+            image: block_settings.image_mobile,
+            class: 'media-block__media media-block__media--mobile border-style',
+            unset_image_tag: unset_image_tag
+          %}
+        {%- else -%}
+          {% render 'image',
+            image: block_settings.image,
+            class: 'media-block__media border-style',
+            unset_image_tag: unset_image_tag
+          %}
+        {%- endif -%}
       {% else %}
         <div class="placeholder-image media-block__media border-style">
           {{ 'detailed-apparel-1' | placeholder_svg_tag: 'hero__image' }}
@@ -96,6 +116,25 @@
     @media screen and (min-width: 750px) {
       height: 100%;
       position: absolute;
+    }
+  }
+
+  /* Mobile/Desktop image visibility */
+  .media-block__media--mobile {
+    display: none;
+  }
+
+  .media-block__media--desktop {
+    display: block;
+  }
+
+  @media screen and (max-width: 749px) {
+    .media-block__media--desktop {
+      display: none;
+    }
+
+    .media-block__media--mobile {
+      display: block;
     }
   }
 

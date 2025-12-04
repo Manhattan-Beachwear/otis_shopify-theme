@@ -610,6 +610,7 @@
               "type": "swatches",
               "name": "t:names.swatches",
               "settings": {
+                "show_swatch_text_labels": false,
                 "product_swatches_alignment": "flex-start",
                 "product_swatches_alignment_mobile": "flex-start",
                 "hide_padding": false,
@@ -647,7 +648,8 @@
         "gap": 28,
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-end": 48,
+        "enable_combined_listings": true
       }
     },
     "section_cb4ar8": {
@@ -866,6 +868,7 @@
               "static": true,
               "settings": {
                 "image_ratio": "square",
+                "hover_scale": false,
                 "toggle_overlay": true,
                 "overlay_color": "#00000040",
                 "overlay_style": "solid",
@@ -907,7 +910,8 @@
         "gap": 48,
         "color_scheme": "scheme-6",
         "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-end": 48,
+        "enable_combined_listings": false
       }
     },
     "slideshow_gppNmH": {
@@ -1461,6 +1465,7 @@
               "type": "_featured-blog-posts-image",
               "static": true,
               "settings": {
+                "hover_scale": false,
                 "image_ratio": "landscape",
                 "border": "none",
                 "border_width": 1,

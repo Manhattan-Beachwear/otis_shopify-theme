@@ -279,7 +279,9 @@
     "recipient_form_fields_visible": "Recipient form fields are now visible",
     "recipient_form_fields_hidden": "Recipient form fields are now hidden",
     "recipient_form_error": "There was an error with the form submission",
-    "product_custom_property_character_count": "{{ used_chars }}/{{ max_chars }} characters used"
+    "product_custom_property_character_count": "{{ used_chars }}/{{ max_chars }} characters used",
+    "will_be_in_stock_after": "Will be in stock after {{ date }}",
+    "waiting_for_stock": "Waiting for stock"
   },
   "fields": {
     // Separates min and max values in price range filter
@@ -323,7 +325,9 @@
       "quantity_increments": "Increments of {{ increment }}",
       "quantity_minimum": "Minimum of {{ minimum }}",
       "quantity_maximum": "Maximum of {{ maximum }}",
-      "in_cart": "in cart"
+      "in_cart": "in cart",
+      "will_be_in_stock_after": "Will be in stock after {{ date }}",
+      "waiting_for_stock": "Inventory on the way"
     }
   }
 }

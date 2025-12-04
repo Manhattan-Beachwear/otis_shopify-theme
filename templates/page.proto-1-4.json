@@ -184,6 +184,7 @@
           "name": "t:names.image",
           "settings": {
             "image": "shopify://shop_images/PROTO1.4_WEB_INSHOPS_8a21b486-d48d-4773-b763-6f45507cb67e.jpg",
+            "image_mobile": "shopify://shop_images/PROTO1.4_WEB_INSTORE_MOBILE_95f7c7f8-ade2-44e9-b342-6fc913dc5a10.jpg",
             "link": "",
             "hover_scale": false,
             "image_ratio": "adapt",
@@ -362,6 +363,7 @@
           "name": "t:names.image",
           "settings": {
             "image": "shopify://shop_images/PROTO1.4_WEB_67WASTE_Desktop_74343d98-4e1c-4864-a14a-7200d30be28c.jpg",
+            "image_mobile": "shopify://shop_images/PROTO1.4_WEB_67WASTE_Mobile_28dd2a32-bfea-4dda-951b-32b83164ac2b.jpg",
             "link": "",
             "hover_scale": true,
             "image_ratio": "adapt",
@@ -666,6 +668,7 @@
           "name": "t:names.image",
           "settings": {
             "image": "shopify://shop_images/PROTO1.4_Campaign_Template_TESTING_WEBSITE.jpg",
+            "image_mobile": "shopify://shop_images/PROTO1.4_WEB_homepage_7_c3972b31-bef6-4ce5-88a3-5449af2a661c.jpg",
             "link": "",
             "hover_scale": true,
             "image_ratio": "adapt",
@@ -742,6 +745,7 @@
           "name": "t:names.image",
           "settings": {
             "image": "shopify://shop_images/PROTO1.4_WEB_packaging_desktop.jpg",
+            "image_mobile": "shopify://shop_images/PROTO1.4_WEB_packaging_mobile_810b6671-bc64-4bdf-8a7b-d01c686aad60.jpg",
             "link": "",
             "hover_scale": false,
             "image_ratio": "adapt",

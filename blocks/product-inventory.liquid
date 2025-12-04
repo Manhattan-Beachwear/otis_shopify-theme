@@ -8,10 +8,13 @@
   assign inventory_policy = variant.inventory_policy
   assign threshold = block_settings.inventory_threshold
 
+  # Check for low inventory message
+  assign show_low_inventory_message = false
   if inventory_managed
     if inventory_quantity > 0
       if inventory_quantity <= threshold
         assign status = 'low'
+        assign show_low_inventory_message = true
         assign show_quantity = block_settings.show_inventory_quantity
         if show_quantity == false
           assign translation_key = 'content.inventory_low_stock'
@@ -38,6 +41,24 @@
       assign translation_key = 'content.inventory_out_of_stock'
     endif
   endif
+
+  # Incoming inventory logic
+  # Incoming inventory is only displayed if:
+  # - Inventory transfer notice is enabled (checkbox is true)
+  # - Product is out of stock (inventory_quantity <= 0 and variant.available == false)
+  # - There is inventory in transit (variant.incoming == true, meaning transfer is "In progress")
+  # Note: Only shows when transfer status is "In progress" (in transit), not for draft or ready-to-ship transfers
+  # Note: Should NOT show if product is already in stock (inventory_quantity > 0)
+  assign show_incoming_inventory_message = false
+  if block_settings.inventory_transfers_enable and inventory_quantity <= 0 and variant.available == false and variant.incoming
+    assign show_incoming_inventory_message = true
+  endif
+  
+  # Calculate if regular status should show
+  assign show_regular_status = false
+  if inventory_quantity > 0 and show_incoming_inventory_message == false
+    assign show_regular_status = true
+  endif
 -%}
 
 <product-inventory
@@ -50,7 +71,7 @@
   data-product-id="{{ product.id }}"
 >
   <span
-    class="product-inventory__status"
+    class="product-inventory__status {% unless show_regular_status %}hide{% endunless %}"
   >
     <span
       class="svg-wrapper product-inventory__icon product-inventory__icon-{{ status }}"
@@ -62,15 +83,91 @@
       id="Inventory-{{ section.id }}"
       role="status"
       aria-label="{{ 'accessibility.inventory_status' | t }}"
+      data-product-inventory
+      data-threshold="{{ block_settings.inventory_threshold }}"
+      data-enabled="{{ block_settings.inventory_transfers_enable }}"
     >
-      {%- if show_quantity -%}
-        {{ 'content.inventory_low_stock_show_count' | t: count: inventory_quantity }}
+      {%- if show_low_inventory_message -%}
+        {%- if show_quantity -%}
+          {{ 'content.inventory_low_stock_show_count' | t: count: inventory_quantity }}
+        {%- else -%}
+          {{- translation_key | t -}}
+        {%- endif -%}
       {%- else -%}
         {{- translation_key | t -}}
       {%- endif -%}
     </span>
   </span>
+  
+  <span
+    data-incoming-inventory
+    class="product-inventory__status {% unless show_incoming_inventory_message %}hide{% endunless %}"
+    data-enabled="{{ block_settings.inventory_transfers_enable }}"
+  >
+    <span class="svg-wrapper product-inventory__icon product-inventory__icon-incoming">
+      {{ 'icon-inventory.svg' | inline_asset_content }}
+    </span>
+    <span
+      class="product-inventory__text js-incoming-text"
+      role="status"
+      aria-label="{{ 'accessibility.inventory_status' | t }}"
+    >
+      {%- if variant.next_incoming_date -%}
+        {%- assign date = variant.next_incoming_date | date: format: 'date' -%}
+        {%- if variant.available == false -%}
+          {{ 'products.product.will_be_in_stock_after' | t: date: date }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'products.product.waiting_for_stock' | t }}
+      {%- endif -%}
+    </span>
+  </span>
 </product-inventory>
+
+{%- assign variants_with_inventory_tracking = product.variants | where: 'inventory_management', 'shopify' -%}
+
+<script>
+  // Store inventory quantities in JS because they're no longer
+  // available directly in JS when a variant changes.
+  // Have an object that holds all potential products so it works
+  // with quick view or with multiple featured products.
+  window.inventories = window.inventories || {};
+  window.inventories['{{ product.id }}'] = {};
+   {% for variant in variants_with_inventory_tracking %}
+    window.inventories['{{ product.id }}'][{{ variant.id }}] = {
+      'quantity': {{ variant.inventory_quantity | default: 0 }},
+      'policy': '{{ variant.inventory_policy | default: false }}',
+      'incoming': {{ variant.incoming | default: false }},
+      'next_incoming_date': {{ variant.next_incoming_date | date: format: 'date' | json }},
+      'available': {{ variant.available | default: false }}
+    };
+   {% endfor %}
+</script>
+
+{% comment %}
+  If loaded in quick view, it might be from a JS-loaded function
+  that loads recommended products. If that's the case, the above
+  JS will not set the variant inventory. Add it to an accessible
+  data div to read later instead.
+{% endcomment %}
+<div
+  data-product-id="{{ product.id }}"
+  class="hide js-product-inventory-data"
+  aria-hidden="true"
+  >
+  {%- for variant in variants_with_inventory_tracking -%}
+    <div
+      class="js-variant-inventory-data"
+      data-id="{{ variant.id }}"
+      data-quantity="{{ variant.inventory_quantity | default: 0 }}"
+      data-policy="{{ variant.inventory_policy | default: false }}"
+      data-incoming="{{ variant.incoming | default: false }}"
+      data-date="{{ variant.next_incoming_date | date: format: 'date' }}"
+      data-available="{{ variant.available | default: false }}"
+    >
+    </div>
+  {%- endfor -%}
+</div>
 
 {% stylesheet %}
   .product-inventory__status {
@@ -101,6 +198,10 @@
 
   .product-inventory__icon-out_of_stock {
     color: var(--color-outofstock);
+  }
+
+  .product-inventory__icon-incoming {
+    color: var(--color-lowstock, #EE9441);
   }
 
   .product-inventory__icon circle:first-of-type {
@@ -148,6 +249,10 @@
     background: var(--color-lowstock, #EE9441);
   }
 
+  .product-inventory__icon-incoming::before,
+  .product-inventory__icon-incoming::after {
+    background: var(--color-lowstock, #EE9441);
+  }
 
   @keyframes sonar-pulse {
     0% {
@@ -183,6 +288,13 @@
       "type": "checkbox",
       "id": "show_inventory_quantity",
       "label": "t:settings.show_inventory_quantity",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "inventory_transfers_enable",
+      "label": "t:product_block.inventory_status.settings.inventory_transfers_enable.label",
+      "info": "t:product_block.inventory_status.settings.inventory_transfers_enable.info",
       "default": true
     },
     {

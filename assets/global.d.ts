@@ -41,6 +41,13 @@ declare global {
 
   interface Window {
     Shopify: Shopify;
+    inventories?: Record<string, Record<string, {
+      quantity: number;
+      policy: string;
+      incoming: boolean;
+      next_incoming_date: string | null;
+      available: boolean;
+    }>>;
   }
 
   declare const Shopify: Shopify;

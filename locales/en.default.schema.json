@@ -1158,5 +1158,19 @@
     "what_is_return_policy": "What is the return policy?",
     "when_will_order_arrive": "When will I get my order?",
     "where_are_products_made": "Where are your products manufactured?"
+  },
+  "products": {
+    "will_be_in_stock_after": "Will be in stock after {{ date }}",
+    "waiting_for_stock": "Waiting for stock"
+  },
+  "product_block": {
+    "inventory_status": {
+      "settings": {
+        "inventory_transfers_enable": {
+          "label": "Show inventory transfers",
+          "info": "Allow customers to purchase products that are in transit to the warehouse"
+        }
+      }
+    }
   }
 }

@@ -36,21 +36,73 @@
   assign media_width_mobile = '100vw'
   assign sizes = 'auto, (min-width: 750px) ' | append: media_width_desktop | append: ', ' | append: media_width_mobile
   assign widths = '240, 352, 832, 1200, 1600, 1920, 2560, 3840'
+  
+  assign has_mobile_image = false
+  if block_settings.image_mobile != blank
+    assign has_mobile_image = true
+  endif
+  
+  assign mobile_widths = '240, 352, 600, 800, 1200, 1600'
+  assign sizes_mobile = media_width_mobile
 %}
 
 {% capture image %}
   {%- if block_settings.image -%}
-    {{
-      block_settings.image
-      | image_url: width: 3840
-      | image_tag:
-        width: block_settings.image.width,
-        widths: widths,
-        height: block_settings.image.height,
-        class: 'image-block__image border-style',
-        style: image_border_style,
-        sizes: sizes
-    }}
+    {%- if has_mobile_image -%}
+      {{
+        block_settings.image
+        | image_url: width: 3840
+        | image_tag:
+          width: block_settings.image.width,
+          widths: widths,
+          height: block_settings.image.height,
+          class: 'image-block__image image-block__image--desktop border-style',
+          style: image_border_style,
+          sizes: sizes
+      }}
+      {%- liquid
+        assign mobile_ratio = 1
+        case block_settings.image_ratio
+          when 'landscape'
+            assign mobile_ratio = '16 / 9'
+          when 'portrait'
+            assign mobile_ratio = '4 / 5'
+          when 'adapt'
+            assign mobile_ratio = block_settings.image_mobile.aspect_ratio
+        endcase
+
+        if mobile_ratio == 0 or mobile_ratio == null
+          assign mobile_ratio = 1
+        endif
+      -%}
+      {%- capture mobile_image_border_style -%}
+        --ratio: {{ mobile_ratio }};
+        {% render 'border-override', settings: block_settings %}
+      {%- endcapture -%}
+      {{
+        block_settings.image_mobile
+        | image_url: width: 1600
+        | image_tag:
+          width: block_settings.image_mobile.width,
+          widths: mobile_widths,
+          height: block_settings.image_mobile.height,
+          class: 'image-block__image image-block__image--mobile border-style',
+          style: mobile_image_border_style,
+          sizes: sizes_mobile
+      }}
+    {%- else -%}
+      {{
+        block_settings.image
+        | image_url: width: 3840
+        | image_tag:
+          width: block_settings.image.width,
+          widths: widths,
+          height: block_settings.image.height,
+          class: 'image-block__image border-style',
+          style: image_border_style,
+          sizes: sizes
+      }}
+    {%- endif -%}
   {%- else -%}
     <div class="placeholder-image border-style size-style" style="{{ image_border_style }}">
       {{ 'detailed-apparel-1' | placeholder_svg_tag: 'hero__image' }}
@@ -106,6 +158,25 @@
     aspect-ratio: var(--ratio);
   }
 
+  /* Mobile/Desktop image visibility */
+  .image-block__image--mobile {
+    display: none;
+  }
+
+  .image-block__image--desktop {
+    display: block;
+  }
+
+  @media screen and (max-width: 749px) {
+    .image-block__image--desktop {
+      display: none;
+    }
+
+    .image-block__image--mobile {
+      display: block;
+    }
+  }
+
   /* Hover scale effect */
   @media (any-pointer: fine) and (prefers-reduced-motion: no-preference) {
     .image-block--hover-scale {
@@ -133,6 +204,12 @@
       "type": "image_picker",
       "id": "image",
       "label": "t:settings.image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image (optional)",
+      "info": "Optional alternate image to display on mobile devices"
     },
     {
       "type": "url",
