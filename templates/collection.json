@@ -16,7 +16,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h1>{{ closest.collection.title }}</h1>",
+            "text": "<h3>{{ closest.collection.title }}</h3>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -136,8 +136,8 @@
               "settings": {
                 "width": "100%",
                 "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
+                "alignment": "center",
+                "type_preset": "paragraph",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
