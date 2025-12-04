@@ -81,7 +81,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2>RELIANCE 2.0 IS HERE</h2>",
+                    "text": "<h1>RELIANCE 2.0 IS HERE</h1>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
