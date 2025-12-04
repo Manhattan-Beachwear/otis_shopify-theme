@@ -378,7 +378,7 @@
                       "type": "text",
                       "name": "t:names.text",
                       "settings": {
-                        "text": "<p>Certified B Corp</p>",
+                        "text": "<p>Designed in Australia</p>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -395,7 +395,7 @@
                         "corner_radius": 0,
                         "padding-block-start": 0,
                         "padding-block-end": 0,
-                        "padding-inline-start": 0,
+                        "padding-inline-start": 6,
                         "padding-inline-end": 0
                       },
                       "blocks": {}
