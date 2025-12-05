@@ -510,7 +510,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Tested in the most intense conditions by the world's best - RELIANCE 2.0 is <strong>BUILT FOR PUNISHMENT</strong>.</p>",
+                "text": "<p>Tested in the most intense conditions by the world's best - RELIANCE 2.0 is </p><p><strong>BUILT FOR PUNISHMENT</strong>.</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
