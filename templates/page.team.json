@@ -4282,7 +4282,7 @@
               "name": "t:names.title",
               "static": true,
               "settings": {
-                "type_preset": "rte",
+                "type_preset": "paragraph",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -4290,7 +4290,7 @@
                 "case": "none",
                 "wrap": "pretty",
                 "color": "var(--color-foreground)",
-                "text": "<h4>{{ closest.article.title }}</h4>",
+                "text": "<p>{{ closest.article.title }}</p>",
                 "read_only": false,
                 "alignment": "left",
                 "show_alignment": false,
