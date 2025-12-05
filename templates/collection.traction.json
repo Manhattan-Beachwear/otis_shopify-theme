@@ -274,6 +274,7 @@
               "type": "swatches",
               "name": "t:names.swatches",
               "settings": {
+                "show_swatch_text_labels": false,
                 "product_swatches_alignment": "flex-start",
                 "product_swatches_alignment_mobile": "flex-start",
                 "hide_padding": false,
@@ -307,7 +308,8 @@
         "padding-inline-end": 0,
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
-        "padding-block-end": 32
+        "padding-block-end": 32,
+        "enable_combined_listings": true
       }
     },
     "section_6bnKib": {
@@ -997,7 +999,8 @@
         "gap": 12,
         "color_scheme": "",
         "padding-block-start": 24,
-        "padding-block-end": 24
+        "padding-block-end": 24,
+        "enable_combined_listings": false
       }
     }
   },
