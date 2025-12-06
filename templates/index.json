@@ -748,7 +748,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>PURPOSE-BUILT SURF GEAR FOR A LIFETIME OF DISCOVERY. SINCE 1987.</p>",
+            "text": "<h2>PURPOSE-BUILT SURF GEAR FOR A LIFETIME OF DISCOVERY. SINCE 1987.</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
