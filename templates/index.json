@@ -815,7 +815,7 @@
             "placement": "on_image",
             "horizontal_alignment": "center",
             "vertical_alignment": "center",
-            "collection_card_gap": 31,
+            "collection_card_gap": 21,
             "inherit_color_scheme": true,
             "color_scheme": "",
             "border": "none",
@@ -1567,6 +1567,7 @@
           "settings": {
             "source": "uploaded",
             "video": "shopify://files/videos/dna-flex-mould.mp4",
+            "video_url": "",
             "video_autoplay": true,
             "video_loop": true,
             "alt": "",
