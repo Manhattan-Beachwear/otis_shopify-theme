@@ -229,7 +229,7 @@
               "settings": {
                 "width": "100%",
                 "max_width": "normal",
-                "alignment": "left",
+                "alignment": "center",
                 "type_preset": "rte",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
@@ -256,7 +256,7 @@
                 "show_tax_info": false,
                 "type_preset": "h6",
                 "width": "100%",
-                "alignment": "left",
+                "alignment": "center",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -275,8 +275,8 @@
               "name": "t:names.swatches",
               "settings": {
                 "show_swatch_text_labels": false,
-                "product_swatches_alignment": "flex-start",
-                "product_swatches_alignment_mobile": "flex-start",
+                "product_swatches_alignment": "center",
+                "product_swatches_alignment_mobile": "center",
                 "hide_padding": false,
                 "product_swatches_padding_top": 4,
                 "product_swatches_padding_bottom": 0,
