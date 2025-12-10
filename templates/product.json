@@ -521,6 +521,17 @@
                 "padding-inline-end": 0
               },
               "blocks": {
+                "accordion_row_9bpaXV": {
+                  "type": "_accordion-row",
+                  "name": "t:names.accordion_row",
+                  "settings": {
+                    "heading": "Size Chart",
+                    "open_by_default": false,
+                    "icon": "ruler",
+                    "width": 20
+                  },
+                  "blocks": {}
+                },
                 "accordion_row_UHBiHH": {
                   "type": "_accordion-row",
                   "settings": {
@@ -562,6 +573,7 @@
                 }
               },
               "block_order": [
+                "accordion_row_9bpaXV",
                 "accordion_row_UHBiHH"
               ]
             }
