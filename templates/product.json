@@ -524,6 +524,7 @@
                 "accordion_row_9bpaXV": {
                   "type": "_accordion-row",
                   "name": "t:names.accordion_row",
+                  "disabled": true,
                   "settings": {
                     "heading": "Size Chart",
                     "open_by_default": false,
