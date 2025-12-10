@@ -894,7 +894,7 @@
         "collection_list": [
           "leashes",
           "traction",
-          "boardcovers",
+          "boardcovers-1",
           "surf-essentials"
         ],
         "layout_type": "grid",
@@ -1152,7 +1152,7 @@
                   "type": "button",
                   "settings": {
                     "label": "Shop Board Bags",
-                    "link": "shopify://collections/boardcovers",
+                    "link": "shopify://collections/boardcovers-1",
                     "open_in_new_tab": false,
                     "style_class": "button",
                     "width": "fit-content",
