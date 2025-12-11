@@ -635,7 +635,7 @@
               },
               "blocks": {}
             },
-            "swatches_QGWkfa": {
+            "swatches_M3FR8K": {
               "type": "swatches",
               "name": "t:names.swatches",
               "settings": {
@@ -655,7 +655,7 @@
             "product_card_gallery_fMjBQC",
             "product_title_9FnjaG",
             "price_UKfFUE",
-            "swatches_QGWkfa"
+            "swatches_M3FR8K"
           ]
         }
       },
@@ -678,7 +678,7 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
         "padding-block-end": 48,
-        "enable_combined_listings": true
+        "enable_combined_listings": false
       }
     },
     "section_cb4ar8": {
