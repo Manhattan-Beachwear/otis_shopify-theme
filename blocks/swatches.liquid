@@ -1,6 +1,5 @@
 {%- liquid
   assign block_settings = block.settings
-  assign product_has_swatches = false
   
   # Check if combined listings are enabled (from section or block settings)
   assign enable_combined = false
@@ -10,120 +9,53 @@
     assign enable_combined = true
   endif
   
-  # Check if product has combined listing metafield using utility snippet
-  assign has_combined_listing = false
+  # Check if product has combined listing metafield directly
   assign combined_listings_metafield = closest.product.metafields.custom.combined_listing
+  assign has_combined_listing_metafield = false
   
-  if enable_combined
-    # Use utility snippet to determine if product has combined listing and get swatches data
-    # IMPORTANT: Variables set in rendered snippets are available in the calling context
-    # Store values before calling to compare
-    assign debug_before_has_combined = has_combined_listing
-    assign debug_before_sorted_data = sorted_swatches_data
+  # Check if metafield exists and has products
+  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+    # Try to iterate to see if we have products
+    for test_product in combined_listings_metafield.value
+      assign has_combined_listing_metafield = true
+      break
+    endfor
   endif
 -%}
 
-{%- if enable_combined -%}
+{%- comment -%} Use utility snippet to get swatches data if product has combined listing {%- endcomment -%}
+{%- if enable_combined and has_combined_listing_metafield -%}
   {%- render 'util-combined-listing-data', product_resource: closest.product, combined_listings_metafield: combined_listings_metafield, enable_combined: enable_combined -%}
 {%- endif -%}
 
-{%- liquid
-  if enable_combined
-    # DEBUG: Track after utility snippet call - make visible in DOM
-    assign debug_mode_swatches_block = true
-    assign debug_enable_combined = enable_combined
-    assign debug_has_combined_result = has_combined_listing
-    assign debug_data_empty_block = false
-    if sorted_swatches_data == '' or sorted_swatches_data == blank
-      assign debug_data_empty_block = true
-    endif
-    assign debug_data_count_block = 0
-    if sorted_swatches_data != '' and sorted_swatches_data != blank
-      assign debug_data_count_block = sorted_swatches_data | split: '|||' | size
-    endif
-    assign debug_product_id_block = closest.product.id
-    assign debug_product_title_block = closest.product.title
-    assign debug_before_has_combined_check = debug_before_has_combined
-    assign debug_before_sorted_data_check = debug_before_sorted_data
-  endif
-  
-  # Only check for regular swatches if not using combined listing picker
-  unless has_combined_listing and enable_combined
-    for product_option in closest.product.options_with_values
-      assign swatch_count = product_option.values | map: 'swatch' | compact | size
-      
-      # Check if any option values have assets folder files (for backup swatch feature)
-      assign assets_swatch_count = 0
-      assign enable_backup_check = settings.enable_swatch_assets_backup
-      if enable_backup_check == blank
-        assign enable_backup_check = true
-      endif
-      
-      if enable_backup_check
-        for product_option_value in product_option.values
-          if product_option_value.name != blank
-            assign swatch_file_extension = settings.swatch_file_extension | default: 'png'
-            assign color_file_name = product_option_value.name | handle | append: '.' | append: swatch_file_extension
-            if images[color_file_name] != blank
-              assign assets_swatch_count = assets_swatch_count | plus: 1
-            endif
-          endif
-        endfor
-      endif
-      
-      # Use swatches if we have metaobject swatches OR assets folder swatches
-      assign total_swatch_count = swatch_count | plus: assets_swatch_count
-
-      if total_swatch_count > 0
-        assign product_has_swatches = true
-      endif
-    endfor
-  endunless
--%}
-
-
-{% if enable_combined %}
-  {%- comment -%}
-    Always render combined listing swatches when enabled.
-    variant-combined-listing-swatches will handle checking if the product has a combined listing
-    and will fall back to regular swatches if not.
-  {%- endcomment -%}
-  <product-swatches
-    data-product-id="{{ closest.product.id }}"
-    data-product-url="{{ closest.product.url }}"
-    style="
-      --overflow-list-alignment: {{ block_settings.product_swatches_alignment }};
-      --overflow-list-alignment-mobile: {{ block_settings.product_swatches_alignment_mobile }};
-      --product-swatches-alignment: {% if block_settings.product_swatches_alignment == 'flex-start' %}start{% elsif block_settings.product_swatches_alignment == 'flex-end' %}end{% else %}center{% endif %};
-      --product-swatches-alignment-mobile: {% if block_settings.product_swatches_alignment_mobile == 'flex-start' %}start{% elsif block_settings.product_swatches_alignment_mobile == 'flex-end' %}end{% else %}center{% endif %};
-      --product-swatches-padding-block-start: {{ block_settings.product_swatches_padding_top }}px;
-      --product-swatches-padding-block-end: {{ block_settings.product_swatches_padding_bottom }}px;
-      --product-swatches-padding-inline-start: {{ block_settings.product_swatches_padding_left }}px;
-      --product-swatches-padding-inline-end: {{ block_settings.product_swatches_padding_right }}px;
-    "
-    {{ block.shopify_attributes }}
-  >
+{%- comment -%}
+  Render swatches: Choose one system based on whether product has combined listing.
+  - If product has combined listing AND combined listings are enabled → use combined listing swatches
+  - Otherwise → use regular product swatches
+{%- endcomment -%}
+<product-swatches
+  data-product-id="{{ closest.product.id }}"
+  data-product-url="{{ closest.product.url }}"
+  style="
+    --overflow-list-alignment: {{ block_settings.product_swatches_alignment }};
+    --overflow-list-alignment-mobile: {{ block_settings.product_swatches_alignment_mobile }};
+    --product-swatches-alignment: {% if block_settings.product_swatches_alignment == 'flex-start' %}start{% elsif block_settings.product_swatches_alignment == 'flex-end' %}end{% else %}center{% endif %};
+    --product-swatches-alignment-mobile: {% if block_settings.product_swatches_alignment_mobile == 'flex-start' %}start{% elsif block_settings.product_swatches_alignment_mobile == 'flex-end' %}end{% else %}center{% endif %};
+    --product-swatches-padding-block-start: {{ block_settings.product_swatches_padding_top }}px;
+    --product-swatches-padding-block-end: {{ block_settings.product_swatches_padding_bottom }}px;
+    --product-swatches-padding-inline-start: {{ block_settings.product_swatches_padding_left }}px;
+    --product-swatches-padding-inline-end: {{ block_settings.product_swatches_padding_right }}px;
+  "
+  {{ block.shopify_attributes }}
+>
+  {% if enable_combined and has_combined_listing_metafield %}
+    {%- comment -%} Use combined listing swatches (shows all swatches from all linked products) {%- endcomment -%}
     {% render 'variant-combined-listing-swatches', product_resource: closest.product, block: block %}
-  </product-swatches>
-{% elsif product_has_swatches %}
-  <product-swatches
-    data-product-id="{{ closest.product.id }}"
-    data-product-url="{{ closest.product.url }}"
-    style="
-      --overflow-list-alignment: {{ block_settings.product_swatches_alignment }};
-      --overflow-list-alignment-mobile: {{ block_settings.product_swatches_alignment_mobile }};
-      --product-swatches-alignment: {% if block_settings.product_swatches_alignment == 'flex-start' %}start{% elsif block_settings.product_swatches_alignment == 'flex-end' %}end{% else %}center{% endif %};
-      --product-swatches-alignment-mobile: {% if block_settings.product_swatches_alignment_mobile == 'flex-start' %}start{% elsif block_settings.product_swatches_alignment_mobile == 'flex-end' %}end{% else %}center{% endif %};
-      --product-swatches-padding-block-start: {{ block_settings.product_swatches_padding_top }}px;
-      --product-swatches-padding-block-end: {{ block_settings.product_swatches_padding_bottom }}px;
-      --product-swatches-padding-inline-start: {{ block_settings.product_swatches_padding_left }}px;
-      --product-swatches-padding-inline-end: {{ block_settings.product_swatches_padding_right }}px;
-    "
-    {{ block.shopify_attributes }}
-  >
+  {% else %}
+    {%- comment -%} Use regular product swatches (shows swatches for this product only) {%- endcomment -%}
     {% render 'variant-swatches', product_resource: closest.product %}
-  </product-swatches>
-{% endif %}
+  {% endif %}
+</product-swatches>
 
 {% # theme-check-disable %}
 {% stylesheet %}

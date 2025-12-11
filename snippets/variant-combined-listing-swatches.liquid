@@ -211,137 +211,146 @@
         endif
 
         if current_product_obj != ''
-          # Get variant to display (selected for current product, first available for others)
-          assign variant_to_display = current_product_obj.selected_or_first_available_variant
-          if product_type == 'current'
-            assign variant_to_display = product_resource.selected_or_first_available_variant
-          endif
-
-          # Find color option value with swatch if available
-          # Priority: 1) "color" variant option, 2) first available option
-          assign color_option_value = ''
-          assign color_option_value_name = ''
-          assign color_option_name = ''
-          assign has_swatch = false
-
+          # Find the color option (or first option) to iterate through all variants
+          assign color_option = ''
+          assign swatch_option = ''
+          
           # Step 1: Check for "color" variant option (case-insensitive)
           for option in current_product_obj.options_with_values
             assign option_name_lower = option.name | downcase
             if option_name_lower == 'color'
-              assign color_option_name = option.name
-              # Get the color value name from the variant's option value directly
-              if option.position == 1
-                assign variant_color_value = variant_to_display.option1
-              elsif option.position == 2
-                assign variant_color_value = variant_to_display.option2
-              elsif option.position == 3
-                assign variant_color_value = variant_to_display.option3
-              else
-                assign variant_color_value = ''
-              endif
-              
-              assign color_option_value_name = variant_color_value
-              
-              # Check if this option has swatches and find the matching option value
-              assign swatch_count = option.values | map: 'swatch' | compact | size
-              if swatch_count > 0
-                for product_option_value in option.values
-                  if product_option_value.variant.id == variant_to_display.id
-                    assign color_option_value = product_option_value
-                    assign has_swatch = true
-                    break
-                  endif
-                endfor
-              endif
-              
+              assign color_option = option
               break
             endif
           endfor
 
-          # Step 2: If no "color" option found, use first available option name
-          if color_option_name == ''
-            assign first_option = current_product_obj.options_with_values.first
-            if first_option
-              assign color_option_name = first_option.name
-              if first_option.position == 1
-                assign color_option_value_name = variant_to_display.option1
-              elsif first_option.position == 2
-                assign color_option_value_name = variant_to_display.option2
-              elsif first_option.position == 3
-                assign color_option_value_name = variant_to_display.option3
+          # Step 2: If no "color" option found, use first available option
+          if color_option == ''
+            assign color_option = current_product_obj.options_with_values.first
+          endif
+          
+          # Step 3: Use the color option (or first option) to iterate through variants
+          # Process all products and variants, not just ones with swatches
+          if color_option != ''
+            assign swatch_option = color_option
+            assign enable_backup_check = swatch_enable_assets_backup
+            if enable_backup_check == blank
+              assign enable_backup_check = true
+            endif
+          endif
+          
+          # Step 4: Iterate through all option values (variants) - show all variants, not just ones with swatches
+          if swatch_option != ''
+            assign color_option_name = swatch_option.name
+            
+            # Track processed variant IDs to avoid exact duplicates (same product + variant)
+            assign processed_variant_ids = ''
+            
+            for product_option_value in swatch_option.values
+              # Skip option values that are blank, null, 0 (number), "0" (string), or "null" (string)
+              assign option_value_str = product_option_value | append: ''
+              assign should_skip = false
+              if product_option_value == blank or product_option_value == 0 or option_value_str == '' or option_value_str == '0' or option_value_str == 'null'
+                assign should_skip = true
               endif
-              # Check if this option has swatches
-              assign swatch_count = first_option.values | map: 'swatch' | compact | size
-              if swatch_count > 0
-                for product_option_value in first_option.values
-                  if product_option_value.variant.id == variant_to_display.id
-                    assign color_option_value = product_option_value
-                    assign has_swatch = true
-                    break
+              
+              unless should_skip
+                assign variant_to_display = product_option_value.variant
+                assign variant_id_check = variant_to_display.id | append: ''
+                assign product_id_check = current_product_obj.id | append: ''
+                assign variant_product_key = product_id_check | append: ':' | append: variant_id_check
+                
+                # Check if we've already processed this exact variant (same product + variant ID)
+                assign variant_already_processed = false
+                if processed_variant_ids != ''
+                  assign processed_variants_array = processed_variant_ids | split: '|||'
+                  for processed_variant_key in processed_variants_array
+                    if processed_variant_key == variant_product_key
+                      assign variant_already_processed = true
+                      break
+                    endif
+                  endfor
+                endif
+                
+                # Process all variants (don't filter by swatch - let rendering logic handle it)
+                unless variant_already_processed
+                  assign color_value_name = product_option_value.name
+                  assign color_option_value = product_option_value
+                  
+                  # Check if this option value has a swatch (for data tracking, but don't filter)
+                  assign has_swatch = false
+                  if product_option_value.swatch != blank
+                    if product_option_value.swatch.color != blank or product_option_value.swatch.image != blank
+                      assign has_swatch = true
+                    endif
                   endif
-                endfor
-              endif
-            endif
-          endif
-          
-          # Ensure color_option_value_name is never blank - use fallback if needed
-          if color_option_value_name == blank or color_option_value_name == ''
-            if variant_to_display.title != blank
-              assign color_option_value_name = variant_to_display.title
-            else
-              assign color_option_value_name = current_product_obj.title
-            endif
-          endif
-          
-          # Ensure color_option_name is never blank
-          if color_option_name == blank or color_option_name == ''
-            assign color_option_name = 'Option'
-          endif
+                  
+                  # Check for assets folder backup swatch
+                  if has_swatch == false and enable_backup_check
+                    if product_option_value.name != blank
+                      assign swatch_file_extension = swatch_file_extension_setting | default: 'png'
+                      assign color_file_name = product_option_value.name | handle | append: '.' | append: swatch_file_extension
+                      if images[color_file_name] != blank
+                        assign has_swatch = true
+                      endif
+                    endif
+                  endif
+                  
+                  # Build product data string: product_id|product_type|variant_id|product_url|product_title|has_swatch|color_option_value_name|color_option_name|is_current|available
+                  assign is_current = 'false'
+                  if product_type == 'current' and variant_to_display.id == product_resource.selected_or_first_available_variant.id
+                    assign is_current = 'true'
+                  endif
 
-          # Build product data string: product_id|product_type|variant_id|product_url|product_title|has_swatch|color_option_value_name|color_option_name|is_current|available
-          assign is_current = 'false'
-          if product_type == 'current'
-            assign is_current = 'true'
-          endif
+                  # Use product URL without variant parameter
+                  assign product_url_clean = current_product_obj.url
+                  # Convert boolean to string explicitly
+                  assign variant_available_string = 'false'
+                  if variant_to_display.available
+                    assign variant_available_string = 'true'
+                  endif
+                  
+                  # Ensure product_id is always set (critical for current product)
+                  if product_type == 'current'
+                    assign product_id = product_resource.id
+                    assign product_id_as_number = product_id | plus: 0
+                  else
+                    if product_id == blank or product_id == ''
+                      assign product_id = current_product_obj.id
+                      assign product_id_as_number = product_id | plus: 0
+                    endif
+                  endif
+                  
+                  # Convert all values to strings
+                  assign product_id_str = product_id | append: ''
+                  assign product_type_str = product_type | append: ''
+                  assign variant_id_str = variant_to_display.id | append: ''
+                  assign product_url_str = product_url_clean | append: ''
+                  assign product_title_str = current_product_obj.title | append: ''
+                  assign has_swatch_str = has_swatch | append: ''
+                  assign color_value_str = color_value_name | append: ''
+                  assign color_option_str = color_option_name | append: ''
+                  assign is_current_str = is_current | append: ''
+                  assign available_str = variant_available_string | append: ''
+                  
+                  # Build the string: product_id|product_type|variant_id|product_url|product_title|has_swatch|color_option_value_name|color_option_name|is_current|available
+                  assign product_data_string = product_id_str | append: '|' | append: product_type_str | append: '|' | append: variant_id_str | append: '|' | append: product_url_str | append: '|' | append: product_title_str | append: '|' | append: has_swatch_str | append: '|' | append: color_value_str | append: '|' | append: color_option_str | append: '|' | append: is_current_str | append: '|' | append: available_str
 
-          # Use product URL without variant parameter
-          assign product_url_clean = current_product_obj.url
-          # Convert boolean to string explicitly
-          assign variant_available_string = 'false'
-          if variant_to_display.available
-            assign variant_available_string = 'true'
-          endif
-          
-          # Ensure product_id is always set (critical for current product)
-          if product_type == 'current'
-            assign product_id = product_resource.id
-            assign product_id_as_number = product_id | plus: 0
-          else
-            if product_id == blank or product_id == ''
-              assign product_id = current_product_obj.id
-              assign product_id_as_number = product_id | plus: 0
-            endif
-          endif
-          
-          # Convert all values to strings
-          assign product_id_str = product_id | append: ''
-          assign product_type_str = product_type | append: ''
-          assign variant_id_str = variant_to_display.id | append: ''
-          assign product_url_str = product_url_clean | append: ''
-          assign product_title_str = current_product_obj.title | append: ''
-          assign has_swatch_str = has_swatch | append: ''
-          assign color_value_str = color_option_value_name | append: ''
-          assign color_option_str = color_option_name | append: ''
-          assign is_current_str = is_current | append: ''
-          assign available_str = variant_available_string | append: ''
-          
-          # Build the string: product_id|product_type|variant_id|product_url|product_title|has_swatch|color_option_value_name|color_option_name|is_current|available
-          assign product_data_string = product_id_str | append: '|' | append: product_type_str | append: '|' | append: variant_id_str | append: '|' | append: product_url_str | append: '|' | append: product_title_str | append: '|' | append: has_swatch_str | append: '|' | append: color_value_str | append: '|' | append: color_option_str | append: '|' | append: is_current_str | append: '|' | append: available_str
-
-          if products_with_data == ''
-            assign products_with_data = product_data_string
-          else
-            assign products_with_data = products_with_data | append: '|||' | append: product_data_string
+                  if products_with_data == ''
+                    assign products_with_data = product_data_string
+                  else
+                    assign products_with_data = products_with_data | append: '|||' | append: product_data_string
+                  endif
+                  
+                  # Mark this variant as processed
+                  if processed_variant_ids == ''
+                    assign processed_variant_ids = variant_product_key
+                  else
+                    assign processed_variant_ids = processed_variant_ids | append: '|||' | append: variant_product_key
+                  endif
+                endunless
+              endunless
+            endfor
           endif
         endif
       endif

@@ -237,11 +237,13 @@
       %}
       {% capture children %}
         {% for product in collection.products %}
+          {% comment %}=== DEBUG START: Product {{ product.id }} - {{ product.title }} ==={% endcomment %}
           {% liquid
             assign should_display = true
             assign product_group_ids = ''
             
             if enable_combined
+              # Build product_group_ids for debug output (always build this)
               assign combined_listings_metafield = product.metafields.custom.combined_listing
               
               # If current product has the metafield, collect all linked products
@@ -275,7 +277,7 @@
                 endunless
               else
                 # Check if product is referenced in another product's metafield
-                for all_product in collection.products
+                for all_product in collections.all.products
                   if all_product.id != product.id
                     assign check_metafield = all_product.metafields.custom.combined_listing
                     if check_metafield != blank and check_metafield.value != blank
@@ -357,176 +359,34 @@
                   endif
                 endfor
                 unless found_in_display_list
-                  # Product not in list - check if it should be filtered
-                  # CRITICAL: Products without metafields should ALWAYS show, even if pre-processing missed them
+                  # Product not in list - if it has a combined listing metafield, it's a duplicate (filter it)
+                  # If it doesn't have a metafield, it's a regular product that should be shown
+                  # (pre-processing should have added it, but if it didn't, show it anyway as a safety measure)
                   if combined_listings_metafield != blank and combined_listings_metafield.value != blank
                     # Has combined listing but not in list = duplicate, filter it
                     assign should_display = false
-                  else
-                    # No metafield - this is a standalone product that should always show
-                    # Pre-processing should have added it, but if it didn't, show it anyway
-                    assign should_display = true
                   endif
+                  # If no metafield, keep should_display = true (show the product)
                 endunless
               endif
               # If products_to_display is empty, don't filter anything - show all products
               # This happens when enable_combined is false or pre-processing didn't run
             endif
-            
           %}
-          
           {% if should_display %}
-            {% liquid
-              # NEW APPROACH: For combined listings, render all products in the group and show/hide based on active swatch
-              assign combined_listings_metafield = product.metafields.custom.combined_listing
-              assign is_combined_listing_group = false
-              assign all_group_products = ''
-              assign metafield_has_products = false
-              
-              # Check if metafield exists and actually contains products
-              if enable_combined and combined_listings_metafield != blank and combined_listings_metafield.value != blank
-                # Try iterating through metafield value to verify it contains products
-                for test_product in combined_listings_metafield.value
-                  assign metafield_has_products = true
-                  break
-                endfor
-              endif
-              
-              # Only use combined listing if metafield has products
-              if enable_combined and metafield_has_products
-                assign is_combined_listing_group = true
-                # Get sorted swatches to determine which product should be active (first alphabetically)
-                render 'util-combined-listing-data', product_resource: product, combined_listings_metafield: combined_listings_metafield, enable_combined: enable_combined
-                
-                # Collect all products in the group (from metafield + current product)
-                for linked_product in combined_listings_metafield.value
-                  assign linked_product_id_str = linked_product.id | append: ''
-                  if all_group_products == ''
-                    assign all_group_products = linked_product_id_str
-                  else
-                    assign all_group_products = all_group_products | append: ',' | append: linked_product_id_str
-                  endif
-                endfor
-                # Add current product if not already in list
-                assign product_id_str = product.id | append: ''
-                assign all_group_products_array = all_group_products | split: ','
-                assign product_in_group = false
-                for group_product_id in all_group_products_array
-                  assign group_product_id_stripped = group_product_id | strip
-                  assign product_id_str_stripped = product_id_str | strip
-                  if group_product_id_stripped == product_id_str_stripped
-                    assign product_in_group = true
-                    break
-                  endif
-                endfor
-                unless product_in_group
-                  if all_group_products == ''
-                    assign all_group_products = product_id_str
-                  else
-                    assign all_group_products = all_group_products | append: ',' | append: product_id_str
-                  endif
-                endunless
-                
-                # Determine which product should be active (first alphabetically sorted)
-                assign active_product_id = product.id
-                if has_combined_listing and sorted_swatches_data != '' and sorted_swatches_data != blank
-                  assign first_swatch_data = sorted_swatches_data | split: '|||' | first
-                  if first_swatch_data != blank
-                    assign first_parts = first_swatch_data | split: '|'
-                    assign first_base_index = 0
-                    if first_parts.size > 0 and first_parts[0] == blank
-                      assign first_base_index = 1
-                    endif
-                    assign first_product_id_idx = first_base_index
-                    if first_parts.size > first_product_id_idx
-                      assign first_product_id_from_swatch = first_parts[first_product_id_idx] | strip
-                      assign first_product_id_as_number = first_product_id_from_swatch | plus: 0
-                      assign active_product_id = first_product_id_from_swatch
-                    endif
-                  endif
-                endif
-              endif
-            %}
-            
-            {% if is_combined_listing_group and all_group_products != '' %}
-              {% # Render all products in the group, grouped together %}
-              {% assign group_products_array = all_group_products | split: ',' %}
-              <li
-                class="product-grid__item product-grid__item--{{ forloop.index0 }} combined-listing-group"
-                data-combined-listing-group="true"
-                data-active-product-id="{{ active_product_id }}"
-              >
-                <combined-listing-group>
-                  <div class="combined-listing-group__container">
-                  {% for group_product_id_str in group_products_array %}
-                    {% liquid
-                      assign group_product_id_stripped = group_product_id_str | strip
-                      assign group_product_id = group_product_id_stripped | plus: 0
-                      assign group_product = blank
-                    %}
-                    
-                    {% # Find the product object %}
-                    {% if combined_listings_metafield != blank and combined_listings_metafield.value != blank %}
-                      {% for linked_product in combined_listings_metafield.value %}
-                        {% if linked_product.id == group_product_id %}
-                          {% assign group_product = linked_product %}
-                          {% break %}
-                        {% endif %}
-                      {% endfor %}
-                    {% endif %}
-                    
-                    {% if group_product == blank and product.id == group_product_id %}
-                      {% assign group_product = product %}
-                    {% endif %}
-                    
-                    {% if group_product == blank %}
-                      {% for all_product in collections.all.products %}
-                        {% if all_product.id == group_product_id %}
-                          {% assign group_product = all_product %}
-                          {% break %}
-                        {% endif %}
-                      {% endfor %}
-                    {% endif %}
-                    
-                    {% if group_product != blank %}
-                      {% liquid
-                        assign is_active = false
-                        assign active_product_id_str = active_product_id | append: '' | strip
-                        assign group_product_id_str = group_product.id | append: '' | strip
-                        assign active_product_id_num = active_product_id | plus: 0
-                        if group_product.id == active_product_id or group_product.id == active_product_id_num or group_product_id_str == active_product_id_str
-                          assign is_active = true
-                        endif
-                      %}
-                      
-                      <div
-                        class="combined-listing-product-card{% unless is_active %} combined-listing-product-card--hidden{% endunless %}"
-                        data-product-id="{{ group_product.id }}"
-                        data-is-active="{% if is_active %}true{% else %}false{% endif %}"
-                      >
-                        {% # theme-check-disable %}
-                        {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: group_product %}
-                        {% # theme-check-enable %}
-                      </div>
-                    {% endif %}
-                  {% endfor %}
-                  </div>
-                </combined-listing-group>
-              </li>
-            {% else %}
-              {% # Regular product (not a combined listing) - render exactly like original Shopify theme %}
-              <li
-                id="{{ section.id }}-{{ product.id }}"
-                class="product-grid__item product-grid__item--{{ forloop.index0 }}"
-                data-page="{{ paginate.current_page }}"
-                data-product-id="{{ product.id }}"
-                ref="cards[]"
-              >
-                {% # theme-check-disable %}
-                {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
-                {% # theme-check-enable %}
-              </li>
-            {% endif %}
+            <li
+              id="{{ section.id }}-{{ product.id }}"
+              class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+              data-page="{{ paginate.current_page }}"
+              data-product-id="{{ product.id }}"
+              ref="cards[]"
+            >
+              {% # theme-check-disable %}
+              {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
+              {% # theme-check-enable %}
+            </li>
+          {% else %}
+            {% comment %}DEBUG: SKIPPED Product {{ product.id }} - {{ product.title }} (duplicate or filtered){% endcomment %}
           {% endif %}
         {% endfor %}
       {% endcapture %}
@@ -543,41 +403,6 @@
 </results-list>
 
 {% stylesheet %}
-  /* Combined listing group: show only active product, hide others */
-  .combined-listing-group {
-    position: relative;
-  }
-  
-  .combined-listing-group__container {
-    position: relative;
-    width: 100%;
-  }
-  
-  .combined-listing-product-card {
-    width: 100%;
-  }
-  
-  .combined-listing-product-card--hidden {
-    display: none;
-  }
-  
-  .combined-listing-product-card[data-is-active="true"] {
-    display: block;
-  }
-  
-  .combined-listing-product-card[data-is-active="false"] {
-    display: none;
-  }
-  
-  /* Ensure only one product card is visible at a time in a combined listing group */
-  .combined-listing-group .combined-listing-product-card[data-is-active="false"] {
-    display: none !important;
-  }
-  
-  .combined-listing-group .combined-listing-product-card[data-is-active="true"] {
-    display: block !important;
-  }
-  
   .main-collection-grid {
     grid-column: var(--grid-column--mobile);
 
