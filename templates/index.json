@@ -168,7 +168,7 @@
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "center",
             "vertical_alignment_flex_direction_column": "flex-end",
-            "gap": 12,
+            "gap": 31,
             "inherit_color_scheme": true,
             "color_scheme": "",
             "toggle_overlay": true,
@@ -223,7 +223,7 @@
                 "text_eUWRaN": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Harrison Roach In </p>",
+                    "text": "<p>Shop go-to accessories for all surfers</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -245,11 +245,26 @@
                   },
                   "blocks": {}
                 },
+                "button_cXjAd3": {
+                  "type": "button",
+                  "name": "t:names.button",
+                  "settings": {
+                    "label": "Shop now",
+                    "link": "shopify://blogs/news/surfers-gift-guide-10-things-surfers-love",
+                    "open_in_new_tab": false,
+                    "style_class": "button-secondary",
+                    "width": "fit-content",
+                    "custom_width": 100,
+                    "width_mobile": "fit-content",
+                    "custom_width_mobile": 100
+                  },
+                  "blocks": {}
+                },
                 "text_RNEdgE": {
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2>Bad things come in three</h2>",
+                    "text": "<h2>Holiday Gift Guide</h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -274,6 +289,7 @@
               },
               "block_order": [
                 "text_eUWRaN",
+                "button_cXjAd3",
                 "text_RNEdgE"
               ]
             }
