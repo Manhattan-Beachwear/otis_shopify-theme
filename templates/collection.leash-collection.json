@@ -118,7 +118,6 @@
               "type": "swatches",
               "name": "t:names.swatches",
               "settings": {
-                "show_swatch_text_labels": false,
                 "product_swatches_alignment": "flex-start",
                 "product_swatches_alignment_mobile": "flex-start",
                 "hide_padding": false,
@@ -544,7 +543,6 @@
               "type": "swatches",
               "name": "t:names.swatches",
               "settings": {
-                "show_swatch_text_labels": false,
                 "product_swatches_alignment": "flex-start",
                 "product_swatches_alignment_mobile": "flex-start",
                 "hide_padding": false,
@@ -569,8 +567,8 @@
         "collection": "reliance-2-0",
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "max_products": 5,
-        "columns": 5,
+        "max_products": 8,
+        "columns": 4,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
         "columns_gap": 8,
@@ -883,7 +881,6 @@
               "type": "swatches",
               "name": "t:names.swatches",
               "settings": {
-                "show_swatch_text_labels": false,
                 "product_swatches_alignment": "flex-start",
                 "product_swatches_alignment_mobile": "flex-start",
                 "hide_padding": false,
@@ -1222,7 +1219,6 @@
               "type": "swatches",
               "name": "t:names.swatches",
               "settings": {
-                "show_swatch_text_labels": false,
                 "product_swatches_alignment": "flex-start",
                 "product_swatches_alignment_mobile": "flex-start",
                 "hide_padding": false,
