@@ -1,0 +1,127 @@
+{%- liquid
+  assign block_settings = block.settings
+  
+  # Check if combined listings are enabled (from section or block settings)
+  assign enable_combined = false
+  if section.settings.enable_combined_listings
+    assign enable_combined = true
+  elsif block.settings.enable_combined_listings
+    assign enable_combined = true
+  endif
+  
+  # Check if product has combined listing metafield directly
+  assign combined_listings_metafield = closest.product.metafields.custom.combined_listing
+  assign has_combined_listing_metafield = false
+  
+  # Check if metafield exists and has products
+  # Note: enable_combined check is already done in blocks/swatches.liquid before rendering this snippet
+  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+    # Try to iterate to see if we have products
+    for test_product in combined_listings_metafield.value
+      assign has_combined_listing_metafield = true
+      assign product_has_swatches = true
+      break
+    endfor
+  endif
+-%}
+
+{%- comment -%} Use utility snippet to get swatches data if product has combined listing {%- endcomment -%}
+{%- if enable_combined and has_combined_listing_metafield -%}
+  {%- render 'util-combined-listing-data', product_resource: closest.product, combined_listings_metafield: combined_listings_metafield, enable_combined: enable_combined -%}
+{%- endif -%}
+
+{%- comment -%}
+  Render combined listing swatches (shows all swatches from all linked products)
+{%- endcomment -%}
+{% if product_has_swatches %}
+  <product-swatches
+    data-product-id="{{ closest.product.id }}"
+    data-product-url="{{ closest.product.url }}"
+    style="
+      --overflow-list-alignment: {{ block_settings.product_swatches_alignment }};
+      --overflow-list-alignment-mobile: {{ block_settings.product_swatches_alignment_mobile }};
+      --product-swatches-alignment: {% if block_settings.product_swatches_alignment == 'flex-start' %}start{% elsif block_settings.product_swatches_alignment == 'flex-end' %}end{% else %}center{% endif %};
+      --product-swatches-alignment-mobile: {% if block_settings.product_swatches_alignment_mobile == 'flex-start' %}start{% elsif block_settings.product_swatches_alignment_mobile == 'flex-end' %}end{% else %}center{% endif %};
+      --product-swatches-padding-block-start: {{ block_settings.product_swatches_padding_top }}px;
+      --product-swatches-padding-block-end: {{ block_settings.product_swatches_padding_bottom }}px;
+      --product-swatches-padding-inline-start: {{ block_settings.product_swatches_padding_left }}px;
+      --product-swatches-padding-inline-end: {{ block_settings.product_swatches_padding_right }}px;
+    "
+    {{ block.shopify_attributes }}
+  >
+    {%- comment -%} Use combined listing swatches (shows all swatches from all linked products) {%- endcomment -%}
+    {% render 'variant-combined-listing-swatches', product_resource: closest.product, block: block %}
+  </product-swatches>
+{% endif %}
+
+{% # theme-check-disable %}
+{% stylesheet %}
+  product-swatches {
+    width: 100%;
+    display: flex;
+    position: relative;
+    overflow: visible;
+    gap: 0;
+    flex-shrink: 0;
+    /* Add padding to prevent border clipping - account for max border width (10px) + focus outline */
+    padding: calc(var(--style-border-swatch-width, 1px) + var(--focus-outline-width, 2px) + 1px);
+    margin: calc(-1 * (var(--style-border-swatch-width, 1px) + var(--focus-outline-width, 2px) + 1px));
+  }
+
+  swatches-variant-picker-component {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: var(--product-swatches-alignment-mobile);
+
+    @media (min-width: 750px) {
+      justify-content: var(--product-swatches-alignment);
+    }
+  }
+
+  swatches-variant-picker-component .variant-option--swatches {
+    padding-block: calc(
+        var(--product-swatches-padding-block-start) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px)
+      )
+      calc(var(--product-swatches-padding-block-end) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px));
+    padding-inline: calc(
+        var(--product-swatches-padding-inline-start) + var(--focus-outline-offset) + (1.5 * var(--focus-outline-width)) + var(--style-border-swatch-width, 1px)
+      )
+      calc(var(--product-swatches-padding-inline-end) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px));
+  }
+
+  .variant-option--swatches {
+    overflow-list::part(list) {
+      gap: var(--gap-sm);
+    }
+
+    overflow-list[defer]::part(list) {
+      flex-wrap: nowrap;
+    }
+  }
+
+  .hidden-swatches__count {
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-40-60));
+    background-color: transparent;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+
+    &::before {
+      /* This doesn't work in Safari without the counter-reset. https://stackoverflow.com/a/40179718 */
+      counter-reset: overflow-count var(--overflow-count);
+      content: '+' counter(overflow-count);
+      line-height: 1;
+      cursor: pointer;
+    }
+  }
+
+  .hidden-swatches__count:hover {
+    color: var(--color-foreground-rgb);
+  }
+{% endstylesheet %}
+{% # theme-check-enable %}

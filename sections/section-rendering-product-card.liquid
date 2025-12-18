@@ -1,0 +1,110 @@
+{% liquid
+  if product == blank
+    assign product = closest.product
+  endif
+  
+  # Check if combined listings are enabled and product has combined listing
+  assign enable_combined = section.settings.enable_combined_listings
+  assign combined_listings_metafield = product.metafields.custom.combined_listing
+  
+  # Get combined listing data (sorted swatches and first variant)
+  render 'util-combined-listing-data', product_resource: product, combined_listings_metafield: combined_listings_metafield, enable_combined: enable_combined
+  
+  # Use first variant from combined listing if available, otherwise use default
+  if has_combined_listing and first_variant != blank
+    assign variant_to_use = first_variant
+  else
+    assign variant_to_use = product.selected_or_first_available_variant
+  endif
+  
+  if settings.transition_to_main_product
+    if has_combined_listing and first_variant_image != blank
+      assign featured_media_url = first_variant_image | image_url: width: 500
+    else
+      assign featured_media_url = variant_to_use.featured_image | image_url: width: 500
+      if featured_media_url == blank
+        assign featured_media_url = product.featured_media.preview_image | image_url: width: 500
+      endif
+    endif
+  endif
+
+  if has_combined_listing and first_variant_url != blank
+    assign url = first_variant_url
+  else
+    assign url = variant_to_use.url
+    unless url
+      assign url = product.first_available_variant.url
+    endunless
+    unless url
+      assign url = product.url
+    endunless
+  endif
+%}
+
+{%- if settings.transition_to_main_product -%}
+  <product-card-link
+    data-product-id="{{ product.id }}"
+    data-featured-media-url="{{ featured_media_url }}"
+    data-product-transition="{{ settings.transition_to_main_product }}"
+  >
+{%- endif -%}
+
+<product-card>
+  <a
+    href="{{ url }}"
+    ref="productCardLink"
+  >
+    {% render 'variant-quick-add', product_resource: product %}
+    {%- liquid
+      # Check if swatches block exists in the section
+      assign has_swatches_block = false
+      for block_item in section.blocks
+        if block_item.type == 'swatches'
+          assign has_swatches_block = true
+          break
+        endif
+      endfor
+    -%}
+    {% if has_swatches_block %}
+      {% if has_combined_listing and enable_combined %}
+        {% render 'variant-combined-listing-swatches', product_resource: product, block: blank %}
+      {% else %}
+        {% render 'variant-swatches', product_resource: product, has_option_selected: true %}
+      {% endif %}
+    {% endif %}
+
+    <product-price>
+      {% render 'price', product_resource: product, show_unit_price: true %}
+    </product-price>
+  </a>
+</product-card>
+{%- if settings.transition_to_main_product -%}
+  </product-card-link>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:names.product_card_rendering",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "t:settings.product"
+    },
+    {
+      "type": "header",
+      "content": "Combined Listings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_combined_listings",
+      "label": "Enable Combined Listings",
+      "default": false,
+      "info": "When enabled, products linked via combined listing metafield will appear as a single product with color variant swatches"
+    }
+  ]
+}
+{% endschema %}

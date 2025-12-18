@@ -1,0 +1,242 @@
+<!doctype html>
+<html
+  class="no-js{% if request.design_mode %} shopify-design-mode{% endif %}"
+  lang="{{ request.locale.iso_code }}"
+>
+  <head>
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
+    {%- endif -%}
+
+    {% comment %} This a way to wait for main content to load when navigating to a new page so that the view transitions can work consistently {% endcomment %}
+    <link
+      rel="expect"
+      href="#MainContent"
+      blocking="render"
+      id="view-transition-render-blocker"
+    >
+
+    {%- render 'meta-tags' -%}
+    {%- render 'stylesheets' -%}
+    {%- render 'fonts' -%}
+    {%- render 'scripts' -%}
+    {%- render 'theme-styles-variables' -%}
+    {%- render 'color-schemes' -%}
+
+    {% if request.design_mode %}
+      {%- render 'theme-editor' -%}
+    {% endif %}
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }} button-hover-effect-{{ settings.button_hover_effect }}">
+    {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
+    <div id="header-group">
+      {% sections 'header-group' %}
+    </div>
+
+    <script
+      src="{{ 'critical.js' | asset_url }}"
+      type="module"
+      async
+      blocking="render"
+    ></script>
+
+    <main
+      id="MainContent"
+      class="content-for-layout"
+      role="main"
+      data-page-transition-enabled="{{ settings.page_transition_enabled }}"
+      data-product-transition="{{ settings.transition_to_main_product }}"
+      data-template="{{ template }}"
+    >
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {% render 'search-modal' %}
+
+    {% if settings.quick_add or settings.mobile_quick_add %}
+      {% render 'quick-add-modal' %}
+    {% endif %}
+
+    {% comment %} Custom 3rd party scripts {% endcomment %}
+     {% comment %}theme-check-disable{% endcomment %}
+      <script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script>
+      {% comment %} <script>
+        var klaviyo = klaviyo || [];
+        klaviyo.init({
+          account: "W2v6ME",
+          platform: "shopify"
+        });
+        klaviyo.enable("backinstock",{ 
+          trigger: {
+            product_page_text: "Notify Me When Available",
+            product_page_class: "button",
+            product_page_text_align: "center",
+            product_page_margin: "0px",
+            replace_anchor: false
+          },
+          modal: {
+          headline: "{product_name}",
+          body_content: "Register to receive a notification when this item comes back in stock.",
+          email_field_label: "Email",
+          button_label: "Notify me when available",
+          subscription_success_label: "You're in! We'll let you know when it's back.",
+          footer_content: '',
+          additional_styles: "@import url('https://fonts.googleapis.com/css?family=Helvetica+Neue');",
+          drop_background_color: "#000",
+          background_color: "#fff",
+          text_color: "#222",
+          button_text_color: "#fff",
+          button_background_color: "#000",
+          close_button_color: "#ccc",
+          error_background_color: "#fcd6d7",
+          error_text_color: "#C72E2F",
+          success_background_color: "#d3efcd",
+          success_text_color: "#1B9500"
+          }
+        });
+      </script> {% endcomment %}
+      <!-- Restyle Klaviyo Button and Hide notifyMeButton -->
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          let klaviyoProcessed = false;
+          let restockProcessed = false;
+          
+          const observer = new MutationObserver(() => {
+            // Only process klaviyo element if not already processed
+            if (!klaviyoProcessed) {
+              const klaviyoElement = document.querySelector('.klaviyo-bis-trigger');
+              if (klaviyoElement) {
+                klaviyoElement.classList.add('btn', 'btn--full', 'add-to-cart', 'btn--secondary');
+                klaviyoElement.setAttribute('style', 'width: 100% !important; margin-top: 8px;');
+                klaviyoProcessed = true;
+                console.log('styled klaviyo button');
+              }
+            }
+            
+            // Only process restock button if not already processed
+            if (!restockProcessed) {
+              const restockButtons = document.querySelectorAll('.nm-portal .restock-alerts-notify-button:not([data-hidden])');
+              console.log('Found restock buttons inside nm-portal:', restockButtons.length);
+              
+              if (restockButtons.length > 0) {
+                // Add a CSS rule to hide all restock buttons with maximum specificity
+                const style = document.createElement('style');
+                style.textContent = `
+                  .nm-portal .restock-alerts-notify-button[data-hidden="true"] {
+                    display: none !important;
+                    visibility: hidden !important;
+                    opacity: 0 !important;
+                    position: absolute !important;
+                    left: -9999px !important;
+                    pointer-events: none !important;
+                    width: 0 !important;
+                    height: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    border: none !important;
+                    background: transparent !important;
+                    color: transparent !important;
+                    font-size: 0 !important;
+                    line-height: 0 !important;
+                    clip: rect(0, 0, 0, 0) !important;
+                    clip-path: inset(50%) !important;
+                  }
+                `;
+                document.head.appendChild(style);
+                
+                restockButtons.forEach((restockButton, index) => {
+                  console.log(`Processing restock button ${index + 1}:`, restockButton);
+                  
+                  // Mark as processed to prevent infinite loop
+                  restockButton.setAttribute('data-hidden', 'true');
+                  
+                  // Remove the button from the DOM entirely
+                  if (restockButton.parentNode) {
+                    restockButton.parentNode.removeChild(restockButton);
+                    console.log(`Removed restock button ${index + 1} from DOM`);
+                  } else {
+                    console.log(`Could not remove restock button ${index + 1} - no parent node`);
+                  }
+                });
+                
+                restockProcessed = true;
+                console.log('All restock buttons processed');
+              }
+            }
+
+            // Disconnect the observer when both elements are processed
+            if (klaviyoProcessed && restockProcessed) {
+              observer.disconnect();
+              console.log('observer disconnected');
+              
+              // Set up continuous monitoring for new restock buttons
+              setInterval(() => {
+                const newRestockButtons = document.querySelectorAll('.nm-portal .restock-alerts-notify-button:not([data-hidden])');
+                if (newRestockButtons.length > 0) {
+                  console.log('Found new restock buttons:', newRestockButtons.length);
+                  newRestockButtons.forEach((button, index) => {
+                    button.setAttribute('data-hidden', 'true');
+                    if (button.parentNode) {
+                      button.parentNode.removeChild(button);
+                      console.log(`Removed new restock button ${index + 1} from DOM`);
+                    }
+                  });
+                }
+              }, 500); // Check every 500ms
+            }
+          });
+        
+          // Observe the entire document for changes
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+          });
+        });
+      </script>
+      <!-- Make all aria-hidden="true" elements non-focusable -->
+      <script>
+        // Find all elements with aria-hidden="true"
+        document.addEventListener("DOMContentLoaded", () => {
+          // Make all focusable elements inside aria-hidden="true" elements non-focusable
+          document.querySelectorAll('[aria-hidden="true"]').forEach(el => {
+              el.querySelectorAll('a, button, input, select, textarea, [tabindex]').forEach(f => {
+                  f.setAttribute('tabindex', '-1');
+                  if (f.tagName === 'BUTTON' || f.tagName === 'INPUT') f.disabled = true;
+              });
+          });
+
+          // Specifically handle buttons with aria-hidden="true"
+          document.querySelectorAll('button[aria-hidden="true"]').forEach(button => {
+              button.setAttribute('tabindex', '-1');
+              button.setAttribute('disabled', 'true');
+          });
+
+          // Fix iframes with tabindex="-1"
+          // Wait for iframes to load before removing tabindex
+          document.querySelectorAll('iframe').forEach(iframe => {
+            if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+              handleIframe(iframe);
+            } else {
+              iframe.addEventListener('load', () => handleIframe(iframe));
+            }
+          });
+
+          function handleIframe(iframe) {
+            if (iframe.getAttribute('tabindex') === '-1') {
+              iframe.removeAttribute('tabindex');
+            }
+          }
+        });
+      </script>
+      {% comment %}theme-check-enable{% endcomment %}
+  </body>
+</html>

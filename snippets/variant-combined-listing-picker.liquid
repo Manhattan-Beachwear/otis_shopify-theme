@@ -1,0 +1,3130 @@
+{%- doc -%}
+  This is a custom file that enables the combined listing variant picker that displays each related product as a single variant option.
+
+  To use this file, you need to add the combined listings metafield to the product that contains the related products.
+
+  Renders a combined listing variant picker that displays each related product as a single variant option.
+
+  @param {object} product_resource - The product object.
+  @param {object} [block] - The block object with settings (optional)
+  
+  Settings (from block.settings or global settings):
+  - show_size_swatches {boolean} - Show size swatches when dual picker mode is enabled (default: false)
+  - show_swatch_text_labels {boolean} - Show text labels for swatches (default: false)
+  - enable_swatch_assets_backup {boolean} - Enable assets folder backup for swatches (passed to swatch component)
+  - swatch_file_extension {string} - Swatch file extension (passed to swatch component)
+  - show_variant_image {boolean} - Show variant image fallback (passed to swatch component)
+  - variant_swatch_width {number} - Variant swatch width (passed to swatch component)
+{%- enddoc -%}
+{% liquid
+  # Handle blank block (for sections that don't use blocks)
+  if block != blank
+    assign block_settings = block.settings
+  else
+    # block_settings will be blank, we'll handle defaults inline where needed
+    assign block_settings = blank
+  endif
+  
+  # Set default alignment if not provided
+  assign alignment_default = 'left'
+  if block_settings != blank and block_settings.alignment != blank
+    assign alignment_value = block_settings.alignment
+  else
+    assign alignment_value = alignment_default
+  endif
+  
+  # Get variant_style setting (priority: block settings > global settings)
+  assign variant_style_setting = 'buttons'
+  if block != blank and block_settings != blank and block_settings.variant_style != blank
+    assign variant_style_setting = block_settings.variant_style
+  elsif settings.variant_style != blank
+    assign variant_style_setting = settings.variant_style
+  endif
+  
+  # Get show_swatches setting (priority: block settings > global settings)
+  # Use block_settings.show_swatches directly like variant-main-picker.liquid does
+  # Checkbox: true when checked, false when unchecked
+  # Default to true if not set (schema default is true)
+  assign show_swatches_setting = true
+  if block != blank and block_settings != blank and block_settings.show_swatches != blank
+    assign show_swatches_setting = block_settings.show_swatches
+  elsif settings.show_swatches != blank
+    assign show_swatches_setting = settings.show_swatches
+  endif
+  
+  # Get show_size_swatches setting (priority: block settings > global settings)
+  assign show_size_swatches_setting = false
+  if block != blank and block_settings != blank and block_settings.show_size_swatches
+    assign show_size_swatches_setting = true
+  elsif settings.show_size_swatches
+    assign show_size_swatches_setting = true
+  endif
+  
+  # Get show_swatch_text_labels setting (priority: block settings > global settings)
+  assign show_swatch_text_labels_setting = false
+  if block != blank and block_settings != blank and block_settings.show_swatch_text_labels
+    assign show_swatch_text_labels_setting = true
+  elsif settings.show_swatch_text_labels
+    assign show_swatch_text_labels_setting = true
+  endif
+  
+  # Get swatch-related settings to pass to swatch component (priority: block settings > global settings)
+  assign swatch_enable_assets_backup = blank
+  if block != blank and block_settings != blank and block_settings.enable_swatch_assets_backup != blank
+    assign swatch_enable_assets_backup = block_settings.enable_swatch_assets_backup
+  elsif settings.enable_swatch_assets_backup != blank
+    assign swatch_enable_assets_backup = settings.enable_swatch_assets_backup
+  endif
+  
+  assign swatch_file_extension_setting = blank
+  if block != blank and block_settings != blank and block_settings.swatch_file_extension != blank
+    assign swatch_file_extension_setting = block_settings.swatch_file_extension
+  elsif settings.swatch_file_extension != blank
+    assign swatch_file_extension_setting = settings.swatch_file_extension
+  endif
+  
+  assign swatch_show_variant_image = blank
+  if block != blank and block_settings != blank and block_settings.show_variant_image != blank
+    assign swatch_show_variant_image = block_settings.show_variant_image
+  elsif settings.show_variant_image != blank
+    assign swatch_show_variant_image = settings.show_variant_image
+  endif
+  
+  assign swatch_variant_width = blank
+  if block != blank and block_settings != blank and block_settings.variant_swatch_width != blank
+    assign swatch_variant_width = block_settings.variant_swatch_width
+  elsif settings.variant_swatch_width != blank
+    assign swatch_variant_width = settings.variant_swatch_width
+  endif
+
+  # Check for combined listings metafield on current product
+  assign combined_listings_metafield = product_resource.metafields.custom.combined_listing
+  assign found_products = ''
+  assign source_metafield_product = product_resource
+  
+  # If current product has the metafield, use it
+  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+    for linked_product in combined_listings_metafield.value
+      # Add all linked products (including current product if it's in its own metafield)
+      assign linked_product_id = linked_product.id
+      assign current_product_id = product_resource.id
+      assign linked_product_id_as_string = linked_product_id | append: ''
+      assign current_product_id_as_string = current_product_id | append: ''
+      
+      # Check if this linked product is already in found_products to avoid duplicates
+      assign already_added = false
+      if found_products != ''
+        assign found_products_check = found_products | split: ','
+        for check_id in found_products_check
+          assign check_id_as_number = check_id | plus: 0
+          if linked_product_id == check_id or linked_product_id == check_id_as_number or linked_product_id_as_string == check_id
+            assign already_added = true
+            break
+          endif
+        endfor
+      endif
+      
+      unless already_added
+        if found_products == ''
+          assign found_products = linked_product.id
+        else
+          assign found_products = found_products | append: ',' | append: linked_product.id
+        endif
+      endunless
+    endfor
+  else
+    # If current product doesn't have the metafield, check if it's referenced in any other product's metafield
+    for all_product in collections.all.products
+      if all_product.id != product_resource.id
+        assign check_metafield = all_product.metafields.custom.combined_listing
+        if check_metafield != blank and check_metafield.value != blank
+          # Check if current product is in this product's metafield
+          assign current_product_found_in_metafield = false
+          for linked_product in check_metafield.value
+            assign linked_product_id = linked_product.id
+            assign current_product_id = product_resource.id
+            assign linked_product_id_as_string = linked_product_id | append: ''
+            assign current_product_id_as_string = current_product_id | append: ''
+            if linked_product_id == current_product_id or linked_product_id_as_string == current_product_id_as_string
+              assign current_product_found_in_metafield = true
+              break
+            endif
+          endfor
+          
+          if current_product_found_in_metafield
+            # Current product is in this metafield, so use this metafield's products
+            assign combined_listings_metafield = check_metafield
+            assign source_metafield_product = all_product
+            # Add all products from this metafield (includes current product)
+            for metafield_product in check_metafield.value
+              if found_products == ''
+                assign found_products = metafield_product.id
+              else
+                assign found_products = found_products | append: ',' | append: metafield_product.id
+              endif
+            endfor
+            # Also add the product that has the metafield (if not already in the list)
+            assign metafield_owner_in_list = false
+            assign found_products_array = found_products | split: ','
+            for product_id_check in found_products_array
+              assign product_id_check_as_number = product_id_check | plus: 0
+              assign all_product_id_as_string = all_product.id | append: ''
+              if all_product.id == product_id_check or all_product.id == product_id_check_as_number or all_product_id_as_string == product_id_check
+                assign metafield_owner_in_list = true
+                break
+              endif
+            endfor
+            unless metafield_owner_in_list
+              if found_products == ''
+                assign found_products = all_product.id
+              else
+                assign found_products = found_products | append: ',' | append: all_product.id
+              endif
+            endunless
+            break
+          endif
+        endif
+      endif
+    endfor
+  endif
+
+  # If no products found, set flag to fall back to default variant picker
+  assign should_fallback = false
+  if found_products == ''
+    assign should_fallback = true
+  endif
+%}
+
+{% if should_fallback %}
+  {% comment %}
+    Pass the block object to variant-main-picker.
+    The block object includes all settings:
+    - block.settings.variant_style (dropdowns/buttons)
+    - block.settings.show_swatches (true/false)
+    - block.settings.alignment (left/center/right)
+    - block.settings.padding-* (all padding settings)
+    
+    variant-main-picker will access these via block.settings
+  {% endcomment %}
+  {% render 'variant-main-picker', product_resource: product_resource, block: block %}
+{% else %}
+
+
+{% liquid
+  # Collect all products from metafield (current + related) with their data
+  # Use the metafield product references directly instead of searching collections.all.products
+  assign all_products_data = ''
+  assign processed_product_ids = ''
+  
+  # Process products directly from the metafield
+  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+    for linked_product in combined_listings_metafield.value
+      assign linked_product_id = linked_product.id
+      assign current_product_id = product_resource.id
+      assign linked_product_id_as_string = linked_product_id | append: ''
+      assign current_product_id_as_string = current_product_id | append: ''
+      assign is_current_product = false
+      
+      if linked_product_id == current_product_id or linked_product_id_as_string == current_product_id_as_string
+        assign is_current_product = true
+      else
+        # Check if already processed
+        assign already_processed = false
+        if processed_product_ids != ''
+          assign processed_check = processed_product_ids | split: ','
+          for processed_id in processed_check
+            assign processed_id_as_number = processed_id | plus: 0
+            if linked_product_id == processed_id or linked_product_id == processed_id_as_number or linked_product_id_as_string == processed_id
+              assign already_processed = true
+              break
+            endif
+          endfor
+        endif
+        
+        unless already_processed
+          if all_products_data == ''
+            assign all_products_data = linked_product_id | append: '|similar'
+          else
+            assign all_products_data = all_products_data | append: ',' | append: linked_product_id | append: '|similar'
+          endif
+          if processed_product_ids == ''
+            assign processed_product_ids = linked_product_id
+          else
+            assign processed_product_ids = processed_product_ids | append: ',' | append: linked_product_id
+          endif
+        endunless
+      endif
+    endfor
+  endif
+%}
+
+
+{% liquid
+
+  # Always add current product explicitly (ensures it's always included)
+  # Ensure product_resource.id is not blank
+  assign current_product_id_for_data = product_resource.id | append: ''
+  if current_product_id_for_data != blank and current_product_id_for_data != ''
+    if all_products_data == ''
+      assign all_products_data = current_product_id_for_data | append: '|current'
+    else
+      assign all_products_data = all_products_data | append: ',' | append: current_product_id_for_data | append: '|current'
+    endif
+  endif
+%}
+
+{% liquid
+  # PHASE 1: Detect if we have dual variant types (color + size) across all linked products
+  # This determines whether we need dual picker mode or single picker mode
+  assign has_color_option = false
+  assign has_size_option = false
+  assign color_option_name = ''
+  assign size_option_name = ''
+  assign color_option_position = 0
+  assign size_option_position = 0
+  
+  # Collect all products to analyze (including current product)
+  assign all_products_to_analyze = ''
+  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+    for linked_product in combined_listings_metafield.value
+      if all_products_to_analyze == ''
+        assign all_products_to_analyze = linked_product.id
+      else
+        assign all_products_to_analyze = all_products_to_analyze | append: ',' | append: linked_product.id
+      endif
+    endfor
+  endif
+  
+  # Always include current product in analysis
+  if all_products_to_analyze == ''
+    assign all_products_to_analyze = product_resource.id
+  else
+    assign all_products_to_analyze = all_products_to_analyze | append: ',' | append: product_resource.id
+  endif
+  
+  # Analyze all products to find variant option names
+  assign products_to_check = all_products_to_analyze | split: ','
+  for product_id_str in products_to_check
+    if product_id_str != blank and product_id_str != ''
+      assign product_id_check = product_id_str | plus: 0
+      assign product_id_check_str = product_id_str | append: ''
+      assign current_product_id_str = product_resource.id | append: ''
+      
+      # Find the product object
+      assign analyze_product = ''
+      
+      # Check if it's the current product
+      if product_id_check == product_resource.id or product_id_check_str == current_product_id_str
+        assign analyze_product = product_resource
+      else
+        # Try to find from metafield
+        if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+          for linked_product in combined_listings_metafield.value
+            assign linked_product_id = linked_product.id
+            assign linked_product_id_str = linked_product_id | append: ''
+            if linked_product_id == product_id_check or linked_product_id_str == product_id_check_str
+              assign analyze_product = linked_product
+              break
+            endif
+          endfor
+        endif
+        
+        # Fallback to collections
+        if analyze_product == ''
+          for all_product in collections.all.products
+            assign all_product_id_str = all_product.id | append: ''
+            if all_product.id == product_id_check or all_product_id_str == product_id_check_str
+              assign analyze_product = all_product
+              break
+            endif
+          endfor
+        endif
+      endif
+      
+      # Analyze this product's options
+      if analyze_product != ''
+        for option in analyze_product.options_with_values
+          assign option_name_lower = option.name | downcase | strip
+          
+          # Check for color variant (flexible matching)
+          if option_name_lower == 'color' or option_name_lower contains 'color'
+            unless has_color_option
+              assign has_color_option = true
+              assign color_option_name = option.name
+              assign color_option_position = option.position
+            endunless
+          endif
+          
+          # Check for size variant (flexible matching)
+          if option_name_lower == 'size' or option_name_lower contains 'size'
+            unless has_size_option
+              assign has_size_option = true
+              assign size_option_name = option.name
+              assign size_option_position = option.position
+            endunless
+          endif
+        endfor
+      endif
+    endif
+  endfor
+  
+  # Determine if we need dual picker mode
+  assign dual_picker_mode = false
+  if has_color_option and has_size_option
+    assign dual_picker_mode = true
+  endif
+%}
+
+{% liquid
+  # PHASE 2: Build dual variant data structure if dual picker mode is enabled
+  assign dual_variant_data = ''
+  assign unique_colors = ''
+  assign unique_sizes = ''
+  assign current_color_value = ''
+  assign current_size_value = ''
+  
+  if dual_picker_mode
+    # Process all products to build combination data
+    assign products_array_for_dual = all_products_data | split: ','
+    
+    for product_data in products_array_for_dual
+      if product_data != blank and product_data != ''
+        assign product_parts = product_data | split: '|'
+        assign product_id_index = 0
+        assign product_type_index = 1
+        if product_parts.size > 0 and product_parts[0] == blank or product_parts[0] == ''
+          assign product_id_index = 1
+          assign product_type_index = 2
+        endif
+        
+        if product_parts.size > product_type_index
+          assign product_id = product_parts[product_id_index] | strip
+          assign product_type = product_parts[product_type_index] | strip
+          assign product_type_normalized = product_type | downcase | strip
+          
+          if product_id == blank or product_id == ''
+            if product_type_normalized == 'current'
+              assign product_id = product_resource.id
+            endif
+          endif
+          
+          assign product_id_as_number = product_id | plus: 0
+          
+          # Find the product object
+          assign current_product_obj = ''
+          if product_type == 'current'
+            assign current_product_obj = product_resource
+            if product_id == blank or product_id == ''
+              assign product_id = product_resource.id
+              assign product_id_as_number = product_id | plus: 0
+            endif
+          else
+            if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+              for linked_product in combined_listings_metafield.value
+                assign linked_product_id = linked_product.id
+                assign linked_product_id_as_string = linked_product_id | append: ''
+                if linked_product_id == product_id or linked_product_id == product_id_as_number or linked_product_id_as_string == product_id
+                  assign current_product_obj = linked_product
+                  break
+                endif
+              endfor
+            endif
+            
+            if current_product_obj == ''
+              for all_product in collections.all.products
+                assign all_product_id_as_string = all_product.id | append: ''
+                if all_product.id == product_id or all_product.id == product_id_as_number or all_product_id_as_string == product_id
+                  assign current_product_obj = all_product
+                  break
+                endif
+              endfor
+            endif
+          endif
+          
+          if current_product_obj != ''
+            # Get current product's selected variant for pre-selection
+            assign current_variant = current_product_obj.selected_or_first_available_variant
+            if product_type == 'current'
+              assign current_variant = product_resource.selected_or_first_available_variant
+              # Store current product's values for pre-selection
+              assign current_variant_color = ''
+              assign current_variant_size = ''
+              if color_option_position == 1
+                assign current_variant_color = current_variant.option1
+              elsif color_option_position == 2
+                assign current_variant_color = current_variant.option2
+              elsif color_option_position == 3
+                assign current_variant_color = current_variant.option3
+              endif
+              if size_option_position == 1
+                assign current_variant_size = current_variant.option1
+              elsif size_option_position == 2
+                assign current_variant_size = current_variant.option2
+              elsif size_option_position == 3
+                assign current_variant_size = current_variant.option3
+              endif
+              assign current_color_value = current_variant_color
+              assign current_size_value = current_variant_size
+            endif
+            
+            # Loop through ALL variants of this product (not just the first one)
+            for variant_item in current_product_obj.variants
+              # Extract color and size values from variant
+              assign color_value = ''
+              assign size_value = ''
+              
+              if color_option_position == 1
+                assign color_value = variant_item.option1
+              elsif color_option_position == 2
+                assign color_value = variant_item.option2
+              elsif color_option_position == 3
+                assign color_value = variant_item.option3
+              endif
+              
+              if size_option_position == 1
+                assign size_value = variant_item.option1
+              elsif size_option_position == 2
+                assign size_value = variant_item.option2
+              elsif size_option_position == 3
+                assign size_value = variant_item.option3
+              endif
+              
+              # Build combination data string: product_id|variant_id|color_value|size_value|product_url|available
+              assign product_id_str = product_id | append: ''
+              assign variant_id_str = variant_item.id | append: ''
+              assign color_value_str = color_value | append: ''
+              assign size_value_str = size_value | append: ''
+              assign product_url_str = current_product_obj.url | append: ''
+              assign variant_available_str = 'false'
+              if variant_item.available
+                assign variant_available_str = 'true'
+              endif
+              assign is_current_str = 'false'
+              if product_type == 'current' and variant_item.id == current_variant.id
+                assign is_current_str = 'true'
+              endif
+              
+              # Build combination entry
+              assign combination_entry = product_id_str | append: '|' | append: variant_id_str | append: '|' | append: color_value_str | append: '|' | append: size_value_str | append: '|' | append: product_url_str | append: '|' | append: variant_available_str | append: '|' | append: is_current_str
+              
+              if dual_variant_data == ''
+                assign dual_variant_data = combination_entry
+              else
+                assign dual_variant_data = dual_variant_data | append: '|||' | append: combination_entry
+              endif
+              
+              # Track unique colors
+              if color_value != blank and color_value != ''
+                assign color_found = false
+                if unique_colors != ''
+                  assign colors_check = unique_colors | split: '|||'
+                  for existing_color in colors_check
+                    if existing_color == color_value
+                      assign color_found = true
+                      break
+                    endif
+                  endfor
+                endif
+                unless color_found
+                  if unique_colors == ''
+                    assign unique_colors = color_value
+                  else
+                    assign unique_colors = unique_colors | append: '|||' | append: color_value
+                  endif
+                endunless
+              endif
+              
+              # Track unique sizes
+              if size_value != blank and size_value != ''
+                assign size_found = false
+                if unique_sizes != ''
+                  assign sizes_check = unique_sizes | split: '|||'
+                  for existing_size in sizes_check
+                    if existing_size == size_value
+                      assign size_found = true
+                      break
+                    endif
+                  endfor
+                endif
+                unless size_found
+                  if unique_sizes == ''
+                    assign unique_sizes = size_value
+                  else
+                    assign unique_sizes = unique_sizes | append: '|||' | append: size_value
+                  endif
+                endunless
+              endif
+            endfor
+          endif
+        endif
+      endif
+    endfor
+    
+    # Sort unique colors alphabetically
+    if unique_colors != ''
+      assign colors_array_unsorted = unique_colors | split: '|||'
+      assign colors_array_sorted = colors_array_unsorted | sort
+      assign unique_colors = colors_array_sorted | join: '|||'
+    endif
+    
+    # Sort unique sizes with custom logic for numeric and standard sizes
+    if unique_sizes != ''
+      capture sorted_sizes_result
+        render 'util-size-sort', sizes_string: unique_sizes
+      endcapture
+      assign unique_sizes = sorted_sizes_result | strip
+    endif
+  endif
+%}
+
+{% liquid
+  # Build products array with full data
+  assign products_array = all_products_data | split: ','
+  assign products_with_data = ''
+
+  # Build a map of product IDs to product objects from the metafield
+  assign product_map = ''
+  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+    for linked_product in combined_listings_metafield.value
+      assign linked_product_id = linked_product.id
+      if product_map == ''
+        assign product_map = linked_product_id | append: ':' | append: linked_product.id
+      else
+        assign product_map = product_map | append: '|||' | append: linked_product_id | append: ':' | append: linked_product.id
+      endif
+    endfor
+  endif
+
+  for product_data in products_array
+    # Skip empty items
+    if product_data != blank and product_data != ''
+      assign product_parts = product_data | split: '|'
+      
+      # Handle case where string starts with pipe (first element is empty)
+      assign product_id_index = 0
+      assign product_type_index = 1
+      if product_parts.size > 0 and product_parts[0] == blank or product_parts[0] == ''
+        # First element is empty, shift indices
+        assign product_id_index = 1
+        assign product_type_index = 2
+      endif
+      
+      if product_parts.size > product_type_index
+        assign product_id = product_parts[product_id_index] | strip
+        assign product_type = product_parts[product_type_index] | strip
+        
+        # Normalize product_type for comparison
+        assign product_type_normalized = product_type | downcase | strip
+        
+        # If product_id is blank and this is the current product, use product_resource.id
+        if product_id == blank or product_id == ''
+          if product_type_normalized == 'current'
+            assign product_id = product_resource.id
+            assign product_type = 'current'
+          endif
+        endif
+        
+        assign product_id_as_number = product_id | plus: 0
+
+        # Find the product object
+        assign current_product_obj = ''
+        
+        # Use product_resource directly if this is the current product
+        if product_type == 'current'
+          assign current_product_obj = product_resource
+          # Ensure product_id is set for current product
+          if product_id == blank or product_id == ''
+            assign product_id = product_resource.id
+            assign product_id_as_number = product_id | plus: 0
+          endif
+        else
+          # Try to find product from metafield first (more reliable)
+          if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+            for linked_product in combined_listings_metafield.value
+              assign linked_product_id = linked_product.id
+              assign linked_product_id_as_string = linked_product_id | append: ''
+              if linked_product_id == product_id or linked_product_id == product_id_as_number or linked_product_id_as_string == product_id
+                assign current_product_obj = linked_product
+                break
+              endif
+            endfor
+          endif
+          
+          # Fallback: Find product by iterating through all products (if not found in metafield)
+          if current_product_obj == ''
+            for all_product in collections.all.products
+              assign all_product_id_as_string = all_product.id | append: ''
+              if all_product.id == product_id or all_product.id == product_id_as_number or all_product_id_as_string == product_id
+                assign current_product_obj = all_product
+                break
+              endif
+            endfor
+          endif
+        endif
+
+        if current_product_obj != ''
+          # Get variant to display (selected for current product, first available for others)
+          assign variant_to_display = current_product_obj.selected_or_first_available_variant
+          if product_type == 'current'
+            assign variant_to_display = product_resource.selected_or_first_available_variant
+          endif
+
+          # Find color option value with swatch if available
+          # Priority: 1) "color" variant option, 2) first available option
+          assign color_option_value = ''
+          assign color_option_value_name = ''
+          assign color_option_name = ''
+          assign has_swatch = false
+          assign color_metafield_value = ''
+
+          # Step 1: Check for "color" variant option (case-insensitive)
+          for option in current_product_obj.options_with_values
+            assign option_name_lower = option.name | downcase
+            if option_name_lower == 'color'
+              assign color_option_name = option.name
+              # Get the color value name from the variant's option value directly
+              # Find which position the color option is in
+              if option.position == 1
+                assign variant_color_value = variant_to_display.option1
+              elsif option.position == 2
+                assign variant_color_value = variant_to_display.option2
+              elsif option.position == 3
+                assign variant_color_value = variant_to_display.option3
+              else
+                assign variant_color_value = ''
+              endif
+              
+              # Use the variant's color value directly - this should always work
+              assign color_option_value_name = variant_color_value
+              
+              # Check if this option has swatches and find the matching option value
+              assign swatch_count = option.values | map: 'swatch' | compact | size
+              if swatch_count > 0
+                # Find the option value that matches this variant for swatch display
+                for product_option_value in option.values
+                  if product_option_value.variant.id == variant_to_display.id
+                    assign color_option_value = product_option_value
+                    assign has_swatch = true
+                    break
+                  endif
+                endfor
+              endif
+              
+              break
+            endif
+          endfor
+
+          # Step 2: If no "color" option found, use first available option name
+          if color_option_name == ''
+            assign first_option = current_product_obj.options_with_values.first
+            if first_option
+              assign color_option_name = first_option.name
+              # Get the value name from the variant's option value directly
+              if first_option.position == 1
+                assign color_option_value_name = variant_to_display.option1
+              elsif first_option.position == 2
+                assign color_option_value_name = variant_to_display.option2
+              elsif first_option.position == 3
+                assign color_option_value_name = variant_to_display.option3
+              endif
+              # Check if this option has swatches
+              assign swatch_count = first_option.values | map: 'swatch' | compact | size
+              if swatch_count > 0
+                # Find the option value that matches this variant
+                for product_option_value in first_option.values
+                  if product_option_value.variant.id == variant_to_display.id
+                    assign color_option_value = product_option_value
+                    assign has_swatch = true
+                    break
+                  endif
+                endfor
+              endif
+            endif
+          endif
+          
+          # Ensure color_option_value_name is never blank - use fallback if needed
+          if color_option_value_name == blank or color_option_value_name == ''
+            # Fallback: use the variant title or product title
+            if variant_to_display.title != blank
+              assign color_option_value_name = variant_to_display.title
+            else
+              assign color_option_value_name = current_product_obj.title
+            endif
+          endif
+          
+          # Ensure color_option_name is never blank
+          if color_option_name == blank or color_option_name == ''
+            assign color_option_name = 'Option'
+          endif
+
+          # Build product data string: product_id|product_type|variant_id|product_url|product_title|has_swatch|color_option_value_name|color_option_name|is_current|available|color_metafield_value
+          assign is_current = 'false'
+          if product_type == 'current'
+            assign is_current = 'true'
+          endif
+
+          # Get color metafield value if available
+          assign color_metafield_value_for_data = ''
+          if color_metafield_value != blank
+            assign color_metafield_value_for_data = color_metafield_value
+          elsif color_metafield != blank and color_metafield.value != blank
+            assign color_metafield_value_for_data = color_metafield.value
+          endif
+
+          # Use product URL without variant parameter
+          assign product_url_clean = current_product_obj.url
+          # Convert boolean to string explicitly
+          assign variant_available_string = 'false'
+          if variant_to_display.available
+            assign variant_available_string = 'true'
+          endif
+          # Ensure product_id is always set (critical for current product)
+          # Use product object id directly to ensure it's never blank
+          if product_type == 'current'
+            assign product_id = product_resource.id
+            assign product_id_as_number = product_id | plus: 0
+          else
+            if product_id == blank or product_id == ''
+              assign product_id = current_product_obj.id
+              assign product_id_as_number = product_id | plus: 0
+            endif
+          endif
+          
+          # Ensure all values are strings and never blank (use empty string if blank)
+          # Always use product object id directly for string conversion to avoid any parsing issues
+          if product_type == 'current'
+            # For current product, always use product_resource.id directly
+            assign product_id_str = product_resource.id | append: ''
+            # Double-check it's not blank
+            if product_id_str == blank or product_id_str == ''
+              assign product_id_str = product_resource.id
+            endif
+          else
+            assign product_id_str = product_id | append: ''
+            if product_id_str == blank or product_id_str == ''
+              assign product_id_str = current_product_obj.id | append: ''
+            endif
+            # Final fallback
+            if product_id_str == blank or product_id_str == ''
+              assign product_id_str = current_product_obj.id
+            endif
+          endif
+          
+          # Ensure product_id_str is never blank - if it is, something is very wrong
+          if product_id_str == blank or product_id_str == ''
+            if product_type == 'current'
+              assign product_id_str = product_resource.id
+            else
+              assign product_id_str = current_product_obj.id
+            endif
+          endif
+          
+          assign product_type_str = product_type | append: ''
+          assign variant_id_str = variant_to_display.id | append: ''
+          assign product_url_str = product_url_clean | append: ''
+          assign product_title_str = current_product_obj.title | append: ''
+          assign has_swatch_str = has_swatch | append: ''
+          assign color_value_str = color_option_value_name | append: ''
+          assign color_option_str = color_option_name | append: ''
+          assign is_current_str = is_current | append: ''
+          assign available_str = variant_available_string | append: ''
+          assign metafield_str = color_metafield_value_for_data | append: ''
+          
+          # Store the value name (string) for sorting, not the object
+          # Format: product_id|product_type|variant_id|product_url|product_title|has_swatch|color_option_value_name|color_option_name|is_current|available|color_metafield_value
+          # Build string carefully - ensure product_id is never blank
+          # Normalize product_type for comparison
+          assign product_type_check = product_type | downcase | strip
+          
+          # For current product, always use product_resource.id directly
+          if product_type_check == 'current'
+            # Use product_resource.id directly - it should always be available
+            assign final_product_id = product_resource.id
+            # Ensure product_id is also set for consistency
+            if product_id == blank or product_id == ''
+              assign product_id = product_resource.id
+            endif
+          else
+            # Use the parsed product_id, or fall back to current_product_obj.id
+            if product_id != blank and product_id != ''
+              assign final_product_id = product_id
+            else
+              assign final_product_id = current_product_obj.id
+            endif
+          endif
+          
+          # Convert to string - use the most reliable method
+          assign final_product_id_str = final_product_id | append: ''
+          
+          # Final safety check - if still blank, something is very wrong
+          if final_product_id_str == blank or final_product_id_str == ''
+            if product_type_check == 'current'
+              assign final_product_id_str = product_resource.id
+            else
+              assign final_product_id_str = current_product_obj.id
+            endif
+            # Convert again
+            assign final_product_id_str = final_product_id_str | append: ''
+          endif
+          
+          # Now build the string - start with product_id (should never be blank at this point)
+          assign product_data_string = final_product_id_str | append: '|' | append: product_type_str | append: '|' | append: variant_id_str | append: '|' | append: product_url_str | append: '|' | append: product_title_str | append: '|' | append: has_swatch_str | append: '|' | append: color_value_str | append: '|' | append: color_option_str | append: '|' | append: is_current_str | append: '|' | append: available_str | append: '|' | append: metafield_str
+
+          if products_with_data == ''
+            assign products_with_data = product_data_string
+          else
+            assign products_with_data = products_with_data | append: '|||' | append: product_data_string
+          endif
+        endif
+      endif
+    endif
+  endfor
+
+  # Sort products alphabetically by color option value (for consistent swatch ordering)
+  assign sorted_products_array = products_with_data | split: '|||'
+  assign sorted_products = ''
+
+  # Create array of products with their sort keys (color value names, lowercase for case-insensitive sorting)
+  assign products_with_sort_keys = ''
+  for product_item in sorted_products_array
+    if product_item != blank
+      assign item_parts = product_item | split: '|'
+      
+      # Handle case where string starts with pipe (first element is empty) - same logic as rendering
+      assign sort_base_index = 0
+      if item_parts.size > 0
+        assign sort_first_part = item_parts[0] | strip
+        if sort_first_part == blank or sort_first_part == ''
+          assign sort_base_index = 1
+        endif
+      endif
+      
+      # We need at least 10 elements (indices sort_base_index through sort_base_index+9)
+      assign sort_min_size = sort_base_index | plus: 10
+      if item_parts.size >= sort_min_size
+
+        assign color_value_idx = sort_base_index | plus: 6
+        assign color_value = item_parts[color_value_idx] | strip
+        
+        # If color_value is blank, fall back to product title for sorting (index sort_base_index + 4)
+        if color_value == blank or color_value == ''
+          assign product_title_idx = sort_base_index | plus: 4
+          if item_parts.size > product_title_idx
+            assign color_value = item_parts[product_title_idx] | strip
+          endif
+        endif
+        
+        # Ensure we have a value to sort by
+        if color_value != blank and color_value != ''
+          # Convert to lowercase for case-insensitive sorting
+          assign color_value_lower = color_value | downcase | strip
+          # Use a unique delimiter that won't appear in product data: |||SORT|||
+          # Format: lowercase_color_value|||SORT|||product_item
+          assign sortable_item = color_value_lower | append: '|||SORT|||' | append: product_item
+          if products_with_sort_keys == ''
+            assign products_with_sort_keys = sortable_item
+          else
+            assign products_with_sort_keys = products_with_sort_keys | append: '|||SEP|||' | append: sortable_item
+          endif
+        endif
+      endif
+    endif
+  endfor
+
+  # Sort by the lowercase color value (first part before |||SORT|||)
+  assign sorted_with_keys = products_with_sort_keys | split: '|||SEP|||' | sort
+
+  # Extract just the product items (everything after |||SORT|||)
+  for sorted_item in sorted_with_keys
+    assign sort_parts = sorted_item | split: '|||SORT|||'
+    if sort_parts.size > 1
+      assign product_item_original = sort_parts[1]
+      
+      if sorted_products == ''
+        assign sorted_products = product_item_original
+      else
+        assign sorted_products = sorted_products | append: '|||' | append: product_item_original
+      endif
+    endif
+  endfor
+%}
+
+{% liquid
+  # Get variant option name for legend (from first product)
+  # Priority: 1) "color" variant option, 2) first available option
+  assign variant_option_name = 'Available Options'
+  if sorted_products != '' and sorted_products_array != ''
+    if sorted_products_array.size > 0
+      assign first_product_parts = sorted_products_array[0] | split: '|'
+      assign first_product_id = first_product_parts[0]
+      assign first_product_id_as_number = first_product_id | plus: 0
+      
+      # Find the first product object - try metafield first, then collections
+      assign first_product_obj = ''
+      
+      # Try to find from metafield first (more reliable)
+      if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+        for linked_product in combined_listings_metafield.value
+          assign linked_product_id = linked_product.id
+          assign linked_product_id_as_string = linked_product_id | append: ''
+          if linked_product_id == first_product_id or linked_product_id == first_product_id_as_number or linked_product_id_as_string == first_product_id
+            assign first_product_obj = linked_product
+            break
+          endif
+        endfor
+      endif
+      
+      # Fallback: Find from collections.all.products
+      if first_product_obj == ''
+        for all_product in collections.all.products
+          assign all_product_id_as_string = all_product.id | append: ''
+          if all_product.id == first_product_id or all_product.id == first_product_id_as_number or all_product_id_as_string == first_product_id
+            assign first_product_obj = all_product
+            break
+          endif
+        endfor
+      endif
+      
+      if first_product_obj != ''
+        # Step 1: Check for "color" variant option (case-insensitive)
+        for option in first_product_obj.options_with_values
+          assign option_name_lower = option.name | downcase
+          if option_name_lower == 'color'
+            assign variant_option_name = option.name
+            break
+          endif
+        endfor
+        
+        # Step 2: If no "color" option found, use first available option name
+        if variant_option_name == 'Available Options'
+          assign first_option = first_product_obj.options_with_values.first
+          if first_option
+            assign variant_option_name = first_option.name
+          endif
+        endif
+      endif
+    endif
+  endif
+  
+  # Get the currently selected variant's color option value name for display
+  assign selected_color_value = ''
+  assign selected_variant = product_resource.selected_or_first_available_variant
+  
+  # Find the color option and get the selected value
+  for option in product_resource.options_with_values
+    assign option_name_lower = option.name | downcase
+    if option_name_lower == 'color'
+      # Get the selected value from the variant's option
+      if option.position == 1
+        assign selected_color_value = selected_variant.option1
+      elsif option.position == 2
+        assign selected_color_value = selected_variant.option2
+      elsif option.position == 3
+        assign selected_color_value = selected_variant.option3
+      endif
+      break
+    endif
+  endfor
+  
+  # If no color option found, use first available option's selected value
+  if selected_color_value == blank or selected_color_value == ''
+    assign first_option = product_resource.options_with_values.first
+    if first_option
+      if first_option.position == 1
+        assign selected_color_value = selected_variant.option1
+      elsif first_option.position == 2
+        assign selected_color_value = selected_variant.option2
+      elsif first_option.position == 3
+        assign selected_color_value = selected_variant.option3
+      endif
+    endif
+  endif
+%}
+
+{% if dual_picker_mode and dual_variant_data != '' %}
+  {% comment %} DUAL PICKER MODE: Render Color + Size pickers {% endcomment %}
+  {% liquid
+    assign button_background_brightness = section.settings.color_scheme.settings.foreground | color_brightness
+    if button_background_brightness < 105
+      assign strikethrough_color_mix = '#000'
+    else
+      assign strikethrough_color_mix = '#fff'
+    endif
+  %}
+  <variant-picker-cl-dual
+    class="variant-picker-cl-dual spacing-style variant-picker-cl-dual--{{ alignment_value }}"
+    style="--color-strikethrough-mix: {{ strikethrough_color_mix }}; {% render 'spacing-style', settings: block_settings %}"
+    data-section-id="{{ section.id }}"
+    data-product-id="{{ product_resource.id }}"
+    data-block-id="{{ block.id }}"
+    data-combinations="{{ dual_variant_data | escape }}"
+    data-current-color="{{ current_color_value | escape }}"
+    data-current-size="{{ current_size_value | escape }}"
+    {{ block.shopify_attributes }}
+  >
+    <form class="variant-picker-cl-dual__form">
+      {% comment %} Color Picker {% endcomment %}
+      {%- liquid
+        # Use block_settings.show_swatches directly like variant-main-picker.liquid does
+        # Priority: block settings > global settings
+        assign use_swatches = true
+        if block != blank and block_settings != blank
+          # Use block_settings.show_swatches directly (same pattern as variant-main-picker.liquid line 48, 63)
+          assign use_swatches = block_settings.show_swatches
+        elsif settings.show_swatches != blank
+          assign use_swatches = settings.show_swatches
+        endif
+      -%}
+      {%- if use_swatches -%}
+        <fieldset class="variant-option variant-option--buttons variant-option--swatches">
+        {%- liquid
+          # Always show labels on product pages, otherwise respect the setting
+          assign is_product_page = false
+          if request.page_type == 'product'
+            assign is_product_page = true
+          endif
+          
+          # Show labels if on product page OR if setting is enabled
+          assign show_text_labels = false
+          if is_product_page
+            assign show_text_labels = true
+          elsif show_swatch_text_labels_setting
+            assign show_text_labels = true
+          endif
+        -%}
+        {%- if show_text_labels -%}
+          <legend>
+            {{ color_option_name | escape }}:
+            {%- if current_color_value != blank and current_color_value != '' -%}
+              <span class="variant-option__swatch-value">{{ current_color_value | escape }}</span>
+            {%- endif %}
+          </legend>
+        {%- endif %}
+        {% capture children %}
+          {% assign colors_array = unique_colors | split: '|||' %}
+          {% for color_value_item in colors_array %}
+            {%- liquid
+              # Skip option values that are blank, null, 0 (number), "0" (string), or "null" (string)
+              assign color_value_str = color_value_item | append: ''
+              assign should_skip_color = false
+              if color_value_item == blank or color_value_item == 0 or color_value_str == '' or color_value_str == '0' or color_value_str == 'null'
+                assign should_skip_color = true
+              endif
+            -%}
+            {%- unless should_skip_color -%}
+            {% if color_value_item != blank and color_value_item != '' %}
+              {% liquid
+                assign is_current_color = false
+                if color_value_item == current_color_value
+                  assign is_current_color = true
+                endif
+                
+                # Find swatch for this color - prioritize swatch color/image over variant image
+                assign swatch_to_render = ''
+                assign variant_image_for_swatch = ''
+                assign matching_product_for_fallback = ''
+                assign option_value_name_for_swatch = color_value_item
+                
+                # Check current product first
+                for option in product_resource.options_with_values
+                  assign option_name_lower = option.name | downcase | strip
+                  if option_name_lower == 'color' or option_name_lower contains 'color'
+                    for value in option.values
+                      assign value_str = value | append: ''
+                      if value_str == color_value_item
+                        # Use the actual option value name for assets folder backup
+                        assign option_value_name_for_swatch = value.name
+                        
+                        # Priority 1: Check for swatch (custom color or swatch image) - highest priority
+                        if value.swatch != blank
+                          if value.swatch.color != blank or value.swatch.image != blank
+                            assign swatch_to_render = value.swatch
+                          endif
+                        endif
+                        
+                        # Priority 2: Check for variant's custom image (only if no swatch found)
+                        if swatch_to_render == blank
+                          if value.variant.featured_media != blank
+                            assign variant_image_for_swatch = value.variant.featured_media
+                          endif
+                        endif
+                        
+                        # Store product for fallback if needed
+                        if matching_product_for_fallback == ''
+                          assign matching_product_for_fallback = product_resource
+                        endif
+                        
+                        break
+                      endif
+                    endfor
+                    if swatch_to_render != blank or variant_image_for_swatch != blank
+                      break
+                    endif
+                  endif
+                endfor
+                
+                # If not found in current product, check linked products
+                if swatch_to_render == blank and variant_image_for_swatch == blank
+                  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+                    for linked_product in combined_listings_metafield.value
+                      for option in linked_product.options_with_values
+                        assign option_name_lower = option.name | downcase | strip
+                        if option_name_lower == 'color' or option_name_lower contains 'color'
+                          for value in option.values
+                            assign value_str = value | append: ''
+                            if value_str == color_value_item
+                              # Use the actual option value name for assets folder backup
+                              assign option_value_name_for_swatch = value.name
+                              
+                              # Priority 1: Check for swatch (custom color or swatch image) - highest priority
+                              if value.swatch != blank
+                                if value.swatch.color != blank or value.swatch.image != blank
+                                  assign swatch_to_render = value.swatch
+                                endif
+                              endif
+                              
+                              # Priority 2: Check for variant's custom image (only if no swatch found)
+                              if swatch_to_render == blank
+                                if value.variant.featured_media != blank
+                                  assign variant_image_for_swatch = value.variant.featured_media
+                                endif
+                              endif
+                              
+                              # Store product for fallback if needed
+                              if matching_product_for_fallback == ''
+                                assign matching_product_for_fallback = linked_product
+                              endif
+                              
+                              break
+                            endif
+                          endfor
+                          if swatch_to_render != blank or variant_image_for_swatch != blank
+                            break
+                          endif
+                        endif
+                      endfor
+                      if swatch_to_render != blank or variant_image_for_swatch != blank
+                        break
+                      endif
+                    endfor
+                  endif
+                endif
+                
+                # Priority 3: If no swatch or variant image found, fall back to product's first image
+                if swatch_to_render == blank and variant_image_for_swatch == blank
+                  if matching_product_for_fallback != '' and matching_product_for_fallback.featured_media != blank
+                    assign variant_image_for_swatch = matching_product_for_fallback.featured_media
+                  endif
+                endif
+                
+                # Check assets folder for backup swatch file (Priority 1 in swatch.liquid)
+                assign assets_file_exists = false
+                if option_value_name_for_swatch != blank
+                  assign enable_backup = settings.enable_swatch_assets_backup
+                  if enable_backup == blank
+                    assign enable_backup = true
+                  endif
+                  
+                  if enable_backup
+                    assign swatch_file_extension = settings.swatch_file_extension | default: 'png'
+                    assign color_file_name = option_value_name_for_swatch | handle | append: '.' | append: swatch_file_extension
+                    if images[color_file_name] != blank
+                      assign assets_file_exists = true
+                    endif
+                  endif
+                endif
+                
+                # Set has_swatch_to_render - include assets folder check
+                assign has_swatch_to_render = false
+                if swatch_to_render != blank
+                  # We have a swatch with color or image
+                  assign has_swatch_to_render = true
+                elsif variant_image_for_swatch != blank
+                  # We have a variant image or product fallback image
+                  assign has_swatch_to_render = true
+                elsif assets_file_exists
+                  # Assets folder file exists - swatch.liquid will handle rendering it
+                  assign has_swatch_to_render = true
+                endif
+                
+                # Check if this color has the currently selected size available
+                # If a size is selected, check if this color has that size
+                assign color_is_available = true
+                if current_size_value != blank and current_size_value != ''
+                  assign color_has_size = false
+                  if dual_variant_data != ''
+                    assign combinations_check = dual_variant_data | split: '|||'
+                    for combination_entry in combinations_check
+                      if combination_entry != blank and combination_entry != ''
+                        assign combo_parts = combination_entry | split: '|'
+                        if combo_parts.size >= 6
+                          assign combo_color = combo_parts[2] | strip
+                          assign combo_size = combo_parts[3] | strip
+                          assign color_value_normalized = color_value_item | strip
+                          assign current_size_normalized = current_size_value | strip
+                          
+                          # Check if this color matches and has the selected size (normalized for comparison)
+                          if combo_color == color_value_normalized and combo_size == current_size_normalized
+                            assign color_has_size = true
+                            break
+                          endif
+                        endif
+                      endif
+                    endfor
+                  endif
+                  if color_has_size == false
+                    assign color_is_available = false
+                  endif
+                endif
+                
+                # Find the first available variant for this color to get variant ID and URL
+                assign first_available_variant_id = ''
+                assign first_available_variant_url = ''
+                assign variant_for_hover = ''
+                if dual_variant_data != ''
+                  assign combinations_check = dual_variant_data | split: '|||'
+                  for combination_entry in combinations_check
+                    if combination_entry != blank and combination_entry != ''
+                      assign combo_parts = combination_entry | split: '|'
+                      if combo_parts.size >= 6
+                        assign combo_color = combo_parts[2] | strip
+                        assign combo_variant_id = combo_parts[1] | strip
+                        assign combo_url = combo_parts[4] | strip
+                        assign combo_available = combo_parts[5] | strip
+                        assign color_value_normalized = color_value_item | strip
+                        
+                        if combo_color == color_value_normalized and combo_available == 'true'
+                          assign first_available_variant_id = combo_variant_id
+                          assign first_available_variant_url = combo_url
+                          
+                          # Try to find the actual variant object for hover preview
+                          if matching_product_for_fallback != ''
+                            assign variant_id_as_number = combo_variant_id | plus: 0
+                            assign variant_id_as_string = combo_variant_id | append: ''
+                            for variant in matching_product_for_fallback.variants
+                              if variant.id == variant_id_as_number or variant.id == variant_id_as_string or variant.id == combo_variant_id
+                                assign variant_for_hover = variant
+                                break
+                              endif
+                            endfor
+                          endif
+                          
+                          # If not found in matching product, check all linked products
+                          if variant_for_hover == blank
+                            if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+                              for linked_product in combined_listings_metafield.value
+                                assign variant_id_as_number = combo_variant_id | plus: 0
+                                assign variant_id_as_string = combo_variant_id | append: ''
+                                for variant in linked_product.variants
+                                  if variant.id == variant_id_as_number or variant.id == variant_id_as_string or variant.id == combo_variant_id
+                                    assign variant_for_hover = variant
+                                    break
+                                  endif
+                                endfor
+                                if variant_for_hover != blank
+                                  break
+                                endif
+                              endfor
+                            endif
+                          endif
+                          
+                          break
+                        endif
+                      endif
+                    endif
+                  endfor
+                endif
+                
+                # Find the product that this color variant belongs to (for hover preview)
+                # For combined listings, each color represents a different product, so we need the product's featured media
+                assign hover_product = matching_product_for_fallback
+                if variant_for_hover != blank
+                  # Find which product this variant belongs to by checking the combo URL
+                  if first_available_variant_url != blank
+                    # Extract product ID from URL or find product by variant
+                    if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+                      for linked_product in combined_listings_metafield.value
+                        # Check if this product's URL matches the variant URL
+                        assign linked_product_url = linked_product.url | append: ''
+                        assign variant_url_base = first_available_variant_url | split: '?' | first
+                        if linked_product_url == variant_url_base or first_available_variant_url contains linked_product_url
+                          assign hover_product = linked_product
+                          break
+                        endif
+                        # Also check by variant ID
+                        for variant in linked_product.variants
+                          if variant.id == variant_for_hover.id
+                            assign hover_product = linked_product
+                            break
+                          endif
+                        endfor
+                        if hover_product != matching_product_for_fallback
+                          break
+                        endif
+                      endfor
+                    endif
+                  endif
+                endif
+                
+                # Get featured media for hover preview - prioritize product's featured media (main product image)
+                # This ensures we show the correct product image for each color on hover
+                assign featured_media = ''
+                if hover_product != '' and hover_product != matching_product_for_fallback and hover_product.featured_media != blank
+                  # Use the product's featured media (this is the main product image for that color)
+                  assign featured_media = hover_product.featured_media
+                elsif variant_for_hover != blank and variant_for_hover.featured_media != blank
+                  # Fallback to variant's featured media if product media not available
+                  assign featured_media = variant_for_hover.featured_media
+                elsif matching_product_for_fallback != '' and matching_product_for_fallback.featured_media != blank
+                  # Use matching product's featured media as fallback
+                  assign featured_media = matching_product_for_fallback.featured_media
+                elsif variant_image_for_swatch != blank
+                  assign featured_media = variant_image_for_swatch
+                endif
+              %}
+              
+              <li class="variant-option__swatch">
+                <label
+                  {% if featured_media != blank %}
+                    data-media-id="{{ featured_media.id }}"
+                  {% endif %}
+                  data-option-available="{{ color_is_available }}"
+                  class="variant-option__button-label variant-option__button-label--has-swatch swatch-rounded{% if is_current_color %} variant-option__button-label--current{% endif %}"
+                  {% if featured_media != blank %}
+                    on:pointerenter="product-card/previewVariant/{{ featured_media.id }}"
+                    on:pointerleave="product-card/resetVariant"
+                  {% endif %}
+                >
+                  <input
+                    type="radio"
+                    id="cl-dual-color-{{ section.id }}-{{ block.id }}-{{ color_value_item | handleize }}"
+                    name="color_selection-{{ block.id }}"
+                    value="{{ color_value_item | escape }}"
+                    data-option-type="color"
+                    data-fieldset-index="0"
+                    data-input-index="{{ forloop.index0 }}"
+                    data-previous-checked="false"
+                    data-option-available="{{ color_is_available }}"
+                    {% if featured_media != blank %}
+                      data-option-media-id="{{ featured_media.id }}"
+                    {% endif %}
+                    {% if first_available_variant_url != blank %}
+                      data-connected-product-url="{{ first_available_variant_url }}"
+                    {% endif %}
+                    {% if is_current_color %}
+                      data-current-checked="true"
+                      checked
+                    {% else %}
+                      data-current-checked="false"
+                    {% endif %}
+                    {% if color_is_available == false %}
+                      aria-disabled="true"
+                    {% endif %}
+                    aria-label="{{ color_value_item | escape }}"
+                    data-available-count="{% if color_is_available %}1{% else %}0{% endif %}"
+                    data-variant-id="{{ first_available_variant_id }}"
+                    data-first-available-or-first-variant-id="{{ first_available_variant_id }}"
+                  >
+                  {% if has_swatch_to_render %}
+                    {% if swatch_to_render != blank %}
+                      {% render 'swatch',
+                        swatch: swatch_to_render,
+                        variant_image: featured_media,
+                        option_value_name: option_value_name_for_swatch,
+                        enable_swatch_assets_backup: swatch_enable_assets_backup,
+                        swatch_file_extension: swatch_file_extension_setting,
+                        show_variant_image: swatch_show_variant_image,
+                        variant_swatch_width: swatch_variant_width
+                      %}
+                    {% else %}
+                      {% render 'swatch',
+                        swatch: blank,
+                        variant_image: featured_media,
+                        option_value_name: option_value_name_for_swatch,
+                        enable_swatch_assets_backup: swatch_enable_assets_backup,
+                        swatch_file_extension: swatch_file_extension_setting,
+                        show_variant_image: swatch_show_variant_image,
+                        variant_swatch_width: swatch_variant_width
+                      %}
+                    {% endif %}
+                    {% unless color_is_available %}
+                      <svg
+                        viewBox="0 0 100 46"
+                        preserveAspectRatio="xMidYMid slice"
+                      >
+                        {% # 25deg %}
+                        <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
+                        {% # duplicate line for motion overlay %}
+                        <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
+                      </svg>
+                    {% endunless %}
+                  {% else %}
+                    {% if color_is_available == true %}
+                      <span class="variant-picker-cl-dual__pill"></span>
+                    {% endif %}
+                    <span class="variant-picker-cl-dual__text">{{ color_value_item | escape }}</span>
+                  {% endif %}
+                </label>
+              </li>
+            {% endif %}
+            {%- endunless -%}
+          {% endfor %}
+          <li
+            slot="more"
+          >
+            <button
+              class="hidden-swatches__count"
+              aria-label="{{ 'actions.show_all_options' | t }}"
+              on:click="/showAllSwatches"
+            ></button>
+          </li>
+        {% endcapture %}
+        {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
+      </fieldset>
+      {%- else -%}
+        {%- comment -%} Render colors as dropdowns or buttons based on variant_style {%- endcomment -%}
+        {%- if variant_style_setting == 'dropdowns' -%}
+          <div class="variant-option variant-option--dropdowns">
+            {%- liquid
+              # Determine if text labels should be shown for colors
+              assign show_color_text_labels = false
+              if request.page_type == 'product' or show_swatch_text_labels_setting
+                assign show_color_text_labels = true
+              endif
+            -%}
+            {%- if show_color_text_labels -%}
+              <label for="Color-{{ product_resource.id }}-{{ block.id }}">{{ color_option_name | escape }}</label>
+            {%- endif %}
+            <div class="variant-option__select-wrapper">
+              <select
+                id="Color-{{ product_resource.id }}-{{ block.id }}"
+                name="options[{{ color_option_name | escape }}]"
+                class="variant-option__select"
+              >
+                {% assign colors_array = unique_colors | split: '|||' %}
+                {% for color_value_item in colors_array %}
+                  {%- liquid
+                    assign color_value_str = color_value_item | append: ''
+                    assign should_skip_color = false
+                    if color_value_item == blank or color_value_item == 0 or color_value_str == '' or color_value_str == '0' or color_value_str == 'null'
+                      assign should_skip_color = true
+                    endif
+                  -%}
+                  {%- unless should_skip_color -%}
+                    {%- liquid
+                      assign color_is_available = false
+                      assign first_available_variant_id = ''
+                      assign first_available_variant_url = ''
+                      if dual_variant_data != ''
+                        assign combinations_check = dual_variant_data | split: '|||'
+                        for combination_entry in combinations_check
+                          if combination_entry != blank and combination_entry != ''
+                            assign combo_parts = combination_entry | split: '|'
+                            if combo_parts.size >= 6
+                              assign combo_color = combo_parts[2] | strip
+                              assign combo_available = combo_parts[5] | strip
+                              assign color_value_normalized = color_value_item | strip
+                              
+                              if combo_color == color_value_normalized and combo_available == 'true'
+                                assign color_is_available = true
+                                assign first_available_variant_id = combo_parts[1] | strip
+                                assign first_available_variant_url = combo_parts[4] | strip
+                                break
+                              endif
+                            endif
+                          endif
+                        endfor
+                      endif
+                    -%}
+                    <option
+                      value="{{ color_value_item | escape }}"
+                      data-input-id="1-{{ forloop.index0 }}"
+                      data-variant-id="{{ first_available_variant_id }}"
+                      {% if first_available_variant_url != blank %}
+                        data-connected-product-url="{{ first_available_variant_url }}"
+                      {% endif %}
+                      {% if color_value_item == current_color_value %}
+                        selected="selected"
+                      {% endif %}
+                      {% unless color_is_available %}
+                        disabled
+                      {% endunless %}
+                    >
+                      {% if color_is_available == false %}
+                        {{ color_value_item | escape }} - {{ 'content.unavailable' | t }}
+                      {% else %}
+                        {{ color_value_item | escape }}
+                      {% endif %}
+                    </option>
+                  {%- endunless -%}
+                {% endfor %}
+              </select>
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                class="icon icon-caret"
+                viewBox="0 0 10 6"
+              >
+                {%- render 'icon', icon: 'caret' -%}
+              </svg>
+            </div>
+          </div>
+        {%- else -%}
+          {%- comment -%} Render colors as buttons {%- endcomment -%}
+          <fieldset class="variant-option variant-option--buttons">
+            {%- liquid
+              # Determine if text labels should be shown for colors
+              assign show_color_text_labels = false
+              if request.page_type == 'product' or show_swatch_text_labels_setting
+                assign show_color_text_labels = true
+              endif
+            -%}
+            {%- if show_color_text_labels -%}
+              <legend>
+                {{ color_option_name | escape }}:
+                {%- if current_color_value != blank and current_color_value != '' -%}
+                  <span class="variant-option__swatch-value">{{ current_color_value | escape }}</span>
+                {%- endif %}
+              </legend>
+            {%- endif %}
+            {% assign colors_array = unique_colors | split: '|||' %}
+            {% for color_value_item in colors_array %}
+              {%- liquid
+                assign color_value_str = color_value_item | append: ''
+                assign should_skip_color = false
+                if color_value_item == blank or color_value_item == 0 or color_value_str == '' or color_value_str == '0' or color_value_str == 'null'
+                  assign should_skip_color = true
+                endif
+              -%}
+              {%- unless should_skip_color -%}
+                {%- liquid
+                  assign is_current_color = false
+                  if color_value_item == current_color_value
+                    assign is_current_color = true
+                  endif
+                  
+                  assign color_is_available = false
+                  assign first_available_variant_id = ''
+                  assign first_available_variant_url = ''
+                  if dual_variant_data != ''
+                    assign combinations_check = dual_variant_data | split: '|||'
+                    for combination_entry in combinations_check
+                      if combination_entry != blank and combination_entry != ''
+                        assign combo_parts = combination_entry | split: '|'
+                        if combo_parts.size >= 6
+                          assign combo_color = combo_parts[2] | strip
+                          assign combo_available = combo_parts[5] | strip
+                          assign color_value_normalized = color_value_item | strip
+                          
+                          if combo_color == color_value_normalized and combo_available == 'true'
+                            assign color_is_available = true
+                            assign first_available_variant_id = combo_parts[1] | strip
+                            assign first_available_variant_url = combo_parts[4] | strip
+                            break
+                          endif
+                        endif
+                      endif
+                    endfor
+                  endif
+                -%}
+                <label
+                  data-option-available="{{ color_is_available }}"
+                  class="variant-option__button-label"
+                  {% if first_available_variant_url != blank %}
+                    on:pointerenter="product-card/previewVariant/{{ first_available_variant_id }}"
+                    on:pointerleave="product-card/resetVariant"
+                  {% endif %}
+                >
+                  <input
+                    type="radio"
+                    name="{{ color_option_name | escape }}-{{ product_resource.id }}-button"
+                    value="{{ color_value_item | escape }}"
+                    aria-label="{{ color_value_item | escape }}"
+                    data-input-id="1-{{ forloop.index0 }}"
+                    data-option-available="{{ color_is_available }}"
+                    {% if first_available_variant_url != blank %}
+                      data-connected-product-url="{{ first_available_variant_url }}"
+                    {% endif %}
+                    {% if is_current_color %}
+                      checked
+                    {% endif %}
+                    data-available-count="{% if color_is_available %}1{% else %}0{% endif %}"
+                    data-variant-id="{{ first_available_variant_id }}"
+                    data-first-available-or-first-variant-id="{{ first_available_variant_id }}"
+                  >
+                  <span class="variant-option__button-label__text">{{ color_value_item | escape }}</span>
+                </label>
+              {%- endunless -%}
+            {% endfor %}
+          </fieldset>
+        {%- endif -%}
+      {%- endif -%}
+      
+      {%- liquid
+        # Only show sizes on product pages
+        # On collection/category pages (product cards), always hide sizes
+        assign is_product_page = false
+        if request.page_type == 'product'
+          assign is_product_page = true
+        endif
+        
+        # Show sizes only if: on product page AND show_size_swatches is enabled
+        assign should_show_sizes = false
+        if is_product_page and show_size_swatches_setting
+          assign should_show_sizes = true
+        endif
+      -%}
+      
+      {% comment %} Size Picker {% endcomment %}
+      {% liquid
+        # Calculate longest size value for button width distribution
+        assign longest_size_value = 0
+        assign size_fieldset_id = ''
+        assign size_option_id_attribute = ''
+        if settings.variant_button_width == 'equal-width-buttons'
+          assign size_fieldset_id = section.id | append: '-' | append: product_resource.id | append: '-' | append: size_option_name | handleize
+          assign size_option_id_attribute = 'data-option-id="' | append: size_fieldset_id | append: '"'
+          assign sizes_array_for_length = unique_sizes | split: '|||'
+          for size_value_check in sizes_array_for_length
+            if size_value_check != blank and size_value_check != ''
+              assign size_length = size_value_check.size
+              if size_length > longest_size_value
+                assign longest_size_value = size_length
+              endif
+            endif
+          endfor
+        endif
+      %}
+      {%- liquid
+        # Only show sizes on product pages
+        # On collection/category pages (product cards), always hide sizes
+        assign is_product_page = false
+        if request.page_type == 'product'
+          assign is_product_page = true
+        endif
+        
+        # Show sizes only if: on product page
+        assign should_show_sizes = false
+        if is_product_page
+          assign should_show_sizes = true
+        endif
+      -%}
+      {%- if unique_sizes != '' and size_option_name != '' and should_show_sizes -%}
+        {%- if variant_style_setting == 'dropdowns' -%}
+          {%- comment -%} Render sizes as dropdown {%- endcomment -%}
+          <div class="variant-option variant-option--dropdowns">
+            <label for="Size-{{ product_resource.id }}-{{ block.id }}">{{ size_option_name | escape }}</label>
+            <div class="variant-option__select-wrapper">
+              <select
+                id="Size-{{ product_resource.id }}-{{ block.id }}"
+                name="options[{{ size_option_name | escape }}]"
+                class="variant-option__select"
+              >
+                {% assign sizes_array = unique_sizes | split: '|||' %}
+                {% for size_value_item in sizes_array %}
+                  {%- liquid
+                    assign size_value_str = size_value_item | append: ''
+                    assign should_skip_size = false
+                    if size_value_item == blank or size_value_item == 0 or size_value_str == '' or size_value_str == '0' or size_value_str == 'null'
+                      assign should_skip_size = true
+                    endif
+                  -%}
+                  {%- unless should_skip_size -%}
+                    {%- liquid
+                      assign size_is_available = false
+                      assign first_available_size_variant_id = ''
+                      assign first_available_size_variant_url = ''
+                      if dual_variant_data != ''
+                        assign combinations_check = dual_variant_data | split: '|||'
+                        for combination_entry in combinations_check
+                          if combination_entry != blank and combination_entry != ''
+                            assign combo_parts = combination_entry | split: '|'
+                            if combo_parts.size >= 6
+                              assign combo_size = combo_parts[3] | strip
+                              assign combo_color = combo_parts[2] | strip
+                              assign combo_available = combo_parts[5] | strip
+
+                              if combo_size == size_value_item
+                                if current_color_value != blank and current_color_value != ''
+                                  if combo_color == current_color_value and combo_available == 'true'
+                                    assign size_is_available = true
+                                    assign first_available_size_variant_id = combo_parts[1] | strip
+                                    assign first_available_size_variant_url = combo_parts[4] | strip
+                                    break
+                                  endif
+                                else
+                                  if combo_available == 'true'
+                                    assign size_is_available = true
+                                    assign first_available_size_variant_id = combo_parts[1] | strip
+                                    assign first_available_size_variant_url = combo_parts[4] | strip
+                                    break
+                                  endif
+                                endif
+                              endif
+                            endif
+                          endif
+                        endfor
+                      endif
+                    -%}
+                    <option
+                      value="{{ size_value_item | escape }}"
+                      data-input-id="2-{{ forloop.index0 }}"
+                      data-option-value-id="{{ first_available_size_variant_id }}"
+                      data-variant-id="{{ first_available_size_variant_id }}"
+                      {% if first_available_size_variant_url != blank %}
+                        data-connected-product-url="{{ first_available_size_variant_url }}"
+                      {% endif %}
+                      {% if size_value_item == current_size_value %}
+                        selected="selected"
+                      {% endif %}
+                      {% if size_is_available == false %}
+                        disabled
+                      {% endif %}
+                    >
+                      {% if size_is_available == false %}
+                        {{ size_value_item | escape }} - {{ 'content.unavailable' | t }}
+                      {% else %}
+                        {{ size_value_item | escape }}
+                      {% endif %}
+                    </option>
+                  {%- endunless -%}
+                {% endfor %}
+              </select>
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                class="icon icon-caret"
+                viewBox="0 0 10 6"
+              >
+                {%- render 'icon', icon: 'caret' -%}
+              </svg>
+            </div>
+          </div>
+        {%- else -%}
+          {%- comment -%} Render sizes as buttons {%- endcomment -%}
+          <fieldset 
+            class="variant-picker-cl-dual__fieldset variant-picker-cl-dual__fieldset--size{% if settings.variant_button_width == 'equal-width-buttons' %} variant-picker-cl-dual__fieldset--equal-width-buttons{% endif %}"
+            {{ size_option_id_attribute }}
+          >
+            <legend>
+              {{ size_option_name | escape }}
+              {%- if current_size_value != blank and current_size_value != '' -%}
+                <span class="variant-picker-cl-dual__swatch-value">{{ current_size_value | escape }}</span>
+              {%- endif %}
+            </legend>
+            {% if size_option_id_attribute and longest_size_value > 0 %}
+              {% style %}
+                [data-option-id="{{ size_fieldset_id }}"] {
+                  --variant-ch: {{ longest_size_value }}ch;
+                }
+              {% endstyle %}
+            {% endif %}
+            <div 
+              class="variant-picker-cl-dual__options" 
+              data-option-type="size" 
+              data-fieldset-index="1"
+            >
+              {% assign sizes_array = unique_sizes | split: '|||' %}
+              {% for size_value_item in sizes_array %}
+            {%- liquid
+              # Skip option values that are blank, null, 0 (number), "0" (string), or "null" (string)
+              assign size_value_str = size_value_item | append: ''
+              assign should_skip_size = false
+              if size_value_item == blank or size_value_item == 0 or size_value_str == '' or size_value_str == '0' or size_value_str == 'null'
+                assign should_skip_size = true
+              endif
+            -%}
+            {%- unless should_skip_size -%}
+            {% if size_value_item != blank and size_value_item != '' %}
+              {% liquid
+                assign is_current_size = false
+                if size_value_item == current_size_value
+                  assign is_current_size = true
+                endif
+                
+                # Check if this size has any available combinations
+                # If a color is selected, check combinations with that color
+                # Otherwise, check all combinations for this size
+                assign size_is_available = false
+                if dual_variant_data != ''
+                  assign combinations_check = dual_variant_data | split: '|||'
+                  for combination_entry in combinations_check
+                    if combination_entry != blank and combination_entry != ''
+                      assign combo_parts = combination_entry | split: '|'
+                      if combo_parts.size >= 6
+                        assign combo_size = combo_parts[3]
+                        assign combo_color = combo_parts[2]
+                        assign combo_available = combo_parts[5]
+                        
+                        # Check if this size matches
+                        if combo_size == size_value_item
+                          # If color is selected, only check combinations with that color
+                          if current_color_value != blank and current_color_value != ''
+                            if combo_color == current_color_value and combo_available == 'true'
+                              assign size_is_available = true
+                              break
+                            endif
+                          else
+                            # No color selected, check if any combination with this size is available
+                            if combo_available == 'true'
+                              assign size_is_available = true
+                              break
+                            endif
+                          endif
+                        endif
+                      endif
+                    endif
+                  endfor
+                endif
+              %}
+              
+              <label
+                class="variant-picker-cl-dual__label{% if is_current_size %} variant-picker-cl-dual__label--current{% endif %}"
+                {% if size_is_available == false %}
+                  data-option-available="false"
+                {% else %}
+                  data-option-available="true"
+                {% endif %}
+              >
+                <input
+                  type="radio"
+                  id="cl-dual-size-{{ section.id }}-{{ block.id }}-{{ size_value_item | handleize }}"
+                  name="size_selection-{{ block.id }}"
+                  value="{{ size_value_item | escape }}"
+                  data-option-type="size"
+                  data-fieldset-index="1"
+                  data-input-index="{{ forloop.index0 }}"
+                  data-previous-checked="false"
+                  data-option-available="{{ size_is_available }}"
+                  {% if is_current_size %}
+                    data-current-checked="true"
+                    checked
+                  {% else %}
+                    data-current-checked="false"
+                  {% endif %}
+                  {% if size_is_available == false %}
+                    aria-disabled="true"
+                  {% endif %}
+                  aria-label="{{ size_value_item | escape }}"
+                >
+                {% if size_is_available == true %}
+                  <span class="variant-picker-cl-dual__pill"></span>
+                {% endif %}
+                <span class="variant-picker-cl-dual__text">{{ size_value_item | escape }}</span>
+                {% unless size_is_available %}
+                  <svg
+                    viewBox="0 0 100 46"
+                    preserveAspectRatio="xMidYMid slice"
+                  >
+                    {% # 25deg %}
+                    <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
+                    {% # duplicate line for motion overlay %}
+                    <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
+                  </svg>
+                {% endunless %}
+              </label>
+            {% endif %}
+            {%- endunless -%}
+          {% endfor %}
+            </div>
+          </fieldset>
+        {%- endif -%}
+      {%- endif -%}
+    </form>
+  </variant-picker-cl-dual>
+{% elsif sorted_products != '' %}
+  {% comment %} SINGLE PICKER MODE: Render color swatches or buttons/dropdowns {% endcomment %}
+  {%- liquid
+    # Use block_settings.show_swatches directly like variant-main-picker.liquid does
+    # Priority: block settings > global settings
+    assign use_swatches = true
+    if block != blank and block_settings != blank
+      # Use block_settings.show_swatches directly (same pattern as variant-main-picker.liquid line 48, 63)
+      assign use_swatches = block_settings.show_swatches
+    elsif settings.show_swatches != blank
+      assign use_swatches = settings.show_swatches
+    endif
+  -%}
+  {%- if use_swatches -%}
+    <swatches-variant-picker-component
+      data-product-id="{{ product_resource.id }}"
+      data-product-url="{{ product_resource.url }}"
+      ref="swatchesVariantPicker"
+    >
+      <form>
+        <fieldset class="variant-option variant-option--buttons variant-option--swatches">
+        {%- liquid
+          # Always show labels on product pages, otherwise respect the setting
+          assign is_product_page = false
+          if request.page_type == 'product'
+            assign is_product_page = true
+          endif
+          
+          # Show labels if on product page OR if setting is enabled
+          assign show_text_labels = false
+          if is_product_page
+            assign show_text_labels = true
+          elsif show_swatch_text_labels_setting
+            assign show_text_labels = true
+          endif
+        -%}
+        {%- if show_text_labels -%}
+          <legend>
+            {{ variant_option_name | escape }}:
+            {%- if selected_color_value != blank and selected_color_value != '' -%}
+              <span class="variant-option__swatch-value">{{ selected_color_value | escape }}</span>
+            {%- endif %}
+          </legend>
+        {%- endif %}
+        {% capture children %}
+          {% assign final_products = sorted_products | split: '|||' %}
+          {% for product_item in final_products %}
+            {% if product_item != blank and product_item != '' %}
+              {% assign item_parts = product_item | split: '|' %}
+              
+              {% comment %} Handle case where string starts with pipe (first element is empty) {% endcomment %}
+              {% assign base_index = 0 %}
+              {% if item_parts.size > 0 %}
+                {% assign first_part = item_parts[0] | strip %}
+                {% if first_part == blank or first_part == '' %}
+                  {% assign base_index = 1 %}
+                {% endif %}
+              {% endif %}
+              
+              {% comment %} We need at least 10 elements (indices base_index through base_index+9) for the core fields {% endcomment %}
+              {% comment %} The last field (color_metafield_value) is optional, so we only need 10 fields minimum {% endcomment %}
+              {% assign min_required_size = base_index | plus: 10 %}
+              {% if item_parts.size >= min_required_size %}
+                {% assign idx = base_index %}
+                {% assign product_id = item_parts[idx] | strip %}
+                {% assign idx = base_index | plus: 1 %}
+                {% assign product_type = item_parts[idx] | strip %}
+                {% assign idx = base_index | plus: 2 %}
+                {% assign variant_id = item_parts[idx] | strip %}
+                {% assign idx = base_index | plus: 3 %}
+                {% assign product_url = item_parts[idx] | strip %}
+                {% assign idx = base_index | plus: 4 %}
+                {% assign product_title = item_parts[idx] | strip %}
+                {% assign idx = base_index | plus: 5 %}
+                {% assign has_swatch = item_parts[idx] | strip %}
+                {% assign idx = base_index | plus: 6 %}
+                {% assign color_option_value = item_parts[idx] | strip %}
+                {% assign idx = base_index | plus: 7 %}
+                {% assign color_option_name = item_parts[idx] | strip %}
+                {% assign idx = base_index | plus: 8 %}
+                {% assign is_current = item_parts[idx] | strip %}
+                {% assign idx = base_index | plus: 9 %}
+                {% assign variant_available = item_parts[idx] | strip %}
+                {% assign idx = base_index | plus: 10 %}
+                {% assign color_metafield_value = item_parts[idx] | strip %}
+                
+                {% comment %} Fallback: if product_title looks like a URL, get it from the product object {% endcomment %}
+                {% if product_title contains '/' or product_title == blank %}
+                  {% if product_type == 'current' %}
+                    {% assign product_title = product_resource.title %}
+                  {% else %}
+                    {% assign product_id_as_number = product_id | plus: 0 %}
+                    {% for all_product in collections.all.products %}
+                      {% assign all_product_id_as_string = all_product.id | append: '' %}
+                      {% if all_product.id == product_id or all_product.id == product_id_as_number or all_product_id_as_string == product_id %}
+                        {% assign product_title = all_product.title %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                {% endif %}
+
+            {% liquid
+              assign is_current_product = false
+              if is_current == 'true'
+                assign is_current_product = true
+              endif
+
+              # For combined listings, always allow navigation (even if variant is sold out)
+              # We want users to be able to click to navigate to other products
+              assign variant_available_bool = true
+              
+              # Normalize product_type for comparison
+              assign product_type_normalized = product_type | downcase | strip
+              
+              # Find the product object to get swatch data and check actual variant availability
+              assign display_product = ''
+              if product_type_normalized == 'current'
+                assign display_product = product_resource
+              else
+                # Ensure product_id is set - if blank, try to get it from the parsed data
+                if product_id == blank or product_id == ''
+                  # Try to get product_id from the item_parts if available
+                  if item_parts.size > base_index
+                    assign product_id = item_parts[base_index] | strip
+                  endif
+                endif
+                
+                if product_id != blank and product_id != ''
+                  assign product_id_as_number = product_id | plus: 0
+                  
+                  # Try to find from metafield first (more reliable)
+                  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+                    for linked_product in combined_listings_metafield.value
+                      assign linked_product_id = linked_product.id
+                      assign linked_product_id_as_string = linked_product_id | append: ''
+                      if linked_product_id == product_id or linked_product_id == product_id_as_number or linked_product_id_as_string == product_id
+                        assign display_product = linked_product
+                        break
+                      endif
+                    endfor
+                  endif
+                  
+                  # Fallback: Find from collections.all.products
+                  if display_product == ''
+                    for all_product in collections.all.products
+                      assign all_product_id_as_string = all_product.id | append: ''
+                      if all_product.id == product_id or all_product.id == product_id_as_number or all_product_id_as_string == product_id
+                        assign display_product = all_product
+                        break
+                      endif
+                    endfor
+                  endif
+                endif
+              endif
+              
+              # Check actual variant availability from the product object (more reliable than stored string)
+              assign variant_actually_available = false
+              if display_product != '' and variant_id != blank
+                assign variant_id_as_number = variant_id | plus: 0
+                assign variant_id_as_string = variant_id | append: ''
+                for variant in display_product.variants
+                  if variant.id == variant_id or variant.id == variant_id_as_number or variant.id == variant_id_as_string
+                    if variant.available
+                      assign variant_actually_available = true
+                    endif
+                    break
+                  endif
+                endfor
+              else
+                # Fallback to stored string if we can't find the variant
+                assign variant_available_clean = variant_available | strip | downcase
+                if variant_available_clean == 'true' or variant_available == true
+                  assign variant_actually_available = true
+                endif
+              endif
+
+              # Get swatch if available from variant options - prioritize swatch color/image over variant image
+              # Use the same approach as the original code: iterate through all options and values
+              # and match by the option value name (like "Black", "Military Black")
+              assign swatch_to_render = ''
+              assign variant_image_for_swatch = ''
+              assign option_value_name_for_swatch = color_option_value
+              
+              if display_product != '' and color_option_value != blank and color_option_value != ''
+                # Iterate through all options (like the original code does)
+                for option in display_product.options_with_values
+                  # Iterate through all values in this option
+                  for value in option.values
+                    # Compare the value directly to our stored color_option_value
+                    # In Liquid, value when compared directly is the value name
+                    assign value_str = value | append: ''
+                    if value_str == color_option_value
+                      # Use the actual option value name for assets folder backup
+                      assign option_value_name_for_swatch = value.name
+                      
+                      # Priority 1: Check for swatch (custom color or swatch image) - highest priority
+                      if value.swatch != blank
+                        if value.swatch.color != blank or value.swatch.image != blank
+                          assign swatch_to_render = value.swatch
+                        endif
+                      endif
+                      
+                      # Priority 2: Check for variant's custom image (only if no swatch found)
+                      if swatch_to_render == blank
+                        if value.variant.featured_media != blank
+                          assign variant_image_for_swatch = value.variant.featured_media
+                        endif
+                      endif
+                      
+                      break
+                    endif
+                  endfor
+                  # If we found a swatch or variant image, break out of the outer loop
+                  assign should_break = false
+                  if swatch_to_render != blank
+                    assign should_break = true
+                  elsif variant_image_for_swatch != blank
+                    assign should_break = true
+                  endif
+                  if should_break
+                    break
+                  endif
+                endfor
+              endif
+              
+              # Priority 3: If no swatch or variant image found, fall back to product's first image
+              if swatch_to_render == blank and variant_image_for_swatch == blank
+                if display_product != '' and display_product.featured_media != blank
+                  assign variant_image_for_swatch = display_product.featured_media
+                endif
+              endif
+              
+              # Check assets folder for backup swatch file (Priority 1 in swatch.liquid)
+              assign assets_file_exists_single = false
+              if option_value_name_for_swatch != blank
+                assign enable_backup_single = settings.enable_swatch_assets_backup
+                if enable_backup_single == blank
+                  assign enable_backup_single = true
+                endif
+                
+                if enable_backup_single
+                  assign swatch_file_extension_single = settings.swatch_file_extension | default: 'png'
+                  assign color_file_name_single = option_value_name_for_swatch | handle | append: '.' | append: swatch_file_extension_single
+                  if images[color_file_name_single] != blank
+                    assign assets_file_exists_single = true
+                  endif
+                endif
+              endif
+              
+              # Set flag for rendering - include assets folder check
+              assign has_swatch_to_render = false
+              if swatch_to_render != blank
+                # We have a swatch with color or image
+                assign has_swatch_to_render = true
+              elsif variant_image_for_swatch != blank
+                # We have a variant image or product fallback image
+                assign has_swatch_to_render = true
+              elsif assets_file_exists_single
+                # Assets folder file exists - swatch.liquid will handle rendering it
+                assign has_swatch_to_render = true
+              endif
+            %}
+
+            {%- liquid
+              # Get the actual variant's featured media for hover preview
+              # Priority: variant's featured media > product's featured media > variant_image_for_swatch
+              assign hover_media = ''
+              if display_product != '' and variant_id != blank
+                assign variant_id_as_number = variant_id | plus: 0
+                assign variant_id_as_string = variant_id | append: ''
+                for variant in display_product.variants
+                  if variant.id == variant_id or variant.id == variant_id_as_number or variant.id == variant_id_as_string
+                    # First try variant's featured media
+                    if variant.featured_media != blank
+                      assign hover_media = variant.featured_media
+                    endif
+                    break
+                  endif
+                endfor
+              endif
+              
+              # If no variant media, use product's featured media (main product image for that color)
+              if hover_media == blank and display_product != '' and display_product.featured_media != blank
+                assign hover_media = display_product.featured_media
+              endif
+              
+              # Final fallback to variant_image_for_swatch
+              if hover_media == blank
+                assign hover_media = variant_image_for_swatch
+              endif
+            -%}
+            <li class="variant-option__swatch">
+              <label
+                {% if hover_media != blank %}
+                  data-media-id="{{ hover_media.id }}"
+                {% endif %}
+                data-option-available="{{ variant_actually_available }}"
+                class="variant-option__button-label variant-option__button-label--has-swatch swatch-rounded"
+                {% if hover_media != blank %}
+                  on:pointerenter="product-card/previewVariant/{{ hover_media.id }}"
+                  on:pointerleave="product-card/resetVariant"
+                {% endif %}
+              >
+                <input
+                  type="radio"
+                  name="{{ variant_option_name | escape }}-{{ product_resource.id }}-swatch"
+                  value="{{ variant_id }}"
+                  aria-label="{{ product_title | escape }}"
+                  data-input-id="1-{{ forloop.index0 }}"
+                  {% if hover_media != blank %}
+                    data-option-media-id="{{ hover_media.id }}"
+                  {% endif %}
+                  data-option-available="{{ variant_actually_available }}"
+                  {% if product_url != blank %}
+                    data-connected-product-url="{{ product_url }}?variant={{ variant_id }}"
+                  {% endif %}
+                  {% if is_current_product %}
+                    checked
+                  {% endif %}
+                  data-available-count="{% if variant_actually_available %}1{% else %}0{% endif %}"
+                  data-variant-id="{{ variant_id }}"
+                  data-first-available-or-first-variant-id="{{ variant_id }}"
+                >
+                {% if has_swatch_to_render %}
+                  {% if swatch_to_render != blank %}
+                    {% render 'swatch',
+                      swatch: swatch_to_render,
+                      variant_image: hover_media,
+                      option_value_name: option_value_name_for_swatch,
+                      enable_swatch_assets_backup: swatch_enable_assets_backup,
+                      swatch_file_extension: swatch_file_extension_setting,
+                      show_variant_image: swatch_show_variant_image,
+                      variant_swatch_width: swatch_variant_width
+                    %}
+                  {% else %}
+                    {% render 'swatch',
+                      swatch: blank,
+                      variant_image: hover_media,
+                      option_value_name: option_value_name_for_swatch,
+                      enable_swatch_assets_backup: swatch_enable_assets_backup,
+                      swatch_file_extension: swatch_file_extension_setting,
+                      show_variant_image: swatch_show_variant_image,
+                      variant_swatch_width: swatch_variant_width
+                    %}
+                  {% endif %}
+                {% endif %}
+                {% unless variant_actually_available %}
+                  <svg
+                    viewBox="0 0 100 46"
+                    preserveAspectRatio="xMidYMid slice"
+                  >
+                    {% # 25deg %}
+                    <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
+                    {% # duplicate line for motion overlay %}
+                    <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
+                  </svg>
+                {% endunless %}
+              </label>
+            </li>
+            {% endif %}
+            {% endif %}
+          {% endfor %}
+          <li
+            slot="more"
+          >
+            <button
+              class="hidden-swatches__count"
+              aria-label="{{ 'actions.show_all_options' | t }}"
+              on:click="/showAllSwatches"
+            ></button>
+          </li>
+        {% endcapture %}
+
+        {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
+      </fieldset>
+      <script type="application/json">
+        {{ product_resource.selected_or_first_available_variant | json }}
+      </script>
+    </form>
+  </swatches-variant-picker-component>
+  {%- else -%}
+    {%- comment -%} Render colors as dropdowns or buttons based on variant_style {%- endcomment -%}
+    {%- if variant_style_setting == 'dropdowns' -%}
+      <div class="variant-option variant-option--dropdowns">
+        {%- liquid
+          # Determine if text labels should be shown for colors
+          assign show_color_text_labels = false
+          if request.page_type == 'product' or show_swatch_text_labels_setting
+            assign show_color_text_labels = true
+          endif
+        -%}
+        {%- if show_color_text_labels -%}
+          <label for="Color-{{ product_resource.id }}-{{ block.id }}">{{ variant_option_name | escape }}</label>
+        {%- endif %}
+        <div class="variant-option__select-wrapper">
+          <select
+            id="Color-{{ product_resource.id }}-{{ block.id }}"
+            name="options[{{ variant_option_name | escape }}]"
+            class="variant-option__select"
+          >
+            {% assign final_products = sorted_products | split: '|||' %}
+            {% for product_item in final_products %}
+              {% if product_item != blank and product_item != '' %}
+                {% assign item_parts = product_item | split: '|' %}
+                {% assign base_index = 0 %}
+                {% if item_parts.size > 0 %}
+                  {% assign first_part = item_parts[0] | strip %}
+                  {% if first_part == blank or first_part == '' %}
+                    {% assign base_index = 1 %}
+                  {% endif %}
+                {% endif %}
+                {% assign min_required_size = base_index | plus: 10 %}
+                {% if item_parts.size >= min_required_size %}
+                  {% assign idx = base_index %}
+                  {% assign product_id = item_parts[idx] | strip %}
+                  {% assign idx = base_index | plus: 2 %}
+                  {% assign variant_id = item_parts[idx] | strip %}
+                  {% assign idx = base_index | plus: 6 %}
+                  {% assign color_option_value = item_parts[idx] | strip %}
+                  {% assign idx = base_index | plus: 8 %}
+                  {% assign is_current = item_parts[idx] | strip %}
+                  {% assign idx = base_index | plus: 9 %}
+                  {% assign variant_available = item_parts[idx] | strip %}
+                  
+                  {%- liquid
+                    assign variant_available_bool = true
+                    assign variant_available_clean = variant_available | strip | downcase
+                    if variant_available_clean == 'false' or variant_available == false
+                      assign variant_available_bool = false
+                    endif
+                  -%}
+                  <option
+                    value="{{ variant_id }}"
+                    data-input-id="1-{{ forloop.index0 }}"
+                    data-variant-id="{{ variant_id }}"
+                    {% if is_current == 'true' %}
+                      selected="selected"
+                    {% endif %}
+                    {% unless variant_available_bool %}
+                      disabled
+                    {% endunless %}
+                  >
+                    {% if variant_available_bool == false %}
+                      {{ color_option_value | escape }} - {{ 'content.unavailable' | t }}
+                    {% else %}
+                      {{ color_option_value | escape }}
+                    {% endif %}
+                  </option>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </select>
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            class="icon icon-caret"
+            viewBox="0 0 10 6"
+          >
+            {%- render 'icon', icon: 'caret' -%}
+          </svg>
+        </div>
+      </div>
+    {%- else -%}
+      {%- comment -%} Render colors as buttons {%- endcomment -%}
+      <fieldset class="variant-option variant-option--buttons">
+        {%- liquid
+          # Determine if text labels should be shown for colors
+          assign show_color_text_labels = false
+          if request.page_type == 'product' or show_swatch_text_labels_setting
+            assign show_color_text_labels = true
+          endif
+        -%}
+        {%- if show_color_text_labels -%}
+          <legend>
+            {{ variant_option_name | escape }}:
+            {%- if selected_color_value != blank and selected_color_value != '' -%}
+              <span class="variant-option__swatch-value">{{ selected_color_value | escape }}</span>
+            {%- endif %}
+          </legend>
+        {%- endif %}
+        {% assign final_products = sorted_products | split: '|||' %}
+        {% for product_item in final_products %}
+          {% if product_item != blank and product_item != '' %}
+            {% assign item_parts = product_item | split: '|' %}
+            {% assign base_index = 0 %}
+            {% if item_parts.size > 0 %}
+              {% assign first_part = item_parts[0] | strip %}
+              {% if first_part == blank or first_part == '' %}
+                {% assign base_index = 1 %}
+              {% endif %}
+            {% endif %}
+            {% assign min_required_size = base_index | plus: 10 %}
+            {% if item_parts.size >= min_required_size %}
+              {% assign idx = base_index %}
+              {% assign product_id = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 2 %}
+              {% assign variant_id = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 4 %}
+              {% assign product_title = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 6 %}
+              {% assign color_option_value = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 8 %}
+              {% assign is_current = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 9 %}
+              {% assign variant_available = item_parts[idx] | strip %}
+              
+              {%- liquid
+                assign is_current_product = false
+                if is_current == 'true'
+                  assign is_current_product = true
+                endif
+                
+                assign variant_available_bool = true
+                assign variant_available_clean = variant_available | strip | downcase
+                if variant_available_clean == 'false' or variant_available == false
+                  assign variant_available_bool = false
+                endif
+              -%}
+              <label
+                data-option-available="{{ variant_available_bool }}"
+                class="variant-option__button-label"
+              >
+                <input
+                  type="radio"
+                  name="{{ variant_option_name | escape }}-{{ product_resource.id }}-button"
+                  value="{{ variant_id }}"
+                  aria-label="{{ product_title | escape }}"
+                  data-input-id="1-{{ forloop.index0 }}"
+                  data-option-available="{{ variant_available_bool }}"
+                  {% if is_current_product %}
+                    checked
+                  {% endif %}
+                  data-available-count="{% if variant_available_bool %}1{% else %}0{% endif %}"
+                  data-variant-id="{{ variant_id }}"
+                  data-first-available-or-first-variant-id="{{ variant_id }}"
+                >
+                <span class="variant-option__button-label__text">{{ color_option_value | escape }}</span>
+              </label>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </fieldset>
+    {%- endif -%}
+  {%- endif -%}
+{% endif %}
+{% endif %}
+
+{% stylesheet %}
+  .variant-picker-cl {
+    width: 100%;
+  }
+
+  .variant-picker-cl__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-lg);
+    width: 100%;
+  }
+
+  .variant-picker-cl__fieldset {
+    --options-border-radius: var(--variant-picker-button-radius);
+    --options-border-width: var(--variant-picker-button-border-width);
+    --variant-option-padding-inline: var(--padding-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-sm);
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .variant-picker-cl__fieldset legend {
+    padding: 0;
+    margin-block-end: var(--margin-xs);
+  }
+
+  .variant-picker-cl__swatch-value {
+    padding-inline-start: var(--padding-xs);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .variant-picker-cl__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-sm);
+  }
+
+  .variant-picker-cl__option {
+    display: inline-block;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .variant-picker-cl__label,
+    .variant-picker-cl__label::before,
+    .variant-picker-cl__label::after {
+      transition-duration: var(--animation-speed);
+      transition-timing-function: var(--animation-easing);
+    }
+    .variant-picker-cl__label {
+      transition-property: background-color, border-color, color;
+    }
+    .variant-picker-cl__label::after {
+      transition-property: clip-path;
+    }
+    .variant-picker-cl__label::before {
+      transition-property: border-color;
+    }
+  }
+
+  .variant-picker-cl__label {
+    --variant-picker-stroke-color: var(--color-variant-border);
+    cursor: pointer;
+    display: flex;
+    flex: 0 0 calc(3ch + 1.3em);
+    align-items: center;
+    position: relative;
+    padding-block: var(--padding-sm);
+    padding-inline: var(--padding-lg);
+    border: var(--options-border-width) solid var(--color-variant-border);
+    border-radius: var(--options-border-radius);
+    overflow: clip;
+    justify-content: center;
+    min-height: calc(3ch + 1.3em);
+    min-width: fit-content;
+    white-space: nowrap;
+    background-color: var(--color-variant-background);
+    color: var(--color-variant-text);
+
+    &:hover {
+      background-color: var(--color-variant-hover-background);
+      border-color: var(--color-variant-hover-border);
+      color: var(--color-variant-hover-text);
+    }
+
+    &:not(.variant-picker-cl__label--has-swatch)::before {
+      content: '';
+      position: absolute;
+      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+      clip-path: inset(0 0 0 0);
+      border-color: var(--color-variant-border);
+      inset: calc(var(--options-border-width) * -1);
+      border: var(--options-border-width) solid var(--color-variant-border);
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 2;
+    }
+    &:has(:checked):not(.variant-picker-cl__label--has-swatch)::before {
+      border-color: var(--color-selected-variant-border);
+    }
+  }
+
+  .variant-picker-cl__label:has(:focus-visible) {
+    --variant-picker-stroke-color: var(--color-foreground);
+
+    border-color: var(--color-foreground);
+    outline: var(--focus-outline-width) solid var(--color-foreground);
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  .variant-picker-cl__label--has-swatch {
+    --focus-outline-radius: var(--variant-picker-swatch-radius);
+
+    padding: 0;
+    border: none;
+    display: block;
+    flex-basis: auto;
+    min-height: auto;
+  }
+
+  .variant-picker-cl__label:has(:checked) {
+    color: var(--color-selected-variant-text);
+    border-color: var(--color-selected-variant-border);
+  }
+
+  .variant-picker-cl__label:has(:checked):hover {
+    border-color: var(--color-selected-variant-hover-border);
+    color: var(--color-selected-variant-hover-text);
+  }
+
+  .variant-picker-cl__label--has-swatch:hover {
+    outline: var(--focus-outline-width) solid rgb(var(--color-foreground-rgb) / var(--opacity-35-55));
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  .variant-picker-cl__label--has-swatch:has(:checked) {
+    --focus-outline: var(--focus-outline-width) solid var(--color-foreground);
+
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  /* This triggers iOS < 16.4. The outline bug is not recognized as a lack of @supports */
+  @supports not (background-color: rgb(from red 150 g b / alpha)) {
+    /** There is a bug in safari < 16.4 that causes the outline to not follow the elements border radius. This is a workaround. **/
+    .variant-picker-cl__label--has-swatch:has(:checked),
+    .variant-picker-cl__label:has(:focus-visible) .swatch {
+      outline: none;
+      position: relative;
+      overflow: visible;
+    }
+
+    .variant-picker-cl__label--has-swatch:has(:checked)::after,
+    .variant-picker-cl__label:has(:focus-visible) .swatch::after {
+      content: '';
+      position: absolute;
+      inset: calc(-1 * var(--focus-outline-offset));
+      border: var(--focus-outline);
+      border-radius: var(--focus-outline-radius, 50%);
+      background-color: transparent;
+      display: inherit;
+    }
+  }
+
+  .variant-picker-cl__label input,
+  .variant-picker-cl__label input[type="radio"] {
+    /* remove the checkbox from the page flow */
+    position: absolute;
+
+    /* set the dimensions to match those of the label */
+    inset: 0;
+
+    /* hide it */
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .variant-picker-cl__text {
+    pointer-events: none;
+    text-align: start;
+    text-wrap: auto;
+    z-index: 2;
+  }
+
+  .variant-picker-cl__label--has-swatch .swatch {
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .variant-picker-cl--center,
+  .variant-picker-cl--center .variant-picker-cl__fieldset {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .variant-picker-cl--right,
+  .variant-picker-cl--right .variant-picker-cl__fieldset {
+    text-align: right;
+    justify-content: right;
+  }
+
+  /* Dual Picker Styles - matching variant-main-picker exactly */
+  .variant-picker-cl-dual {
+    width: 100%;
+  }
+
+  .variant-picker-cl-dual__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-lg);
+    width: 100%;
+  }
+
+  /* Ensure swatches in dual picker follow global swatch styling */
+  .variant-picker-cl-dual .variant-option--swatches {
+    overflow: visible;
+    /* Match padding from blocks/swatches.liquid for consistency */
+    padding-block: calc(
+        var(--product-swatches-padding-block-start) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px)
+      )
+      calc(var(--product-swatches-padding-block-end) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px));
+    padding-inline: calc(
+        var(--product-swatches-padding-inline-start) + var(--focus-outline-offset) + (1.5 * var(--focus-outline-width)) + var(--style-border-swatch-width, 1px)
+      )
+      calc(var(--product-swatches-padding-inline-end) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px));
+  }
+
+  .variant-picker-cl-dual .variant-option__swatch {
+    display: inline-block;
+  }
+
+  .variant-picker-cl-dual .variant-option__button-label--has-swatch {
+    --focus-outline-radius: var(--variant-picker-swatch-radius);
+    padding: 0;
+    border: none;
+    display: block;
+    flex-basis: auto;
+    min-height: auto;
+  }
+
+  .variant-picker-cl-dual .variant-option__button-label--has-swatch:hover {
+    outline: var(--focus-outline-width) solid rgb(var(--color-foreground-rgb) / var(--opacity-35-55));
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  .variant-picker-cl-dual .variant-option__button-label--has-swatch:has(:checked) {
+    --focus-outline: var(--focus-outline-width) solid var(--color-foreground);
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  .variant-picker-cl-dual .variant-option__button-label--has-swatch .swatch {
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Match overflow-list styling from blocks/swatches.liquid */
+  .variant-picker-cl-dual .variant-option--swatches {
+    overflow-list::part(list) {
+      gap: var(--gap-sm);
+    }
+
+    overflow-list[defer]::part(list) {
+      flex-wrap: nowrap;
+    }
+  }
+
+  .variant-picker-cl-dual__fieldset {
+    --options-border-radius: var(--variant-picker-button-radius);
+    --options-border-width: var(--variant-picker-button-border-width);
+    --variant-option-padding-inline: var(--padding-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-sm);
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .variant-picker-cl-dual__fieldset--equal-width-buttons {
+    --variant-min-width: clamp(44px, calc(var(--variant-option-padding-inline) * 2 + var(--variant-ch)), 100%);
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .variant-picker-cl-dual__fieldset--equal-width-buttons .variant-picker-cl-dual__options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--variant-min-width), 1fr));
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .variant-picker-cl-dual__fieldset--equal-width-buttons .variant-picker-cl-dual__label {
+    min-width: var(--variant-min-width);
+  }
+
+  .variant-picker-cl-dual__fieldset--equal-width-buttons .variant-picker-cl-dual__text {
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .variant-picker-cl-dual__fieldset legend {
+    padding: 0;
+    margin-block-end: var(--margin-xs);
+  }
+
+  .variant-picker-cl-dual__swatch-value {
+    padding-inline-start: var(--padding-xs);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+  }
+
+  .variant-picker-cl-dual__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-sm);
+    position: relative;
+    width: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .variant-picker-cl-dual__label,
+    .variant-picker-cl-dual__label::before,
+    .variant-picker-cl-dual__label::after,
+    .variant-picker-cl-dual__label:has([data-previous-checked='true'], [data-current-checked='true'])
+      .variant-picker-cl-dual__pill {
+      transition-duration: var(--animation-speed);
+      transition-timing-function: var(--animation-easing);
+    }
+    .variant-picker-cl-dual__pill {
+      transition-property: transform;
+    }
+    .variant-picker-cl-dual__label::after {
+      transition-property: clip-path;
+    }
+    .variant-picker-cl-dual__label::before {
+      transition-property: border-color;
+    }
+    .variant-picker-cl-dual__label {
+      transition-property: background-color, border-color, color, opacity;
+    }
+  }
+
+  .variant-picker-cl-dual__label {
+    --variant-picker-stroke-color: var(--color-variant-border);
+    cursor: pointer;
+    display: flex;
+    flex: 0 0 calc(3ch + 1.3em);
+    align-items: center;
+    position: relative;
+    padding-block: var(--padding-sm);
+    padding-inline: var(--padding-lg);
+    border: var(--options-border-width) solid var(--color-variant-border);
+    border-radius: var(--options-border-radius);
+    overflow: clip;
+    justify-content: center;
+    min-height: calc(3ch + 1.3em);
+    min-width: fit-content;
+    white-space: nowrap;
+    background-color: var(--color-variant-background);
+    color: var(--color-variant-text);
+
+    &:hover,
+    &:hover:has([aria-disabled='true']):has([data-option-available='false']) {
+      background-color: var(--color-variant-hover-background);
+      border-color: var(--color-variant-hover-border);
+      color: var(--color-variant-hover-text);
+    }
+
+    /* we need something like overflow-clip-margin to use the pseudoelement but it doesn't work in Safari */
+    /* so instead use the layered background image trick */
+    &:not(.variant-picker-cl-dual__label--has-swatch):has([data-option-available='false']) {
+      border-width: 0;
+    }
+    /* ::after/::before act as a fake border for the button style variant */
+    /* ::after is the unavailable variant border that clips in */
+    &:not(.variant-picker-cl-dual__label--has-swatch)::before,
+    &:has([data-option-available='false']):not(.variant-picker-cl-dual__label--has-swatch)::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: var(--options-border-width) solid var(--color-selected-variant-border);
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 2;
+      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+      clip-path: inset(var(--clip, 0 0 0 0));
+    }
+    &:has([data-option-available='false']):not(.variant-picker-cl-dual__label--has-swatch)::before {
+      inset: 0;
+    }
+    &:not(.variant-picker-cl-dual__label--has-swatch)::before {
+      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+      clip-path: inset(0 0 0 0);
+      border-color: var(--color-variant-border);
+      inset: calc(var(--options-border-width) * -1);
+    }
+    &:has(:checked):not(.variant-picker-cl-dual__label--has-swatch):not(:has([data-option-available='false']))::before {
+      border-color: var(--color-selected-variant-border);
+    }
+
+    /* setting left/right accounts for variant buttons of different widths */
+    &:not(:has(:checked)):has(~ label > :checked),
+    &:has(:checked):has(~ label > [data-previous-checked='true']) {
+      .variant-picker-cl-dual__pill {
+        right: 0;
+        left: unset;
+      }
+    }
+
+    &:has([data-previous-checked='true']) ~ label:has([data-current-checked='true']),
+    &:has(:checked) ~ label {
+      .variant-picker-cl-dual__pill {
+        left: 0;
+        right: unset;
+      }
+    }
+
+    &:not(:has(:checked)):has(~ label > :checked) {
+      --pill-offset: calc(100% + 1px);
+    }
+
+    &:has(:checked) ~ label {
+      --pill-offset: calc(-100% - 1px);
+    }
+
+    &:has([data-current-checked='true']):first-of-type
+      ~ label:last-of-type:not(.variant-picker-cl-dual__label--has-swatch),
+    &:not(:has(:checked)):has(~ label > :checked):not(.variant-picker-cl-dual__label--has-swatch) {
+      --clip: 0 0 0 100%;
+    }
+
+    &:not(:has([data-current-checked='true'])):first-of-type:has(~ label:last-of-type > :checked):not(
+        .variant-picker-cl-dual__label--has-swatch
+      ),
+    &:has(:checked) ~ label:not(.variant-picker-cl-dual__label--has-swatch) {
+      --clip: 0 100% 0 0;
+    }
+
+    &:has([data-previous-checked='true'], [data-current-checked='true']) .variant-picker-cl-dual__pill {
+      width: max(var(--pill-width-current, 100%), var(--pill-width-previous, 100%));
+    }
+    @media screen and (min-width: 750px) {
+      padding: var(--padding-xs) var(--variant-option-padding-inline);
+    }
+  }
+
+  /* wrap around only for 3 or more variants in a row */
+  /* the more complex selector rules here produce the wrap around effect for first/last variants */
+  .variant-picker-cl-dual__options:has(label:nth-of-type(3)) {
+    .variant-picker-cl-dual__label:has([data-current-checked='true']):first-of-type ~ label:last-of-type {
+      --pill-offset: calc(100% + 1px);
+    }
+    .variant-picker-cl-dual__label:not(:has([data-current-checked='true'])):first-of-type:has(
+        ~ label:last-of-type > :checked
+      ) {
+      --pill-offset: calc(-100% - 1px);
+    }
+  }
+
+  .variant-picker-cl-dual__pill {
+    background: var(--color-selected-variant-background);
+    position: absolute;
+    top: calc(var(--options-border-width) * -1);
+    bottom: calc(var(--options-border-width) * -1);
+    border-radius: inherit;
+    pointer-events: none;
+    width: 100%;
+    transform: translateX(var(--pill-offset, 0));
+  }
+
+  /* Hide pill for unavailable variants */
+  .variant-picker-cl-dual__label:has([data-option-available='false']) .variant-picker-cl-dual__pill {
+    display: none;
+  }
+
+  .variant-picker-cl-dual__text {
+    pointer-events: none;
+    text-align: start;
+    text-wrap: auto;
+    z-index: 2;
+  }
+
+  .variant-picker-cl-dual__label:has(:focus-visible) {
+    --variant-picker-stroke-color: var(--color-foreground);
+
+    border-color: var(--color-foreground);
+    outline: var(--focus-outline-width) solid var(--color-foreground);
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  .variant-picker-cl-dual__label--has-swatch {
+    --focus-outline-radius: var(--variant-picker-swatch-radius);
+
+    padding: 0;
+    border: none;
+    display: block;
+    flex-basis: auto;
+    min-height: auto;
+  }
+
+  .variant-picker-cl-dual__label:has(:checked) {
+    color: var(--color-selected-variant-text);
+    border-color: var(--color-selected-variant-border);
+  }
+
+  .variant-picker-cl-dual__label:has(:checked):hover {
+    border-color: var(--color-selected-variant-hover-border);
+    color: var(--color-selected-variant-hover-text);
+
+    .variant-picker-cl-dual__pill {
+      background-color: var(--color-selected-variant-hover-background);
+    }
+  }
+
+  .variant-picker-cl-dual__label[data-option-available='false'],
+  .variant-picker-cl-dual__label:has([data-option-available='false']) {
+    color: rgb(var(--color-variant-text-rgb) / var(--opacity-60));
+    cursor: not-allowed;
+  }
+
+  /* Disabled swatch styling */
+  .variant-picker-cl-dual__label--has-swatch[data-option-available='false'],
+  .variant-picker-cl-dual__label--has-swatch:has([data-option-available='false']) {
+    opacity: var(--opacity-60);
+    cursor: not-allowed;
+  }
+
+  .variant-picker-cl-dual__label--has-swatch[data-option-available='false'] .swatch,
+  .variant-picker-cl-dual__label--has-swatch:has([data-option-available='false']) .swatch {
+    opacity: var(--opacity-60);
+    border-style: dashed;
+  }
+
+  /* Prevent interaction on disabled swatches while allowing cursor */
+  .variant-picker-cl-dual__label--has-swatch[data-option-available='false'] input,
+  .variant-picker-cl-dual__label--has-swatch:has([data-option-available='false']) input {
+    pointer-events: none;
+  }
+
+  .variant-picker-cl-dual__label--has-swatch:hover {
+    outline: var(--focus-outline-width) solid rgb(var(--color-foreground-rgb) / var(--opacity-35-55));
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  .variant-picker-cl-dual__label--has-swatch:has(:checked) {
+    --focus-outline: var(--focus-outline-width) solid var(--color-foreground);
+
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  /* This triggers iOS < 16.4. The outline bug is not recognized as a lack of @supports */
+  @supports not (background-color: rgb(from red 150 g b / alpha)) {
+    /** There is a bug in safari < 16.4 that causes the outline to not follow the elements border radius. This is a workaround. **/
+    .variant-picker-cl-dual__label--has-swatch:has(:checked),
+    .variant-picker-cl-dual__label:has(:focus-visible) .swatch {
+      outline: none;
+      position: relative;
+      overflow: visible;
+    }
+
+    .variant-picker-cl-dual__label--has-swatch:has(:checked)::after,
+    .variant-picker-cl-dual__label:has(:focus-visible) .swatch::after {
+      content: '';
+      position: absolute;
+      inset: calc(-1 * var(--focus-outline-offset));
+      border: var(--focus-outline);
+      border-radius: var(--focus-outline-radius, 50%);
+      background-color: transparent;
+      display: inherit;
+    }
+  }
+
+  .variant-picker-cl-dual__label:has([data-option-available='false']):has(:checked) {
+    background-color: inherit;
+    color: rgb(var(--color-variant-text-rgb) / var(--opacity-60));
+  }
+
+  .variant-picker-cl-dual__label input,
+  .variant-picker-cl-dual__label input[type="radio"] {
+    /* remove the checkbox from the page flow */
+    position: absolute;
+
+    /* set the dimensions to match those of the label */
+    inset: 0;
+
+    /* hide it */
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .variant-picker-cl-dual__label--has-swatch .swatch {
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .variant-picker-cl-dual__label svg {
+    position: absolute;
+    left: var(--options-border-width);
+    top: var(--options-border-width);
+    height: calc(100% - (var(--options-border-width) * 2));
+    width: calc(100% - (var(--options-border-width) * 2));
+    cursor: pointer;
+    pointer-events: none;
+    stroke-width: var(--style-border-width);
+    stroke: var(--variant-picker-stroke-color);
+  }
+
+  .variant-picker-cl-dual__label:not(.variant-picker-cl-dual__label--has-swatch) svg {
+    stroke: var(--color-variant-border);
+
+    line {
+      stroke-width: var(--options-border-width);
+    }
+
+    line:last-of-type {
+      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+      clip-path: inset(var(--clip, 0 0 0 0));
+      stroke: rgb(var(--color-variant-text-rgb) / 1);
+    }
+  }
+
+
+  .variant-picker-cl-dual--center,
+  .variant-picker-cl-dual--center .variant-picker-cl-dual__fieldset {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .variant-picker-cl-dual--right,
+  .variant-picker-cl-dual--right .variant-picker-cl-dual__fieldset {
+    text-align: right;
+    justify-content: right;
+  }
+{% endstylesheet %}
+

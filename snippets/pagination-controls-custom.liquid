@@ -1,0 +1,256 @@
+{%- comment -%}
+  Custom pagination controls for manually paginated lists
+  
+  @param {number} total_pages - Total number of pages
+  @param {number} current_page - Current page number
+  @param {string} base_url - Base URL for pagination links (collection URL)
+{%- endcomment -%}
+
+{%- if total_pages > 1 -%}
+  <nav
+    class="pagination"
+    aria-label="{{ 'content.pagination.nav_label' | t }}"
+  >
+    <ul
+      class="pagination__list"
+      role="list"
+    >
+      <li class="pagination__item">
+          {%- if current_page > 1 -%}
+          {%- liquid
+            assign prev_page = current_page | minus: 1
+            if prev_page == 1
+              assign prev_url = base_url
+            else
+              assign prev_url = base_url | append: '?page=' | append: prev_page
+            endif
+          -%}
+          <a
+            href="{{ prev_url }}"
+            aria-label="{{ 'content.pagination.previous' | t }}"
+            class="pagination__link pagination__link--arrow"
+          >
+            {{ 'icon-chevron-left.svg' | inline_asset_content }}
+          </a>
+        {%- else -%}
+          <span
+            aria-label="{{ 'content.pagination.previous' | t }}"
+            class="pagination__link pagination__link--arrow pagination__link--disabled"
+            aria-disabled="true"
+          >
+            {{ 'icon-chevron-left.svg' | inline_asset_content }}
+          </span>
+        {%- endif -%}
+      </li>
+
+      {%- assign last_visible_page = 0 -%}
+      {%- assign just_saw_ellipsis = false -%}
+
+      {%- comment -%} Generate pagination parts similar to Shopify's paginate.parts {%- endcomment -%}
+      {%- for page_num in (1..total_pages) -%}
+        {% liquid
+          assign should_show = false
+          assign should_hide_on_mobile = false
+          assign distance_from_current = page_num | minus: current_page | abs
+          
+          # Always show first page, last page, and pages within 1 of current
+          if page_num == 1 or page_num == total_pages or distance_from_current <= 1
+            assign should_show = true
+          endif
+          
+          # Hide middle pages on mobile if they're far from current
+          if page_num != 1 and page_num != total_pages and distance_from_current > 1
+            assign should_hide_on_mobile = true
+          endif
+        %}
+
+        {%- if should_show -%}
+          {%- comment -%} Add ellipsis if there's a gap {%- endcomment -%}
+          {%- liquid
+            assign last_visible_plus_one = last_visible_page | plus: 1
+            assign has_gap = false
+            if page_num > last_visible_plus_one and last_visible_page > 0
+              assign has_gap = true
+            endif
+          -%}
+          {%- if has_gap -%}
+            <li class="pagination__item pagination__item--mobile-only pagination__item--gap">
+              <span class="pagination__link pagination__link--gap" aria-hidden="true">&hellip;</span>
+            </li>
+          {%- endif -%}
+          {%- assign last_visible_page = page_num -%}
+          
+          {% liquid
+            assign li_classes = 'pagination__item'
+            if should_hide_on_mobile
+              assign li_classes = li_classes | append: ' pagination__item--mobile-hide'
+            endif
+          %}
+          <li class="{{ li_classes }}">
+            {%- if page_num == current_page -%}
+              <span
+                class="pagination__link pagination__link--page pagination__link--current"
+                aria-current="page"
+              >
+                {{ page_num }}
+              </span>
+            {%- else -%}
+              {%- liquid
+                if page_num == 1
+                  assign page_url = base_url
+                else
+                  assign page_url = base_url | append: '?page=' | append: page_num
+                endif
+              -%}
+              <a
+                href="{{ page_url }}"
+                aria-label="{{ 'content.pagination.page' | t: page: page_num }}"
+                class="pagination__link pagination__link--page"
+              >
+                {{ page_num }}
+              </a>
+            {%- endif -%}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+
+      <li class="pagination__item">
+        {%- if current_page < total_pages -%}
+          {%- liquid
+            assign next_page = current_page | plus: 1
+            assign next_url = base_url | append: '?page=' | append: next_page
+          -%}
+          <a
+            href="{{ next_url }}"
+            aria-label="{{ 'content.pagination.next' | t }}"
+            class="pagination__link pagination__link--arrow"
+          >
+            {{ 'icon-chevron-right.svg' | inline_asset_content }}
+          </a>
+        {%- else -%}
+          <span
+            aria-label="{{ 'content.pagination.next' | t }}"
+            class="pagination__link pagination__link--arrow pagination__link--disabled"
+            aria-disabled="true"
+          >
+            {{ 'icon-chevron-right.svg' | inline_asset_content }}
+          </span>
+        {%- endif -%}
+      </li>
+    </ul>
+  </nav>
+{%- endif -%}
+
+{% stylesheet %}
+  .pagination {
+    --pagination-size: 36px;
+    --pagination-inset: 2px;
+    --pagination-radius: 6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--padding-xl) var(--padding-sm);
+    margin-top: var(--padding-xl);
+    position: relative;
+    width: 100%;
+  }
+
+  .pagination__list {
+    display: flex;
+    gap: 0;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    width: fit-content;
+  }
+
+  .pagination__item {
+    width: var(--pagination-size);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+  }
+
+  .pagination__link {
+    display: grid;
+    place-items: center;
+    color: var(--color-foreground);
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    position: relative;
+    outline-color: var(--color-foreground);
+    -webkit-tap-highlight-color: transparent;
+    font-size: var(--font-size--md);
+    font-weight: var(--font-weight-normal);
+    border-radius: calc(var(--pagination-radius) * 1px);
+    transition: color var(--hover-transition-duration) var(--hover-transition-timing),
+      opacity var(--hover-transition-duration) var(--hover-transition-timing);
+  }
+
+  .pagination__link:focus-visible {
+    outline: 2px solid var(--color-foreground);
+    outline-offset: 2px;
+  }
+
+  .pagination__link--current {
+    color: var(--color-background);
+    font-weight: var(--font-weight-medium);
+    cursor: default;
+  }
+
+  .pagination__link--gap {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .pagination__link--arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pagination__link--disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .pagination__link svg {
+    width: 0.5rem;
+    height: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .pagination__item--mobile-only {
+    display: none;
+  }
+
+  .pagination__item--mobile-hide {
+    display: grid;
+  }
+
+  @media screen and (max-width: 749px) {
+    .pagination {
+      --pagination-size: 44px;
+      --pagination-inset: 5px;
+      padding: var(--padding-lg) var(--padding-sm);
+    }
+
+    .pagination__link {
+      font-size: var(--font-size--sm);
+    }
+
+    .pagination__item--mobile-hide {
+      display: none;
+    }
+
+    .pagination__item--mobile-only {
+      display: grid;
+    }
+  }
+{% endstylesheet %}

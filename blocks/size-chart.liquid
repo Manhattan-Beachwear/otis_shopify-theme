@@ -1,0 +1,301 @@
+{%- liquid
+  assign block_settings = block.settings
+  assign size_chart_id = 'size-chart-' | append: block.id
+  
+  # Check if size chart should connect to variant picker
+  assign connect_to_sizechart = false
+  assign sizechart_index = 0
+  
+  # Find size chart block and check if next block is variant picker with size option
+  for section_block in section.blocks
+    if section_block.type == 'size-chart' and section_block.id == block.id
+      assign sizechart_index = forloop.index0
+      assign next_block_index = sizechart_index | plus: 1
+      assign variant_block = section.blocks[next_block_index]
+      
+      if variant_block.type == 'variant-picker' and product.has_only_default_variant == false
+        for option in product.options_with_values
+          assign size_trigger = 'size' | downcase
+          assign downcased_option = option.name | downcase
+          
+          if downcased_option contains size_trigger
+            assign connect_to_sizechart = true
+          endif
+        endfor
+      endif
+      break
+    endif
+  endfor
+  
+  # Check display mode - if display_mode is 'content', show directly; otherwise use popover
+  assign display_mode = block_settings.display_mode | default: 'popover'
+-%}
+
+{%- if connect_to_sizechart == false -%}
+  {%- if block_settings.size_chart != blank -%}
+    {%- if display_mode == 'content' -%}
+      {%- comment -%} Display content directly (for accordions or inline display) {%- endcomment -%}
+      <div class="size-chart__content size-chart__content--direct" {{ block.shopify_attributes }}>
+        {%- if block_settings.size_chart.title != blank -%}
+          <h3 class="size-chart__title">{{ block_settings.size_chart.title }}</h3>
+        {%- endif -%}
+        {%- if block_settings.size_chart.content != blank -%}
+          <div class="size-chart__body rte">
+            {{ block_settings.size_chart.content }}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- else -%}
+      {%- comment -%} Display as popover when standalone {%- endcomment -%}
+      <div class="size-chart__standalone" {{ block.shopify_attributes }}>
+        <anchored-popover-component data-hover-triggered>
+          <button
+            type="button"
+            class="size-chart__trigger"
+            popovertarget="{{ size_chart_id }}"
+            popovertargetaction="toggle"
+            ref="trigger"
+            aria-label="Size chart"
+          >
+          <span class="svg-wrapper icon-ruler">
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              role="presentation"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 20 20"
+            >
+              {%- render 'icon', icon: 'ruler' -%}
+            </svg>
+          </span>
+          <span class="size-chart__trigger-text">
+            Size chart
+          </span>
+          
+          </button>
+          <div
+            class="size-chart__panel details-content color-{{ block_settings.color_scheme | default: settings.popover_color_scheme }}"
+            id="{{ size_chart_id }}"
+            popover="auto"
+            ref="popover"
+          >
+            <div class="size-chart__content">
+              {%- if block_settings.size_chart.title != blank -%}
+                <h3 class="size-chart__title">{{ block_settings.size_chart.title }}</h3>
+              {%- endif -%}
+              {%- if block_settings.size_chart.content != blank -%}
+                <div class="size-chart__body rte">
+                  {{ block_settings.size_chart.content }}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </anchored-popover-component>
+      </div>
+    {%- endif -%}
+  {%- else -%}
+    {%- comment -%} Placeholder when no page is selected {%- endcomment -%}
+    <div class="size-chart__placeholder" {{ block.shopify_attributes }}>
+      <p class="size-chart__placeholder-text">Select a size chart page in the block settings</p>
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
+{% stylesheet %}
+  .size-chart__standalone {
+    display: inline-block;
+  }
+
+  .size-chart__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: rgb(var(--color-foreground));
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    transition: opacity var(--surface-transition-duration) var(--surface-transition-timing);
+  }
+
+  .size-chart__trigger:hover {
+    opacity: var(--opacity-subdued-text);
+  }
+
+  .size-chart__trigger-text {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .size-chart__trigger .svg-wrapper {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .size-chart__trigger .svg-wrapper svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .size-chart__panel {
+    --size-chart-opacity: 0;
+    --size-chart-scale: 0.95;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(var(--size-chart-scale));
+    border-radius: var(--style-border-radius-popover);
+    margin: 0;
+    width: max-content;
+    min-width: 20rem;
+    max-width: min(90vw, 800px);
+    max-height: 80vh;
+    box-shadow: var(--shadow-popover);
+    border: var(--style-border-popover);
+    background-color: var(--color-background);
+    opacity: var(--size-chart-opacity);
+    transition-property: display, opacity, transform;
+    transition-duration: 0.3s;
+    transition-timing-function: var(--ease-out-quad);
+    transition-behavior: allow-discrete;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+
+    &:popover-open {
+      --size-chart-opacity: 1;
+      --size-chart-scale: 1;
+    }
+
+    @supports not selector(:popover-open) {
+      &.\:popover-open {
+        --size-chart-opacity: 1;
+        --size-chart-scale: 1;
+      }
+    }
+  }
+
+  @starting-style {
+    .size-chart__panel {
+      --size-chart-opacity: 0;
+      --size-chart-scale: 0.95;
+    }
+
+    .size-chart__panel:popover-open {
+      --size-chart-opacity: 0;
+      --size-chart-scale: 0.95;
+    }
+  }
+
+  .size-chart__content {
+    padding: var(--padding-md);
+    display: flex;
+    flex-direction: column;
+    max-height: calc(80vh - var(--padding-md) * 2);
+    overflow: hidden;
+  }
+
+  .size-chart__title {
+    margin-top: 0;
+    margin-bottom: var(--margin-md);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    flex-shrink: 0;
+  }
+
+  .size-chart__body {
+    font-size: var(--font-size-sm);
+    overflow-x: auto;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .size-chart__body table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+  }
+
+  .size-chart__body th,
+  .size-chart__body td {
+    padding: var(--padding-xs);
+    text-align: left;
+    border-bottom: 1px solid rgb(var(--color-border-rgb) / var(--opacity-border));
+  }
+
+  .size-chart__body th {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .size-chart__content--direct {
+    padding: 0;
+  }
+
+  .size-chart__placeholder {
+    padding: var(--padding-sm);
+    text-align: center;
+  }
+
+  .size-chart__placeholder-text {
+    color: rgb(var(--color-foreground) / 0.6);
+    font-size: var(--font-size-sm);
+    font-style: italic;
+    margin: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Size chart",
+  "settings": [
+    {
+      "type": "page",
+      "id": "size_chart",
+      "label": "Size chart page",
+      "info": "Select a page that contains your size chart content"
+    },
+    {
+      "type": "select",
+      "id": "display_mode",
+      "label": "Display mode",
+      "options": [
+        {
+          "value": "popover",
+          "label": "Popover (click to open)"
+        },
+        {
+          "value": "content",
+          "label": "Direct content (show inline)"
+        }
+      ],
+      "default": "popover",
+      "info": "Use 'Direct content' when placing inside an accordion"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1",
+      "info": "Overrides the default popover color scheme (only applies to popover mode)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Size chart",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
+

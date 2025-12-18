@@ -1,0 +1,111 @@
+{%- doc -%}
+  Custom snippet to process a product title by stripping the color name if it's part of a combined listing.
+  Processes a product title by stripping the color name if it's part of a combined listing.
+  
+  @param {object} product - The product object
+  @param {string} [fallback_title] - Fallback title if processing fails
+{%- enddoc -%}
+
+{% liquid
+  assign display_title = product.title | default: fallback_title | default: ''
+  
+  # Check if this product has a combined listing
+  assign combined_listings_metafield = product.metafields.custom.combined_listing
+  assign has_combined_listing = false
+  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+    assign has_combined_listing = true
+  else
+    # Check if product is referenced in another product's metafield
+    for all_product in collections.all.products
+      if all_product.id != product.id
+        assign check_metafield = all_product.metafields.custom.combined_listing
+        if check_metafield != blank and check_metafield.value != blank
+          for linked_product in check_metafield.value
+            if linked_product.id == product.id
+              assign has_combined_listing = true
+              break
+            endif
+          endfor
+          if has_combined_listing
+            break
+          endif
+        endif
+      endif
+    endfor
+  endif
+  
+  # If combined listing exists, check if title contains color name
+  if has_combined_listing
+    # Get current variant's color value
+    assign current_variant = product.selected_or_first_available_variant
+    assign color_value = ''
+    
+    # Find color option and get its value
+    for option in product.options_with_values
+      assign option_name_lower = option.name | downcase | strip
+      if option_name_lower == 'color' or option_name_lower contains 'color'
+        if option.position == 1
+          assign color_value = current_variant.option1
+        elsif option.position == 2
+          assign color_value = current_variant.option2
+        elsif option.position == 3
+          assign color_value = current_variant.option3
+        endif
+        break
+      endif
+    endfor
+    
+    # If color value found, check if title contains it and strip it
+    if color_value != blank and color_value != ''
+      # Normalize color value: lowercase, strip, and remove extra spaces
+      assign color_normalized = color_value | downcase | strip | replace: '  ', ' '
+      assign title_lower = display_title | downcase | strip
+      
+      # Check if title contains color (case-insensitive)
+      if title_lower contains color_normalized
+        # Try to remove color after common separators (": ", " - ", " | ")
+        # Priority: colon separator (most common pattern like "Product: Color")
+        if display_title contains ': '
+          assign title_parts = display_title | split: ': '
+          if title_parts.size > 1
+            assign title_before_colon = title_parts[0] | strip
+            assign title_after_colon = title_parts[1] | strip
+            assign title_after_colon_normalized = title_after_colon | downcase | strip | replace: '  ', ' '
+            
+            # If the part after colon contains the color, remove it
+            if title_after_colon_normalized contains color_normalized
+              assign display_title = title_before_colon
+            endif
+          endif
+        elsif display_title contains ' - '
+          # Try dash separator
+          assign title_parts = display_title | split: ' - '
+          if title_parts.size > 1
+            assign title_before_dash = title_parts[0] | strip
+            assign title_after_dash = title_parts[1] | strip
+            assign title_after_dash_normalized = title_after_dash | downcase | strip | replace: '  ', ' '
+            
+            if title_after_dash_normalized contains color_normalized
+              assign display_title = title_before_dash
+            endif
+          endif
+        elsif display_title contains ' | '
+          # Try pipe separator
+          assign title_parts = display_title | split: ' | '
+          if title_parts.size > 1
+            assign title_before_pipe = title_parts[0] | strip
+            assign title_after_pipe = title_parts[1] | strip
+            assign title_after_pipe_normalized = title_after_pipe | downcase | strip | replace: '  ', ' '
+            
+            if title_after_pipe_normalized contains color_normalized
+              assign display_title = title_before_pipe
+            endif
+          endif
+        endif
+      endif
+    endif
+  endif
+%}
+
+{{ display_title }}
+

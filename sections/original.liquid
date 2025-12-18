@@ -1,0 +1,670 @@
+<script
+  src="{{ 'results-list.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+{% javascript %}
+  const url = new URL(window.location.href);
+  if (url.hash) {
+    document.addEventListener(
+      'DOMContentLoaded',
+      () => {
+        const card = document.getElementById(url.hash.slice(1));
+        if (card) {
+          card.scrollIntoView({ behavior: 'instant' });
+        }
+      },
+      { once: true }
+    );
+  }
+{% endjavascript %}
+
+{% comment %} We always render this full-width, as the child blocks have width: page/full settings {% endcomment %}
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<results-list
+  class="section product-grid-container color-{{ section.settings.color_scheme }}"
+  style="--padding-block-start: {{ section.settings.padding-block-start }}px; --padding-block-end: {{ section.settings.padding-block-end }}px;"
+  section-id="{{ section.id }}"
+  infinite-scroll="{{ section.settings.enable_infinite_scroll }}"
+>
+  {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
+
+  <div
+    class="collection-wrapper grid gap-style"
+  >
+    {% content_for 'block',
+      type: 'filters',
+      id: 'filters',
+      results: collection,
+      results_size: collection.products_count
+    %}
+
+    {% assign products_per_page = 24 %}
+
+    {% if section.settings.enable_infinite_scroll == false %}
+      {% assign products_per_page = section.settings.products_per_page %}
+    {% endif %}
+
+    {% liquid
+      # Pre-process ALL products to determine which ones should be displayed
+      # This ensures we don't show duplicates across pagination pages
+      assign enable_combined = section.settings.enable_combined_listings
+      assign products_to_display = ''
+      assign processed_groups = ''
+      
+      if enable_combined
+        # Iterate through all products in collection (not paginated) to build display map
+        for all_product in collection.products
+          assign should_display_product = false
+          assign product_group_ids = ''
+          assign combined_listings_metafield = all_product.metafields.custom.combined_listing
+          
+          # If current product has the metafield, collect all linked products
+          if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+            for linked_product in combined_listings_metafield.value
+              assign linked_product_id_str = linked_product.id | append: ''
+              if product_group_ids == ''
+                assign product_group_ids = linked_product_id_str
+              else
+                assign product_group_ids = product_group_ids | append: ',' | append: linked_product_id_str
+              endif
+            endfor
+            # Also add the product that owns the metafield
+            assign product_id_str = all_product.id | append: ''
+            assign product_group_ids_array = product_group_ids | split: ','
+            assign owner_in_group = false
+            for group_id in product_group_ids_array
+              assign group_id_normalized = group_id | strip
+              assign product_id_normalized = product_id_str | strip
+              if group_id_normalized == product_id_normalized
+                assign owner_in_group = true
+                break
+              endif
+            endfor
+            unless owner_in_group
+              if product_group_ids == ''
+                assign product_group_ids = product_id_str
+              else
+                assign product_group_ids = product_group_ids | append: ',' | append: product_id_str
+              endif
+            endunless
+          else
+            # Check if product is referenced in another product's metafield
+            for check_product in collection.products
+              if check_product.id != all_product.id
+                assign check_metafield = check_product.metafields.custom.combined_listing
+                if check_metafield != blank and check_metafield.value != blank
+                  assign current_product_found_in_metafield = false
+                  assign current_product_id_str = all_product.id | append: '' | strip
+                  for linked_product in check_metafield.value
+                    assign linked_product_id_str = linked_product.id | append: '' | strip
+                    if linked_product_id_str == current_product_id_str
+                      assign current_product_found_in_metafield = true
+                      break
+                    endif
+                  endfor
+                  
+                  if current_product_found_in_metafield
+                    # Collect all products from this metafield
+                    for metafield_product in check_metafield.value
+                      if product_group_ids == ''
+                        assign product_group_ids = metafield_product.id | append: ''
+                      else
+                        assign product_group_ids = product_group_ids | append: ',' | append: metafield_product.id | append: ''
+                      endif
+                    endfor
+                    # Also add the product that has the metafield
+                    assign metafield_owner_id_str = check_product.id | append: ''
+                    assign product_group_ids_array = product_group_ids | split: ','
+                    assign owner_in_group = false
+                    for group_id in product_group_ids_array
+                      assign group_id_normalized = group_id | strip
+                      assign metafield_owner_id_normalized = metafield_owner_id_str | strip
+                      if group_id_normalized == metafield_owner_id_normalized
+                        assign owner_in_group = true
+                        break
+                      endif
+                    endfor
+                    unless owner_in_group
+                      if product_group_ids == ''
+                        assign product_group_ids = metafield_owner_id_str
+                      else
+                        assign product_group_ids = product_group_ids | append: ',' | append: metafield_owner_id_str
+                      endif
+                    endunless
+                    # Also add the current product to the group
+                    assign current_product_id_str_check = all_product.id | append: ''
+                    assign current_in_group = false
+                    assign product_group_ids_array_check = product_group_ids | split: ','
+                    for group_id in product_group_ids_array_check
+                      assign group_id_normalized = group_id | strip
+                      assign current_product_id_normalized = current_product_id_str_check | strip
+                      if group_id_normalized == current_product_id_normalized
+                        assign current_in_group = true
+                        break
+                      endif
+                    endfor
+                    unless current_in_group
+                      if product_group_ids == ''
+                        assign product_group_ids = current_product_id_str_check
+                      else
+                        assign product_group_ids = product_group_ids | append: ',' | append: current_product_id_str_check
+                      endif
+                    endunless
+                    break
+                  endif
+                endif
+              endif
+            endfor
+          endif
+          
+          # Check if this group has already been processed
+          if product_group_ids != ''
+            assign product_group_ids_array = product_group_ids | split: ','
+            assign group_already_processed = false
+            for group_id in product_group_ids_array
+              assign group_id_normalized = group_id | strip
+              if processed_groups != ''
+                assign processed_groups_array = processed_groups | split: ','
+                for processed_group in processed_groups_array
+                  assign processed_group_normalized = processed_group | strip
+                  if group_id_normalized == processed_group_normalized
+                    assign group_already_processed = true
+                    break
+                  endif
+                endfor
+              endif
+              if group_already_processed
+                break
+              endif
+            endfor
+            
+            unless group_already_processed
+              # This is the first product in this group, mark it for display
+              assign should_display_product = true
+              # Mark all products in this group as processed
+              for group_id in product_group_ids_array
+                assign group_id_normalized = group_id | strip
+                if processed_groups == ''
+                  assign processed_groups = group_id_normalized
+                else
+                  assign processed_groups = processed_groups | append: ',' | append: group_id_normalized
+                endif
+              endfor
+            endunless
+          else
+            # Product has no combined listing - default to displaying it unless it's a duplicate
+            assign should_display_product = true
+            assign product_id_str = all_product.id | append: '' | strip
+            if processed_groups != ''
+              assign processed_groups_array = processed_groups | split: ','
+              for processed_group in processed_groups_array
+                assign processed_group_normalized = processed_group | strip
+                if product_id_str == processed_group_normalized
+                  assign should_display_product = false
+                  break
+                endif
+              endfor
+            endif
+            
+            # If it should be displayed, add it to processed_groups to prevent duplicates
+            if should_display_product
+              if processed_groups == ''
+                assign processed_groups = product_id_str
+              else
+                assign processed_groups = processed_groups | append: ',' | append: product_id_str
+              endif
+            endif
+          endif
+          
+          # Add to products_to_display if it should be shown
+          if should_display_product
+            assign product_id_str = all_product.id | append: '' | strip
+            if products_to_display == ''
+              assign products_to_display = product_id_str
+            else
+              assign products_to_display = products_to_display | append: ',' | append: product_id_str
+            endif
+          endif
+        endfor
+      endif
+    %}
+
+    {% paginate collection.products by products_per_page %}
+      {% liquid
+        assign displayed_product_ids = ''
+      %}
+      {% capture children %}
+        {% for product in collection.products %}
+          {% comment %}=== DEBUG START: Product {{ product.id }} - {{ product.title }} ==={% endcomment %}
+          {% liquid
+            assign should_display = true
+            assign product_group_ids = ''
+            
+            if enable_combined
+              # Build product_group_ids for debug output (always build this)
+              assign combined_listings_metafield = product.metafields.custom.combined_listing
+              
+              # If current product has the metafield, collect all linked products
+              if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+                for linked_product in combined_listings_metafield.value
+                  assign linked_product_id_str = linked_product.id | append: ''
+                  if product_group_ids == ''
+                    assign product_group_ids = linked_product_id_str
+                  else
+                    assign product_group_ids = product_group_ids | append: ',' | append: linked_product_id_str
+                  endif
+                endfor
+                # Also add the product that owns the metafield (normalize to string for consistent comparison)
+                assign product_id_str = product.id | append: ''
+                assign product_group_ids_array = product_group_ids | split: ','
+                assign owner_in_group = false
+                for group_id in product_group_ids_array
+                  assign group_id_normalized = group_id | strip
+                  assign product_id_normalized = product_id_str | strip
+                  if group_id_normalized == product_id_normalized
+                    assign owner_in_group = true
+                    break
+                  endif
+                endfor
+                unless owner_in_group
+                  if product_group_ids == ''
+                    assign product_group_ids = product_id_str
+                  else
+                    assign product_group_ids = product_group_ids | append: ',' | append: product_id_str
+                  endif
+                endunless
+              else
+                # Check if product is referenced in another product's metafield
+                for all_product in collections.all.products
+                  if all_product.id != product.id
+                    assign check_metafield = all_product.metafields.custom.combined_listing
+                    if check_metafield != blank and check_metafield.value != blank
+                      assign current_product_found_in_metafield = false
+                      assign current_product_id_str = product.id | append: '' | strip
+                      for linked_product in check_metafield.value
+                        assign linked_product_id_str = linked_product.id | append: '' | strip
+                        if linked_product_id_str == current_product_id_str
+                          assign current_product_found_in_metafield = true
+                          break
+                        endif
+                      endfor
+                      
+                      if current_product_found_in_metafield
+                        # Collect all products from this metafield
+                        for metafield_product in check_metafield.value
+                          if product_group_ids == ''
+                            assign product_group_ids = metafield_product.id | append: ''
+                          else
+                            assign product_group_ids = product_group_ids | append: ',' | append: metafield_product.id | append: ''
+                          endif
+                        endfor
+                        # Also add the product that has the metafield
+                        assign metafield_owner_id_str = all_product.id | append: ''
+                        assign product_group_ids_array = product_group_ids | split: ','
+                        assign owner_in_group = false
+                        for group_id in product_group_ids_array
+                          assign group_id_normalized = group_id | strip
+                          assign metafield_owner_id_normalized = metafield_owner_id_str | strip
+                          if group_id_normalized == metafield_owner_id_normalized
+                            assign owner_in_group = true
+                            break
+                          endif
+                        endfor
+                        unless owner_in_group
+                          if product_group_ids == ''
+                            assign product_group_ids = metafield_owner_id_str
+                          else
+                            assign product_group_ids = product_group_ids | append: ',' | append: metafield_owner_id_str
+                          endif
+                        endunless
+                        # Also add the current product to the group (it's referenced in the metafield)
+                        assign current_product_id_str = product.id | append: ''
+                        assign current_in_group = false
+                        assign product_group_ids_array_check = product_group_ids | split: ','
+                        for group_id in product_group_ids_array_check
+                          assign group_id_normalized = group_id | strip
+                          assign current_product_id_normalized = current_product_id_str | strip
+                          if group_id_normalized == current_product_id_normalized
+                            assign current_in_group = true
+                            break
+                          endif
+                        endfor
+                        unless current_in_group
+                          if product_group_ids == ''
+                            assign product_group_ids = current_product_id_str
+                          else
+                            assign product_group_ids = product_group_ids | append: ',' | append: current_product_id_str
+                          endif
+                        endunless
+                        break
+                      endif
+                    endif
+                  endif
+                endfor
+              endif
+              
+              # Check if this product is in the pre-computed products_to_display list
+              # Only filter if products_to_display is not empty (meaning pre-processing ran)
+              assign product_id_str = product.id | append: '' | strip
+              if products_to_display != ''
+                assign products_to_display_array = products_to_display | split: ','
+                assign found_in_display_list = false
+                for display_product_id in products_to_display_array
+                  assign display_product_id_normalized = display_product_id | strip
+                  if product_id_str == display_product_id_normalized
+                    assign found_in_display_list = true
+                    break
+                  endif
+                endfor
+                unless found_in_display_list
+                  # Product not in list - if it has a combined listing metafield, it's a duplicate (filter it)
+                  # If it doesn't have a metafield, it's a regular product that should be shown
+                  # (pre-processing should have added it, but if it didn't, show it anyway as a safety measure)
+                  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+                    # Has combined listing but not in list = duplicate, filter it
+                    assign should_display = false
+                  endif
+                  # If no metafield, keep should_display = true (show the product)
+                endunless
+              endif
+              # If products_to_display is empty, don't filter anything - show all products
+              # This happens when enable_combined is false or pre-processing didn't run
+            endif
+          %}
+          {% if should_display %}
+            <li
+              id="{{ section.id }}-{{ product.id }}"
+              class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+              data-page="{{ paginate.current_page }}"
+              data-product-id="{{ product.id }}"
+              ref="cards[]"
+            >
+              {% # theme-check-disable %}
+              {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
+              {% # theme-check-enable %}
+            </li>
+          {% else %}
+            {% comment %}DEBUG: SKIPPED Product {{ product.id }} - {{ product.title }} (duplicate or filtered){% endcomment %}
+          {% endif %}
+        {% endfor %}
+      {% endcapture %}
+
+      {% render 'product-grid',
+        section: section,
+        children: children,
+        products: collection.products,
+        paginate: paginate,
+        enable_infinite_scroll: section.settings.enable_infinite_scroll
+      %}
+    {% endpaginate %}
+  </div>
+</results-list>
+
+{% stylesheet %}
+  .main-collection-grid {
+    grid-column: var(--grid-column--mobile);
+
+    @media screen and (min-width: 750px) {
+      grid-column: var(--grid-column--desktop);
+    }
+  }
+
+  .collection-wrapper {
+    @media screen and (min-width: 750px) {
+      grid-template-columns:
+        1fr repeat(
+          var(--centered-column-number),
+          minmax(0, calc((var(--page-width) - var(--page-margin) * 2) / var(--centered-column-number)))
+        )
+        1fr;
+    }
+  }
+
+  .collection-wrapper:has(.facets-block-wrapper--full-width),
+  .collection-wrapper:has(.collection-wrapper--full-width) {
+    @media screen and (min-width: 750px) {
+      grid-column: 1 / -1;
+      grid-template-columns:
+        minmax(var(--page-margin), 1fr) repeat(
+          var(--centered-column-number),
+          minmax(0, calc((var(--page-width) - var(--page-margin) * 2) / var(--centered-column-number)))
+        )
+        minmax(var(--page-margin), 1fr);
+    }
+  }
+
+  .collection-wrapper:has(.facets--vertical) .facets-block-wrapper--vertical:not(.hidden) ~ .main-collection-grid {
+    @media screen and (min-width: 750px) {
+      grid-column: var(--facets-vertical-col-width) / var(--full-width-column-number);
+    }
+  }
+
+  .collection-wrapper:has(.facets-block-wrapper--vertical:not(#filters-drawer)):has(.collection-wrapper--full-width) {
+    @media screen and (min-width: 750px) {
+      grid-column: 1 / -1;
+      grid-template-columns: 0fr repeat(var(--centered-column-number), minmax(0, 1fr)) 0fr;
+    }
+  }
+
+  :is(.collection-wrapper--full-width, .collection-wrapper--full-width-on-mobile)
+    [product-grid-view='default']
+    .product-grid__card {
+    @media screen and (max-width: 749px) {
+      padding-inline-start: max(var(--padding-xs), var(--padding-inline-start));
+      padding-inline-end: max(var(--padding-xs), var(--padding-inline-end));
+    }
+  }
+
+  :is(.collection-wrapper--full-width, .collection-wrapper--full-width-on-mobile)
+    [product-grid-view='mobile-single']
+    .product-grid__card {
+    @media screen and (max-width: 749px) {
+      padding-inline-start: max(var(--padding-xs), var(--padding-inline-start));
+      padding-inline-end: max(var(--padding-xs), var(--padding-inline-end));
+    }
+  }
+
+  /* Make product media go edge-to-edge by using negative margins */
+  :is(.collection-wrapper--full-width) .card-gallery,
+  :is(.collection-wrapper--full-width-on-mobile) .card-gallery {
+    @media screen and (max-width: 749px) {
+      margin-inline-start: calc(-1 * max(var(--padding-xs), var(--padding-inline-start)));
+      margin-inline-end: calc(-1 * max(var(--padding-xs), var(--padding-inline-end)));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.collection_container",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout_type",
+      "label": "t:settings.type",
+      "options": [
+        {
+          "value": "grid",
+          "label": "t:options.grid"
+        },
+        {
+          "value": "organic",
+          "label": "t:options.editorial"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "product_card_size",
+      "label": "t:settings.card_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:options.small"
+        },
+        {
+          "value": "medium",
+          "label": "t:options.medium"
+        },
+        {
+          "value": "large",
+          "label": "t:options.large"
+        },
+        {
+          "value": "extra-large",
+          "label": "t:options.extra_large"
+        }
+      ],
+      "default": "medium",
+      "visible_if": "{{ section.settings.layout_type == 'grid' }}"
+    },
+    {
+      "type": "select",
+      "id": "mobile_product_card_size",
+      "label": "t:settings.mobile_card_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:options.small"
+        },
+        {
+          "value": "large",
+          "label": "t:options.large"
+        }
+      ],
+      "default": "small"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_infinite_scroll",
+      "label": "t:settings.auto_load_products",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "t:settings.products_per_page",
+      "min": 8,
+      "max": 36,
+      "step": 4,
+      "default": 24,
+      "visible_if": "{{ section.settings.enable_infinite_scroll == false }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "select",
+      "id": "product_grid_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "centered",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "centered"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width_on_mobile",
+      "label": "t:settings.full_width_on_mobile",
+      "default": true,
+      "visible_if": "{{ section.settings.product_grid_width != 'full-width' }}"
+    },
+    {
+      "type": "range",
+      "id": "columns_gap_horizontal",
+      "label": "t:settings.horizontal_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "columns_gap_vertical",
+      "label": "t:settings.vertical_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:content.section_layout"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Combined Listings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_combined_listings",
+      "label": "Enable Combined Listings",
+      "default": false,
+      "info": "When enabled, products linked via combined listing metafield will appear as a single product with color variant swatches"
+    }
+  ],
+  "presets": []
+}
+{% endschema %}

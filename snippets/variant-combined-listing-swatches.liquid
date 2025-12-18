@@ -1,0 +1,948 @@
+{%- doc -%}
+  Renders swatches for combined listing products, used within the product-swatches block.
+  This mimics variant-swatches.liquid but uses combined listing logic to show all swatches from linked products.
+
+  @param {object} product_resource - The product object.
+  @param {object} [block] - The block object with settings (optional)
+{%- enddoc -%}
+
+{% liquid
+  # Handle blank block (for sections that don't use blocks)
+  if block != blank
+    assign block_settings = block.settings
+  else
+    assign block_settings = blank
+  endif
+  
+  # Get swatch-related settings to pass to swatch component (priority: block settings > global settings)
+  assign swatch_enable_assets_backup = blank
+  if block != blank and block_settings != blank and block_settings.enable_swatch_assets_backup != blank
+    assign swatch_enable_assets_backup = block_settings.enable_swatch_assets_backup
+  elsif settings.enable_swatch_assets_backup != blank
+    assign swatch_enable_assets_backup = settings.enable_swatch_assets_backup
+  endif
+  
+  assign swatch_file_extension_setting = blank
+  if block != blank and block_settings != blank and block_settings.swatch_file_extension != blank
+    assign swatch_file_extension_setting = block_settings.swatch_file_extension
+  elsif settings.swatch_file_extension != blank
+    assign swatch_file_extension_setting = settings.swatch_file_extension
+  endif
+  
+  assign swatch_show_variant_image = blank
+  if block != blank and block_settings != blank and block_settings.show_variant_image != blank
+    assign swatch_show_variant_image = block_settings.show_variant_image
+  elsif settings.show_variant_image != blank
+    assign swatch_show_variant_image = settings.show_variant_image
+  endif
+  
+  assign swatch_variant_width = blank
+  if block != blank and block_settings != blank and block_settings.variant_swatch_width != blank
+    assign swatch_variant_width = block_settings.variant_swatch_width
+  elsif settings.variant_swatch_width != blank
+    assign swatch_variant_width = settings.variant_swatch_width
+  endif
+
+  # Get show_swatch_text_labels setting (priority: block settings > global settings)
+  assign show_swatch_text_labels_setting = false
+  if block != blank and block_settings != blank and block_settings.show_swatch_text_labels
+    assign show_swatch_text_labels_setting = true
+  elsif settings.show_swatch_text_labels
+    assign show_swatch_text_labels_setting = true
+  endif
+
+  # Check for combined listings metafield on current product
+  assign combined_listings_metafield = product_resource.metafields.custom.combined_listing
+  
+  # Use enable_combined from block/section settings if available, otherwise default to true
+  # (This snippet is only called when combined listings should be enabled)
+  if block != blank and block.settings != blank and block.settings.enable_combined_listings != blank
+    assign enable_combined = block.settings.enable_combined_listings
+  elsif section != blank and section.settings != blank and section.settings.enable_combined_listings != blank
+    assign enable_combined = section.settings.enable_combined_listings
+  else
+    assign enable_combined = true
+  endif
+  
+  # Collect all products from metafield (current + related) with their data
+  # Match the logic from variant-combined-listing-picker: process all products from metafield, then always add current product
+  assign all_products_data = ''
+  assign processed_product_ids = ''
+  
+  # Process products directly from the metafield (same as variant-combined-listing-picker)
+  # Use the metafield value we already verified exists
+  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+    for linked_product in combined_listings_metafield.value
+      assign linked_product_id = linked_product.id
+      assign current_product_id = product_resource.id
+      assign linked_product_id_as_string = linked_product_id | append: ''
+      assign current_product_id_as_string = current_product_id | append: ''
+      
+      # Check if this linked product is already in all_products_data to avoid duplicates
+      assign already_added = false
+      if all_products_data != ''
+        assign all_products_check = all_products_data | split: ','
+        for check_item in all_products_check
+          assign check_parts = check_item | split: '|'
+          if check_parts.size > 0
+            assign check_id = check_parts[0] | strip
+            assign check_id_as_number = check_id | plus: 0
+            if linked_product_id == check_id or linked_product_id == check_id_as_number or linked_product_id_as_string == check_id
+              assign already_added = true
+              break
+            endif
+          endif
+        endfor
+      endif
+      
+      unless already_added
+        if all_products_data == ''
+          assign all_products_data = linked_product_id | append: '|linked'
+        else
+          assign all_products_data = all_products_data | append: ',' | append: linked_product_id | append: '|linked'
+        endif
+        if processed_product_ids == ''
+          assign processed_product_ids = linked_product_id
+        else
+          assign processed_product_ids = processed_product_ids | append: ',' | append: linked_product_id
+        endif
+      endunless
+    endfor
+  endif
+  
+  # Always add current product explicitly (ensures it's always included)
+  assign current_product_id_for_data = product_resource.id | append: ''
+  if current_product_id_for_data != blank and current_product_id_for_data != ''
+    # Check if current product is already in the list
+    assign current_already_added = false
+    if all_products_data != ''
+      assign all_products_check_current = all_products_data | split: ','
+      for check_item_current in all_products_check_current
+        assign check_parts_current = check_item_current | split: '|'
+        if check_parts_current.size > 0
+          assign check_id_current = check_parts_current[0] | strip
+          assign check_id_current_as_number = check_id_current | plus: 0
+          if product_resource.id == check_id_current or product_resource.id == check_id_current_as_number or current_product_id_for_data == check_id_current
+            assign current_already_added = true
+            break
+          endif
+        endif
+      endfor
+    endif
+    
+    unless current_already_added
+      if all_products_data == ''
+        assign all_products_data = current_product_id_for_data | append: '|current'
+      else
+        assign all_products_data = all_products_data | append: ',' | append: current_product_id_for_data | append: '|current'
+      endif
+    endunless
+  endif
+  
+  # Build products array with full data (same logic as variant-combined-listing-picker)
+  assign products_array = all_products_data | split: ','
+  assign products_with_data = ''
+  
+  for product_data in products_array
+    # Skip empty items
+    if product_data != blank and product_data != ''
+      assign product_parts = product_data | split: '|'
+      
+      # Handle case where string starts with pipe (first element is empty)
+      assign product_id_index = 0
+      assign product_type_index = 1
+      if product_parts.size > 0 and product_parts[0] == blank or product_parts[0] == ''
+        # First element is empty, shift indices
+        assign product_id_index = 1
+        assign product_type_index = 2
+      endif
+      
+      if product_parts.size > product_type_index
+        assign product_id = product_parts[product_id_index] | strip
+        assign product_type = product_parts[product_type_index] | strip
+        
+        # Normalize product_type for comparison
+        assign product_type_normalized = product_type | downcase | strip
+        
+        # If product_id is blank and this is the current product, use product_resource.id
+        if product_id == blank or product_id == ''
+          if product_type_normalized == 'current'
+            assign product_id = product_resource.id
+            assign product_type = 'current'
+          endif
+        endif
+        
+        assign product_id_as_number = product_id | plus: 0
+
+        # Find the product object
+        assign current_product_obj = ''
+        
+        # Use product_resource directly if this is the current product
+        if product_type == 'current'
+          assign current_product_obj = product_resource
+          # Ensure product_id is set for current product
+          if product_id == blank or product_id == ''
+            assign product_id = product_resource.id
+            assign product_id_as_number = product_id | plus: 0
+          endif
+        else
+          # Try to find product from metafield first (more reliable)
+          if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+            for linked_product in combined_listings_metafield.value
+              assign linked_product_id = linked_product.id
+              assign linked_product_id_as_string = linked_product_id | append: ''
+              if linked_product_id == product_id or linked_product_id == product_id_as_number or linked_product_id_as_string == product_id
+                assign current_product_obj = linked_product
+                break
+              endif
+            endfor
+          endif
+          
+          # Fallback: Find product by iterating through all products (if not found in metafield)
+          if current_product_obj == ''
+            for all_product in collections.all.products
+              assign all_product_id_as_string = all_product.id | append: ''
+              if all_product.id == product_id or all_product.id == product_id_as_number or all_product_id_as_string == product_id
+                assign current_product_obj = all_product
+                break
+              endif
+            endfor
+          endif
+        endif
+
+        if current_product_obj != ''
+          # Find the color option (or first option) to iterate through all variants
+          assign color_option = ''
+          assign swatch_option = ''
+          
+          # Step 1: Check for "color" variant option (case-insensitive)
+          for option in current_product_obj.options_with_values
+            assign option_name_lower = option.name | downcase
+            if option_name_lower == 'color'
+              assign color_option = option
+              break
+            endif
+          endfor
+
+          # Step 2: If no "color" option found, use first available option
+          if color_option == ''
+            assign color_option = current_product_obj.options_with_values.first
+          endif
+          
+          # Step 3: Use the color option (or first option) to iterate through variants
+          # Process all products and variants, not just ones with swatches
+          if color_option != ''
+            assign swatch_option = color_option
+            assign enable_backup_check = swatch_enable_assets_backup
+            if enable_backup_check == blank
+              assign enable_backup_check = true
+            endif
+          endif
+          
+          # Step 4: Iterate through all option values (variants) - show all variants, not just ones with swatches
+          if swatch_option != ''
+            assign color_option_name = swatch_option.name
+            
+            # Track processed variant IDs to avoid exact duplicates (same product + variant)
+            assign processed_variant_ids = ''
+            
+            for product_option_value in swatch_option.values
+              # Skip option values that are blank, null, 0 (number), "0" (string), or "null" (string)
+              assign option_value_str = product_option_value | append: ''
+              assign should_skip = false
+              if product_option_value == blank or product_option_value == 0 or option_value_str == '' or option_value_str == '0' or option_value_str == 'null'
+                assign should_skip = true
+              endif
+              
+              unless should_skip
+                assign variant_to_display = product_option_value.variant
+                assign variant_id_check = variant_to_display.id | append: ''
+                assign product_id_check = current_product_obj.id | append: ''
+                assign variant_product_key = product_id_check | append: ':' | append: variant_id_check
+                
+                # Check if we've already processed this exact variant (same product + variant ID)
+                assign variant_already_processed = false
+                if processed_variant_ids != ''
+                  assign processed_variants_array = processed_variant_ids | split: '|||'
+                  for processed_variant_key in processed_variants_array
+                    if processed_variant_key == variant_product_key
+                      assign variant_already_processed = true
+                      break
+                    endif
+                  endfor
+                endif
+                
+                # Process all variants (don't filter by swatch - let rendering logic handle it)
+                unless variant_already_processed
+                  assign color_value_name = product_option_value.name
+                  assign color_option_value = product_option_value
+                  
+                  # Check if this option value has a swatch (for data tracking, but don't filter)
+                  assign has_swatch = false
+                  if product_option_value.swatch != blank
+                    if product_option_value.swatch.color != blank or product_option_value.swatch.image != blank
+                      assign has_swatch = true
+                    endif
+                  endif
+                  
+                  # Check for assets folder backup swatch
+                  if has_swatch == false and enable_backup_check
+                    if product_option_value.name != blank
+                      assign swatch_file_extension = swatch_file_extension_setting | default: 'png'
+                      assign color_file_name = product_option_value.name | handle | append: '.' | append: swatch_file_extension
+                      if images[color_file_name] != blank
+                        assign has_swatch = true
+                      endif
+                    endif
+                  endif
+                  
+                  # Build product data string: product_id|product_type|variant_id|product_url|product_title|has_swatch|color_option_value_name|color_option_name|is_current|available
+                  assign is_current = 'false'
+                  if product_type == 'current' and variant_to_display.id == product_resource.selected_or_first_available_variant.id
+                    assign is_current = 'true'
+                  endif
+
+                  # Use product URL without variant parameter
+                  assign product_url_clean = current_product_obj.url
+                  # Convert boolean to string explicitly
+                  assign variant_available_string = 'false'
+                  if variant_to_display.available
+                    assign variant_available_string = 'true'
+                  endif
+                  
+                  # Ensure product_id is always set (critical for current product)
+                  if product_type == 'current'
+                    assign product_id = product_resource.id
+                    assign product_id_as_number = product_id | plus: 0
+                  else
+                    if product_id == blank or product_id == ''
+                      assign product_id = current_product_obj.id
+                      assign product_id_as_number = product_id | plus: 0
+                    endif
+                  endif
+                  
+                  # Convert all values to strings
+                  assign product_id_str = product_id | append: ''
+                  assign product_type_str = product_type | append: ''
+                  assign variant_id_str = variant_to_display.id | append: ''
+                  assign product_url_str = product_url_clean | append: ''
+                  assign product_title_str = current_product_obj.title | append: ''
+                  assign has_swatch_str = has_swatch | append: ''
+                  assign color_value_str = color_value_name | append: ''
+                  assign color_option_str = color_option_name | append: ''
+                  assign is_current_str = is_current | append: ''
+                  assign available_str = variant_available_string | append: ''
+                  
+                  # Build the string: product_id|product_type|variant_id|product_url|product_title|has_swatch|color_option_value_name|color_option_name|is_current|available
+                  assign product_data_string = product_id_str | append: '|' | append: product_type_str | append: '|' | append: variant_id_str | append: '|' | append: product_url_str | append: '|' | append: product_title_str | append: '|' | append: has_swatch_str | append: '|' | append: color_value_str | append: '|' | append: color_option_str | append: '|' | append: is_current_str | append: '|' | append: available_str
+
+                  if products_with_data == ''
+                    assign products_with_data = product_data_string
+                  else
+                    assign products_with_data = products_with_data | append: '|||' | append: product_data_string
+                  endif
+                  
+                  # Mark this variant as processed
+                  if processed_variant_ids == ''
+                    assign processed_variant_ids = variant_product_key
+                  else
+                    assign processed_variant_ids = processed_variant_ids | append: '|||' | append: variant_product_key
+                  endif
+                endunless
+              endunless
+            endfor
+          endif
+        endif
+      endif
+    endif
+  endfor
+
+  # Sort products alphabetically by color option value (for consistent swatch ordering)
+  assign sorted_products_array = products_with_data | split: '|||'
+  assign sorted_products = ''
+
+  # Create array of products with their sort keys (color value names, lowercase for case-insensitive sorting)
+  assign products_with_sort_keys = ''
+  for product_item in sorted_products_array
+    if product_item != blank
+      assign item_parts = product_item | split: '|'
+      
+      # Handle case where string starts with pipe (first element is empty)
+      assign sort_base_index = 0
+      if item_parts.size > 0
+        assign sort_first_part = item_parts[0] | strip
+        if sort_first_part == blank or sort_first_part == ''
+          assign sort_base_index = 1
+        endif
+      endif
+      
+      # We need at least 10 elements (indices sort_base_index through sort_base_index+9)
+      assign sort_min_size = sort_base_index | plus: 10
+      if item_parts.size >= sort_min_size
+        assign color_value_idx = sort_base_index | plus: 6
+        assign color_value = item_parts[color_value_idx] | strip
+        
+        # If color_value is blank, fall back to product title for sorting
+        if color_value == blank or color_value == ''
+          assign product_title_idx = sort_base_index | plus: 4
+          if item_parts.size > product_title_idx
+            assign color_value = item_parts[product_title_idx] | strip
+          endif
+        endif
+        
+        # Ensure we have a value to sort by
+        if color_value != blank and color_value != ''
+          # Convert to lowercase for case-insensitive sorting
+          assign color_value_lower = color_value | downcase | strip
+          # Format: lowercase_color_value|||SORT|||product_item
+          assign sortable_item = color_value_lower | append: '|||SORT|||' | append: product_item
+          if products_with_sort_keys == ''
+            assign products_with_sort_keys = sortable_item
+          else
+            assign products_with_sort_keys = products_with_sort_keys | append: '|||SEP|||' | append: sortable_item
+          endif
+        endif
+      endif
+    endif
+  endfor
+
+  # Sort by the lowercase color value
+  assign sorted_with_keys = products_with_sort_keys | split: '|||SEP|||' | sort
+
+  # Extract just the product items (everything after |||SORT|||) and update is_current flag
+  # Check if each swatch's product ID matches the product card's product ID (product_resource.id)
+  # The swatch that matches the product card should be active (is_current = 'true'), all others false
+  assign current_product_id_str = product_resource.id | append: ''
+  assign current_product_id_num = product_resource.id
+  for sorted_item in sorted_with_keys
+    assign sort_parts = sorted_item | split: '|||SORT|||'
+    if sort_parts.size > 1
+      assign product_item_original = sort_parts[1]
+      
+      # Parse the item to update is_current flag
+      assign item_parts = product_item_original | split: '|'
+      assign base_index = 0
+      if item_parts.size > 0
+        assign first_part = item_parts[0] | strip
+        if first_part == blank or first_part == ''
+          assign base_index = 1
+        endif
+      endif
+      
+      assign min_required_size = base_index | plus: 10
+      if item_parts.size >= min_required_size
+        # Get the product ID from this item
+        assign item_product_id_idx = base_index
+        assign item_product_id = item_parts[item_product_id_idx] | strip
+        assign item_product_id_as_number = item_product_id | plus: 0
+        assign item_product_id_str = item_product_id | append: ''
+        
+        # Check if this swatch's product ID matches the product card's product ID
+        assign new_is_current = 'false'
+        if item_product_id == current_product_id_num or item_product_id_as_number == current_product_id_num or item_product_id_str == current_product_id_str
+          assign new_is_current = 'true'
+        endif
+        
+        # Rebuild the item with updated is_current flag
+        assign idx0 = base_index
+        assign idx1 = base_index | plus: 1
+        assign idx2 = base_index | plus: 2
+        assign idx3 = base_index | plus: 3
+        assign idx4 = base_index | plus: 4
+        assign idx5 = base_index | plus: 5
+        assign idx6 = base_index | plus: 6
+        assign idx7 = base_index | plus: 7
+        assign idx8 = base_index | plus: 8
+        assign idx9 = base_index | plus: 9
+        
+        assign updated_product_item = item_parts[idx0]
+        assign updated_product_item = updated_product_item | append: '|' | append: item_parts[idx1]
+        assign updated_product_item = updated_product_item | append: '|' | append: item_parts[idx2]
+        assign updated_product_item = updated_product_item | append: '|' | append: item_parts[idx3]
+        assign updated_product_item = updated_product_item | append: '|' | append: item_parts[idx4]
+        assign updated_product_item = updated_product_item | append: '|' | append: item_parts[idx5]
+        assign updated_product_item = updated_product_item | append: '|' | append: item_parts[idx6]
+        assign updated_product_item = updated_product_item | append: '|' | append: item_parts[idx7]
+        assign updated_product_item = updated_product_item | append: '|' | append: new_is_current
+        assign updated_product_item = updated_product_item | append: '|' | append: item_parts[idx9]
+        
+        # Include leading blank if base_index is 1
+        if base_index == 1
+          assign updated_product_item = item_parts[0] | append: '|' | append: updated_product_item
+        endif
+      else
+        # If item doesn't have required size, use as-is
+        # Cannot reliably update is_current flag without full data structure
+        assign updated_product_item = product_item_original
+      endif
+      
+      if sorted_products == ''
+        assign sorted_products = updated_product_item
+      else
+        assign sorted_products = sorted_products | append: '|||' | append: updated_product_item
+      endif
+    endif
+  endfor
+  
+  # Update sorted_products_array
+  if sorted_products != '' and sorted_products != blank
+    assign sorted_products_array = sorted_products | split: '|||'
+  else
+    assign sorted_products_array = ''
+  endif
+
+  # Get variant option name for legend
+  assign variant_option_name = 'Available Options'
+  if sorted_products != '' and sorted_products_array != ''
+    if sorted_products_array.size > 0
+      assign first_product_parts = sorted_products_array[0] | split: '|'
+      assign first_product_id = first_product_parts[0]
+      assign first_product_id_as_number = first_product_id | plus: 0
+      
+      assign first_product_obj = ''
+      
+      if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+        for linked_product in combined_listings_metafield.value
+          assign linked_product_id = linked_product.id
+          assign linked_product_id_as_string = linked_product_id | append: ''
+          if linked_product_id == first_product_id or linked_product_id == first_product_id_as_number or linked_product_id_as_string == first_product_id
+            assign first_product_obj = linked_product
+            break
+          endif
+        endfor
+      endif
+      
+      if first_product_obj == ''
+        for all_product in collections.all.products
+          assign all_product_id_as_string = all_product.id | append: ''
+          if all_product.id == first_product_id or all_product.id == first_product_id_as_number or all_product_id_as_string == first_product_id
+            assign first_product_obj = all_product
+            break
+          endif
+        endfor
+      endif
+      
+      if first_product_obj != ''
+        for option in first_product_obj.options_with_values
+          assign option_name_lower = option.name | downcase
+          if option_name_lower == 'color'
+            assign variant_option_name = option.name
+            break
+          endif
+        endfor
+        
+        if variant_option_name == 'Available Options'
+          assign first_option = first_product_obj.options_with_values.first
+          if first_option
+            assign variant_option_name = first_option.name
+          endif
+        endif
+      endif
+    endif
+  endif
+  
+  # Get the currently selected variant's color option value name for display
+  assign selected_color_value = ''
+  assign selected_variant = product_resource.selected_or_first_available_variant
+  
+  for option in product_resource.options_with_values
+    assign option_name_lower = option.name | downcase
+    if option_name_lower == 'color'
+      if option.position == 1
+        assign selected_color_value = selected_variant.option1
+      elsif option.position == 2
+        assign selected_color_value = selected_variant.option2
+      elsif option.position == 3
+        assign selected_color_value = selected_variant.option3
+      endif
+      break
+    endif
+  endfor
+  
+  if selected_color_value == blank or selected_color_value == ''
+    assign first_option = product_resource.options_with_values.first
+    if first_option
+      if first_option.position == 1
+        assign selected_color_value = selected_variant.option1
+      elsif first_option.position == 2
+        assign selected_color_value = selected_variant.option2
+      elsif first_option.position == 3
+        assign selected_color_value = selected_variant.option3
+      endif
+    endif
+  endif
+%}
+
+<swatches-variant-picker-component
+  data-product-id="{{ product_resource.id }}"
+  data-product-url="{{ product_resource.url }}"
+  ref="swatchesVariantPicker"
+>
+  <form>
+    <fieldset class="variant-option variant-option--buttons variant-option--swatches">
+      {%- liquid
+        # Always show labels on product pages, otherwise respect the setting
+        assign is_product_page = false
+        if request.page_type == 'product'
+          assign is_product_page = true
+        endif
+        
+        # Show labels if on product page OR if setting is enabled
+        assign show_text_labels = false
+        if is_product_page
+          assign show_text_labels = true
+        elsif show_swatch_text_labels_setting
+          assign show_text_labels = true
+        endif
+      -%}
+      {%- if show_text_labels -%}
+        <legend>
+          {{ variant_option_name | escape }}:
+          {%- if selected_color_value != blank and selected_color_value != '' -%}
+            <span class="variant-option__swatch-value">{{ selected_color_value | escape }}</span>
+          {%- endif %}
+        </legend>
+      {%- endif %}
+      {% capture children %}
+        {% assign final_products = sorted_products | split: '|||' %}
+        
+        {% for product_item in final_products %}
+          {% if product_item != blank and product_item != '' %}
+            {% assign item_parts = product_item | split: '|' %}
+            
+            {% assign base_index = 0 %}
+            {% if item_parts.size > 0 %}
+              {% assign first_part = item_parts[0] | strip %}
+              {% if first_part == blank or first_part == '' %}
+                {% assign base_index = 1 %}
+              {% endif %}
+            {% endif %}
+            
+            {% assign min_required_size = base_index | plus: 10 %}
+            {% if item_parts.size >= min_required_size %}
+              {% assign idx = base_index %}
+              {% assign product_id = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 1 %}
+              {% assign product_type = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 2 %}
+              {% assign variant_id = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 3 %}
+              {% assign product_url = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 4 %}
+              {% assign product_title = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 5 %}
+              {% assign has_swatch = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 6 %}
+              {% assign color_option_value = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 7 %}
+              {% assign color_option_name = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 8 %}
+              {% assign is_current = item_parts[idx] | strip %}
+              {% assign idx = base_index | plus: 9 %}
+              {% assign variant_available = item_parts[idx] | strip %}
+              
+              {% if product_title contains '/' or product_title == blank %}
+                {% if product_type == 'current' %}
+                  {% assign product_title = product_resource.title %}
+                {% else %}
+                  {% assign product_id_as_number = product_id | plus: 0 %}
+                  {% for all_product in collections.all.products %}
+                    {% assign all_product_id_as_string = all_product.id | append: '' %}
+                    {% if all_product.id == product_id or all_product.id == product_id_as_number or all_product_id_as_string == product_id %}
+                      {% assign product_title = all_product.title %}
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endif %}
+
+              {% liquid
+                assign is_current_product = false
+                if is_current == 'true'
+                  assign is_current_product = true
+                endif
+
+                assign variant_available_bool = true
+                
+                assign product_type_normalized = product_type | downcase | strip
+                
+                assign display_product = ''
+                if product_type_normalized == 'current'
+                  assign display_product = product_resource
+                else
+                  if product_id == blank or product_id == ''
+                    if item_parts.size > base_index
+                      assign product_id = item_parts[base_index] | strip
+                    endif
+                  endif
+                  
+                  if product_id != blank and product_id != ''
+                    assign product_id_as_number = product_id | plus: 0
+                    
+                    if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+                      for linked_product in combined_listings_metafield.value
+                        assign linked_product_id = linked_product.id
+                        assign linked_product_id_as_string = linked_product_id | append: ''
+                        if linked_product_id == product_id or linked_product_id == product_id_as_number or linked_product_id_as_string == product_id
+                          assign display_product = linked_product
+                          break
+                        endif
+                      endfor
+                    endif
+                    
+                    if display_product == ''
+                      for all_product in collections.all.products
+                        assign all_product_id_as_string = all_product.id | append: ''
+                        if all_product.id == product_id or all_product.id == product_id_as_number or all_product_id_as_string == product_id
+                          assign display_product = all_product
+                          break
+                        endif
+                      endfor
+                    endif
+                  endif
+                endif
+                
+                assign variant_actually_available = false
+                if display_product != '' and variant_id != blank
+                  assign variant_id_as_number = variant_id | plus: 0
+                  assign variant_id_as_string = variant_id | append: ''
+                  for variant in display_product.variants
+                    if variant.id == variant_id or variant.id == variant_id_as_number or variant.id == variant_id_as_string
+                      if variant.available
+                        assign variant_actually_available = true
+                      endif
+                      break
+                    endif
+                  endfor
+                else
+                  assign variant_available_clean = variant_available | strip | downcase
+                  if variant_available_clean == 'true' or variant_available == true
+                    assign variant_actually_available = true
+                  endif
+                endif
+
+                # Get swatch if available from variant options - prioritize swatch color/image over variant image
+                assign swatch_to_render = ''
+                assign variant_image_for_swatch = ''
+                assign option_value_name_for_swatch = color_option_value
+                
+                if display_product != '' and color_option_value != blank and color_option_value != ''
+                  for option in display_product.options_with_values
+                    for value in option.values
+                      assign value_str = value | append: ''
+                      if value_str == color_option_value
+                        assign option_value_name_for_swatch = value.name
+                        
+                        if value.swatch != blank
+                          if value.swatch.color != blank or value.swatch.image != blank
+                            assign swatch_to_render = value.swatch
+                          endif
+                        endif
+                        
+                        if swatch_to_render == blank
+                          if value.variant.featured_media != blank
+                            assign variant_image_for_swatch = value.variant.featured_media
+                          endif
+                        endif
+                        
+                        break
+                      endif
+                    endfor
+                    assign should_break = false
+                    if swatch_to_render != blank
+                      assign should_break = true
+                    elsif variant_image_for_swatch != blank
+                      assign should_break = true
+                    endif
+                    if should_break
+                      break
+                    endif
+                  endfor
+                endif
+                
+                if swatch_to_render == blank and variant_image_for_swatch == blank
+                  if display_product != '' and display_product.featured_media != blank
+                    assign variant_image_for_swatch = display_product.featured_media
+                  endif
+                endif
+                
+                assign assets_file_exists_single = false
+                if option_value_name_for_swatch != blank
+                  assign enable_backup_single = settings.enable_swatch_assets_backup
+                  if enable_backup_single == blank
+                    assign enable_backup_single = true
+                  endif
+                  
+                  if enable_backup_single
+                    assign swatch_file_extension_single = settings.swatch_file_extension | default: 'png'
+                    assign color_file_name_single = option_value_name_for_swatch | handle | append: '.' | append: swatch_file_extension_single
+                    if images[color_file_name_single] != blank
+                      assign assets_file_exists_single = true
+                    endif
+                  endif
+                endif
+                
+                assign has_swatch_to_render = false
+                if swatch_to_render != blank
+                  assign has_swatch_to_render = true
+                elsif variant_image_for_swatch != blank
+                  assign has_swatch_to_render = true
+                elsif assets_file_exists_single
+                  assign has_swatch_to_render = true
+                endif
+              %}
+
+              {%- liquid
+                assign hover_media = ''
+                if display_product != '' and variant_id != blank
+                  assign variant_id_as_number = variant_id | plus: 0
+                  assign variant_id_as_string = variant_id | append: ''
+                  for variant in display_product.variants
+                    if variant.id == variant_id or variant.id == variant_id_as_number or variant.id == variant_id_as_string
+                      if variant.featured_media != blank
+                        assign hover_media = variant.featured_media
+                      endif
+                      break
+                    endif
+                  endfor
+                endif
+                
+                if hover_media == blank and display_product != '' and display_product.featured_media != blank
+                  assign hover_media = display_product.featured_media
+                endif
+                
+                if hover_media == blank
+                  assign hover_media = variant_image_for_swatch
+                endif
+                
+                # Get the featured image URL for the product (for hover preview)
+                # Priority: variant's featured media > product's featured media
+                assign featured_image_url = ''
+                if display_product != '' and variant_id != blank
+                  assign variant_id_as_number = variant_id | plus: 0
+                  assign variant_id_as_string = variant_id | append: ''
+                  for variant in display_product.variants
+                    if variant.id == variant_id or variant.id == variant_id_as_number or variant.id == variant_id_as_string
+                      if variant.featured_media != blank
+                        if variant.featured_media.preview_image != blank
+                          assign featured_image_url = variant.featured_media.preview_image | image_url: width: 1000
+                        endif
+                      endif
+                      break
+                    endif
+                  endfor
+                endif
+                
+                # Fallback to product's featured media if variant doesn't have one
+                if featured_image_url == blank and display_product != '' and display_product.featured_media != blank
+                  if display_product.featured_media.preview_image != blank
+                    assign featured_image_url = display_product.featured_media.preview_image | image_url: width: 1000
+                  elsif display_product.featured_image != blank
+                    assign featured_image_url = display_product.featured_image | image_url: width: 1000
+                  endif
+                endif
+              -%}
+              <li class="variant-option__swatch">
+                <label
+                  {% if hover_media != blank %}
+                    data-media-id="{{ hover_media.id }}"
+                  {% endif %}
+                  data-option-available="{{ variant_actually_available }}"
+                  class="variant-option__button-label variant-option__button-label--has-swatch swatch-rounded"
+                  {% if hover_media != blank %}
+                    on:pointerenter="product-card/previewVariant/{{ hover_media.id }}"
+                    on:pointerleave="product-card/resetVariant"
+                  {% endif %}
+                  {% if display_product != '' %}
+                    data-product-id="{{ display_product.id }}"
+                    data-product-url="{{ product_url }}"
+                  {% endif %}
+                  {% if featured_image_url != blank %}
+                    data-featured-image-url="{{ featured_image_url }}"
+                  {% endif %}
+                >
+                  <input
+                    type="radio"
+                    name="{{ variant_option_name | escape }}-{{ product_resource.id }}-swatch"
+                    value="{{ variant_id }}"
+                    aria-label="{{ product_title | escape }}"
+                    data-input-id="1-{{ forloop.index0 }}"
+                    {% if hover_media != blank %}
+                      data-option-media-id="{{ hover_media.id }}"
+                    {% endif %}
+                    data-option-available="{{ variant_actually_available }}"
+                    {% if product_url != blank %}
+                      data-connected-product-url="{{ product_url }}?variant={{ variant_id }}"
+                    {% endif %}
+                    {% if display_product != '' %}
+                      data-product-id="{{ display_product.id }}"
+                      data-product-url="{{ product_url }}"
+                    {% endif %}
+                    {% if featured_image_url != blank %}
+                      data-featured-image-url="{{ featured_image_url }}"
+                    {% endif %}
+                    {% if is_current_product %}
+                      checked
+                    {% endif %}
+                    data-available-count="{% if variant_actually_available %}1{% else %}0{% endif %}"
+                    data-variant-id="{{ variant_id }}"
+                    data-first-available-or-first-variant-id="{{ variant_id }}"
+                  >
+                  {% if has_swatch_to_render %}
+                    {% if swatch_to_render != blank %}
+                      {% render 'swatch',
+                        swatch: swatch_to_render,
+                        variant_image: hover_media,
+                        option_value_name: option_value_name_for_swatch,
+                        enable_swatch_assets_backup: swatch_enable_assets_backup,
+                        swatch_file_extension: swatch_file_extension_setting,
+                        show_variant_image: swatch_show_variant_image,
+                        variant_swatch_width: swatch_variant_width
+                      %}
+                    {% else %}
+                      {% render 'swatch',
+                        swatch: blank,
+                        variant_image: hover_media,
+                        option_value_name: option_value_name_for_swatch,
+                        enable_swatch_assets_backup: swatch_enable_assets_backup,
+                        swatch_file_extension: swatch_file_extension_setting,
+                        show_variant_image: swatch_show_variant_image,
+                        variant_swatch_width: swatch_variant_width
+                      %}
+                    {% endif %}
+                    {% unless variant_actually_available %}
+                      <svg
+                        viewBox="0 0 100 46"
+                        preserveAspectRatio="xMidYMid slice"
+                      >
+                        {% # 25deg %}
+                        <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
+                        {% # duplicate line for motion overlay %}
+                        <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
+                      </svg>
+                    {% endunless %}
+                  {% endif %}
+                </label>
+              </li>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        <li
+          slot="more"
+        >
+          <button
+            class="hidden-swatches__count"
+            aria-label="{{ 'actions.show_all_options' | t }}"
+            on:click="/showAllSwatches"
+          ></button>
+        </li>
+      {% endcapture %}
+      {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
+    </fieldset>
+    
+    <script type="application/json">
+      {{ product_resource.selected_or_first_available_variant | json }}
+    </script>
+  </form>
+</swatches-variant-picker-component>
+

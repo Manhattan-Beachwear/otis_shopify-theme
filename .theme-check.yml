@@ -1,0 +1,41 @@
+# The directory where theme folders are located (optional)
+root: dist
+
+# Configuration files are extensible
+extends:
+  - theme-check:recommended # or theme-check:all, theme-check:theme-app-extension
+  - '.theme-check.yml'
+
+# Paths to custom checks
+require:
+  - ./path/to/my_custom_check.js # path to file or module
+
+# Paths to ignore (don't lint those!)
+ignore:
+  - 'node_modules/**'
+  - 'snippets/*-icon.liquid' # minimatch globs are supported
+
+# Disable all schema validation checks that don't recognize Horizon theme structure
+# Horizon theme uses new schema patterns:
+# - Blocks in schema can have just "type" (no "name" required for @theme/@app)
+# - Blocks in presets are objects (not arrays) keyed by block ID
+SchemaJson:
+  enabled: false
+SchemaFormat:
+  enabled: false
+SchemaTranslation:
+  enabled: false
+
+# Disable a check
+TemplateLength:
+  enabled: false
+  severity: warning
+  ignore:
+    - templates/index.liquid
+  # Configure options for a check
+  max_length: 300
+
+# Enable a custom check
+MyCustomCheck:
+  enabled: true
+  severity: error

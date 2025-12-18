@@ -1,0 +1,268 @@
+{%- liquid
+  assign block_settings = block.settings
+  
+  # Check if combined listings are enabled (from section or block settings)
+  assign enable_combined = false
+  if section.settings.enable_combined_listings
+    assign enable_combined = true
+  elsif block.settings.enable_combined_listings
+    assign enable_combined = true
+  endif
+  
+  # Check if product has combined listing metafield
+  assign combined_listings_metafield = closest.product.metafields.custom.combined_listing
+  assign has_combined_listing_metafield = false
+  
+  # Check if metafield exists and has products
+  if enable_combined and combined_listings_metafield != blank and combined_listings_metafield.value != blank
+    # Try to iterate to see if we have products
+    for test_product in combined_listings_metafield.value
+      assign has_combined_listing_metafield = true
+      break
+    endfor
+  endif
+
+  # If product has combined listing, use the combined listing swatches block
+  if has_combined_listing_metafield
+    render 'swatches-cl', block: block
+  else
+    # Legacy swatches logic for products without combined listings
+    # Check for both metaobject swatches and assets folder swatches (like variant-swatches.liquid does)
+    for product_option in closest.product.options_with_values
+      assign swatch_count = product_option.values | map: 'swatch' | compact | size
+      
+      # Check if any option values have assets folder files (for backup swatch feature)
+      assign assets_swatch_count = 0
+      assign enable_backup_check = settings.enable_swatch_assets_backup
+      if enable_backup_check == blank
+        assign enable_backup_check = true
+      endif
+      
+      if enable_backup_check
+        for product_option_value in product_option.values
+          if product_option_value.name != blank
+            assign swatch_file_extension = settings.swatch_file_extension | default: 'png'
+            assign color_file_name = product_option_value.name | handle | append: '.' | append: swatch_file_extension
+            if images[color_file_name] != blank
+              assign assets_swatch_count = assets_swatch_count | plus: 1
+            endif
+          endif
+        endfor
+      endif
+      
+      # Use swatches if we have metaobject swatches OR assets folder swatches
+      assign total_swatch_count = swatch_count | plus: assets_swatch_count
+
+      if total_swatch_count > 0
+        assign product_has_swatches = true
+      endif
+    endfor
+  endif
+-%}
+
+{%- comment -%} Only render legacy swatches if product doesn't have combined listing {%- endcomment -%}
+{% unless has_combined_listing_metafield %}
+  {% if product_has_swatches %}
+    <product-swatches
+      data-product-id="{{ closest.product.id }}"
+      data-product-url="{{ closest.product.url }}"
+      style="
+        --overflow-list-alignment: {{ block_settings.product_swatches_alignment }};
+        --overflow-list-alignment-mobile: {{ block_settings.product_swatches_alignment_mobile }};
+        --product-swatches-alignment: {% if block_settings.product_swatches_alignment == 'flex-start' %}start{% elsif block_settings.product_swatches_alignment == 'flex-end' %}end{% else %}center{% endif %};
+        --product-swatches-alignment-mobile: {% if block_settings.product_swatches_alignment_mobile == 'flex-start' %}start{% elsif block_settings.product_swatches_alignment_mobile == 'flex-end' %}end{% else %}center{% endif %};
+        --product-swatches-padding-block-start: {{ block_settings.product_swatches_padding_top }}px;
+        --product-swatches-padding-block-end: {{ block_settings.product_swatches_padding_bottom }}px;
+        --product-swatches-padding-inline-start: {{ block_settings.product_swatches_padding_left }}px;
+        --product-swatches-padding-inline-end: {{ block_settings.product_swatches_padding_right }}px;
+      "
+      {{ block.shopify_attributes }}
+    >
+      {% render 'variant-swatches', product_resource: closest.product %}
+    </product-swatches>
+  {% endif %}
+{% endunless %}
+
+{% # theme-check-disable %}
+{% stylesheet %}
+  product-swatches {
+    width: 100%;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    gap: 0;
+    flex-shrink: 0;
+  }
+
+  swatches-variant-picker-component {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: var(--product-swatches-alignment-mobile);
+
+    @media (min-width: 750px) {
+      justify-content: var(--product-swatches-alignment);
+    }
+  }
+
+  swatches-variant-picker-component .variant-option--swatches {
+    padding-block: calc(
+        var(--product-swatches-padding-block-start) + var(--focus-outline-offset) + var(--focus-outline-width)
+      )
+      calc(var(--product-swatches-padding-block-end) + var(--focus-outline-offset) + var(--focus-outline-width));
+    padding-inline: calc(
+        var(--product-swatches-padding-inline-start) + var(--focus-outline-offset) + (1.5 * var(--focus-outline-width))
+      )
+      calc(var(--product-swatches-padding-inline-end) + var(--focus-outline-offset) + var(--focus-outline-width));
+  }
+
+  .variant-option--swatches {
+    overflow-list::part(list) {
+      gap: var(--gap-sm);
+    }
+
+    overflow-list[defer]::part(list) {
+      flex-wrap: nowrap;
+    }
+  }
+
+  .hidden-swatches__count {
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-40-60));
+    background-color: transparent;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+
+    &::before {
+      /* This doesn't work in Safari without the counter-reset. https://stackoverflow.com/a/40179718 */
+      counter-reset: overflow-count var(--overflow-count);
+      content: '+' counter(overflow-count);
+      line-height: 1;
+      cursor: pointer;
+    }
+  }
+
+  .hidden-swatches__count:hover {
+    color: var(--color-foreground-rgb);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.swatches",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:content.resource_reference_product_swatches"
+    },
+    {
+      "type": "select",
+      "id": "product_swatches_alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "select",
+      "id": "product_swatches_alignment_mobile",
+      "label": "t:settings.alignment_mobile",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding",
+      "visible_if": "{{ block.settings.hide_padding == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_padding",
+      "label": "t:settings.hide_padding",
+      "default": false,
+      "visible_if": "{{ false }}"
+    },
+    {
+      "type": "range",
+      "id": "product_swatches_padding_top",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 4,
+      "visible_if": "{{ block.settings.hide_padding == false }}"
+    },
+    {
+      "type": "range",
+      "id": "product_swatches_padding_bottom",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.hide_padding == false }}"
+    },
+    {
+      "type": "range",
+      "id": "product_swatches_padding_left",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.hide_padding == false }}"
+    },
+    {
+      "type": "range",
+      "id": "product_swatches_padding_right",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.hide_padding == false }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.swatches",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
+{% # theme-check-enable %}

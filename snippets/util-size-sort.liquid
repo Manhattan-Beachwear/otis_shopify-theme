@@ -1,0 +1,218 @@
+{%- doc -%}
+  Size Sorting Utility
+  
+  Sorts size values in logical ascending order, handling:
+  - Standard sizes: xs, s, m, l, xl, xxl, 3x, 4x, etc.
+  - Numeric sizes with feet/inches: "5 ft 6 in", "6 ft 0 in", etc.
+  - Apostrophe notation: "5'6" or "5'6\""
+  - Simple numeric sizes: "10", "12", etc.
+  
+  @param {string} sizes_string - Unsorted sizes delimited by '|||' (e.g., "xs|||m|||l|||xl")
+  @param {string} [delimiter] - Delimiter used in input string (default: '|||')
+  @param {string} [output_delimiter] - Delimiter for output string (default: '|||')
+  
+  @returns {string} Sorted sizes string delimited by output_delimiter
+  
+  @example
+    {% capture sorted_sizes %}
+      {% render 'util-size-sort', sizes_string: unique_sizes %}
+    {% endcapture %}
+    {% assign unique_sizes = sorted_sizes | strip %}
+{%- enddoc -%}
+
+{%- liquid
+  # Parameter validation and defaults
+  assign sizes_string = sizes_string | default: ''
+  assign delimiter = delimiter | default: '|||'
+  assign output_delimiter = output_delimiter | default: '|||'
+  
+  # Initialize output variable
+  assign sorted_sizes_output = ''
+  
+  # Early return if no sizes provided
+  if sizes_string != blank and sizes_string != ''
+    assign sizes_array_unsorted = sizes_string | split: delimiter
+    
+    # Create array with sort keys for each size
+    assign sizes_with_sort_keys = ''
+    for size_item in sizes_array_unsorted
+      if size_item != blank and size_item != ''
+        assign size_lower = size_item | downcase | strip
+        assign sort_key = ''
+        
+        # Handle standard size names (xs, s, m, l, xl, xxl, xxxl, 3x, 4x, etc.)
+        if size_lower == 'xs' or size_lower == 'extra small'
+          assign sort_key = '0001'
+        elsif size_lower == 's' or size_lower == 'small'
+          assign sort_key = '0002'
+        elsif size_lower == 'm' or size_lower == 'medium'
+          assign sort_key = '0003'
+        elsif size_lower == 'l' or size_lower == 'large'
+          assign sort_key = '0004'
+        elsif size_lower == 'xl' or size_lower == 'extra large'
+          assign sort_key = '0005'
+        elsif size_lower == 'xxl' or size_lower == '2xl' or size_lower == '2x' or size_lower == 'double extra large'
+          assign sort_key = '0006'
+        elsif size_lower == 'xxxl' or size_lower == '3xl' or size_lower == '3x' or size_lower == 'triple extra large'
+          assign sort_key = '0007'
+        elsif size_lower contains '4xl' or size_lower == '4x'
+          assign sort_key = '0008'
+        elsif size_lower contains '5xl' or size_lower == '5x'
+          assign sort_key = '0009'
+        elsif size_lower contains '6xl' or size_lower == '6x'
+          assign sort_key = '0010'
+        else
+          # Handle numeric sizes (e.g., "5 ft 6 in", "6 ft 0 in", "10", "12", etc.)
+          assign feet_value = 0
+          assign inches_value = 0
+          assign numeric_value = 0
+          assign has_numbers = false
+          
+          # Pattern 1: "X ft Y in" - split on "ft" and "in"
+          if size_lower contains 'ft' and size_lower contains 'in'
+            assign size_parts = size_lower | split: 'ft'
+            if size_parts.size > 1
+              # Extract feet (first number before "ft")
+              assign first_part = size_parts[0] | strip
+              # Extract just numbers using remove filter (remove all letters)
+              assign temp_feet = first_part
+              assign temp_feet = temp_feet | remove: 'a' | remove: 'b' | remove: 'c' | remove: 'd' | remove: 'e' | remove: 'f' | remove: 'g' | remove: 'h' | remove: 'i' | remove: 'j' | remove: 'k' | remove: 'l' | remove: 'm' | remove: 'n' | remove: 'o' | remove: 'p' | remove: 'q' | remove: 'r' | remove: 's' | remove: 't' | remove: 'u' | remove: 'v' | remove: 'w' | remove: 'x' | remove: 'y' | remove: 'z' | remove: ' ' | remove: '-' | remove: '_' | remove: '.' | strip
+              if temp_feet != '' and temp_feet != blank
+                assign feet_value = temp_feet | plus: 0
+                if feet_value > 0
+                  assign has_numbers = true
+                endif
+              endif
+              
+              # Extract inches (number between "ft" and "in")
+              assign second_part = size_parts[1] | strip
+              assign inches_parts = second_part | split: 'in'
+              if inches_parts.size > 0
+                assign inches_str = inches_parts[0] | strip
+                assign temp_inches = inches_str
+                assign temp_inches = temp_inches | remove: 'a' | remove: 'b' | remove: 'c' | remove: 'd' | remove: 'e' | remove: 'f' | remove: 'g' | remove: 'h' | remove: 'i' | remove: 'j' | remove: 'k' | remove: 'l' | remove: 'm' | remove: 'n' | remove: 'o' | remove: 'p' | remove: 'q' | remove: 'r' | remove: 's' | remove: 't' | remove: 'u' | remove: 'v' | remove: 'w' | remove: 'x' | remove: 'y' | remove: 'z' | remove: ' ' | remove: '-' | remove: '_' | remove: '.' | remove: '"' | remove: "'" | strip
+                if temp_inches != '' and temp_inches != blank
+                  assign inches_value = temp_inches | plus: 0
+                  if inches_value > 0 or feet_value > 0
+                    assign has_numbers = true
+                  endif
+                endif
+              endif
+            endif
+          # Pattern 2: "X'Y\"" or "X'Y" (single quote/apostrophe for feet)
+          elsif size_lower contains "'"
+            assign size_parts_quote = size_lower | split: "'"
+            if size_parts_quote.size > 1
+              # Extract feet (first number before apostrophe)
+              assign first_part = size_parts_quote[0] | strip
+              assign temp_feet = first_part
+              assign temp_feet = temp_feet | remove: 'a' | remove: 'b' | remove: 'c' | remove: 'd' | remove: 'e' | remove: 'f' | remove: 'g' | remove: 'h' | remove: 'i' | remove: 'j' | remove: 'k' | remove: 'l' | remove: 'm' | remove: 'n' | remove: 'o' | remove: 'p' | remove: 'q' | remove: 'r' | remove: 's' | remove: 't' | remove: 'u' | remove: 'v' | remove: 'w' | remove: 'x' | remove: 'y' | remove: 'z' | remove: ' ' | remove: '-' | remove: '_' | remove: '.' | strip
+              if temp_feet != '' and temp_feet != blank
+                assign feet_value = temp_feet | plus: 0
+                if feet_value > 0
+                  assign has_numbers = true
+                endif
+              endif
+              
+              # Extract inches (number after apostrophe, before quote if present)
+              assign second_part = size_parts_quote[1] | strip
+              assign temp_inches = second_part
+              assign temp_inches = temp_inches | remove: 'a' | remove: 'b' | remove: 'c' | remove: 'd' | remove: 'e' | remove: 'f' | remove: 'g' | remove: 'h' | remove: 'i' | remove: 'j' | remove: 'k' | remove: 'l' | remove: 'm' | remove: 'n' | remove: 'o' | remove: 'p' | remove: 'q' | remove: 'r' | remove: 's' | remove: 't' | remove: 'u' | remove: 'v' | remove: 'w' | remove: 'x' | remove: 'y' | remove: 'z' | remove: ' ' | remove: '-' | remove: '_' | remove: '.' | remove: '"' | strip
+              if temp_inches != '' and temp_inches != blank
+                assign inches_value = temp_inches | plus: 0
+                if inches_value > 0 or feet_value > 0
+                  assign has_numbers = true
+                endif
+              endif
+            endif
+          else
+            # Pattern 3: Simple number (e.g., "10", "12", "5.5")
+            # Try to extract any number from the string
+            assign temp_numeric = size_lower
+            assign temp_numeric = temp_numeric | remove: 'a' | remove: 'b' | remove: 'c' | remove: 'd' | remove: 'e' | remove: 'f' | remove: 'g' | remove: 'h' | remove: 'i' | remove: 'j' | remove: 'k' | remove: 'l' | remove: 'm' | remove: 'n' | remove: 'o' | remove: 'p' | remove: 'q' | remove: 'r' | remove: 's' | remove: 't' | remove: 'u' | remove: 'v' | remove: 'w' | remove: 'x' | remove: 'y' | remove: 'z' | remove: ' ' | remove: '-' | remove: '_' | strip
+            if temp_numeric != '' and temp_numeric != blank
+              assign numeric_value = temp_numeric | plus: 0
+              if numeric_value > 0
+                assign has_numbers = true
+              endif
+            endif
+          endif
+          
+          # Create sort key from numeric values
+          if has_numbers
+            # Check if we have feet/inches pattern (even if inches is 0, like "6 ft 0 in")
+            if size_lower contains 'ft' or size_lower contains "'"
+              # Convert feet and inches to total inches for sorting
+              # This handles cases like "5 ft 6 in" (66 inches), "6 ft 0 in" (72 inches), etc.
+              assign total_inches = feet_value | times: 12 | plus: inches_value
+              # Pad to 6 digits for proper sorting
+              if total_inches < 10
+                assign sort_key = '00000' | append: total_inches
+              elsif total_inches < 100
+                assign sort_key = '0000' | append: total_inches
+              elsif total_inches < 1000
+                assign sort_key = '000' | append: total_inches
+              elsif total_inches < 10000
+                assign sort_key = '00' | append: total_inches
+              elsif total_inches < 100000
+                assign sort_key = '0' | append: total_inches
+              else
+                assign sort_key = total_inches | append: ''
+              endif
+            else
+              # Simple numeric value (e.g., "10", "12", "5.5")
+              assign numeric_int = numeric_value | floor
+              if numeric_int < 10
+                assign sort_key = '00000' | append: numeric_int
+              elsif numeric_int < 100
+                assign sort_key = '0000' | append: numeric_int
+              elsif numeric_int < 1000
+                assign sort_key = '000' | append: numeric_int
+              elsif numeric_int < 10000
+                assign sort_key = '00' | append: numeric_int
+              elsif numeric_int < 100000
+                assign sort_key = '0' | append: numeric_int
+              else
+                assign sort_key = numeric_int | append: ''
+              endif
+            endif
+          else
+            # Fallback to alphabetical sorting with prefix for non-numeric sizes
+            assign sort_key = '9999' | append: size_lower
+          endif
+        endif
+        
+        # Create sortable item: sort_key|||SORT|||size_item
+        assign sortable_size = sort_key | append: '|||SORT|||' | append: size_item
+        if sizes_with_sort_keys == ''
+          assign sizes_with_sort_keys = sortable_size
+        else
+          assign sizes_with_sort_keys = sizes_with_sort_keys | append: '|||SEP|||' | append: sortable_size
+        endif
+      endif
+    endfor
+    
+    # Sort by sort key
+    if sizes_with_sort_keys != ''
+      assign sorted_with_keys = sizes_with_sort_keys | split: '|||SEP|||' | sort
+      
+      # Extract just the size items (everything after |||SORT|||)
+      assign sorted_sizes_output = ''
+      for sorted_item in sorted_with_keys
+        assign sort_parts = sorted_item | split: '|||SORT|||'
+        if sort_parts.size > 1
+          assign size_item_original = sort_parts[1]
+          if sorted_sizes_output == ''
+            assign sorted_sizes_output = size_item_original
+          else
+            assign sorted_sizes_output = sorted_sizes_output | append: output_delimiter | append: size_item_original
+          endif
+        endif
+      endfor
+      
+      # sorted_sizes_output is already set above
+    endif
+  endif
+-%}
+
+{{ sorted_sizes_output }}

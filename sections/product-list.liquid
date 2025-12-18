@@ -1,0 +1,1239 @@
+{% liquid
+  assign max_items = section.settings.max_products
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  data-testid="product-list"
+  class="
+    section
+    section--{{ section.settings.section_width }}
+    color-{{ section.settings.color_scheme }}
+    section-resource-list
+    spacing-style
+    gap-style
+  "
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    {% render 'gap-style', value: section.settings.gap %}
+  "
+>
+  <div class="section-resource-list__header">
+    {%- content_for 'block', type: '_product-list-content', id: 'static-header' -%}
+  </div>
+
+  {% capture list_items %}
+    {% if section.settings.collection != blank and shop.products_count != 0 %}
+      {% liquid
+        # Pre-process ALL products to determine which ones should be displayed
+        # This ensures we don't show duplicates across pagination pages
+        assign enable_combined = section.settings.enable_combined_listings
+        assign products_to_display = ''
+        assign processed_groups = ''
+        
+        if enable_combined and section.settings.collection != blank
+          # Iterate through all products in collection (not paginated) to build display map
+          for all_product in section.settings.collection.products
+            assign should_display_product = false
+            assign product_group_ids = ''
+            assign combined_listings_metafield = all_product.metafields.custom.combined_listing
+            
+            # If current product has the metafield, collect all linked products
+            if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+              for linked_product in combined_listings_metafield.value
+                assign linked_product_id_str = linked_product.id | append: ''
+                if product_group_ids == ''
+                  assign product_group_ids = linked_product_id_str
+                else
+                  assign product_group_ids = product_group_ids | append: ',' | append: linked_product_id_str
+                endif
+              endfor
+              # Also add the product that owns the metafield
+              assign product_id_str = all_product.id | append: ''
+              assign product_group_ids_array = product_group_ids | split: ','
+              assign owner_in_group = false
+              for group_id in product_group_ids_array
+                assign group_id_normalized = group_id | strip
+                assign product_id_normalized = product_id_str | strip
+                if group_id_normalized == product_id_normalized
+                  assign owner_in_group = true
+                  break
+                endif
+              endfor
+              unless owner_in_group
+                if product_group_ids == ''
+                  assign product_group_ids = product_id_str
+                else
+                  assign product_group_ids = product_group_ids | append: ',' | append: product_id_str
+                endif
+              endunless
+            else
+              # Check if product is referenced in another product's metafield
+              for check_product in section.settings.collection.products
+                if check_product.id != all_product.id
+                  assign check_metafield = check_product.metafields.custom.combined_listing
+                  if check_metafield != blank and check_metafield.value != blank
+                    assign current_product_found_in_metafield = false
+                    assign current_product_id_str = all_product.id | append: '' | strip
+                    for linked_product in check_metafield.value
+                      assign linked_product_id_str = linked_product.id | append: '' | strip
+                      if linked_product_id_str == current_product_id_str
+                        assign current_product_found_in_metafield = true
+                        break
+                      endif
+                    endfor
+                    
+                    if current_product_found_in_metafield
+                      # Collect all products from this metafield
+                      for metafield_product in check_metafield.value
+                        if product_group_ids == ''
+                          assign product_group_ids = metafield_product.id | append: ''
+                        else
+                          assign product_group_ids = product_group_ids | append: ',' | append: metafield_product.id | append: ''
+                        endif
+                      endfor
+                      # Also add the product that has the metafield
+                      assign metafield_owner_id_str = check_product.id | append: ''
+                      assign product_group_ids_array = product_group_ids | split: ','
+                      assign owner_in_group = false
+                      for group_id in product_group_ids_array
+                        assign group_id_normalized = group_id | strip
+                        assign metafield_owner_id_normalized = metafield_owner_id_str | strip
+                        if group_id_normalized == metafield_owner_id_normalized
+                          assign owner_in_group = true
+                          break
+                        endif
+                      endfor
+                      unless owner_in_group
+                        if product_group_ids == ''
+                          assign product_group_ids = metafield_owner_id_str
+                        else
+                          assign product_group_ids = product_group_ids | append: ',' | append: metafield_owner_id_str
+                        endif
+                      endunless
+                      # Also add the current product to the group
+                      assign current_product_id_str_check = all_product.id | append: ''
+                      assign current_in_group = false
+                      assign product_group_ids_array_check = product_group_ids | split: ','
+                      for group_id in product_group_ids_array_check
+                        assign group_id_normalized = group_id | strip
+                        assign current_product_id_normalized = current_product_id_str_check | strip
+                        if group_id_normalized == current_product_id_normalized
+                          assign current_in_group = true
+                          break
+                        endif
+                      endfor
+                      unless current_in_group
+                        if product_group_ids == ''
+                          assign product_group_ids = current_product_id_str_check
+                        else
+                          assign product_group_ids = product_group_ids | append: ',' | append: current_product_id_str_check
+                        endif
+                      endunless
+                      break
+                    endif
+                  endif
+                endif
+              endfor
+            endif
+            
+            # Check if this group has already been processed
+            if product_group_ids != ''
+              assign product_group_ids_array = product_group_ids | split: ','
+              assign group_already_processed = false
+              for group_id in product_group_ids_array
+                assign group_id_normalized = group_id | strip
+                if processed_groups != ''
+                  assign processed_groups_array = processed_groups | split: ','
+                  for processed_group in processed_groups_array
+                    assign processed_group_normalized = processed_group | strip
+                    if group_id_normalized == processed_group_normalized
+                      assign group_already_processed = true
+                      break
+                    endif
+                  endfor
+                endif
+                if group_already_processed
+                  break
+                endif
+              endfor
+              
+              unless group_already_processed
+                # This is the first product in this group, mark it for display
+                assign should_display_product = true
+                # Mark all products in this group as processed
+                for group_id in product_group_ids_array
+                  assign group_id_normalized = group_id | strip
+                  if processed_groups == ''
+                    assign processed_groups = group_id_normalized
+                  else
+                    assign processed_groups = processed_groups | append: ',' | append: group_id_normalized
+                  endif
+                endfor
+              endunless
+            else
+              # Product has no combined listing - default to displaying it unless it's a duplicate
+              assign should_display_product = true
+              assign product_id_str = all_product.id | append: '' | strip
+              if processed_groups != ''
+                assign processed_groups_array = processed_groups | split: ','
+                for processed_group in processed_groups_array
+                  assign processed_group_normalized = processed_group | strip
+                  if product_id_str == processed_group_normalized
+                    assign should_display_product = false
+                    break
+                  endif
+                endfor
+              endif
+              
+              # If it should be displayed, add it to processed_groups to prevent duplicates
+              if should_display_product
+                if processed_groups == ''
+                  assign processed_groups = product_id_str
+                else
+                  assign processed_groups = processed_groups | append: ',' | append: product_id_str
+                endif
+              endif
+            endif
+            
+            # Add to products_to_display if it should be shown
+            if should_display_product
+              assign product_id_str = all_product.id | append: '' | strip
+              if products_to_display == ''
+                assign products_to_display = product_id_str
+              else
+                assign products_to_display = products_to_display | append: ',' | append: product_id_str
+              endif
+            endif
+          endfor
+        endif
+      %}
+
+      {% paginate section.settings.collection.products by max_items %}
+        {% liquid
+          assign displayed_product_ids = ''
+        %}
+        {% for product in section.settings.collection.products limit: max_items %}
+          {% comment %}=== DEBUG START: Product {{ product.id }} - {{ product.title }} ==={% endcomment %}
+          {% liquid
+            assign should_display = true
+            assign product_group_ids = ''
+            
+            if enable_combined
+              # Build product_group_ids for debug output (always build this)
+              assign combined_listings_metafield = product.metafields.custom.combined_listing
+              # Check if this product is part of a combined listing group
+              assign product_group_ids = ''
+              assign combined_listings_metafield = product.metafields.custom.combined_listing
+              
+              # If current product has the metafield, collect all linked products
+              if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+                for linked_product in combined_listings_metafield.value
+                  assign linked_product_id_str = linked_product.id | append: ''
+                  if product_group_ids == ''
+                    assign product_group_ids = linked_product_id_str
+                  else
+                    assign product_group_ids = product_group_ids | append: ',' | append: linked_product_id_str
+                  endif
+                endfor
+                # Also add the product that owns the metafield (normalize to string for consistent comparison)
+                assign product_id_str = product.id | append: ''
+                assign product_group_ids_array = product_group_ids | split: ','
+                assign owner_in_group = false
+                for group_id in product_group_ids_array
+                  assign group_id_normalized = group_id | strip
+                  assign product_id_normalized = product_id_str | strip
+                  if group_id_normalized == product_id_normalized
+                    assign owner_in_group = true
+                    break
+                  endif
+                endfor
+                unless owner_in_group
+                  if product_group_ids == ''
+                    assign product_group_ids = product_id_str
+                  else
+                    assign product_group_ids = product_group_ids | append: ',' | append: product_id_str
+                  endif
+                endunless
+              else
+                # Check if product is referenced in another product's metafield
+                for all_product in collections.all.products
+                  if all_product.id != product.id
+                    assign check_metafield = all_product.metafields.custom.combined_listing
+                    if check_metafield != blank and check_metafield.value != blank
+                      assign current_product_found_in_metafield = false
+                      assign current_product_id_str = product.id | append: '' | strip
+                      for linked_product in check_metafield.value
+                        assign linked_product_id_str = linked_product.id | append: '' | strip
+                        if linked_product_id_str == current_product_id_str
+                          assign current_product_found_in_metafield = true
+                          break
+                        endif
+                      endfor
+                      
+                      if current_product_found_in_metafield
+                        # Collect all products from this metafield
+                        for metafield_product in check_metafield.value
+                          if product_group_ids == ''
+                            assign product_group_ids = metafield_product.id | append: ''
+                          else
+                            assign product_group_ids = product_group_ids | append: ',' | append: metafield_product.id | append: ''
+                          endif
+                        endfor
+                        # Also add the product that has the metafield
+                        assign metafield_owner_id_str = all_product.id | append: ''
+                        assign product_group_ids_array = product_group_ids | split: ','
+                        assign owner_in_group = false
+                        for group_id in product_group_ids_array
+                          assign group_id_normalized = group_id | strip
+                          assign metafield_owner_id_normalized = metafield_owner_id_str | strip
+                          if group_id_normalized == metafield_owner_id_normalized
+                            assign owner_in_group = true
+                            break
+                          endif
+                        endfor
+                        unless owner_in_group
+                          if product_group_ids == ''
+                            assign product_group_ids = metafield_owner_id_str
+                          else
+                            assign product_group_ids = product_group_ids | append: ',' | append: metafield_owner_id_str
+                          endif
+                        endunless
+                        # Also add the current product to the group (it's referenced in the metafield)
+                        assign current_product_id_str_check = product.id | append: ''
+                        assign current_in_group = false
+                        assign product_group_ids_array_check = product_group_ids | split: ','
+                        for group_id in product_group_ids_array_check
+                          assign group_id_normalized = group_id | strip
+                          assign current_product_id_normalized = current_product_id_str_check | strip
+                          if group_id_normalized == current_product_id_normalized
+                            assign current_in_group = true
+                            break
+                          endif
+                        endfor
+                        unless current_in_group
+                          if product_group_ids == ''
+                            assign product_group_ids = current_product_id_str_check
+                          else
+                            assign product_group_ids = product_group_ids | append: ',' | append: current_product_id_str_check
+                          endif
+                        endunless
+                        break
+                      endif
+                    endif
+                  endif
+                endfor
+              endif
+              
+              # Check if this product is in the pre-computed products_to_display list
+              # Only filter if products_to_display is not empty (meaning pre-processing ran)
+              assign product_id_str = product.id | append: '' | strip
+              if products_to_display != ''
+                assign products_to_display_array = products_to_display | split: ','
+                assign found_in_display_list = false
+                for display_product_id in products_to_display_array
+                  assign display_product_id_normalized = display_product_id | strip
+                  if product_id_str == display_product_id_normalized
+                    assign found_in_display_list = true
+                    break
+                  endif
+                endfor
+                unless found_in_display_list
+                  # Product not in list - if it has a combined listing metafield, it's a duplicate (filter it)
+                  # If it doesn't have a metafield, it's a regular product that should be shown
+                  # (pre-processing should have added it, but if it didn't, show it anyway as a safety measure)
+                  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+                    # Has combined listing but not in list = duplicate, filter it
+                    assign should_display = false
+                  endif
+                  # If no metafield, keep should_display = true (show the product)
+                endunless
+              endif
+              # If products_to_display is empty, don't filter anything - show all products
+              # This happens when enable_combined is false or pre-processing didn't run
+            endif
+            
+            # Store debug info in variables for output
+            assign debug_has_metafield = 'false'
+            if enable_combined and combined_listings_metafield != blank
+              assign debug_has_metafield = 'true'
+            endif
+          %}
+          {% comment %}=== DEBUG END: Product {{ product.id }} - {{ product.title }} ==={% endcomment %}
+          {% comment %}DEBUG: should_display={{ should_display }}{% endcomment %}
+          {% comment %}DEBUG: has_metafield={{ debug_has_metafield }}{% endcomment %}
+          {% comment %}DEBUG: product_group_ids={{ product_group_ids }}{% endcomment %}
+          {% comment %}DEBUG: displayed_product_ids={{ displayed_product_ids }}{% endcomment %}
+          {% if should_display %}
+            <div
+              class="resource-list__item"
+              data-debug-product-id="{{ product.id }}"
+              data-debug-product-title="{{ product.title }}"
+              data-debug-product-group="{{ product_group_ids }}"
+              data-debug-should-display="{{ should_display }}"
+            >
+              {% # theme-check-disable UniqueStaticBlockId %}
+                {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: product %}
+              {% # theme-check-enable UniqueStaticBlockId %}
+            </div>
+
+            {% unless forloop.last %}
+              <!--@list/split-->
+            {% endunless %}
+          {% else %}
+            {% comment %}DEBUG: SKIPPED Product {{ product.id }} - {{ product.title }} (duplicate or filtered){% endcomment %}
+          {% endif %}
+        {% endfor %}
+      {% endpaginate %}
+    {% else %}
+      {% for i in (1..max_items) %}
+        <div
+          class="resource-list__item"
+        >
+          {% # theme-check-disable UniqueStaticBlockId %}
+            {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: null %}
+          {% # theme-check-enable UniqueStaticBlockId %}
+        </div>
+
+        {% unless forloop.last %}
+          <!--@list/split-->
+        {% endunless %}
+      {% endfor %}
+    {% endif %}
+  {% endcapture %}
+
+  {% liquid
+    # Create an array from the list items to be used for different layout types
+    assign list_items_array = list_items | strip | split: '<!--@list/split-->'
+  %}
+
+  {% render 'resource-list',
+    list_items: list_items,
+    list_items_array: list_items_array,
+    settings: section.settings,
+    slide_count: max_items,
+    content_type: 'products',
+    test_id: 'resource-list-grid'
+  %}
+
+  <div
+    class="section-resource-list__content"
+    style="--horizontal-alignment: {{ section.settings.horizontal_alignment }};"
+  >
+    {%- content_for 'blocks' -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:names.product_list",
+  "class": "ui-test-product-list",
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "_divider"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:settings.collection"
+    },
+    {
+      "type": "select",
+      "id": "layout_type",
+      "label": "t:settings.layout_type",
+      "options": [
+        {
+          "value": "grid",
+          "label": "t:options.grid"
+        },
+        {
+          "value": "carousel",
+          "label": "t:options.carousel"
+        },
+        {
+          "value": "editorial",
+          "label": "t:options.editorial"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_on_mobile",
+      "label": "t:settings.carousel_on_mobile",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_type != 'carousel' }}"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "t:settings.product_count",
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "t:settings.columns",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 4,
+      "visible_if": "{{ section.settings.layout_type != 'editorial' }}"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "t:settings.mobile_columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:options.one_number"
+        },
+        {
+          "value": "2",
+          "label": "t:options.two_number"
+        }
+      ],
+      "default": "2",
+      "visible_if": "{{ section.settings.layout_type == 'grid' and section.settings.carousel_on_mobile == false }}"
+    },
+    {
+      "type": "select",
+      "id": "mobile_card_size",
+      "label": "t:settings.mobile_columns",
+      "options": [
+        {
+          "value": "60cqw",
+          "label": "t:options.one_number"
+        },
+        {
+          "value": "44cqw",
+          "label": "t:options.two_number"
+        }
+      ],
+      "default": "60cqw",
+      "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
+    },
+    {
+      "type": "range",
+      "id": "columns_gap",
+      "label": "t:settings.horizontal_gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8,
+      "visible_if": "{{ section.settings.layout_type == 'grid' or section.settings.layout_type == 'carousel' }}"
+    },
+    {
+      "type": "range",
+      "id": "rows_gap",
+      "label": "t:settings.vertical_gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8,
+      "visible_if": "{{ section.settings.layout_type == 'grid'}}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.carousel_navigation",
+      "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
+    },
+    {
+      "type": "select",
+      "id": "icons_style",
+      "label": "t:settings.icon",
+      "options": [
+        {
+          "value": "arrow",
+          "label": "t:options.arrows"
+        },
+        {
+          "value": "chevron",
+          "label": "t:options.chevrons"
+        },
+        {
+          "value": "arrows_large",
+          "label": "t:options.arrows_large"
+        },
+        {
+          "value": "chevron_large",
+          "label": "t:options.chevron_large"
+        },
+        {
+          "value": "none",
+          "label": "t:options.none"
+        }
+      ],
+      "default": "arrow",
+      "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
+    },
+    {
+      "type": "select",
+      "id": "icons_shape",
+      "label": "t:settings.icon_background",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "circle",
+          "label": "t:options.circle"
+        },
+        {
+          "value": "square",
+          "label": "t:options.square"
+        }
+      ],
+      "default": "none",
+      "visible_if": "{{ section.settings.icons_style != 'none' and section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.section_layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:settings.gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Combined Listings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_combined_listings",
+      "label": "Enable Combined Listings",
+      "default": false,
+      "info": "When enabled, products linked via combined listing metafield will appear as a single product with color variant swatches"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.products_grid",
+      "category": "t:categories.products",
+      "settings": {
+        "collection": "",
+        "max_products": 8,
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 28,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      },
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "flex-end",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_list_text": {
+              "type": "_product-list-text",
+              "name": "t:names.collection_title",
+              "settings": {
+                "text": "<h3>{{ closest.collection.title }}</h3>",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "product_list_button": {
+              "type": "_product-list-button",
+              "name": "t:names.product_list_button",
+              "settings": {
+                "label": "t:text_defaults.view_all_button_label",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              }
+            }
+          },
+          "block_order": ["product_list_text", "product_list_button"]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product-card-gallery": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "product_title": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "price": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            }
+          },
+          "block_order": ["product-card-gallery", "product_title", "price"]
+        }
+      },
+      "block_order": []
+    },
+    {
+      "name": "t:names.products_carousel",
+      "category": "t:categories.products",
+      "settings": {
+        "collection": "",
+        "max_products": 6,
+        "layout_type": "carousel",
+        "carousel_on_mobile": false,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "circle",
+        "section_width": "page-width",
+        "gap": 28,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      },
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "flex-end",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_list_text": {
+              "type": "_product-list-text",
+              "name": "t:names.collection_title",
+              "settings": {
+                "text": "<h3>{{ closest.collection.title }}</h3>",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "product_list_button": {
+              "type": "_product-list-button",
+              "name": "t:names.product_list_button",
+              "settings": {
+                "label": "t:text_defaults.view_all_button_label",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              }
+            }
+          },
+          "block_order": ["product_list_text", "product_list_button"]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product-card-gallery": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "product_title": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "price": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            }
+          },
+          "block_order": ["product-card-gallery", "product_title", "price"]
+        }
+      },
+      "block_order": []
+    },
+    {
+      "name": "t:names.products_editorial",
+      "category": "t:categories.products",
+      "settings": {
+        "collection": "",
+        "layout_type": "editorial",
+        "carousel_on_mobile": false,
+        "max_products": 4,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "horizontal_alignment": "flex-start",
+        "gap": 64,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      },
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "flex-end",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_list_text": {
+              "type": "_product-list-text",
+              "name": "t:names.collection_title",
+              "settings": {
+                "text": "<h3>{{ closest.collection.title }}</h3>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "product_list_button": {
+              "type": "_product-list-button",
+              "name": "t:names.product_list_button",
+              "settings": {
+                "label": "t:text_defaults.view_all_button_label",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              }
+            }
+          },
+          "block_order": ["product_list_text", "product_list_button"]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product-card-gallery": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "product_title": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "price": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            }
+          },
+          "block_order": ["product-card-gallery", "product_title", "price"]
+        }
+      },
+      "block_order": []
+    }
+  ]
+}
+{% endschema %}

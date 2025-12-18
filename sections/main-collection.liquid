@@ -1,0 +1,1060 @@
+<script
+  src="{{ 'results-list.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+{% javascript %}
+  const url = new URL(window.location.href);
+  if (url.hash) {
+    document.addEventListener(
+      'DOMContentLoaded',
+      () => {
+        const card = document.getElementById(url.hash.slice(1));
+        if (card) {
+          card.scrollIntoView({ behavior: 'instant' });
+        }
+      },
+      { once: true }
+    );
+  }
+{% endjavascript %}
+
+{% comment %} We always render this full-width, as the child blocks have width: page/full settings {% endcomment %}
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<results-list
+  class="section product-grid-container color-{{ section.settings.color_scheme }}"
+  style="--padding-block-start: {{ section.settings.padding-block-start }}px; --padding-block-end: {{ section.settings.padding-block-end }}px;"
+  section-id="{{ section.id }}"
+  infinite-scroll="{{ section.settings.enable_infinite_scroll }}"
+>
+  {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
+
+  <div
+    class="collection-wrapper grid gap-style"
+  >
+    {% content_for 'block',
+      type: 'filters',
+      id: 'filters',
+      results: collection,
+      results_size: collection.products_count
+    %}
+
+    {% assign products_per_page = 24 %}
+
+    {% if section.settings.enable_infinite_scroll == false %}
+      {% assign products_per_page = section.settings.products_per_page %}
+    {% endif %}
+
+    {% liquid
+      # Pre-process ALL products to determine which ones should be displayed
+      # This ensures we don't show duplicates across pagination pages
+      assign enable_combined = section.settings.enable_combined_listings
+      assign products_to_display = ''
+      assign processed_groups = ''
+      
+      # Debug counters
+      assign debug_total_products = 0
+      assign debug_products_with_combined = 0
+      assign debug_combined_groups = 0
+      assign debug_products_to_display_count = 0
+      
+      # Pre-processing will be done before pagination using a separate pagination block
+      # This allows us to process all products (up to 250) on every page load
+    %}
+
+    {% comment %}
+      Use paginate by 250 to get ALL products for pre-processing
+      On page 1, collection.products contains all products (up to 250)
+      On page 2+, collection.products is empty, so we'll handle it differently
+    {% endcomment %}
+    {% if enable_combined %}
+      {% paginate collection.products by 250 %}
+        {% liquid
+          # Pre-process ALL products (up to 250) to determine which ones should be displayed
+          # This runs on every page load to ensure combined listings work on all pages
+          assign debug_total_products = 0
+          assign debug_products_with_combined = 0
+          assign debug_combined_groups = 0
+          assign debug_products_to_display_count = 0
+          assign products_to_display = ''
+          assign processed_groups = ''
+          assign all_processed_products = ''
+        %}
+        
+        {% comment %} 
+          Use collection.products when available (page 1)
+          On page 2+, collection.products will be empty, so we skip pre-processing
+          and rely on the products_to_display list from page 1 (which should be cached)
+        {% endcomment %}
+        {% if collection.products.size > 0 %}
+          {% for all_product in collection.products %}
+            {% comment %} Store product for later use {% endcomment %}
+            {% assign product_data = all_product.id | append: ':' | append: all_product.handle %}
+            {% if all_processed_products == '' %}
+              {% assign all_processed_products = product_data %}
+            {% else %}
+              {% assign all_processed_products = all_processed_products | append: '|||' | append: product_data %}
+            {% endif %}
+            {% assign debug_total_products = debug_total_products | plus: 1 %}
+            {% assign should_display_product = false %}
+            {% assign product_group_ids = '' %}
+            {% assign combined_listings_metafield = all_product.metafields.custom.combined_listing %}
+            {% assign has_combined_metafield = false %}
+          
+            {% comment %} Check if product has combined listing metafield {% endcomment %}
+            {% if combined_listings_metafield != blank and combined_listings_metafield.value != blank %}
+            {% liquid
+              assign has_combined_metafield = true
+              assign debug_products_with_combined = debug_products_with_combined | plus: 1
+            %}
+            
+            {% comment %} Collect all linked products from metafield {% endcomment %}
+            {% for linked_product in combined_listings_metafield.value %}
+              {% liquid
+                assign linked_product_id_str = linked_product.id | append: ''
+                if product_group_ids == ''
+                  assign product_group_ids = linked_product_id_str
+                else
+                  assign product_group_ids = product_group_ids | append: ',' | append: linked_product_id_str
+                endif
+              %}
+            {% endfor %}
+            
+            {% liquid
+              # Also add the product that owns the metafield
+              assign product_id_str = all_product.id | append: ''
+              assign product_group_ids_array = product_group_ids | split: ','
+              assign owner_in_group = false
+              for group_id in product_group_ids_array
+                assign group_id_normalized = group_id | strip
+                assign product_id_normalized = product_id_str | strip
+                if group_id_normalized == product_id_normalized
+                  assign owner_in_group = true
+                  break
+                endif
+              endfor
+              unless owner_in_group
+                if product_group_ids == ''
+                  assign product_group_ids = product_id_str
+                else
+                  assign product_group_ids = product_group_ids | append: ',' | append: product_id_str
+                endif
+              endunless
+            %}
+              {% else %}
+                {% comment %} Check if product is referenced in another product's metafield {% endcomment %}
+                {% comment %} Check against all products in collection.products {% endcomment %}
+                {% for check_product in collection.products %}
+                  {% liquid
+                    # Check if check_product belongs to current collection
+                    assign check_product_in_collection = false
+                    for check_product_collection in check_product.collections
+                      if check_product_collection.handle == collection.handle
+                        assign check_product_in_collection = true
+                        break
+                      endif
+                    endfor
+                  %}
+                  {% if check_product_in_collection and check_product.id != all_product.id %}
+                {% assign check_metafield = check_product.metafields.custom.combined_listing %}
+                {% if check_metafield != blank and check_metafield.value != blank %}
+                  {% liquid
+                    assign current_product_found_in_metafield = false
+                    assign current_product_id_str = all_product.id | append: '' | strip
+                  %}
+                  
+                  {% for linked_product in check_metafield.value %}
+                    {% liquid
+                      assign linked_product_id_str = linked_product.id | append: '' | strip
+                      if linked_product_id_str == current_product_id_str
+                        assign current_product_found_in_metafield = true
+                        break
+                      endif
+                    %}
+                  {% endfor %}
+                  
+                  {% if current_product_found_in_metafield %}
+                    {% liquid
+                      assign has_combined_metafield = true
+                    %}
+                    
+                    {% comment %} Collect all products from this metafield {% endcomment %}
+                    {% for metafield_product in check_metafield.value %}
+                      {% liquid
+                        if product_group_ids == ''
+                          assign product_group_ids = metafield_product.id | append: ''
+                        else
+                          assign product_group_ids = product_group_ids | append: ',' | append: metafield_product.id | append: ''
+                        endif
+                      %}
+                    {% endfor %}
+                    
+                    {% liquid
+                      # Also add the product that has the metafield
+                      assign metafield_owner_id_str = check_product.id | append: ''
+                      assign product_group_ids_array = product_group_ids | split: ','
+                      assign owner_in_group = false
+                      for group_id in product_group_ids_array
+                        assign group_id_normalized = group_id | strip
+                        assign metafield_owner_id_normalized = metafield_owner_id_str | strip
+                        if group_id_normalized == metafield_owner_id_normalized
+                          assign owner_in_group = true
+                          break
+                        endif
+                      endfor
+                      unless owner_in_group
+                        if product_group_ids == ''
+                          assign product_group_ids = metafield_owner_id_str
+                        else
+                          assign product_group_ids = product_group_ids | append: ',' | append: metafield_owner_id_str
+                        endif
+                      endunless
+                      # Also add the current product to the group
+                      assign current_product_id_str_check = all_product.id | append: ''
+                      assign current_in_group = false
+                      assign product_group_ids_array_check = product_group_ids | split: ','
+                      for group_id in product_group_ids_array_check
+                        assign group_id_normalized = group_id | strip
+                        assign current_product_id_normalized = current_product_id_str_check | strip
+                        if group_id_normalized == current_product_id_normalized
+                          assign current_in_group = true
+                          break
+                        endif
+                      endfor
+                      unless current_in_group
+                        if product_group_ids == ''
+                          assign product_group_ids = current_product_id_str_check
+                        else
+                          assign product_group_ids = product_group_ids | append: ',' | append: current_product_id_str_check
+                        endif
+                      endunless
+                    %}
+                  {% endif %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          
+          {% liquid
+            # Check if this group has already been processed
+            if product_group_ids != ''
+              assign product_group_ids_array = product_group_ids | split: ','
+              assign group_already_processed = false
+              for group_id in product_group_ids_array
+                assign group_id_normalized = group_id | strip
+                if processed_groups != ''
+                  assign processed_groups_array = processed_groups | split: ','
+                  for processed_group in processed_groups_array
+                    assign processed_group_normalized = processed_group | strip
+                    if group_id_normalized == processed_group_normalized
+                      assign group_already_processed = true
+                      break
+                    endif
+                  endfor
+                endif
+                if group_already_processed
+                  break
+                endif
+              endfor
+              
+              unless group_already_processed
+                # This is the first product in this group, mark it for display
+                assign should_display_product = true
+                assign debug_combined_groups = debug_combined_groups | plus: 1
+                # Mark all products in this group as processed
+                for group_id in product_group_ids_array
+                  assign group_id_normalized = group_id | strip
+                  if processed_groups == ''
+                    assign processed_groups = group_id_normalized
+                  else
+                    assign processed_groups = processed_groups | append: ',' | append: group_id_normalized
+                  endif
+                endfor
+              endunless
+            else
+              # Product has no combined listing - default to displaying it unless it's a duplicate
+              assign should_display_product = true
+              assign product_id_str = all_product.id | append: '' | strip
+              if processed_groups != ''
+                assign processed_groups_array = processed_groups | split: ','
+                for processed_group in processed_groups_array
+                  assign processed_group_normalized = processed_group | strip
+                  if product_id_str == processed_group_normalized
+                    assign should_display_product = false
+                    break
+                  endif
+                endfor
+              endif
+              
+              # If it should be displayed, add it to processed_groups to prevent duplicates
+              if should_display_product
+                if processed_groups == ''
+                  assign processed_groups = product_id_str
+                else
+                  assign processed_groups = processed_groups | append: ',' | append: product_id_str
+                endif
+              endif
+            endif
+            
+            # Add to products_to_display if it should be shown
+            if should_display_product
+              assign product_id_str = all_product.id | append: '' | strip
+              assign debug_products_to_display_count = debug_products_to_display_count | plus: 1
+              if products_to_display == ''
+                assign products_to_display = product_id_str
+              else
+                assign products_to_display = products_to_display | append: ',' | append: product_id_str
+              endif
+            endif
+          %}
+        {% endfor %}
+        {% endif %}
+        
+        {% comment %} 
+          Manually paginate products_to_display list for display
+          Note: Shopify's pagination uses ?page=2 query parameters (not /page-2)
+          We use the same ?page= parameter for our manual pagination to be consistent
+        {% endcomment %}
+        {% liquid
+          # Calculate which products to show on current page
+          assign products_to_display_array = products_to_display | split: ','
+          assign total_display_products = products_to_display_array.size
+          assign display_products_per_page = products_per_page
+          
+          # Get current page number from URL query parameter (for manual pagination)
+          # Use ?page=1, ?page=2, etc. instead of /page-2
+          assign current_display_page = 1
+          if request.params.page != blank
+            assign page_param = request.params.page | plus: 0
+            if page_param > 0
+              assign current_display_page = page_param
+            endif
+          endif
+          
+          # Calculate total pages based on filtered products
+          assign total_display_pages = total_display_products | divided_by: display_products_per_page
+          assign remainder = total_display_products | modulo: display_products_per_page
+          if remainder > 0
+            assign total_display_pages = total_display_pages | plus: 1
+          endif
+          
+          # Calculate start and end indices for current page
+          assign start_index = current_display_page | minus: 1 | times: display_products_per_page
+          assign end_index = start_index | plus: display_products_per_page | minus: 1
+          if end_index >= total_display_products
+            assign end_index = total_display_products | minus: 1
+          endif
+          
+          # Create a modified paginate object for pagination controls
+          # We'll override paginate.pages and paginate.current_page
+          assign custom_paginate_pages = total_display_pages
+          assign custom_paginate_current_page = current_display_page
+          
+          # Initialize products_found_on_page for debug
+          assign products_found_on_page = 0
+        %}
+        
+        {% capture children %}
+          {% comment %} 
+            Manually paginate products_to_display list
+            On page 1, we can find products in collection.products
+            On page 2+, we need to find products from the stored list or use a workaround
+          {% endcomment %}
+          {% if products_to_display != '' %}
+            {% comment %} Manual pagination of products_to_display list {% endcomment %}
+            {% assign display_index = 0 %}
+            {% assign products_found_on_page = 0 %}
+            {% for product_id_str in products_to_display_array %}
+              {% comment %} Check if this product should be displayed on current page {% endcomment %}
+              {% if display_index >= start_index and display_index <= end_index %}
+                {% assign product_id = product_id_str | strip | plus: 0 %}
+                {% assign product = blank %}
+                
+                {% comment %} Find product by ID - try collection.products first {% endcomment %}
+                {% if collection.products.size > 0 %}
+                  {% for all_product in collection.products %}
+                    {% if all_product.id == product_id %}
+                      {% assign product = all_product %}
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+                
+                {% comment %} Fallback: if not found, try collections.all.products with collection filtering {% endcomment %}
+                {% if product == blank %}
+                  {% comment %} Search all products and filter by collection {% endcomment %}
+                  {% for all_product in collections.all.products limit: 250 %}
+                    {% if all_product.id == product_id %}
+                      {% liquid
+                        # Verify product belongs to this collection
+                        assign product_in_collection = false
+                        for product_collection in all_product.collections
+                          if product_collection.handle == collection.handle
+                            assign product_in_collection = true
+                            break
+                          endif
+                        endfor
+                      %}
+                      {% if product_in_collection %}
+                        {% assign product = all_product %}
+                        {% break %}
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+                
+                {% if product != blank %}
+                  {% assign products_found_on_page = products_found_on_page | plus: 1 %}
+                  {% liquid
+                    assign should_display = true
+                  %}
+                  
+                  {% if should_display %}
+            {% liquid
+              # NEW APPROACH: For combined listings, render all products in the group and show/hide based on active swatch
+              assign combined_listings_metafield = product.metafields.custom.combined_listing
+              assign is_combined_listing_group = false
+              assign all_group_products = ''
+              assign metafield_has_products = false
+              
+              # Check if metafield exists and actually contains products
+              if enable_combined and combined_listings_metafield != blank and combined_listings_metafield.value != blank
+                # Try iterating through metafield value to verify it contains products
+                for test_product in combined_listings_metafield.value
+                  assign metafield_has_products = true
+                  break
+                endfor
+              endif
+              
+              # Only use combined listing if metafield has products
+              if enable_combined and metafield_has_products
+                assign is_combined_listing_group = true
+                # Get sorted swatches to determine which product should be active (first alphabetically)
+                render 'util-combined-listing-data', product_resource: product, combined_listings_metafield: combined_listings_metafield, enable_combined: enable_combined
+                
+                # Collect all products in the group (from metafield + current product)
+                for linked_product in combined_listings_metafield.value
+                  assign linked_product_id_str = linked_product.id | append: ''
+                  if all_group_products == ''
+                    assign all_group_products = linked_product_id_str
+                  else
+                    assign all_group_products = all_group_products | append: ',' | append: linked_product_id_str
+                  endif
+                endfor
+                # Add current product if not already in list
+                assign product_id_str = product.id | append: ''
+                assign all_group_products_array = all_group_products | split: ','
+                assign product_in_group = false
+                for group_product_id in all_group_products_array
+                  assign group_product_id_stripped = group_product_id | strip
+                  assign product_id_str_stripped = product_id_str | strip
+                  if group_product_id_stripped == product_id_str_stripped
+                    assign product_in_group = true
+                    break
+                  endif
+                endfor
+                unless product_in_group
+                  if all_group_products == ''
+                    assign all_group_products = product_id_str
+                  else
+                    assign all_group_products = all_group_products | append: ',' | append: product_id_str
+                  endif
+                endunless
+                
+                # Determine which product should be active (first alphabetically sorted)
+                assign active_product_id = product.id
+                if has_combined_listing and sorted_swatches_data != '' and sorted_swatches_data != blank
+                  assign first_swatch_data = sorted_swatches_data | split: '|||' | first
+                  if first_swatch_data != blank
+                    assign first_parts = first_swatch_data | split: '|'
+                    assign first_base_index = 0
+                    if first_parts.size > 0 and first_parts[0] == blank
+                      assign first_base_index = 1
+                    endif
+                    assign first_product_id_idx = first_base_index
+                    if first_parts.size > first_product_id_idx
+                      assign first_product_id_from_swatch = first_parts[first_product_id_idx] | strip
+                      assign first_product_id_as_number = first_product_id_from_swatch | plus: 0
+                      assign active_product_id = first_product_id_from_swatch
+                    endif
+                  endif
+                endif
+              endif
+            %}
+            
+            {% if is_combined_listing_group and all_group_products != '' %}
+              {% # Render all products in the group, grouped together %}
+              {% assign group_products_array = all_group_products | split: ',' %}
+              <li
+                class="product-grid__item product-grid__item--{{ forloop.index0 }} combined-listing-group"
+                data-combined-listing-group="true"
+                data-active-product-id="{{ active_product_id }}"
+              >
+                <combined-listing-group>
+                  <div class="combined-listing-group__container">
+                  {% for group_product_id_str in group_products_array %}
+                    {% liquid
+                      assign group_product_id_stripped = group_product_id_str | strip
+                      assign group_product_id = group_product_id_stripped | plus: 0
+                      assign group_product = blank
+                    %}
+                    
+                    {% # Find the product object %}
+                    {% if combined_listings_metafield != blank and combined_listings_metafield.value != blank %}
+                      {% for linked_product in combined_listings_metafield.value %}
+                        {% if linked_product.id == group_product_id %}
+                          {% assign group_product = linked_product %}
+                          {% break %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                    
+                    {% if group_product == blank and product.id == group_product_id %}
+                      {% assign group_product = product %}
+                    {% endif %}
+                    
+                    {% if group_product == blank %}
+                      {% for all_product in collections.all.products %}
+                        {% if all_product.id == group_product_id %}
+                          {% assign group_product = all_product %}
+                          {% break %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                    
+                    {% if group_product != blank %}
+                      {% liquid
+                        assign is_active = false
+                        assign active_product_id_str = active_product_id | append: '' | strip
+                        assign group_product_id_str = group_product.id | append: '' | strip
+                        assign active_product_id_num = active_product_id | plus: 0
+                        if group_product.id == active_product_id or group_product.id == active_product_id_num or group_product_id_str == active_product_id_str
+                          assign is_active = true
+                        endif
+                      %}
+                      
+                      <div
+                        class="combined-listing-product-card{% unless is_active %} combined-listing-product-card--hidden{% endunless %}"
+                        data-product-id="{{ group_product.id }}"
+                        data-is-active="{% if is_active %}true{% else %}false{% endif %}"
+                      >
+                        {% # theme-check-disable %}
+                        {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: group_product %}
+                        {% # theme-check-enable %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                  </div>
+                </combined-listing-group>
+              </li>
+            {% else %}
+              {% # Regular product (not a combined listing) - render exactly like original Shopify theme %}
+              <li
+                id="{{ section.id }}-{{ product.id }}"
+                class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+                data-page="{{ paginate.current_page }}"
+                data-product-id="{{ product.id }}"
+                ref="cards[]"
+              >
+                {% # theme-check-disable %}
+                {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
+                {% # theme-check-enable %}
+              </li>
+            {% endif %}
+                {% endif %}
+              {% endif %}
+              {% endif %}
+              {% assign display_index = display_index | plus: 1 %}
+            {% endfor %}
+            
+          {% else %}
+            {% comment %} If products_to_display is empty, show all products from current page {% endcomment %}
+            {% for product in collection.products %}
+              {% liquid
+                assign should_display = true
+              %}
+              
+              {% if should_display %}
+                {% comment %} Render product - same logic as above but simplified {% endcomment %}
+                <li
+                  id="{{ section.id }}-{{ product.id }}"
+                  class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+                  data-page="{{ paginate.current_page }}"
+                  data-product-id="{{ product.id }}"
+                  ref="cards[]"
+                >
+                  {% # theme-check-disable %}
+                  {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
+                  {% # theme-check-enable %}
+                </li>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endcapture %}
+        
+
+        
+        {% comment %} 
+          Render product grid
+          If we have filtered products and multiple pages, use custom pagination
+          Otherwise use default pagination
+        {% endcomment %}
+        {% if products_to_display != '' and total_display_pages > 1 and section.settings.enable_infinite_scroll == false %}
+          {% comment %} Temporarily enable infinite scroll to hide default pagination, then add custom pagination {% endcomment %}
+          {% comment %} We need to modify the product-grid to show correct last page {% endcomment %}
+          {% capture product_grid_html %}
+            {% render 'product-grid',
+              section: section,
+              children: children,
+              products: collection.products,
+              paginate: paginate,
+              enable_infinite_scroll: true
+            %}
+          {% endcapture %}
+          {% comment %} Replace data-last-page with our custom total pages {% endcomment %}
+          {% liquid
+            assign last_page_attr = 'data-last-page="' | append: total_display_pages | append: '"'
+            assign modified_grid = product_grid_html | replace: 'data-last-page="1"', last_page_attr
+          %}
+          {{ modified_grid }}
+          {% comment %} Add custom pagination controls after the grid {% endcomment %}
+          {% comment %} Get base URL without query parameters {% endcomment %}
+          {% liquid
+            assign base_url_clean = collection.url
+            if request.path contains '?'
+              assign url_parts = request.path | split: '?'
+              assign base_url_clean = url_parts[0]
+            endif
+          %}
+          {% comment %} Wrap pagination in the same container structure as product-grid {% endcomment %}
+          {% comment %} The product-grid uses a div with grid-column: var(--full-width) inside the main-collection-grid {% endcomment %}
+          <div
+            class="grid main-collection-grid"
+            style="
+              --grid-column--desktop: var(--{% if section.settings.product_grid_width == 'centered' %}centered{% else %}full-width{% endif %});
+              --grid-column--mobile: var(--{% if section.settings.full_width_on_mobile %}full-width{% else %}{% if section.settings.product_grid_width == 'centered' %}centered{% else %}full-width{% endif %}{% endif %});
+            "
+          >
+            <div
+              style="
+                grid-column: var(--full-width);
+                display: flex;
+                justify-content: center;
+                width: 100%;
+              "
+            >
+              {% render 'pagination-controls-custom',
+                total_pages: total_display_pages,
+                current_page: current_display_page,
+                base_url: base_url_clean
+              %}
+            </div>
+          </div>
+        {% else %}
+          {% render 'product-grid',
+            section: section,
+            children: children,
+            products: collection.products,
+            paginate: paginate,
+            enable_infinite_scroll: section.settings.enable_infinite_scroll
+          %}
+        {% endif %}
+      {% endpaginate %}
+    {% else %}
+        {% comment %} Combined listings disabled - use normal pagination {% endcomment %}
+        {% paginate collection.products by products_per_page %}
+          {% capture children %}
+            {% for product in collection.products %}
+              <li
+                id="{{ section.id }}-{{ product.id }}"
+                class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+                data-page="{{ paginate.current_page }}"
+                data-product-id="{{ product.id }}"
+                ref="cards[]"
+              >
+                {% # theme-check-disable %}
+                {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
+                {% # theme-check-enable %}
+              </li>
+            {% endfor %}
+          {% endcapture %}
+
+          {% render 'product-grid',
+            section: section,
+            children: children,
+            products: collection.products,
+            paginate: paginate,
+            enable_infinite_scroll: section.settings.enable_infinite_scroll
+          %}
+        {% endpaginate %}
+      {% endif %}
+  </div>
+</results-list>
+
+{% stylesheet %}
+  /* Combined listing group: show only active product, hide others */
+  .combined-listing-group {
+    position: relative;
+  }
+  
+  .combined-listing-group__container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .combined-listing-product-card {
+    width: 100%;
+  }
+  
+  .combined-listing-product-card--hidden {
+    display: none;
+  }
+  
+  .combined-listing-product-card[data-is-active="true"] {
+    display: block;
+  }
+  
+  .combined-listing-product-card[data-is-active="false"] {
+    display: none;
+  }
+  
+  /* Ensure only one product card is visible at a time in a combined listing group */
+  .combined-listing-group .combined-listing-product-card[data-is-active="false"] {
+    display: none !important;
+  }
+  
+  .combined-listing-group .combined-listing-product-card[data-is-active="true"] {
+    display: block !important;
+  }
+
+  /* Debug section - scrollable and non-intrusive */
+  .combined-listing-debug {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 9999;
+    max-width: 400px;
+    max-height: 300px;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 16px;
+    border-radius: 8px 0 0 0;
+    font-family: monospace;
+    font-size: 12px;
+    overflow-y: auto;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    line-height: 1.6;
+  }
+
+  .combined-listing-debug__header {
+    font-weight: bold;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #555;
+    padding-bottom: 8px;
+  }
+
+  .combined-listing-debug__content {
+    line-height: 1.6;
+  }
+
+  .combined-listing-debug__footer {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #555;
+    font-size: 11px;
+    color: #aaa;
+  }
+
+  .combined-listing-debug::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .combined-listing-debug::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+
+  .combined-listing-debug::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+  }
+
+  .combined-listing-debug::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  @media screen and (max-width: 749px) {
+    .combined-listing-debug {
+      max-width: 100%;
+      max-height: 200px;
+      font-size: 11px;
+      padding: 12px;
+    }
+  }
+  
+  .main-collection-grid {
+    grid-column: var(--grid-column--mobile);
+
+    @media screen and (min-width: 750px) {
+      grid-column: var(--grid-column--desktop);
+    }
+  }
+
+  .collection-wrapper {
+    @media screen and (min-width: 750px) {
+      grid-template-columns:
+        1fr repeat(
+          var(--centered-column-number),
+          minmax(0, calc((var(--page-width) - var(--page-margin) * 2) / var(--centered-column-number)))
+        )
+        1fr;
+    }
+  }
+
+  .collection-wrapper:has(.facets-block-wrapper--full-width),
+  .collection-wrapper:has(.collection-wrapper--full-width) {
+    @media screen and (min-width: 750px) {
+      grid-column: 1 / -1;
+      grid-template-columns:
+        minmax(var(--page-margin), 1fr) repeat(
+          var(--centered-column-number),
+          minmax(0, calc((var(--page-width) - var(--page-margin) * 2) / var(--centered-column-number)))
+        )
+        minmax(var(--page-margin), 1fr);
+    }
+  }
+
+  .collection-wrapper:has(.facets--vertical) .facets-block-wrapper--vertical:not(.hidden) ~ .main-collection-grid {
+    @media screen and (min-width: 750px) {
+      grid-column: var(--facets-vertical-col-width) / var(--full-width-column-number);
+    }
+  }
+
+  .collection-wrapper:has(.facets-block-wrapper--vertical:not(#filters-drawer)):has(.collection-wrapper--full-width) {
+    @media screen and (min-width: 750px) {
+      grid-column: 1 / -1;
+      grid-template-columns: 0fr repeat(var(--centered-column-number), minmax(0, 1fr)) 0fr;
+    }
+  }
+
+  :is(.collection-wrapper--full-width, .collection-wrapper--full-width-on-mobile)
+    [product-grid-view='default']
+    .product-grid__card {
+    @media screen and (max-width: 749px) {
+      padding-inline-start: max(var(--padding-xs), var(--padding-inline-start));
+      padding-inline-end: max(var(--padding-xs), var(--padding-inline-end));
+    }
+  }
+
+  :is(.collection-wrapper--full-width, .collection-wrapper--full-width-on-mobile)
+    [product-grid-view='mobile-single']
+    .product-grid__card {
+    @media screen and (max-width: 749px) {
+      padding-inline-start: max(var(--padding-xs), var(--padding-inline-start));
+      padding-inline-end: max(var(--padding-xs), var(--padding-inline-end));
+    }
+  }
+
+  /* Make product media go edge-to-edge by using negative margins */
+  :is(.collection-wrapper--full-width) .card-gallery,
+  :is(.collection-wrapper--full-width-on-mobile) .card-gallery {
+    @media screen and (max-width: 749px) {
+      margin-inline-start: calc(-1 * max(var(--padding-xs), var(--padding-inline-start)));
+      margin-inline-end: calc(-1 * max(var(--padding-xs), var(--padding-inline-end)));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.collection_container",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout_type",
+      "label": "t:settings.type",
+      "options": [
+        {
+          "value": "grid",
+          "label": "t:options.grid"
+        },
+        {
+          "value": "organic",
+          "label": "t:options.editorial"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "product_card_size",
+      "label": "t:settings.card_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:options.small"
+        },
+        {
+          "value": "medium",
+          "label": "t:options.medium"
+        },
+        {
+          "value": "large",
+          "label": "t:options.large"
+        },
+        {
+          "value": "extra-large",
+          "label": "t:options.extra_large"
+        }
+      ],
+      "default": "medium",
+      "visible_if": "{{ section.settings.layout_type == 'grid' }}"
+    },
+    {
+      "type": "select",
+      "id": "mobile_product_card_size",
+      "label": "t:settings.mobile_card_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:options.small"
+        },
+        {
+          "value": "large",
+          "label": "t:options.large"
+        }
+      ],
+      "default": "small"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_infinite_scroll",
+      "label": "t:settings.auto_load_products",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "t:settings.products_per_page",
+      "min": 8,
+      "max": 36,
+      "step": 4,
+      "default": 24,
+      "visible_if": "{{ section.settings.enable_infinite_scroll == false }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "select",
+      "id": "product_grid_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "centered",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "centered"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width_on_mobile",
+      "label": "t:settings.full_width_on_mobile",
+      "default": true,
+      "visible_if": "{{ section.settings.product_grid_width != 'full-width' }}"
+    },
+    {
+      "type": "range",
+      "id": "columns_gap_horizontal",
+      "label": "t:settings.horizontal_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "columns_gap_vertical",
+      "label": "t:settings.vertical_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:content.section_layout"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Combined Listings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_combined_listings",
+      "label": "Enable Combined Listings",
+      "default": false,
+      "info": "When enabled, products linked via combined listing metafield will appear as a single product with color variant swatches"
+    }
+  ],
+  "presets": []
+}
+{% endschema %}
