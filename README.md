@@ -1,4 +1,4 @@
-# Horizon
+# The Leisure Collective Theme - Based on Shopify's Horizon theme
 
 
 ### Theme Customizations
@@ -91,6 +91,192 @@ You can follow the [theme check documentation](https://shopify.dev/docs/storefro
 ### Continuous Integration
 
 Horizon uses [GitHub Actions](https://github.com/features/actions) to maintain the quality of the theme. [This is a starting point](https://github.com/Shopify/horizon-private/blob/main/.github/workflows/ci.yml) and what we suggest to use in order to ensure you're building better themes. Feel free to build off of it!
+
+## Parent/Child Theme Distribution, Updates, and Safety
+
+This repository is the Parent (Core) Theme: `leisure-collective_horizon`.
+
+It is used as the shared foundation for multiple Child (Store) Themes, each in its own repo and connected to its own Shopify store via the GitHub integration:
+
+- `creatures-of-leisure`
+- `otis`
+- `sito`
+- `layday`
+
+The intent:
+- Core UI + components live in the Parent
+- Store-specific templates and settings live in each Child
+- Parent updates flow downstream without overwriting store-specific work or breaking live sites
+
+---
+
+## Theme Structure and Ownership
+
+### Parent (Core) owns and distributes
+- `assets/` (CSS/JS/images shared across stores)
+- `sections/` (shared sections and section schemas)
+- `snippets/` (shared components/partials)
+- `layout/` (shared layout files)
+- `locales/` (shared translations)
+- `config/settings_schema.json` (shared settings schema)
+
+### Each Child (Store) owns
+- `templates/**` (JSON templates and store layout decisions)
+- `config/settings_data.json` (store/theme-instance configuration; treat as environment-specific)
+
+Hard rule: Parent updates must not overwrite Child templates or `config/settings_data.json`.
+
+---
+
+## Distribution Model
+
+- Parent repo: `leisure-collective_horizon` is the source of truth for shared code.
+- Each Child repo contains:
+  - a copy of the Parent’s shared directories/files
+  - store-specific `templates/**` and `config/settings_data.json`
+- Updates are applied by merging Parent into each Child (reviewable PR), then Shopify pulls the updated Child repo to the store theme.
+
+---
+
+## Git Remotes (Expected Setup)
+
+In each Child repo, use these remotes:
+
+- `origin` = the Child repo (example: `otis`)
+- `upstream` = the Parent repo (`leisure-collective_horizon`)
+
+Example (in a Child repo):
+
+```bash
+git remote add upstream git@github.com:the-leisure-collective/leisure-collective_horizon.git
+```
+
+Note: Exact repo URLs will vary. Use SSH URLs for consistency.
+
+---
+
+## Update Workflow (Parent → Child)
+
+Recommended approach: update branch + PR per Child repo.
+
+## Spinning Up a New Site (New Child Repo)
+
+The Parent repo (`leisure-collective_horizon`) should remain “core only.” Each site gets its own Child repo that is connected to its own Shopify store via the GitHub integration.
+
+---
+
+## Recommended New Site Flow (Safe + Repeatable)
+
+### 1) Create a new empty GitHub repo for the site
+Example names:
+- `the-leisure-collective/creatures-of-leisure`
+- `the-leisure-collective/otis`
+- `the-leisure-collective/sito`
+- `the-leisure-collective/layday`
+
+Keep the repo empty (no README/License) if you plan to seed it via push/mirror.
+
+---
+
+### 2) Seed the new Child repo from the baseline Child repo
+
+Choose one of these options:
+
+#### GitHub “Use this template” (clean history)
+- Mark the baseline Child repo as a GitHub Template repo
+- Click “Use this template” to generate the new site repo
+- This creates a fresh repo history, which is often preferred for store-specific work
+
+### One-time setup in each Child repo
+
+Create a `.gitattributes` file in the Child repo to protect store-owned files during merges:
+
+```gitattributes
+templates/**                 merge=ours
+config/settings_data.json    merge=ours
+```
+
+Enable the merge driver (recommended one-time setup per machine):
+
+```bash
+git config --global merge.ours.driver true
+```
+
+### Pull Parent updates into a Child repo (repeat per Child)
+
+From inside the Child repo:
+
+```bash
+git checkout main
+git pull origin main
+git fetch upstream
+
+git checkout -b update-parent-YYYY-MM-DD
+git merge upstream/main
+```
+
+Resolve conflicts if any, then push and open a PR:
+
+```bash
+git push origin update-parent-YYYY-MM-DD
+```
+
+After PR approval, merge into `main`. Shopify GitHub integration will sync the Child repo to the store theme.
+
+---
+
+## Threats and Solutions (How We Avoid Breaking Sites)
+
+### Threat: Parent changes overwrite Child templates
+What happens:
+- Parent changes to `templates/**` could break store layouts or remove store-specific page structures.
+
+Solutions:
+- Child repos use `.gitattributes` with `merge=ours` for `templates/**`
+- Parent repo should avoid making template changes entirely
+
+### Threat: Parent changes overwrite `config/settings_data.json`
+What happens:
+- Store configuration resets or changes unexpectedly.
+
+Solutions:
+- Child repos use `.gitattributes` with `merge=ours` for `config/settings_data.json`
+- Treat `config/settings_data.json` as store/environment data, not shared code
+
+### Threat: Parent section/snippet schema changes break existing templates
+What happens:
+- Templates reference block types or setting IDs that were renamed/removed, causing broken sections or missing content.
+
+Solutions (Parent development rules):
+- Do not rename/remove existing setting IDs or block types once released
+- Prefer additive changes (add new settings, keep defaults safe)
+- If behavior must change, gate it behind a new setting with a safe default
+
+### Threat: Removing/renaming shared snippets/sections used by Child templates
+What happens:
+- Runtime errors, missing UI, or theme compile errors.
+
+Solutions:
+- Never delete/rename shared files without a deprecation plan
+- If replacing, keep a compatibility shim snippet/section that forwards to the new implementation
+
+### Threat: Parent updates include store-specific templates by accident
+What happens:
+- Future merges become noisy and risky.
+
+Solutions:
+- Parent repo should not accept store templates (or should keep minimal placeholders only)
+- Optional: add CI to the Parent repo to fail if `templates/**` or `config/settings_data.json` is modified
+
+---
+
+## Best Practices
+
+- Always bring Parent updates into a Child repo via a dedicated update branch + PR.
+- Keep Parent changes backwards-compatible (settings and block types are a contract).
+- If a change is risky, roll it out to one Child site first and validate before updating the others.
+- Avoid `git push --mirror` for day-to-day updates; prefer pushing only the target branch (usually `main`).
+
 
 #### Shopify/theme-check-action
 
