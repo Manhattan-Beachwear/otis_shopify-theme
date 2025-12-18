@@ -86,7 +86,7 @@ Horizon uses [GitHub Actions](https://github.com/features/actions) to maintain t
 
 ## Parent/Child Theme Distribution, Updates, and Safety
 
-This repository is the Parent (Core) Theme: `leisure-collective_horizon`.
+This repository is the Parent (Core) Theme: `tlc_shopify_theme`.
 
 It is used as the shared foundation for multiple Child (Store) Themes, each in its own repo and connected to its own Shopify store via the GitHub integration:
 
