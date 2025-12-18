@@ -32,14 +32,6 @@ Horizon is the flagship of a new generation of first party Shopify themes. It in
 - **Server-rendered:** HTML must be rendered by Shopify servers using Liquid. Business logic and platform primitives such as translations and money formatting don’t belong on the client. Async and on-demand rendering of parts of the page is OK, but we do it sparingly as a progressive enhancement.
 - **Functional, not pixel-perfect:** The Web doesn’t require each page to be rendered pixel-perfect by each browser engine. Using semantic markup, progressive enhancement, and clever design, we ensure that themes remain functional regardless of the browser.
 
-## Getting started
-
-We recommend using the Skeleton Theme as a starting point for theme development. [Learn more on Shopify.dev](https://shopify.dev/themes/getting-started/create).
-
-> If you're building a theme for the Shopify Theme Store, then do not use Horizon as a starting point. Themes based on, derived from, or incorporating Horizon are not eligible for submission to to the Shopify Theme Store. Use the [Skeleton Theme](https://github.com/Shopify/skeleton-theme) instead. Learn about the [theme developer tools](https://shopify.dev/docs/storefronts/themes/tools).
-
-Please note that the develop branch may include code for features not yet released. The "stable" version of Horizon is available in the theme store and the [public repository](https://github.com/Shopify/horizon).
-
 ## Staying up to date with Horizon changes
 
 Say you're building a new theme off Horizon but you still want to be able to pull in the latest changes, you can add a remote `upstream` pointing to this Horizon repository.
