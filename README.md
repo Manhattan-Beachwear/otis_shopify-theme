@@ -111,7 +111,7 @@ The Leisure Collective theme system follows a three-tier deployment architecture
 Add the Horizon repository as a remote:
 
 ```bash
-git remote add horizon https://github.com/Shopify/horizon-private.git
+git remote add horizon https://github.com/Shopify/horizon.git
 ```
 
 Verify the remote was added:
