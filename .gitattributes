@@ -1,3 +1,4 @@
 # Never accept upstream changes to store-owned files
 templates/**                 merge=ours
 config/settings_data.json    merge=ours
+layout/theme.liquid           merge=ours
