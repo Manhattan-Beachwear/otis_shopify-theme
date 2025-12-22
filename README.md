@@ -39,12 +39,11 @@ Horizon is the flagship of a new generation of first party Shopify themes. It in
 The Leisure Collective theme system follows a three-tier deployment architecture:
 
 ```
-┌─────────────────────────────────────────┐
-│   Shopify Horizon (Grandparent)        │
-│   Base theme managed by Shopify         │
-│   https://github.com/Shopify/horizon-   │
-│   private.git                           │
-└─────────────────┬───────────────────────┘
+┌──────────────────────────────────────────┐
+│   Shopify Horizon (Grandparent)          │
+│   Base theme managed by Shopify          │
+│   https://github.com/Shopify/horizon.git │
+└─────────────────┬────────────────────────┘
                   │
                   │ Updates pulled by Core Maintainers
                   │
@@ -59,12 +58,12 @@ The Leisure Collective theme system follows a three-tier deployment architecture
                   │
       ┌───────────┼───────────┐
       │           │           │
-┌─────▼─────┐ ┌──▼───┐ ┌─────▼─────┐
-│ creatures │ │ otis │ │   sito    │
-│ of leisure│ │      │ │           │
-│           │ │      │ │           │
-└───────────┘ └──────┘ └───────────┘
-  (Children)    (Children)  (Children)
+┌─────▼─────┐  ┌──▼───┐ ┌─────▼─────┐
+│ creatures │  │ otis │ │   sito    │
+│ of leisure│  │      │ │           │
+│           │  │      │ │           │
+└───────────┘  └──────┘ └───────────┘
+  (Children)  (Children)  (Children)
 ```
 
 ### Code Flow
@@ -79,22 +78,25 @@ The Leisure Collective theme system follows a three-tier deployment architecture
 - Store-specific templates and settings are protected from overwrite
 - Each store maintains its own configuration while receiving shared updates
 
-### File Ownership
+### File Strategy: The "Split Brain" Model
 
-**Parent (Core) Owns:**
+**SYNC (Parent Wins - Automatically Merged):**
 - `assets/` - CSS, JavaScript, and images shared across stores
-- `snippets/` - Shared components and partials
 - `sections/*.liquid` - Shared sections and section schemas
+- `layout/theme.liquid` - **NEW:** Now synced from Parent (see Protected Hook pattern below)
+- `snippets/` - Shared components and partials (except protected hooks)
 - `locales/` - Shared translations
 - `config/settings_schema.json` - Shared settings schema
 - `layout/password.liquid` - Shared password page layout
 
-**Store (Child) Owns:**
+**PROTECT (Child Wins - Protected via `.gitattributes`):**
 - `templates/*.json` - Store-specific page layouts and template configurations
 - `config/settings_data.json` - Store-specific theme settings (colors, fonts, etc.)
-- `layout/theme.liquid` - Store-specific scripts and meta tags
+- `sections/*.json` - Store-specific section configurations
+- `snippets/store-custom-head.liquid` - Store-specific head scripts hook
+- `snippets/store-custom-body.liquid` - Store-specific body scripts hook
 
-**Hard Rule:** Parent updates must never overwrite Child-owned files.
+**Critical Rule:** Child stores use `.gitattributes` with `merge=ours` to protect their data and custom scripts while receiving code updates from the Parent.
 
 ---
 
@@ -145,15 +147,19 @@ git merge horizon/main
 
 4. **Resolve merge conflicts manually:**
 
-**Crucial Note:** Handle merge conflicts carefully:
+**Critical Warning:** Do NOT use `.gitattributes` protection here. We want code conflicts so we can manually combine Shopify's updates with our custom work.
+
+**Merge Strategy:**
 - **Accept Horizon's changes for:** Structural updates, new features, bug fixes
 - **Keep our customizations for:** Custom sections, snippets, and modifications
 - **Review carefully:** Changes to files we've customized
+- **Manual resolution required:** All conflicts must be reviewed and resolved by hand
 
 Common conflict areas:
 - `sections/` - We may have custom sections; keep both when possible
-- `snippets/` - Our custom snippets should be preserved
+- `snippets/` - Our custom snippets should be preserved (except hook snippets which are empty)
 - `assets/` - Merge carefully, preserving our customizations
+- `layout/theme.liquid` - Review changes to ensure hook snippets remain intact
 
 5. **Test thoroughly:**
 
@@ -185,7 +191,7 @@ git push origin main
 
 **Target Audience:** Developers managing specific storefronts (e.g., Otis, Creatures of Leisure)
 
-**Goal:** Pull updates from `tlc_shopify_theme` into a specific store theme while protecting store-specific files.
+**Goal:** Push Core features to Stores without breaking their Data or Layouts using Protected Sync.
 
 ### One-Time Setup
 
@@ -211,18 +217,31 @@ Enable Git's `merge=ours` driver globally (one-time setup per machine):
 git config --global merge.ours.driver true
 ```
 
+**Important:** This command must be run on each developer's machine. It configures Git to use the `merge=ours` strategy for files specified in `.gitattributes`.
+
 3. **Create `.gitattributes` file:**
 
 Create a `.gitattributes` file in the root of your Child repo with the following content:
 
 ```gitattributes
-# Store-owned files - always keep our version during merges
-templates/**                 merge=ours
-config/settings_data.json    merge=ours
-layout/theme.liquid          merge=ours
+# === CHILD STORE PROTECTION ===
+
+# 1. Protect Store Data
+config/settings_data.json       merge=ours
+templates/*.json                 merge=ours
+sections/*.json                  merge=ours
+
+# 2. Protect Custom Script Hooks
+snippets/store-custom-head.liquid   merge=ours
+snippets/store-custom-body.liquid   merge=ours
+
+# Note: layout/theme.liquid is SYNCED. Do not add it here.
 ```
 
-This ensures that when merging from the Parent, your store-specific templates and settings are never overwritten.
+**Critical Notes:**
+- `layout/theme.liquid` is **NOT** protected - it syncs from Parent
+- Store-specific scripts go in the protected hook snippets (see Protected Hook Pattern below)
+- The `.gitattributes` file automatically rejects data changes and accepts code changes during merges
 
 4. **Verify setup:**
 
@@ -263,12 +282,17 @@ Replace `YYYY-MM-DD` with today's date (e.g., `update-parent-2025-01-15`).
 git merge upstream/main
 ```
 
+**What happens automatically:**
+- The `.gitattributes` file will automatically reject changes to protected files (`templates/*.json`, `config/settings_data.json`, `sections/*.json`, hook snippets)
+- Code files (`assets/`, `sections/*.liquid`, `layout/theme.liquid`, most `snippets/`) will be updated from Parent
+- Your store data and custom scripts remain untouched
+
 5. **Handle any conflicts:**
 
-The `.gitattributes` file will automatically resolve conflicts for `templates/**` and `config/settings_data.json` by keeping your version. For other conflicts:
+Most conflicts are automatically resolved by `.gitattributes`. For any remaining conflicts:
 
-- **Core files (assets/, snippets/, sections/):** Generally accept Parent's version
-- **Custom store files:** Keep your version
+- **Core files (assets/, snippets/, sections/*.liquid, layout/theme.liquid):** Generally accept Parent's version
+- **Protected files:** Should not conflict (`.gitattributes` handles them), but if they do, keep your version
 - **Uncertain conflicts:** Review carefully and test
 
 6. **Test locally:**
@@ -297,7 +321,105 @@ After merging to `main`, Shopify's GitHub integration will automatically sync th
 - **Test before merging:** Use `shopify theme dev` to test locally before creating PRs
 - **Review changes:** Understand what's being updated from the Parent
 - **Keep `.gitattributes` in place:** Never remove or modify the `.gitattributes` file
+- **Use hook snippets for scripts:** Never hardcode store-specific scripts in `layout/theme.liquid`; use the protected hook snippets instead
 - **Document store-specific changes:** If you make customizations, document them in your store repo
+
+---
+
+## The "Protected Hook" Pattern
+
+**Problem:** `layout/theme.liquid` is now synced from the Parent, but stores need to add store-specific scripts (Google Analytics, Meta Pixel, Gorgias Chat, etc.) without losing them during updates.
+
+**Solution:** The Parent provides empty "dummy" hook snippets that Child stores fill with their scripts and protect via `.gitattributes`.
+
+### How It Works
+
+**In Parent (This Repository):**
+- `layout/theme.liquid` includes two hook snippets:
+  - `{% render 'store-custom-head' %}` - Renders inside `<head>` tag
+  - `{% render 'store-custom-body' %}` - Renders before closing `</body>` tag
+- These hook snippets exist as empty files in `snippets/` with documentation comments
+
+**In Child (Store Repositories):**
+- Developers fill `snippets/store-custom-head.liquid` with their tracking scripts (GA4, Meta Pixel, etc.)
+- Developers fill `snippets/store-custom-body.liquid` with their body scripts (chat widgets, etc.)
+- These files are protected in `.gitattributes` with `merge=ours`
+- When Parent updates `layout/theme.liquid`, the hook calls remain intact
+- When Parent updates the hook snippet files, Child's protected versions are preserved
+
+### Implementation Example
+
+**Parent's `layout/theme.liquid` (synced):**
+```liquid
+<head>
+  <!-- ... standard head content ... -->
+  {{ content_for_header }}
+  {%- render 'store-custom-head' -%}
+</head>
+<body>
+  <!-- ... body content ... -->
+  {%- render 'store-custom-body' -%}
+</body>
+```
+
+**Child's `snippets/store-custom-head.liquid` (protected):**
+```liquid
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+</script>
+
+<!-- Meta Pixel -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', 'YOUR_PIXEL_ID');
+  fbq('track', 'PageView');
+</script>
+```
+
+**Child's `snippets/store-custom-body.liquid` (protected):**
+```liquid
+<!-- Gorgias Chat Widget -->
+<script>
+  (function(w,d,s,o,f,js,fjs){
+    w['Gorgias']=o;w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments)};
+    js=d.createElement(s),fjs=d.getElementsByTagName(s)[0];
+    js.id=o;js.src=f;js.async=1;fjs.parentNode.insertBefore(js,fjs);
+  }(window,document,'script','gorgias','https://config.gorgias.chat/gorgias-chat-bundle-loader.js'));
+  Gorgias('set', 'appId', 'YOUR_GORGIAS_APP_ID');
+</script>
+```
+
+### Developer Rules
+
+**Rule 1:** Never hardcode store-specific scripts directly into `layout/theme.liquid`. It will be overwritten on the next Parent update.
+
+**Rule 2:** Always place store-specific third-party scripts into the appropriate hook snippet:
+- Head scripts → `snippets/store-custom-head.liquid`
+- Body scripts → `snippets/store-custom-body.liquid`
+
+**Rule 3:** Ensure these snippet files are listed in your Child store's `.gitattributes` as `merge=ours` (see Setup Instructions above).
+
+**Rule 4:** If you need to add a new hook location, coordinate with Core maintainers to add it to the Parent's `layout/theme.liquid` first.
+
+### Benefits
+
+- ✅ Parent can update `layout/theme.liquid` without breaking store scripts
+- ✅ Store scripts are protected from accidental overwrites
+- ✅ Clear separation between shared code and store-specific code
+- ✅ Easy to identify where store scripts should be placed
+- ✅ No merge conflicts for store-specific scripts
 
 ---
 
@@ -320,7 +442,7 @@ After merging to `main`, Shopify's GitHub integration will automatically sync th
 
 ### Merge conflicts in files that should be protected
 
-**Problem:** You're getting merge conflicts in `templates/**`, `config/settings_data.json`, or `layout/theme.liquid` even though you have `.gitattributes` set up.
+**Problem:** You're getting merge conflicts in protected files even though you have `.gitattributes` set up.
 
 **Possible Causes:**
 1. The `merge=ours` driver isn't configured
@@ -341,16 +463,20 @@ git config --global merge.ours.driver true
 cat .gitattributes
 
 # Should include:
-# templates/**                 merge=ours
-# config/settings_data.json    merge=ours
-# layout/theme.liquid          merge=ours
+# config/settings_data.json       merge=ours
+# templates/*.json                merge=ours
+# sections/*.json                 merge=ours
+# snippets/store-custom-head.liquid   merge=ours
+# snippets/store-custom-body.liquid   merge=ours
 
 # If missing, create it with the correct paths
 ```
 
-### Parent updates overwrote my store settings or layout
+**Note:** `layout/theme.liquid` is NOT protected - it syncs from Parent. Use hook snippets for store-specific scripts.
 
-**Problem:** After merging from Parent, your `config/settings_data.json` or `layout/theme.liquid` was reset.
+### Parent updates overwrote my store settings
+
+**Problem:** After merging from Parent, your `config/settings_data.json` or hook snippets were reset.
 
 **Possible Causes:**
 1. `.gitattributes` file is missing or incorrect
@@ -364,14 +490,39 @@ cat .gitattributes
 git log --oneline config/settings_data.json
 git checkout [commit-hash] -- config/settings_data.json
 
-# For layout/theme.liquid
-git log --oneline layout/theme.liquid
-git checkout [commit-hash] -- layout/theme.liquid
+# For hook snippets
+git log --oneline snippets/store-custom-head.liquid
+git checkout [commit-hash] -- snippets/store-custom-head.liquid
 ```
 
 2. Fix `.gitattributes` and merge driver (see above)
 
-3. Re-apply your settings manually if needed
+3. Re-apply your settings/scripts manually if needed
+
+### My store scripts disappeared after updating
+
+**Problem:** After merging from Parent, your tracking scripts (GA4, Meta Pixel, etc.) are gone.
+
+**Possible Causes:**
+1. Scripts were hardcoded in `layout/theme.liquid` (which now syncs from Parent)
+2. Hook snippets aren't protected in `.gitattributes`
+3. Hook snippets were manually resolved incorrectly
+
+**Solution:**
+1. **Never hardcode scripts in `layout/theme.liquid`** - it syncs from Parent and will be overwritten
+2. Move all store-specific scripts to the protected hook snippets:
+   - Head scripts → `snippets/store-custom-head.liquid`
+   - Body scripts → `snippets/store-custom-body.liquid`
+3. Ensure hook snippets are protected in `.gitattributes`:
+```gitattributes
+snippets/store-custom-head.liquid   merge=ours
+snippets/store-custom-body.liquid   merge=ours
+```
+4. Restore scripts from git history if needed:
+```bash
+git log --oneline snippets/store-custom-head.liquid
+git checkout [commit-hash] -- snippets/store-custom-head.liquid
+```
 
 ### Can't fetch from upstream
 
