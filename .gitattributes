@@ -1,4 +1,20 @@
-# Never accept upstream changes to store-owned files
-templates/**                 merge=ours
-config/settings_data.json    merge=ours
-layout/theme.liquid           merge=ours
+# 1. Protect Store Data (Colors, Fonts, App Embeds)
+config/settings_data.json       merge=ours
+
+# 2. Protect Page Templates (JSON Data)
+# Keeps the merchant's homepage and page layouts safe
+templates/*.json                merge=ours
+templates/customers/*.json      merge=ours
+
+# 3. Protect Section Groups (JSON Data)
+# Keeps Header and Footer configurations safe
+sections/*.json                 merge=ours
+
+# 4. Protect Main Layout (HTML Shell)
+# Per your request: Keeps your unique 3rd party scripts safe.
+# NOTE: You must manually patch this file if the Parent adds new global features.
+layout/theme.liquid             merge=ours
+
+# 5. Protect Locales (Optional)
+# If children have unique translations, uncomment this:
+# locales/*.json                merge=ours

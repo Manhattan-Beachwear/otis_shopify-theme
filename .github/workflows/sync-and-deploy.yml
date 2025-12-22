@@ -1,0 +1,43 @@
+name: Sync Parent to Child
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *' # Run daily at 2am
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Child Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "Leisure Collective Theme Sync Bot"
+          git config user.email "bot@cascadiamarquee.com"
+          # === MAGIC SAUCE ===
+          # REQUIRED for .gitattributes merge=ours to work
+          git config merge.ours.driver true
+
+      - name: Pull from Parent Upstream
+        # We map the secret to an environment variable so we can use it safely in the URL
+        env:
+          MY_PAT: ${{ secrets.PAT_TOKEN }}
+        run: |
+          # 1. Add upstream with authentication
+          # We use "x-access-token" as the username for GitHub PATs
+          git remote add upstream https://x-access-token:$MY_PAT@github.com/Manhattan-Beachwear/col_shopify-theme.git
+          
+          # 2. Fetch
+          git fetch upstream
+          
+          # 3. Merge
+          # This will merge code (sections/*.liquid) but reject changes to protected files (settings_data.json)
+          git merge upstream/main --no-edit
+
+      - name: Push to Child Repo
+        run: git push origin main
