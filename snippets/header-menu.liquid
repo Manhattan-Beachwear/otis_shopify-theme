@@ -34,6 +34,7 @@
       on:pointerleave="/deactivate"
     >
       <a
+        role="menuitem"
         href="{{ link.url }}"
         data-skip-node-update="true"
         class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
@@ -93,6 +94,6 @@
     style="{% render 'menu-font-styles', settings: block_settings %}"
   >
     {% assign class = 'overflow-menu' | append: color_scheme_classes %}
-    {% render 'overflow-list', class: class, ref: 'overflowMenu', children: children, minimum-items: 2, defer: true %}
+    {% render 'overflow-list', role='menuitem' class: class, ref: 'overflowMenu', children: children, minimum-items: 2, defer: true %}
   </div>
 </nav>

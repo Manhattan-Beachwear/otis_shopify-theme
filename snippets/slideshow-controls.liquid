@@ -109,7 +109,7 @@
               style="--aspect-ratio: {% if aspect_ratio == 'adapt' %}{{ media.preview_image.aspect_ratio | default: 1.0 }}{% else %}{{ aspect_ratio }}{% endif %};"
               ref="thumbnails[]"
               {% if forloop.first %}
-                aria-selected="true"
+                aria-current="true"
               {% endif %}
             >
               {% liquid
@@ -162,7 +162,7 @@
               on:click="/select/{{ forloop.index0 }}"
               ref="dots[]"
               {% if forloop.first %}
-                aria-selected="true"
+                aria-current="true"
               {% endif %}
             >
               {{ forloop.index }}
