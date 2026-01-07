@@ -92,7 +92,7 @@
     {% endif %}
 
     <div class="featured-blog-posts-card__content layout-panel-flex--column">
-      <h4>{{ title }}</h4>
+      {{ title }}
       {{ details }}
       {{ description }}
     </div>
@@ -173,7 +173,7 @@
     border-radius: var(--border-radius);
   }
 
-  .featured-blog-posts-card__content h4 {
+  .featured-blog-posts-card__content :is(h1, h2, h3, h4, h5, h6) {
     margin: 0;
   }
 {% endstylesheet %}
