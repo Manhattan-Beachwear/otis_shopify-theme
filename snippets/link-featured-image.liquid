@@ -16,7 +16,7 @@
     {{
       link.object.featured_image
       | image_url: width: 800
-      | image_tag: loading: 'lazy', class: class, sizes: image_sizes
+      | image_tag: loading: 'lazy', class: class, sizes: image_sizes, alt: ''
     }}
   {% elsif link.object.products.size > 0 %}
     {% assign product_object = link.object.products | where: 'featured_image' | first %}
@@ -24,7 +24,7 @@
       {{
         product_object.featured_image
         | image_url: width: 800
-        | image_tag: loading: 'lazy', class: class, sizes: image_sizes
+        | image_tag: loading: 'lazy', class: class, sizes: image_sizes, alt: ''
       }}
     {% endif %}
   {% endif %}
@@ -34,7 +34,7 @@
     {{
       collection_object.featured_image
       | image_url: width: 800
-      | image_tag: loading: 'lazy', class: class, sizes: image_sizes
+      | image_tag: loading: 'lazy', class: class, sizes: image_sizes, alt: ''
     }}
   {% endif %}
 {% elsif link.type == 'catalog_link' %}
@@ -42,6 +42,6 @@
   {{
     product_object.featured_image
     | image_url: width: 800
-    | image_tag: loading: 'lazy', class: class, sizes: image_sizes
+    | image_tag: loading: 'lazy', class: class, sizes: image_sizes, alt: ''
   }}
 {% endif %}
