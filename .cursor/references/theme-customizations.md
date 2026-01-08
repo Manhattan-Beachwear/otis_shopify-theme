@@ -15,6 +15,7 @@ This document provides comprehensive documentation for all customizations made t
 | [Product Title Processing](#5-product-title-processing)               | Server-side title processing for combined listings          | `snippets/product-title-processed.liquid`                                                                                     | `snippets/text.liquid`                                                                                                                                                                  |
 | [Variant Picker Utilities](#6-variant-picker-utilities)               | Shared utilities for variant picker animations              | `assets/variant-picker-utils.js`                                                                                              | `assets/variant-picker-cl.js`                                                                                                                                                           |
 | [Size Sorting Utility](#7-size-sorting-utility)                       | Reusable size sorting for logical ascending order           | `snippets/util-size-sort.liquid`                                                                                              | `snippets/variant-combined-listing-picker.liquid`                                                                                                                                       |
+| [Parent/Child Syncing Hooks](#theme-architecture-parentchild-syncing-hooks) | Protected hook pattern for store-specific scripts           | `snippets/store-custom-head.liquid`, `snippets/store-custom-body.liquid`                                                     | `layout/theme.liquid`                                                                                                                                                                   |
 
 ---
 
@@ -621,6 +622,205 @@ Alphabetical sorting resulted in illogical ordering like "5 ft 10 in" appearing 
 - Unit tests for JavaScript components
 - Enhanced accessibility features
 - Documentation for theme developers on extending components
+
+---
+
+## Theme Architecture: Parent/Child Syncing Hooks
+
+### Purpose & Strategy
+
+The Protected Hook pattern enables the Parent theme to push layout updates to Child stores without overwriting store-specific tracking scripts (Pixels, Chat apps, Analytics, etc.). This implements a "Hub and Spoke" deployment model where `layout/theme.liquid` is shared code synced from the Parent, while store-specific scripts are isolated in protected hook snippets.
+
+**Strategy**: Use empty "dummy" hook snippets in the Parent that Child stores fill with their scripts and protect via `.gitattributes`. This creates a "Safe Room" pattern where store-specific code is protected from Parent updates while still allowing the Parent to control the layout structure.
+
+### Problem Statement
+
+Previously, `layout/theme.liquid` was owned by Child stores, which meant:
+- Parent couldn't update the layout without breaking store-specific scripts
+- Each store had to manually merge layout changes
+- Store scripts were scattered throughout the layout file
+- No clear separation between shared code and store-specific code
+
+With the new architecture, `layout/theme.liquid` is synced from the Parent, but stores still need to add:
+- Google Analytics (GA4)
+- Meta Pixel
+- Gorgias Chat
+- Other third-party tracking/analytics scripts
+
+### Implementation Approach
+
+1. **Modified Layout File**: `layout/theme.liquid` now includes hook snippet calls
+2. **Empty Hook Snippets**: Parent provides empty hook snippets with documentation
+3. **Protected Hooks**: Child stores fill hooks and protect them via `.gitattributes`
+4. **Automatic Syncing**: Parent updates to `layout/theme.liquid` automatically flow to Child stores
+5. **Protected Scripts**: Store scripts in hook snippets are never overwritten
+
+### Files Modified
+
+- **`layout/theme.liquid`**: Added hook snippet calls
+  - `{% render 'store-custom-head' %}` - Renders inside `<head>` tag, after `{{ content_for_header }}`
+  - `{% render 'store-custom-body' %}` - Renders before closing `</body>` tag
+
+### Files Created
+
+- **`snippets/store-custom-head.liquid`**: Empty hook snippet for head scripts
+  - Contains documentation comments explaining usage
+  - Placeholder for store-specific head scripts (GA4, Meta Pixel, etc.)
+  - Must be protected in Child store `.gitattributes` with `merge=ours`
+
+- **`snippets/store-custom-body.liquid`**: Empty hook snippet for body scripts
+  - Contains documentation comments explaining usage
+  - Placeholder for store-specific body scripts (chat widgets, post-load analytics, etc.)
+  - Must be protected in Child store `.gitattributes` with `merge=ours`
+
+### Implementation Details
+
+**Parent's `layout/theme.liquid` Structure:**
+
+```liquid
+<head>
+  <!-- ... standard head content ... -->
+  {{ content_for_header }}
+  {%- render 'store-custom-head' -%}
+</head>
+<body>
+  <!-- ... body content ... -->
+  {%- render 'store-custom-body' -%}
+</body>
+```
+
+**Parent's Hook Snippets (Empty):**
+
+```liquid
+{% comment %}
+  Store-specific head scripts hook.
+  
+  This snippet is rendered inside the <head> tag of layout/theme.liquid.
+  Child stores should populate this file with store-specific scripts such as:
+  - Google Analytics (GA4)
+  - Meta Pixel
+  - Gorgias Chat
+  - Other third-party tracking/analytics scripts
+  
+  IMPORTANT: This file must be protected in Child store .gitattributes with:
+  snippets/store-custom-head.liquid   merge=ours
+  
+  See README.md for deployment configuration details.
+{% endcomment %}
+```
+
+**Child Store Usage Example:**
+
+```liquid
+<!-- snippets/store-custom-head.liquid -->
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+</script>
+
+<!-- Meta Pixel -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', 'YOUR_PIXEL_ID');
+  fbq('track', 'PageView');
+</script>
+```
+
+```liquid
+<!-- snippets/store-custom-body.liquid -->
+<!-- Gorgias Chat Widget -->
+<script>
+  (function(w,d,s,o,f,js,fjs){
+    w['Gorgias']=o;w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments)};
+    js=d.createElement(s),fjs=d.getElementsByTagName(s)[0];
+    js.id=o;js.src=f;js.async=1;fjs.parentNode.insertBefore(js,fjs);
+  }(window,document,'script','gorgias','https://config.gorgias.chat/gorgias-chat-bundle-loader.js'));
+  Gorgias('set', 'appId', 'YOUR_GORGIAS_APP_ID');
+</script>
+```
+
+### Developer Usage Rules
+
+**Rule 1: Never hardcode store-specific scripts directly into `layout/theme.liquid`.**
+
+- `layout/theme.liquid` is synced from the Parent and will be overwritten on the next update
+- All store-specific scripts must go in the protected hook snippets
+
+**Rule 2: Always place store-specific third-party scripts into the appropriate hook snippet.**
+
+- Head scripts (GA4, Meta Pixel, etc.) → `snippets/store-custom-head.liquid`
+- Body scripts (chat widgets, post-load analytics, etc.) → `snippets/store-custom-body.liquid`
+
+**Rule 3: Ensure hook snippet files are listed in Child store's `.gitattributes` as `merge=ours`.**
+
+- See README.md for deployment configuration details
+- Without `.gitattributes` protection, hook snippets will be overwritten by Parent updates
+
+**Rule 4: If you need a new hook location, coordinate with Core maintainers.**
+
+- New hooks must be added to Parent's `layout/theme.liquid` first
+- Then empty hook snippets must be created in Parent
+- Child stores can then populate and protect the new hooks
+
+### Deployment Configuration
+
+**Child Store `.gitattributes` (Required):**
+
+```gitattributes
+# === CHILD STORE PROTECTION ===
+
+# 1. Protect Store Data
+config/settings_data.json       merge=ours
+templates/*.json                 merge=ours
+sections/*.json                  merge=ours
+
+# 2. Protect Custom Script Hooks
+snippets/store-custom-head.liquid   merge=ours
+snippets/store-custom-body.liquid   merge=ours
+
+# Note: layout/theme.liquid is SYNCED. Do not add it here.
+```
+
+**Global Git Configuration (One-time per machine):**
+
+```bash
+git config --global merge.ours.driver true
+```
+
+### Benefits
+
+- ✅ **Parent can update layout**: `layout/theme.liquid` updates flow automatically to Child stores
+- ✅ **Store scripts protected**: Hook snippets are never overwritten by Parent updates
+- ✅ **Clear separation**: Shared code vs. store-specific code is clearly defined
+- ✅ **Easy identification**: Developers know exactly where to place store scripts
+- ✅ **No merge conflicts**: Store-specific scripts don't conflict with Parent updates
+- ✅ **Maintainable**: Changes to layout structure are centralized in Parent
+
+### Technical Notes
+
+- Hook snippets are rendered using Liquid's `{% render %}` tag
+- Empty hooks in Parent have no performance impact (empty snippets render nothing)
+- Child stores can add any valid HTML/JavaScript to hook snippets
+- Hook snippets are protected at the file level via `.gitattributes`
+- Parent updates to `layout/theme.liquid` automatically include hook calls
+- If a hook snippet doesn't exist in Child, Liquid gracefully handles the missing snippet
+
+### Related Documentation
+
+- See README.md "Architecture & Deployment Workflows" section for complete setup instructions
+- See README.md "The Protected Hook Pattern" section for detailed usage examples
+- See README.md troubleshooting section for common issues with hook snippets
 
 ---
 

@@ -5,7 +5,7 @@
 >
   {%- if block_settings.page != blank -%}
     {%- if block_settings.page.title != blank -%}
-      <h2 class="page-title">{{ block_settings.page.title }}</h2>
+      <h1 class="page-title">{{ block_settings.page.title }}</h1>
     {%- endif -%}
     {%- if block_settings.page.content != blank -%}
       <div class="rte">
@@ -13,7 +13,7 @@
       </div>
     {%- endif -%}
   {%- else -%}
-    <h2 class="page-title">{{ 'content.page_placeholder_title' | t }}</h2>
+    <h1 class="page-title">{{ 'content.page_placeholder_title' | t }}</h1>
     <div class="rte">
       {{ 'content.page_placeholder_content' | t }}
     </div>

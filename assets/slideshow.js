@@ -344,7 +344,13 @@ export class Slideshow extends Component {
     if (current) current.textContent = `${value + 1}`;
 
     for (const controls of [thumbnails, dots]) {
-      controls?.forEach((el, i) => el.setAttribute('aria-selected', `${i === value}`));
+      controls?.forEach((el, i) => {
+        if (i === value) {
+          el.setAttribute('aria-current', 'true');
+        } else {
+          el.removeAttribute('aria-current');
+        }
+      });
     }
 
     if (previous) previous.disabled = Boolean(!this.infinite && value === 0);

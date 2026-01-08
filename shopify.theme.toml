@@ -1,0 +1,7 @@
+[environments.main]
+store = "otis-eyewear-usa.myshopify.com"
+ignore = ""
+
+[environments.dev]
+store = "leisure-collective-dev-store"
+ignore = ""

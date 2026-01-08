@@ -50,7 +50,8 @@
     "slideshow_play": "Play slideshow",
     "slideshow_previous": "Previous slide",
     "unit_price": "Unit price",
-    "find_country": "Find country"
+    "find_country": "Find country",
+    "footer_navigation": "Footer navigation"
   },
   "actions": {
     // Quick add button on product cards, shortened version of add to cart
