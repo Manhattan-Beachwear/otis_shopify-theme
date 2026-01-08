@@ -1,12 +1,15 @@
 # === CHILD STORE PROTECTION ===
 
-# 1. Protect Store Data
+# Protect Store Data
 config/settings_data.json       merge=ours
 templates/*.json                merge=ours
 sections/*.json                 merge=ours
 
-# 2. Protect Custom Script Hooks
+# Protect Custom Script Hooks
 snippets/store-custom-head.liquid   merge=ours
 snippets/store-custom-body.liquid   merge=ours
+
+# Protect Shopify Theme Config
+shopify.theme.toml              merge=ours
 
 # Note: layout/theme.liquid is SYNCED. Do not add it here.
