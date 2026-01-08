@@ -38,10 +38,22 @@
     --hero-border-opacity: {{ section.settings.border_opacity }}%;
     {% if section.settings.section_height == 'custom' %}
       --hero-min-height: {{ section.settings.section_height_custom }}svh;
+      --hero-min-height-mobile: {{ section.settings.section_height_custom }}svh;
     {% elsif section.settings.section_height == "full-screen" %}
        --hero-min-height: 100svh;
+       --hero-min-height-mobile: 100svh;
+    {% elsif section.settings.section_height == "small" %}
+      --hero-min-height: var(--section-height-small);
+      --hero-min-height-mobile: 30svh;
+    {% elsif section.settings.section_height == "medium" %}
+      --hero-min-height: var(--section-height-medium);
+      --hero-min-height-mobile: 45svh;
+    {% elsif section.settings.section_height == "large" %}
+      --hero-min-height: var(--section-height-large);
+      --hero-min-height-mobile: 60svh;
     {% else %}
       --hero-min-height: var(--section-height-{{ section.settings.section_height }});
+      --hero-min-height-mobile: var(--section-height-{{ section.settings.section_height }});
     {% endif %}
   "
   {% if request.visual_preview_mode %}
@@ -98,6 +110,12 @@
   .hero-slideshow {
     position: relative;
     min-height: calc(var(--hero-min-height) - var(--hero-height-offset));
+  }
+
+  @media screen and (max-width: 749px) {
+    .hero-slideshow {
+      min-height: calc(var(--hero-min-height-mobile, var(--hero-min-height)) - var(--hero-height-offset));
+    }
   }
 
   .hero-slideshow[data-shopify-visual-preview] {
@@ -209,6 +227,22 @@
     .hero-slideshow .hero__video--mobile,
     .hero-slideshow .hero__video-poster--mobile {
       display: block;
+    }
+
+    /* Mobile-specific height adjustments - scale proportionally with section_height */
+    .hero-slideshow .hero__container {
+      min-height: var(--hero-min-height-mobile, var(--hero-min-height));
+    }
+
+    /* Ensure content is accessible on mobile */
+    .hero-slideshow slideshow-slide .hero__slide-content {
+      padding-inline: var(--padding-md);
+      padding-block-end: var(--padding-xl);
+    }
+
+    /* Better spacing for mobile content */
+    .hero-slideshow .hero__slide-content .group-block-content {
+      gap: var(--gap-md);
     }
   }
 {% endstylesheet %}
