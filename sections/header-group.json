@@ -18,7 +18,7 @@
           "type": "_announcement",
           "name": "t:names.announcement",
           "settings": {
-            "text": "SCRATCH RESISTANT LENSES + LIFETIME WARRANTY",
+            "text": "<strong>SCRATCH RESISTANT LENSES + LIFETIME WARRANTY</strong>",
             "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
@@ -31,7 +31,7 @@
         "announcement_BxgCk9": {
           "type": "_announcement",
           "settings": {
-            "text": "FREE SHIPPING  On all orders over $100",
+            "text": "<strong>FREE SHIPPING  On all orders over $100</strong>",
             "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
