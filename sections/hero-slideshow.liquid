@@ -143,7 +143,16 @@
   }
 
   .hero-slideshow slideshow-slides {
-    height: 100%;
+    /* When slide_height is set (not auto), use the size attribute's min-height as the actual height */
+    &[size='small'],
+    &[size='medium'],
+    &[size='large'] {
+      height: auto;
+    }
+    /* When slide_height is auto, fill the container */
+    &:not([size]) {
+      height: 100%;
+    }
   }
 
   .hero-slideshow slideshow-slide {

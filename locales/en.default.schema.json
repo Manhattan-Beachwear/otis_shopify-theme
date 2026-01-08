@@ -127,6 +127,7 @@
     "section_size": "Section size",
     // Section header for width and height controls
     "size": "Size",
+    "slideshow": "Slideshow",
     "slideshow_width": "Slide width",
     "social_media": "Social media",
     "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)",
@@ -1061,6 +1062,7 @@
     // Font size or element dimensions setting
     "size": "Size",
     "size_mobile": "Mobile size",
+    "slide_height": "Slide height",
     "slide_spacing": "Slide gap",
     "slide_width": "Slide width",
     "slideshow_fullwidth": "Full width slides",
