@@ -32,6 +32,8 @@
     {% endif %}
 
     {{ content_for_header }}
+
+    {%- render 'store-custom-head' -%}
   </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
@@ -65,5 +67,7 @@
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
+
+    {%- render 'store-custom-body' -%}
   </body>
 </html>

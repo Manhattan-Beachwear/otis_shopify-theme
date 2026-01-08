@@ -4,7 +4,7 @@
 
 # Shopify theme files that should not be version-controlled
 # (The theme.toml file stores store-specific configuration)
-shopify.theme.toml
+# shopify.theme.toml
 
 # Cache and temporary files
 .theme-check-cache

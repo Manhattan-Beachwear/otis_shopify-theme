@@ -3,13 +3,14 @@
   class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
   {{ section.shopify_attributes }}
 >
-  <div
+  <nav
     class="utilities spacing-style"
     style="{% render 'spacing-style', settings: section.settings %} --border-width: {{ section.settings.divider_thickness }}px; --gap: {{ section.settings.gap }}px;"
     data-testid="footer-utilities"
+    aria-label="{{ 'accessibility.footer_navigation' | t }}"
   >
     {% content_for 'blocks' %}
-  </div>
+  </nav>
 </div>
 
 {% stylesheet %}

@@ -1,0 +1,16 @@
+{% comment %}
+  Store-specific body scripts hook.
+  
+  This snippet is rendered before the closing </body> tag of layout/theme.liquid.
+  Child stores should populate this file with store-specific scripts such as:
+  - Chat widgets
+  - Post-load analytics
+  - Custom JavaScript initialization
+  - Other third-party scripts that need to load in the body
+  
+  IMPORTANT: This file must be protected in Child store .gitattributes with:
+  snippets/store-custom-body.liquid   merge=ours
+  
+  See README.md for deployment configuration details.
+{% endcomment %}
+
