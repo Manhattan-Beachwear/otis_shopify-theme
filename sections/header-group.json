@@ -76,7 +76,7 @@
           "type": "_header-split-menu",
           "static": true,
           "settings": {
-            "menu": "main-menu-aus-update",
+            "menu": "main-menu",
             "split_after_item": 2,
             "color_scheme": "scheme-1",
             "type_font_primary_size": "1rem",
