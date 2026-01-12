@@ -61,6 +61,7 @@
       "blocks": {
         "header-logo": {
           "type": "_header-logo",
+          "disabled": true,
           "static": true,
           "settings": {
             "hide_logo_on_home_page": false,
@@ -77,7 +78,7 @@
           "settings": {
             "menu": "main-menu-aus-update",
             "split_after_item": 2,
-            "color_scheme": "",
+            "color_scheme": "scheme-1",
             "type_font_primary_size": "1rem",
             "menu_font_style": "inverse",
             "type_font_primary_link": "heading",
@@ -110,6 +111,7 @@
         },
         "header-menu": {
           "type": "_header-menu",
+          "disabled": true,
           "static": true,
           "settings": {
             "menu": "main-menu",
