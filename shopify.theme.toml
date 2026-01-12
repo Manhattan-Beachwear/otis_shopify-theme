@@ -1,7 +1,0 @@
-[environments.main]
-store = "creaturesusa"
-ignore = ""
-
-[environments.dev]
-store = "leisure-collective-dev-store"
-ignore = ""
