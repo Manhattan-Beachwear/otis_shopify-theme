@@ -9,8 +9,8 @@
  */
  {
   "current": {
-    "logo": "shopify://shop_images/CREATURES_WEBSITE_HEADER_2.png",
-    "logo_inverse": "shopify://shop_images/CREATURES_WEBSITE_HEADER.png",
+    "logo": "shopify://shop_images/creatures_logo-black.png",
+    "logo_inverse": "shopify://shop_images/creatures_logo-white.png",
     "logo_height": 100,
     "logo_height_mobile": 50,
     "favicon": "shopify://shop_images/CREATURES_LOGO_CSTAR_cf05f522-54ec-48e2-bcdb-0d1ca0c9aafe.jpg",
@@ -102,18 +102,6 @@
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
     "content_for_index": [],
-    "blocks": {
-      "11349500561483629931": {
-        "type": "shopify://apps/notify-me/blocks/app-embed/b399b727-6c85-44fc-9e21-63114bd72054",
-        "disabled": true,
-        "settings": {}
-      },
-      "855628211100114053": {
-        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
-        "disabled": false,
-        "settings": {}
-      }
-    },
     "color_schemes": {
       "scheme-1": {
         "settings": {

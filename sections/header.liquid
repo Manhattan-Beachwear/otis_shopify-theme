@@ -1,8 +1,16 @@
 {% liquid
-  assign order = 'logo,menu,localization,search,mobile_search,actions'
+  assign menu_layout = section.settings.menu_layout | default: 'standard'
 
+  if menu_layout == 'split'
+    assign order = 'menu,localization,search,mobile_search,actions'
+    if shop.customer_accounts_enabled
+      assign order = 'mobile_search,menu,localization,search,actions'
+    endif
+  else
+  assign order = 'logo,menu,localization,search,mobile_search,actions'
   if shop.customer_accounts_enabled
     assign order = 'mobile_search,logo,menu,localization,search,actions'
+    endif
   endif
 
   assign rows = 'top,bottom' | split: ','
@@ -49,17 +57,34 @@
     content_for 'block', type: '_header-logo', id: 'header-logo'
   endcapture
 
-  capture menu
-    content_for 'block', type: '_header-menu', id: 'header-menu'
-  endcapture
+  # Determine which menu block to use based on menu_layout setting
+  assign menu_layout = section.settings.menu_layout | default: 'standard'
 
-  capture mobile_menu
-    content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'mobile'
-  endcapture
+  if menu_layout == 'split'
+    capture menu
+      content_for 'block', type: '_header-split-menu', id: 'header-split-menu'
+    endcapture
 
-  capture navigation_bar
-    content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'navigation_bar', transparent: transparent
-  endcapture
+    capture mobile_menu
+      content_for 'block', type: '_header-split-menu', id: 'header-split-menu', variant: 'mobile'
+    endcapture
+
+    capture navigation_bar
+      content_for 'block', type: '_header-split-menu', id: 'header-split-menu', variant: 'navigation_bar', transparent: transparent
+    endcapture
+  else
+    capture menu
+      content_for 'block', type: '_header-menu', id: 'header-menu'
+    endcapture
+
+    capture mobile_menu
+      content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'mobile'
+    endcapture
+
+    capture navigation_bar
+      content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'navigation_bar', transparent: transparent
+    endcapture
+  endif
 
   capture actions
     render 'header-actions'
@@ -233,6 +258,11 @@
       if row == 'top'
         assign style = style | append: '--border-bottom-width-mobile: [width]px; ' | replace: '[width]', section.settings.border_width
       endif
+
+      assign menu_row_setting = section.settings.menu_row | default: 'top'
+      if section.settings.menu_row_center and section.settings.menu_layout == 'split' and row == menu_row_setting
+        assign class = class | append: ' header__row--center-menu'
+      endif
     %}
 
     {% capture content %}
@@ -246,7 +276,8 @@
         actions: actions,
         localization: localization_markup,
         search: search,
-        mobile_search: mobile_search
+        mobile_search: mobile_search,
+        menu_layout: menu_layout
       %}
     {% endcapture %}
 
@@ -558,6 +589,29 @@
     grid-template-columns: 1fr;
   }
 
+  /* Center the entire header row when menu row centering is enabled */
+  @media screen and (min-width: 750px) {
+    .header__row--center-menu .header__columns {
+      --header-left: 1fr;
+      --header-center: auto;
+      --header-right: 1fr;
+      max-width: 100%;
+    }
+
+    .header__row--center-menu .header__column--left {
+      justify-content: flex-start;
+    }
+
+    .header__row--center-menu .header__column--center {
+      justify-content: center;
+      width: 100%;
+    }
+
+    .header__row--center-menu .header__column--right {
+      justify-content: flex-end;
+    }
+  }
+
   /* Check for hover support to avoid unnecessary expensive recalculations when tapping on mobile */
   @media (hover: hover) {
     /* Column-specific dimming effect when any interactive element is hovered
@@ -695,6 +749,23 @@
     },
     {
       "type": "select",
+      "id": "menu_layout",
+      "label": "Menu layout",
+      "info": "Choose how menu items are displayed around the logo",
+      "options": [
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "split",
+          "label": "Split around logo"
+        }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "select",
       "id": "menu_position",
       "label": "t:settings.position",
       "options": [
@@ -711,7 +782,8 @@
           "label": "t:options.right"
         }
       ],
-      "default": "left"
+      "default": "left",
+      "visible_if": "{{ section.settings.menu_layout == 'standard' }}"
     },
     {
       "type": "select",
@@ -728,6 +800,14 @@
         }
       ],
       "default": "top"
+    },
+    {
+      "type": "checkbox",
+      "id": "menu_row_center",
+      "label": "Center menu row",
+      "info": "Center the entire menu row in the header (recommended for split menu layout)",
+      "default": false,
+      "visible_if": "{{ section.settings.menu_layout == 'split' }}"
     },
     {
       "type": "header",

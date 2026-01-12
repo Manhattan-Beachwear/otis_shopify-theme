@@ -81,6 +81,10 @@
   # Use product's own selected variant image
   assign selected_variant_image = product.selected_or_first_available_variant.image.src
 
+  # Set media_fit from block settings (defaults to 'cover' if not set)
+  assign media_fit = block_settings.media_fit | default: 'cover'
+  
+  # Legacy support: if constrain_to_viewport is set and image_ratio is 'adapt', use that value
   if block_settings.image_ratio == 'adapt' and block_settings.constrain_to_viewport
     if block_settings.constrain_to_viewport != ''
       assign constrain_to_viewport = true
