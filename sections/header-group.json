@@ -75,7 +75,7 @@
           "type": "_header-split-menu",
           "static": true,
           "settings": {
-            "menu": "main-menu",
+            "menu": "main-menu-aus-update",
             "split_after_item": 2,
             "color_scheme": "",
             "type_font_primary_size": "1rem",
@@ -133,10 +133,10 @@
       },
       "settings": {
         "logo_position": "left",
-        "menu_layout": "split",
+        "menu_layout": "standard",
         "menu_position": "left",
         "menu_row": "top",
-        "menu_row_center": true,
+        "menu_row_center": false,
         "show_search": true,
         "search_position": "right",
         "search_row": "top",
