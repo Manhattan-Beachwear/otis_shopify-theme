@@ -7,7 +7,7 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-{
+ {
   "sections": {
     "collection_list_Wfgh3m": {
       "type": "main-collection-list",
@@ -16,6 +16,8 @@
           "type": "group",
           "name": "t:names.header",
           "settings": {
+            "link": "",
+            "open_in_new_tab": false,
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -24,11 +26,11 @@
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 12,
-            "width": "fill",
+            "width": "fit-content",
             "custom_width": 100,
-            "width_mobile": "fill",
+            "width_mobile": "fit-content",
             "custom_width_mobile": 100,
-            "height": "fill",
+            "height": "fit",
             "custom_height": 100,
             "inherit_color_scheme": true,
             "color_scheme": "",
@@ -43,9 +45,6 @@
             "overlay_color": "#00000026",
             "overlay_style": "solid",
             "gradient_direction": "to top",
-            "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
             "padding-block-start": 0,
             "padding-block-end": 48,
             "padding-inline-start": 0,
@@ -56,10 +55,10 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<h1>Catalog</h1>",
+                "text": "<h1>Shop by collection</h1>",
                 "width": "100%",
                 "max_width": "normal",
-                "alignment": "center",
+                "alignment": "left",
                 "type_preset": "h2",
                 "font": "var(--font-primary--family)",
                 "font_size": "",
@@ -88,9 +87,9 @@
           "name": "t:names.collection_card",
           "static": true,
           "settings": {
-            "placement": "on_image",
-            "horizontal_alignment": "center",
-            "vertical_alignment": "center",
+            "placement": "below_image",
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
             "collection_card_gap": 8,
             "inherit_color_scheme": true,
             "color_scheme": "",
@@ -115,8 +114,8 @@
                 "case": "none",
                 "wrap": "pretty",
                 "color": "var(--color-foreground)",
-                "background": true,
-                "background_color": "#ffffff",
+                "background": false,
+                "background_color": "#00000026",
                 "corner_radius": 0,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -130,10 +129,9 @@
               "name": "t:names.collection_card_image",
               "static": true,
               "settings": {
-                "image_ratio": "square",
-                "hover_scale": true,
+                "image_ratio": "adapt",
                 "toggle_overlay": false,
-                "overlay_color": "#00000039",
+                "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
                 "border": "none",
@@ -156,7 +154,7 @@
       "settings": {
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "columns": 4,
+        "columns": 3,
         "mobile_columns": "2",
         "columns_gap": 12,
         "bento_gap": 8,
@@ -166,7 +164,7 @@
         "icons_shape": "none",
         "section_width": "page-width",
         "gap": 12,
-        "color_scheme": "scheme-1",
+        "color_scheme": "",
         "padding-block-start": 48,
         "padding-block-end": 48
       }

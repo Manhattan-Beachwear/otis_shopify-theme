@@ -16,11 +16,11 @@
           "type": "text",
           "name": "Title",
           "settings": {
-            "text": "<h2>{{ closest.page.title }}</h2>",
+            "text": "<h1>{{ closest.page.title }}</h1>",
             "width": "100%",
-            "max_width": "none",
-            "alignment": "center",
-            "type_preset": "rte",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
             "line_height": "normal",
@@ -44,20 +44,15 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "heading",
-        "page-content"
-      ],
+      "block_order": ["heading", "page-content"],
       "settings": {
         "content_direction": "column",
-        "gap": 48,
+        "gap": 32,
         "color_scheme": "",
         "padding-block-start": 40,
         "padding-block-end": 80
       }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }
