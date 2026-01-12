@@ -17,6 +17,10 @@
     case item
       when 'actions'
         assign item_column = 'right'
+      when 'menu'
+        if menu_layout == 'split'
+          assign item_column = 'center'
+        endif
     endcase
 
     if item_row == row
@@ -48,7 +52,17 @@
 
   {%- assign items_array = items_for_column | strip | split: ' ' | compact -%}
 
-  {%- if items_array.size > 0 -%}
+  {%- liquid
+    assign should_create_left_column = false
+    if menu_layout == 'split' and column == 'left'
+      assign center_items = center | strip | split: ' ' | compact
+      if center_items contains 'menu'
+        assign should_create_left_column = true
+      endif
+    endif
+  -%}
+
+  {%- if items_array.size > 0 or should_create_left_column -%}
     <div
       class="header__column header__column--{{ column }}"
       data-testid="header-{{ row }}-{{ column }}"
