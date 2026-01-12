@@ -94,6 +94,6 @@
     style="{% render 'menu-font-styles', settings: block_settings %}"
   >
     {% assign class = 'overflow-menu' | append: color_scheme_classes %}
-    {% render 'overflow-list', role='menu' class: class, ref: 'overflowMenu', children: children, minimum-items: 2, defer: true %}
+    {% render 'overflow-list', role: 'menu', class: class, ref: 'overflowMenu', children: children, minimum-items: 2, defer: true %}
   </div>
 </nav>

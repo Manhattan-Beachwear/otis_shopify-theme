@@ -7,7 +7,7 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "main": {
       "type": "main-blog",
@@ -50,14 +50,14 @@
               "name": "t:names.title",
               "static": true,
               "settings": {
-                "type_preset": "h4",
+                "type_preset": "paragraph",
                 "font": "var(--font-primary--family)",
                 "font_size": "",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "color": "",
+                "color": "var(--color-foreground)",
                 "text": "",
                 "read_only": true,
                 "alignment": "left",
@@ -84,10 +84,29 @@
               },
               "blocks": {}
             },
+            "content": {
+              "type": "_blog-post-description",
+              "disabled": true,
+              "static": true,
+              "settings": {
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 16,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
             "image": {
               "type": "_blog-post-image",
               "static": true,
               "settings": {
+                "hover_scale": true,
                 "height": "large",
                 "border": "none",
                 "border_width": 1,
