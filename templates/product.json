@@ -173,14 +173,15 @@
               },
               "blocks": {}
             },
-            "variant_picker_R3rGDr": {
-              "type": "variant-picker",
+            "variant_picker_cl_jye8jk": {
+              "type": "variant-picker-cl",
+              "name": "Combined Listing Picker",
               "settings": {
                 "variant_style": "buttons",
                 "show_swatches": true,
                 "alignment": "left",
                 "padding-block-start": 0,
-                "padding-block-end": 0,
+                "padding-block-end": 8,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -251,7 +252,7 @@
           "block_order": [
             "group_icgrde",
             "divider_VJhene",
-            "variant_picker_R3rGDr",
+            "variant_picker_cl_jye8jk",
             "buy_buttons_eYQEYi",
             "text_aEtTtq"
           ]
@@ -320,6 +321,7 @@
               "name": "t:names.product_card_media",
               "settings": {
                 "image_ratio": "adapt",
+                "media_fit": "cover",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
