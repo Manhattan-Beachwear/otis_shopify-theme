@@ -330,6 +330,7 @@
     "media": "Media",
     "media_with_text": "Media with text",
     "menu": "Menu",
+    "split_menu": "Split menu",
     "mobile_layout": "Mobile layout",
     "multicolumn": "Multicolumn",
     "rich_text_section": "Rich text",
@@ -1061,8 +1062,8 @@
     "show_tax_info": "Tax information",
     // Font size or element dimensions setting
     "size": "Size",
-    "size_mobile": "Mobile size",
     "slide_height": "Slide height",
+    "size_mobile": "Mobile size",
     "slide_spacing": "Slide gap",
     "slide_width": "Slide width",
     "slideshow_fullwidth": "Full width slides",
