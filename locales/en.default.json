@@ -51,7 +51,9 @@
     "slideshow_previous": "Previous slide",
     "unit_price": "Unit price",
     "find_country": "Find country",
-    "footer_navigation": "Footer navigation"
+    "footer_navigation": "Footer navigation",
+    "primary_navigation": "Primary navigation",
+    "secondary_navigation": "Secondary navigation"
   },
   "actions": {
     // Quick add button on product cards, shortened version of add to cart
