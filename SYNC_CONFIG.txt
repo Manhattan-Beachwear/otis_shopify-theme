@@ -1,0 +1,6 @@
+sections/hero-slideshow.liquid
+sections/header.liquid
+snippets/header-row.liquid
+blocks/_hero-slide.liquid
+assets/slideshow.js
+locales/en.default.schema.json
