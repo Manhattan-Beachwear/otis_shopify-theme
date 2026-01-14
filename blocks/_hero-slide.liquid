@@ -146,49 +146,14 @@
     height: 100%;
     position: relative;
     z-index: var(--layer-flat);
-    display: flex;
-    align-items: flex-end;
-    padding: var(--padding-lg);
   }
 
   .hero__slide-content > * {
     margin: auto;
-    width: 100%;
   }
 
   .hero__slide-content.background-transparent {
     background-color: transparent;
-  }
-
-  /* Mobile optimizations */
-  @media screen and (max-width: 749px) {
-    .hero__slide-content {
-      padding: var(--padding-md);
-      padding-bottom: var(--padding-2xl);
-      align-items: flex-end;
-    }
-
-    /* Ensure content doesn't overflow on mobile */
-    .hero__slide-content .group-block-content {
-      width: 100%;
-      max-width: 100%;
-    }
-
-    /* Better text sizing and spacing on mobile */
-    .hero__slide-content .text-block {
-      max-width: 100%;
-    }
-
-    /* Ensure buttons are touch-friendly */
-    .hero__slide-content .button {
-      width: auto;
-      min-width: fit-content;
-    }
-
-    /* Add bottom spacing to account for slideshow controls */
-    .hero__slide-content {
-      padding-bottom: calc(var(--padding-2xl) + 3rem);
-    }
   }
 
   slideshow-slide > .hero__image-container {
