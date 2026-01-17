@@ -80,15 +80,18 @@ export default class VariantPickerCL extends Component {
    * @param {string} variantId - The variant ID for the event.
    */
   #fetchAndMorphProduct(productUrl, isDifferentProduct, variantId) {
+
     // Abort any pending requests
     this.#abortController?.abort();
     this.#abortController = new AbortController();
+
 
     fetch(productUrl, { signal: this.#abortController.signal })
       .then((response) => {
         return response.text();
       })
       .then((responseText) => {
+
         const html = new DOMParser().parseFromString(responseText, 'text/html');
         const main = document.querySelector('main');
         const newMain = html.querySelector('main');
@@ -452,16 +455,69 @@ export class VariantPickerCLDual extends Component {
    * @param {Event} event - The change event.
    */
   #handleSelectionChange(event) {
-    if (!(event.target instanceof HTMLInputElement)) return;
-    if (event.target.type !== 'radio') return;
+    if (!(event.target instanceof HTMLInputElement)) {
+      return;
+    }
+    if (event.target.type !== 'radio') {
+      return;
+    }
 
     const optionType = event.target.dataset.optionType;
     const value = event.target.value;
+    const connectedProductUrl = event.target.dataset.connectedProductUrl;
+    const variantId = event.target.dataset.variantId;
 
     if (optionType === 'color') {
       this.#selectedColor = value;
     } else if (optionType === 'size') {
       this.#selectedSize = value;
+    }
+
+    // Check if input has data-connected-product-url - if so, navigate directly (similar to base VariantPicker)
+    // This handles cases where a swatch has a direct product URL even if no matching combination exists
+    if (connectedProductUrl && variantId) {
+
+      // Check if we're on a product page
+      const isOnProductPage =
+        this.dataset.templateProductMatch === 'true' &&
+        !event.target.closest('product-card') &&
+        !event.target.closest('quick-add-dialog');
+
+      if (isOnProductPage) {
+        // Build the product URL with variant
+        const productUrl = connectedProductUrl.includes('?variant=') 
+          ? connectedProductUrl 
+          : `${connectedProductUrl}?variant=${variantId}`;
+        const productUrlBase = connectedProductUrl.split('?')[0];
+        const currentUrlBase = this.#currentProductUrl || window.location.pathname;
+        const isDifferentProduct = productUrlBase !== currentUrlBase;
+
+        // Dispatch VariantSelectedEvent to disable buttons
+        this.dispatchEvent(
+          new VariantSelectedEvent({
+            id: variantId,
+          })
+        );
+
+        // Update UI
+        requestAnimationFrame(() => {
+          if (!(event.target instanceof HTMLInputElement)) return;
+          this.#updateSelectedOption(event.target);
+          this.#updateFiltering();
+
+          // Navigate using morphing
+          this.#fetchAndMorphProduct(productUrl, isDifferentProduct, variantId);
+
+          // Update browser history
+          const url = new URL(productUrl, window.location.origin);
+          if (url.href !== window.location.href) {
+            requestYieldCallback(() => {
+              history.replaceState({}, '', url.toString());
+            });
+          }
+        });
+        return; // Exit early to prevent duplicate execution
+      }
     }
 
     // If both are selected, dispatch VariantSelectedEvent FIRST to disable buttons
@@ -470,6 +526,7 @@ export class VariantPickerCLDual extends Component {
       // Find matching combination to get variantId
       const selectedColorTrimmed = this.#selectedColor?.trim().toLowerCase() || '';
       const selectedSizeTrimmed = this.#selectedSize?.trim().toLowerCase() || '';
+
       const matchingCombination = this.#combinations.find(
         (combo) =>
           combo.color?.trim().toLowerCase() === selectedColorTrimmed &&
@@ -738,11 +795,14 @@ export class VariantPickerCLDual extends Component {
    * Finds and navigates to the product matching both color and size selections.
    */
   #navigateToMatchingProduct() {
-    if (!this.#selectedColor || !this.#selectedSize) return;
+    if (!this.#selectedColor || !this.#selectedSize) {
+      return;
+    }
 
     // Find the matching combination (with trimmed comparison for robustness)
     const selectedColorTrimmed = this.#selectedColor.trim();
     const selectedSizeTrimmed = this.#selectedSize.trim();
+
     const matchingCombination = this.#combinations.find(
       (c) => c.color && c.color.trim() === selectedColorTrimmed && c.size && c.size.trim() === selectedSizeTrimmed
     );
@@ -775,15 +835,18 @@ export class VariantPickerCLDual extends Component {
    * @param {string} variantId - The variant ID for the event.
    */
   #fetchAndMorphProduct(productUrl, isDifferentProduct, variantId) {
+
     // Abort any pending requests
     this.#abortController?.abort();
     this.#abortController = new AbortController();
+
 
     fetch(productUrl, { signal: this.#abortController.signal })
       .then((response) => {
         return response.text();
       })
       .then((responseText) => {
+
         const html = new DOMParser().parseFromString(responseText, 'text/html');
         const main = document.querySelector('main');
         const newMain = html.querySelector('main');

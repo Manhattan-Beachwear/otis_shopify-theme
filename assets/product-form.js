@@ -230,7 +230,7 @@ class ProductFormComponent extends Component {
    * @param {Event} event - The submit event.
    */
   handleSubmit(event) {
-    const { addToCartTextError, addToCartButtonContainer } = this.refs;
+    const { addToCartTextError, addToCartButtonContainer, variantId } = this.refs;
     // Stop default behaviour from the browser
     event.preventDefault();
 
@@ -243,6 +243,64 @@ class ProductFormComponent extends Component {
     const form = this.querySelector('form');
 
     if (!form) throw new Error('Product form element missing');
+
+    // CRITICAL: For quick add modal, ensure variant ID is correct from URL
+    // The variant picker might have set the wrong variant ID via events
+    // Always check for product cards with quick add components that have variant parameters
+    // This works regardless of whether we can detect the modal location
+    if (variantId) {
+      // Get the quick-add-component from the product card that opened the modal
+      // Match by product ID to ensure we get the correct product card
+      let quickAddComponent = null;
+      let productPageUrl = null;
+      
+      // Get the product ID from the form (most reliable way to match)
+      const formProductId = this.dataset.productId;
+      
+      // Find the product card that matches this form's product ID
+      const productCards = document.querySelectorAll('product-card');
+      for (const productCard of productCards) {
+        // Match by product ID to ensure we get the correct product card
+        if (formProductId && productCard.dataset.productId !== formProductId) {
+          continue;
+        }
+        
+        const quickAdd = productCard.refs?.quickAdd;
+        if (quickAdd && quickAdd.productPageUrl) {
+          // Check if this quick add's URL has a variant parameter
+          // Handle both absolute and relative URLs
+          try {
+            const url = new URL(quickAdd.productPageUrl, window.location.origin);
+            if (url.searchParams.has('variant')) {
+              quickAddComponent = quickAdd;
+              productPageUrl = quickAdd.productPageUrl;
+              break;
+            }
+          } catch (e) {
+            // Invalid URL, skip this one
+            continue;
+          }
+        }
+      }
+      
+      if (productPageUrl) {
+        // Handle both absolute and relative URLs
+        const url = new URL(productPageUrl, window.location.origin);
+        const variantIdFromUrl = url.searchParams.get('variant');
+        if (variantIdFromUrl && variantIdFromUrl !== variantId.value) {
+          variantId.value = variantIdFromUrl;
+          const formVariantInput = form.querySelector('input[name="id"]');
+          if (formVariantInput instanceof HTMLInputElement) {
+            formVariantInput.value = variantIdFromUrl;
+          }
+          // Update refs if available
+          if (this.refs?.variantId) {
+            this.refs.variantId.value = variantIdFromUrl;
+          }
+          // Don't return early - continue with form submission
+        }
+      }
+    }
 
     const quantitySelector = /** @type {any} */ (this.querySelector('quantity-selector-component'));
     if (quantitySelector?.canAddToCart) {
@@ -450,7 +508,8 @@ class ProductFormComponent extends Component {
     const newAddToCartButton = event.detail.data.html.querySelector('[ref="addToCartButton"]');
 
     // Update the variant ID
-    variantId.value = event.detail.resource?.id ?? '';
+    const newVariantId = event.detail.resource?.id ?? '';
+    variantId.value = newVariantId;
 
     if (!currentAddToCartButton && !this.refs.acceleratedCheckoutButtonContainer) return;
 

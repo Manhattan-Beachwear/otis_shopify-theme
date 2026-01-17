@@ -9,6 +9,7 @@
   @param {string} [swatch_file_extension] - Swatch file extension (defaults to settings.swatch_file_extension or 'png')
   @param {boolean} [show_variant_image] - Show variant image fallback (defaults to settings.show_variant_image)
   @param {number} [variant_swatch_width] - Variant swatch width (defaults to settings.variant_swatch_width)
+  @param {boolean} [force_image_swatch] - Force using variant_image as swatch, skip all other priorities
 
   @example
   {% render 'swatch', swatch: swatch, variant_image: variant_image, mode: 'unscaled' %}
@@ -45,8 +46,14 @@
     assign variant_swatch_w = settings.variant_swatch_width
   endif
   
+  if force_image_swatch and variant_image
+    assign swatch_image_width = 120
+    assign swatch_image_url = variant_image | image_url: width: swatch_image_width
+    assign swatch_value = 'url(' | append: swatch_image_url | append: ')'
+  endif
+  
   # Priority 1: Look for matching image with the same name (handleized) as the swatch name
-  if option_value_name != blank
+  if swatch_value == null and option_value_name != blank
     if enable_backup
       assign color_file_name = option_value_name | handle | append: '.' | append: swatch_file_ext
       assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
