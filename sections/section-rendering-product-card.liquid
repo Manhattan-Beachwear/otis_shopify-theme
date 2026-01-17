@@ -67,7 +67,7 @@
     -%}
     {% if has_swatches_block %}
       {% if has_combined_listing and enable_combined %}
-        {% render 'variant-combined-listing-swatches', product_resource: product, block: blank %}
+        {% render 'variant-combined-listing-swatches', product_resource: product, block: blank, section: section %}
       {% else %}
         {% render 'variant-swatches', product_resource: product, has_option_selected: true %}
       {% endif %}
@@ -104,6 +104,48 @@
       "label": "Enable Combined Listings",
       "default": false,
       "info": "When enabled, products linked via combined listing metafield will appear as a single product with color variant swatches"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_image_swatches",
+      "label": "Show product images as swatches",
+      "default": false,
+      "info": "Display product featured images instead of color swatches for combined listings"
+    },
+    {
+      "type": "select",
+      "id": "product_image_swatch_style",
+      "label": "Product image swatch style",
+      "options": [
+        {
+          "value": "circle",
+          "label": "Circle"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        }
+      ],
+      "default": "circle",
+      "info": "Choose between circular or square layout for product image swatches"
+    },
+    {
+      "type": "range",
+      "id": "product_image_swatch_size",
+      "label": "Product image swatch size",
+      "min": 40,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60,
+      "info": "Size of product image swatches"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_image_swatch_variant_name",
+      "label": "Show variant name below image swatches",
+      "default": true,
+      "info": "Display combined option values (e.g., \"Black / Purple\") below each product image swatch"
     }
   ]
 }

@@ -50,6 +50,41 @@
   elsif settings.show_swatch_text_labels
     assign show_swatch_text_labels_setting = true
   endif
+  
+  assign show_product_image_swatches = false
+  if block != blank and block_settings != blank and block_settings.show_product_image_swatches
+    assign show_product_image_swatches = true
+  elsif section != blank and section.settings != blank and section.settings.show_product_image_swatches
+    assign show_product_image_swatches = true
+  elsif settings.show_product_image_swatches
+    assign show_product_image_swatches = true
+  endif
+  
+  assign product_image_swatch_style = 'circle'
+  if block != blank and block_settings != blank and block_settings.product_image_swatch_style != blank
+    assign product_image_swatch_style = block_settings.product_image_swatch_style
+  elsif section != blank and section.settings != blank and section.settings.product_image_swatch_style != blank
+    assign product_image_swatch_style = section.settings.product_image_swatch_style
+  elsif settings.product_image_swatch_style != blank
+    assign product_image_swatch_style = settings.product_image_swatch_style
+  endif
+  
+  if block != blank and block_settings != blank and block_settings.product_image_swatch_size != blank
+    assign product_image_swatch_size = block_settings.product_image_swatch_size
+  elsif section != blank and section.settings != blank and section.settings.product_image_swatch_size != blank
+    assign product_image_swatch_size = section.settings.product_image_swatch_size
+  elsif settings.product_image_swatch_size != blank
+    assign product_image_swatch_size = settings.product_image_swatch_size
+  endif
+  
+  assign show_product_image_swatch_variant_name = true
+  if block != blank and block_settings != blank and block_settings.show_product_image_swatch_variant_name != blank
+    assign show_product_image_swatch_variant_name = block_settings.show_product_image_swatch_variant_name
+  elsif section != blank and section.settings != blank and section.settings.show_product_image_swatch_variant_name != blank
+    assign show_product_image_swatch_variant_name = section.settings.show_product_image_swatch_variant_name
+  elsif settings.show_product_image_swatch_variant_name != blank
+    assign show_product_image_swatch_variant_name = settings.show_product_image_swatch_variant_name
+  endif
 
   # Check for combined listings metafield on current product
   assign combined_listings_metafield = product_resource.metafields.custom.combined_listing
@@ -142,6 +177,7 @@
   # Build products array with full data (same logic as variant-combined-listing-picker)
   assign products_array = all_products_data | split: ','
   assign products_with_data = ''
+  assign color_availability_map = ''
   
   for product_data in products_array
     # Skip empty items
@@ -597,14 +633,127 @@
       -%}
       {%- if show_text_labels -%}
         <legend>
-          {{ variant_option_name | escape }}:
-          {%- if selected_color_value != blank and selected_color_value != '' -%}
-            <span class="variant-option__swatch-value">{{ selected_color_value | escape }}</span>
-          {%- endif %}
+            {%- if selected_color_value != blank and selected_color_value != '' -%}
+              <span class="variant-option__swatch-value">{{ selected_color_value | escape }}</span>
+            {%- endif %}
         </legend>
       {%- endif %}
+      {%- comment -%} Display current variant name above swatches {%- endcomment -%}
+      {%- liquid
+        # Build full variant name from selected variant's all option values
+        assign current_variant_name = ''
+        assign current_variant = product_resource.selected_or_first_available_variant
+        if current_variant != blank
+          if current_variant.option1 != blank
+            assign current_variant_name = current_variant.option1
+          endif
+          if current_variant.option2 != blank
+            if current_variant_name == ''
+              assign current_variant_name = current_variant.option2
+            else
+              assign current_variant_name = current_variant_name | append: ' / ' | append: current_variant.option2
+            endif
+          endif
+          if current_variant.option3 != blank
+            if current_variant_name == ''
+              assign current_variant_name = current_variant.option3
+            else
+              assign current_variant_name = current_variant_name | append: ' / ' | append: current_variant.option3
+            endif
+          endif
+        endif
+      -%}
+      <div class="variant-option__current-variant-name" ref="currentVariantName">
+        {%- if current_variant_name != blank and current_variant_name != '' -%}
+          {{ current_variant_name | escape }}
+        {%- endif %}
+      </div>
       {% capture children %}
         {% assign final_products = sorted_products | split: '|||' %}
+        
+        {% assign color_availability_map = '' %}
+        {% for product_item in final_products %}
+          {% if product_item != blank and product_item != '' %}
+            {% assign item_parts = product_item | split: '|' %}
+            {% assign base_idx = 0 %}
+            {% if item_parts.size > 0 %}
+              {% assign first_part_check = item_parts[0] | strip %}
+              {% if first_part_check == blank or first_part_check == '' %}
+                {% assign base_idx = 1 %}
+              {% endif %}
+            {% endif %}
+            
+            {% assign min_size = base_idx | plus: 10 %}
+            {% if item_parts.size >= min_size %}
+              {% assign idx_color = base_idx | plus: 6 %}
+              {% assign idx_variant_id = base_idx | plus: 2 %}
+              {% assign idx_product_url = base_idx | plus: 3 %}
+              {% assign idx_available = base_idx | plus: 9 %}
+              
+              {% assign color_val = item_parts[idx_color] | strip %}
+              {% assign var_id = item_parts[idx_variant_id] | strip %}
+              {% assign prod_url = item_parts[idx_product_url] | strip %}
+              {% assign is_avail = item_parts[idx_available] | strip %}
+              
+              {% if color_val != blank and color_val != '' %}
+                {% comment %} Check if this color is already in the map {% endcomment %}
+                {% assign color_found_in_map = false %}
+                {% assign updated_map = '' %}
+                
+                {% if color_availability_map != '' %}
+                  {% assign map_entries = color_availability_map | split: '|||' %}
+                  {% for entry in map_entries %}
+                    {% if entry != blank %}
+                      {% assign entry_parts = entry | split: '~~~' %}
+                      {% if entry_parts.size >= 4 %}
+                        {% assign map_color = entry_parts[0] | strip %}
+                        {% assign map_any_avail = entry_parts[1] | strip %}
+                        {% assign map_first_var_id = entry_parts[2] | strip %}
+                        {% assign map_first_url = entry_parts[3] | strip %}
+                        
+                        {% if map_color == color_val %}
+                          {% assign color_found_in_map = true %}
+                          {% comment %} Update if this variant is available and we don't have a first available yet {% endcomment %}
+                          {% if is_avail == 'true' %}
+                            {% if map_any_avail == 'false' %}
+                              {% comment %} This is the first available variant for this color {% endcomment %}
+                              {% assign new_entry = color_val | append: '~~~true~~~' | append: var_id | append: '~~~' | append: prod_url %}
+                            {% else %}
+                              {% comment %} Keep existing (already has available) {% endcomment %}
+                              {% assign new_entry = entry %}
+                            {% endif %}
+                          {% else %}
+                            {% comment %} Not available, keep existing entry {% endcomment %}
+                            {% assign new_entry = entry %}
+                          {% endif %}
+                        {% else %}
+                          {% assign new_entry = entry %}
+                        {% endif %}
+                        
+                        {% if updated_map == '' %}
+                          {% assign updated_map = new_entry %}
+                        {% else %}
+                          {% assign updated_map = updated_map | append: '|||' | append: new_entry %}
+                        {% endif %}
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                  {% assign color_availability_map = updated_map %}
+                {% endif %}
+                
+                {% unless color_found_in_map %}
+                  {% comment %} Add new color to map {% endcomment %}
+                  {% assign new_entry = color_val | append: '~~~' | append: is_avail | append: '~~~' | append: var_id | append: '~~~' | append: prod_url %}
+                  {% if color_availability_map == '' %}
+                    {% assign color_availability_map = new_entry %}
+                  {% else %}
+                    {% assign color_availability_map = color_availability_map | append: '|||' | append: new_entry %}
+                  {% endif %}
+                {% endunless %}
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
         
         {% for product_item in final_products %}
           {% if product_item != blank and product_item != '' %}
@@ -720,13 +869,103 @@
                     assign variant_actually_available = true
                   endif
                 endif
+                
+                assign color_has_any_available = false
+                assign first_available_variant_id_for_color = variant_id
+                assign first_available_variant_url_for_color = ''
+                
+                if color_availability_map != '' and color_option_value != blank
+                  assign map_entries = color_availability_map | split: '|||'
+                  for map_entry in map_entries
+                    if map_entry != blank
+                      assign map_parts = map_entry | split: '~~~'
+                      if map_parts.size >= 4
+                        assign map_color_check = map_parts[0] | strip
+                        assign map_is_available = map_parts[1] | strip
+                        assign map_variant_id = map_parts[2] | strip
+                        assign map_variant_url = map_parts[3] | strip
+                        
+                        if map_color_check == color_option_value
+                          if map_is_available == 'true'
+                            assign color_has_any_available = true
+                            assign first_available_variant_id_for_color = map_variant_id
+                            assign first_available_variant_url_for_color = map_variant_url
+                          endif
+                          break
+                        endif
+                      endif
+                    endif
+                  endfor
+                endif
+                
+                assign variant_actually_available = color_has_any_available
 
                 # Get swatch if available from variant options - prioritize swatch color/image over variant image
                 assign swatch_to_render = ''
                 assign variant_image_for_swatch = ''
                 assign option_value_name_for_swatch = color_option_value
                 
-                if display_product != '' and color_option_value != blank and color_option_value != ''
+                # NEW: For product image swatch mode, use product featured image
+                if show_product_image_swatches and display_product != ''
+                  # Use product's featured media as the swatch image
+                  if display_product.featured_media != blank
+                    assign variant_image_for_swatch = display_product.featured_media
+                  endif
+                  
+                  # Build variant name from the actual variant's option values (not just first values)
+                  assign variant_name_parts = ''
+                  assign target_variant_id = first_available_variant_id_for_color
+                  if target_variant_id != blank and display_product != ''
+                    assign target_variant_id_as_number = target_variant_id | plus: 0
+                    assign target_variant_id_as_string = target_variant_id | append: ''
+                    for variant in display_product.variants
+                      if variant.id == target_variant_id or variant.id == target_variant_id_as_number or variant.id == target_variant_id_as_string
+                        # Get all option values from this specific variant and concatenate them
+                        if variant.option1 != blank
+                          assign variant_name_parts = variant.option1
+                        endif
+                        if variant.option2 != blank
+                          if variant_name_parts == ''
+                            assign variant_name_parts = variant.option2
+                          else
+                            assign variant_name_parts = variant_name_parts | append: ' / ' | append: variant.option2
+                          endif
+                        endif
+                        if variant.option3 != blank
+                          if variant_name_parts == ''
+                            assign variant_name_parts = variant.option3
+                          else
+                            assign variant_name_parts = variant_name_parts | append: ' / ' | append: variant.option3
+                          endif
+                        endif
+                        break
+                      endif
+                    endfor
+                  endif
+                  
+                  # Fallback: if we couldn't find the variant, build from first values of each option
+                  if variant_name_parts == blank
+                    for option in display_product.options_with_values
+                      if option.values.size > 0
+                        assign first_value = option.values.first
+                        if first_value != blank
+                          if variant_name_parts == ''
+                            assign variant_name_parts = first_value.name
+                          else
+                            assign variant_name_parts = variant_name_parts | append: ' / ' | append: first_value.name
+                          endif
+                        endif
+                      endif
+                    endfor
+                  endif
+                  
+                  # Use variant name as option value name
+                  if variant_name_parts != blank
+                    assign option_value_name_for_swatch = variant_name_parts
+                  else
+                    assign option_value_name_for_swatch = display_product.title
+                  endif
+                elsif display_product != '' and color_option_value != blank and color_option_value != ''
                   for option in display_product.options_with_values
                     for value in option.values
                       assign value_str = value | append: ''
@@ -848,7 +1087,7 @@
                     data-media-id="{{ hover_media.id }}"
                   {% endif %}
                   data-option-available="{{ variant_actually_available }}"
-                  class="variant-option__button-label variant-option__button-label--has-swatch swatch-rounded"
+                  class="variant-option__button-label variant-option__button-label--has-swatch {% if show_product_image_swatches %}variant-option__button-label--product-image variant-option__button-label--product-image-{{ product_image_swatch_style }}{% else %}swatch-rounded{% endif %}"
                   {% if hover_media != blank %}
                     on:pointerenter="product-card/previewVariant/{{ hover_media.id }}"
                     on:pointerleave="product-card/resetVariant"
@@ -864,15 +1103,17 @@
                   <input
                     type="radio"
                     name="{{ variant_option_name | escape }}-{{ product_resource.id }}-swatch"
-                    value="{{ variant_id }}"
+                    value="{{ first_available_variant_id_for_color }}"
                     aria-label="{{ product_title | escape }}"
                     data-input-id="1-{{ forloop.index0 }}"
                     {% if hover_media != blank %}
                       data-option-media-id="{{ hover_media.id }}"
                     {% endif %}
                     data-option-available="{{ variant_actually_available }}"
-                    {% if product_url != blank %}
-                      data-connected-product-url="{{ product_url }}?variant={{ variant_id }}"
+                    {% if first_available_variant_url_for_color != blank %}
+                      data-connected-product-url="{{ first_available_variant_url_for_color }}?variant={{ first_available_variant_id_for_color }}"
+                    {% elsif product_url != blank %}
+                      data-connected-product-url="{{ product_url }}?variant={{ first_available_variant_id_for_color }}"
                     {% endif %}
                     {% if display_product != '' %}
                       data-product-id="{{ display_product.id }}"
@@ -881,15 +1122,18 @@
                     {% if featured_image_url != blank %}
                       data-featured-image-url="{{ featured_image_url }}"
                     {% endif %}
+                    {% if option_value_name_for_swatch != blank %}
+                      data-variant-name="{{ option_value_name_for_swatch | escape }}"
+                    {% endif %}
                     {% if is_current_product %}
                       checked
                     {% endif %}
                     data-available-count="{% if variant_actually_available %}1{% else %}0{% endif %}"
-                    data-variant-id="{{ variant_id }}"
-                    data-first-available-or-first-variant-id="{{ variant_id }}"
+                    data-variant-id="{{ first_available_variant_id_for_color }}"
+                    data-first-available-or-first-variant-id="{{ first_available_variant_id_for_color }}"
                   >
                   {% if has_swatch_to_render %}
-                    {% if swatch_to_render != blank %}
+                    {% if swatch_to_render != blank and show_product_image_swatches == false %}
                       {% render 'swatch',
                         swatch: swatch_to_render,
                         variant_image: hover_media,
@@ -902,12 +1146,13 @@
                     {% else %}
                       {% render 'swatch',
                         swatch: blank,
-                        variant_image: hover_media,
+                        variant_image: variant_image_for_swatch,
                         option_value_name: option_value_name_for_swatch,
-                        enable_swatch_assets_backup: swatch_enable_assets_backup,
+                        enable_swatch_assets_backup: false,
                         swatch_file_extension: swatch_file_extension_setting,
-                        show_variant_image: swatch_show_variant_image,
-                        variant_swatch_width: swatch_variant_width
+                        show_variant_image: true,
+                        variant_swatch_width: swatch_variant_width,
+                        force_image_swatch: show_product_image_swatches
                       %}
                     {% endif %}
                     {% unless variant_actually_available %}

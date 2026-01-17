@@ -3,9 +3,20 @@
   if request.visual_preview_mode and product_resource == blank
     assign product_resource = collections.all.products.first
   endif
+  
+  assign has_combined_listing = false
+  assign combined_listings_metafield = product_resource.metafields.custom.combined_listing
+  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+    for test_product in combined_listings_metafield.value
+      assign has_combined_listing = true
+      break
+    endfor
+  endif
 -%}
 
-{% render 'variant-main-picker', product_resource: product_resource %}
+{% unless has_combined_listing %}
+  {% render 'variant-main-picker', product_resource: product_resource %}
+{% endunless %}
 
 {% schema %}
 {

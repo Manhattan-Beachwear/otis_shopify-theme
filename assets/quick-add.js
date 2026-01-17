@@ -18,10 +18,12 @@ export class QuickAddComponent extends Component {
 
     const url = new URL(productLink.href);
 
+    // Priority 1: Use variant from URL if present (most reliable for featured image swatches)
     if (url.searchParams.has('variant')) {
       return url.toString();
     }
 
+    // Priority 2: Try to get variant ID from selected input
     const selectedVariantId = this.#getSelectedVariantId();
     if (selectedVariantId) {
       url.searchParams.set('variant', selectedVariantId);
@@ -37,6 +39,13 @@ export class QuickAddComponent extends Component {
   #getSelectedVariantId() {
     const productCard = /** @type {import('./product-card').ProductCard | null} */ (this.closest('product-card'));
     return productCard?.getSelectedVariantId() || null;
+  }
+
+  /**
+   * Clears the cached content. Used when the product changes to ensure fresh data.
+   */
+  clearCache() {
+    this.#cachedContent.clear();
   }
 
   connectedCallback() {
@@ -81,6 +90,23 @@ export class QuickAddComponent extends Component {
       // Use a fresh clone from the cache
       const freshContent = /** @type {Element} */ (productGrid.cloneNode(true));
       await this.updateQuickAddModal(freshContent);
+    }
+
+    // CRITICAL: After updating the modal, ensure the variant ID input is set correctly
+    // The fetched HTML might have the default variant, so we need to override it
+    const modalContent = document.getElementById('quick-add-modal-content');
+    if (modalContent) {
+      // Get variant ID from URL (most reliable)
+      const url = new URL(currentUrl);
+      const variantIdFromUrl = url.searchParams.get('variant');
+      
+      if (variantIdFromUrl) {
+        // Update the hidden variant ID input in the form
+        const variantIdInput = modalContent.querySelector('input[name="id"][ref="variantId"]');
+        if (variantIdInput instanceof HTMLInputElement) {
+          variantIdInput.value = variantIdFromUrl;
+        }
+      }
     }
 
     this.#openQuickAddModal();
@@ -188,7 +214,39 @@ export class QuickAddComponent extends Component {
 
     morph(modalContent, productGrid);
 
+    // CRITICAL: Sync variant selection FIRST, then update variant ID input
+    // This ensures the variant picker is in the correct state before we update the form
     this.#syncVariantSelection(modalContent);
+    
+    // CRITICAL: After syncing variant selection, update the variant ID input
+    // The fetched HTML might have the default variant, not the one from the URL
+    // We need to extract the variant ID from the productPageUrl and set it directly
+    // Do this AFTER syncVariantSelection to ensure variant picker events don't overwrite it
+    const url = new URL(this.productPageUrl);
+    const variantIdFromUrl = url.searchParams.get('variant');
+    
+    if (variantIdFromUrl) {
+      // Wait a tick for morph and sync to complete
+      await new Promise(resolve => setTimeout(resolve, 0));
+      
+      // Find and update the variant ID input
+      let variantIdInput = modalContent.querySelector('input[name="id"][ref="variantId"]');
+      if (!variantIdInput) {
+        variantIdInput = modalContent.querySelector('input[name="id"]');
+      }
+      if (variantIdInput instanceof HTMLInputElement) {
+        variantIdInput.value = variantIdFromUrl;
+        // Don't dispatch change event - we don't want to trigger variant update events
+        // that might overwrite our value
+        
+        // CRITICAL: Also update the ProductFormComponent's refs.variantId if it exists
+        // This ensures the component's internal state is also updated
+        const productFormComponent = modalContent.querySelector('product-form-component');
+        if (productFormComponent && productFormComponent.refs?.variantId) {
+          productFormComponent.refs.variantId.value = variantIdFromUrl;
+        }
+      }
+    }
   }
 
   /**
@@ -196,17 +254,51 @@ export class QuickAddComponent extends Component {
    * @param {Element} modalContent - The modal content element
    */
   #syncVariantSelection(modalContent) {
-    const selectedVariantId = this.#getSelectedVariantId();
+    // Priority 1: Get variant ID from URL (most reliable for featured image swatches)
+    // The URL is updated immediately when a swatch is clicked, so it's more reliable
+    // than querying the DOM which might not be updated yet
+    const productCard = /** @type {import('./product-card').ProductCard | null} */ (this.closest('product-card'));
+    const productLink = productCard?.getProductCardLink();
+    let selectedVariantId = null;
+    
+    if (productLink?.href) {
+      const url = new URL(productLink.href);
+      selectedVariantId = url.searchParams.get('variant');
+    }
+    
+    // Priority 2: Fall back to getSelectedVariantId if URL doesn't have variant
+    if (!selectedVariantId) {
+      selectedVariantId = this.#getSelectedVariantId();
+    }
+    
     if (!selectedVariantId) return;
 
     // Find and check the corresponding input in the modal
-    const modalInputs = modalContent.querySelectorAll('input[type="radio"][data-variant-id]');
+    // Try both data-variant-id and data-first-available-or-first-variant-id
+    const modalInputs = modalContent.querySelectorAll('input[type="radio"][data-variant-id], input[type="radio"][data-first-available-or-first-variant-id]');
     for (const input of modalInputs) {
-      if (input instanceof HTMLInputElement && input.dataset.variantId === selectedVariantId && !input.checked) {
-        input.checked = true;
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-        break;
+      if (input instanceof HTMLInputElement) {
+        const inputVariantId = input.dataset.variantId || input.dataset.firstAvailableOrFirstVariantId;
+        if (inputVariantId === selectedVariantId && !input.checked) {
+          input.checked = true;
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+          break;
+        }
       }
+    }
+
+    // CRITICAL: Update the hidden variant ID input in the form
+    // This is what actually gets submitted when adding to cart
+    // Try multiple selectors to find the input
+    let variantIdInput = modalContent.querySelector('input[name="id"][ref="variantId"]');
+    if (!variantIdInput) {
+      variantIdInput = modalContent.querySelector('input[name="id"]');
+    }
+    if (variantIdInput instanceof HTMLInputElement) {
+      variantIdInput.value = selectedVariantId;
+      
+      // Also trigger a change event to ensure any listeners are notified
+      variantIdInput.dispatchEvent(new Event('change', { bubbles: true }));
     }
   }
 }

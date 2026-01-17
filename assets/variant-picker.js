@@ -27,6 +27,9 @@ export default class VariantPicker extends Component {
   /** @type {HTMLInputElement[][]} */
   #radios = [];
 
+  /** @type {(() => void) | undefined} */
+  #boundHandleUrlChange;
+
   connectedCallback() {
     super.connectedCallback();
     const fieldsets = /** @type {HTMLFieldSetElement[]} */ (this.refs.fieldsets || []);
@@ -42,6 +45,26 @@ export default class VariantPicker extends Component {
     });
 
     this.addEventListener('change', this.variantChanged.bind(this));
+
+    // Listen for URL changes (browser back/forward navigation) - only on product pages
+    const isOnProductPage =
+      this.dataset.templateProductMatch === 'true' &&
+      !this.closest('product-card') &&
+      !this.closest('quick-add-dialog');
+    if (isOnProductPage) {
+      this.#boundHandleUrlChange = this.#handleUrlChange.bind(this);
+      window.addEventListener('popstate', this.#boundHandleUrlChange);
+      // Check URL on initial load to sync with URL parameters
+      this.#syncFromUrl();
+    }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this.#boundHandleUrlChange !== undefined) {
+      window.removeEventListener('popstate', this.#boundHandleUrlChange);
+      this.#boundHandleUrlChange = undefined;
+    }
   }
 
   /**
@@ -254,6 +277,18 @@ export default class VariantPicker extends Component {
           }
         }
 
+        // CRITICAL: For product cards with pending variant ID, use that instead
+        // This ensures the correct variant ID is used for featured image swatches
+        // The fetched HTML might have the default variant, not the one we want
+        if (this.pendingVariantId) {
+          if (!variantData) {
+            variantData = { id: this.pendingVariantId };
+          } else {
+            // Override the variant ID from fetched HTML with the pending one
+            variantData.id = this.pendingVariantId;
+          }
+        }
+
         if (!variantData) return;
 
         if (shouldMorphMain) {
@@ -276,6 +311,9 @@ export default class VariantPicker extends Component {
                 newProduct,
               })
             );
+            
+            // Clear pending variant ID after use
+            this.pendingVariantId = undefined;
           }
         }
       })
@@ -396,6 +434,121 @@ export default class VariantPicker extends Component {
 
       return optionValueId;
     });
+  }
+
+  /**
+   * Handles URL changes (browser back/forward navigation).
+   */
+  #handleUrlChange() {
+    this.#syncFromUrl();
+  }
+
+  /**
+   * Syncs the picker state from the current URL.
+   * Reads variant parameter and product path, then updates selection or navigates.
+   */
+  #syncFromUrl() {
+    const url = new URL(window.location.href);
+    const variantParam = url.searchParams.get('variant');
+    const currentProductUrl = this.dataset.productUrl?.split('?')[0];
+    const newProductUrl = url.pathname;
+
+    // Check if we're navigating to a different product
+    const isDifferentProduct = currentProductUrl && newProductUrl !== currentProductUrl;
+
+    if (isDifferentProduct) {
+      // Different product - find the option that matches this product URL and variant
+      const matchingOption = this.#findOptionByUrlAndVariant(newProductUrl, variantParam);
+      if (matchingOption) {
+        // Trigger selection change to navigate
+        if (matchingOption instanceof HTMLInputElement) {
+          matchingOption.checked = true;
+          matchingOption.dispatchEvent(new Event('change', { bubbles: true }));
+        } else if (matchingOption instanceof HTMLOptionElement) {
+          const select = matchingOption.closest('select');
+          if (select instanceof HTMLSelectElement) {
+            select.selectedIndex = Array.from(select.options).indexOf(matchingOption);
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
+      }
+      return;
+    }
+
+    // Same product - just update the selected option to match the variant
+    if (variantParam) {
+      const matchingOption = this.#findOptionByVariantId(variantParam);
+      if (matchingOption) {
+        if (matchingOption instanceof HTMLInputElement) {
+          matchingOption.checked = true;
+          this.updateSelectedOption(matchingOption);
+        } else if (matchingOption instanceof HTMLOptionElement) {
+          const select = matchingOption.closest('select');
+          if (select instanceof HTMLSelectElement) {
+            select.selectedIndex = Array.from(select.options).indexOf(matchingOption);
+            this.updateSelectedOption(select);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Finds an option element by variant ID.
+   * @param {string} variantId - The variant ID to find.
+   * @returns {HTMLInputElement | HTMLOptionElement | null} The matching option element.
+   */
+  #findOptionByVariantId(variantId) {
+    // Try radio inputs first
+    const radioInput = this.querySelector(`input[type="radio"][data-variant-id="${CSS.escape(variantId)}"]`);
+    if (radioInput instanceof HTMLInputElement) {
+      return radioInput;
+    }
+
+    // Try option elements in selects
+    const optionElement = this.querySelector(`option[data-variant-id="${CSS.escape(variantId)}"]`);
+    if (optionElement instanceof HTMLOptionElement) {
+      return optionElement;
+    }
+
+    // Try by value (for swatches that use variant ID as value)
+    const inputByValue = this.querySelector(`input[type="radio"][value="${CSS.escape(variantId)}"]`);
+    if (inputByValue instanceof HTMLInputElement) {
+      return inputByValue;
+    }
+
+    return null;
+  }
+
+  /**
+   * Finds an option element by product URL and variant ID.
+   * @param {string} productUrl - The product URL to match.
+   * @param {string | null} variantId - The variant ID to match.
+   * @returns {HTMLInputElement | HTMLOptionElement | null} The matching option element.
+   */
+  #findOptionByUrlAndVariant(productUrl, variantId) {
+    // Find options that have connectedProductUrl matching the product URL
+    const allOptions = this.querySelectorAll(
+      'input[type="radio"][data-connected-product-url], option[data-connected-product-url]'
+    );
+
+    for (const option of allOptions) {
+      const connectedUrl = option.dataset.connectedProductUrl?.split('?')[0];
+      if (connectedUrl === productUrl) {
+        // If variant ID is specified, also check it matches
+        if (variantId) {
+          const optionVariantId = option.dataset.variantId || option.value;
+          if (optionVariantId === variantId) {
+            return option instanceof HTMLInputElement || option instanceof HTMLOptionElement ? option : null;
+          }
+        } else {
+          // No variant ID specified, return first matching option
+          return option instanceof HTMLInputElement || option instanceof HTMLOptionElement ? option : null;
+        }
+      }
+    }
+
+    return null;
   }
 }
 
