@@ -681,7 +681,11 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
         "padding-block-end": 48,
-        "enable_combined_listings": true
+        "enable_combined_listings": true,
+        "show_product_image_swatches": true,
+        "product_image_swatch_style": "square",
+        "product_image_swatch_size": 60,
+        "show_product_image_swatch_variant_name": true
       }
     },
     "collection_list_8yKQwL": {
@@ -793,7 +797,11 @@
         "color_scheme": "scheme-6",
         "padding-block-start": 48,
         "padding-block-end": 48,
-        "enable_combined_listings": false
+        "enable_combined_listings": false,
+        "show_product_image_swatches": false,
+        "product_image_swatch_style": "circle",
+        "product_image_swatch_size": 60,
+        "show_product_image_swatch_variant_name": true
       }
     }
   },
