@@ -22,47 +22,62 @@
     endfor
   endif
 
-  # If product has combined listing, use the combined listing swatches block
-  if has_combined_listing_metafield
-    render 'swatches-cl', block: block
-  else
-    # Legacy swatches logic for products without combined listings
-    # Check for both metaobject swatches and assets folder swatches (like variant-swatches.liquid does)
-    for product_option in closest.product.options_with_values
-      assign swatch_count = product_option.values | map: 'swatch' | compact | size
-      
-      # Check if any option values have assets folder files (for backup swatch feature)
-      assign assets_swatch_count = 0
-      assign enable_backup_check = settings.enable_swatch_assets_backup
-      if enable_backup_check == blank
-        assign enable_backup_check = true
-      endif
-      
-      if enable_backup_check
-        for product_option_value in product_option.values
-          if product_option_value.name != blank
-            assign swatch_file_extension = settings.swatch_file_extension | default: 'png'
-            assign color_file_name = product_option_value.name | handle | append: '.' | append: swatch_file_extension
-            if images[color_file_name] != blank
-              assign assets_swatch_count = assets_swatch_count | plus: 1
-            endif
+  # Always check for normal swatches (for fallback if combined listing swatches don't exist)
+  # Check for both metaobject swatches and assets folder swatches (like variant-swatches.liquid does)
+  assign product_has_normal_swatches = false
+  for product_option in closest.product.options_with_values
+    assign swatch_count = product_option.values | map: 'swatch' | compact | size
+    
+    # Check if any option values have assets folder files (for backup swatch feature)
+    assign assets_swatch_count = 0
+    assign enable_backup_check = settings.enable_swatch_assets_backup
+    if enable_backup_check == blank
+      assign enable_backup_check = true
+    endif
+    
+    if enable_backup_check
+      for product_option_value in product_option.values
+        if product_option_value.name != blank
+          assign swatch_file_extension = settings.swatch_file_extension | default: 'png'
+          assign color_file_name = product_option_value.name | handle | append: '.' | append: swatch_file_extension
+          if images[color_file_name] != blank
+            assign assets_swatch_count = assets_swatch_count | plus: 1
           endif
-        endfor
-      endif
-      
-      # Use swatches if we have metaobject swatches OR assets folder swatches
-      assign total_swatch_count = swatch_count | plus: assets_swatch_count
+        endif
+      endfor
+    endif
+    
+    # Use swatches if we have metaobject swatches OR assets folder swatches
+    assign total_swatch_count = swatch_count | plus: assets_swatch_count
 
-      if total_swatch_count > 0
-        assign product_has_swatches = true
-      endif
-    endfor
+    if total_swatch_count > 0
+      assign product_has_normal_swatches = true
+      assign product_has_swatches = true
+    endif
+  endfor
+
+  # If product has combined listing, try to use the combined listing swatches block
+  # Use capture to check if combined listing swatches actually rendered the product-swatches element
+  # (swatches-cl always renders stylesheet, so we need to check for the actual swatches element)
+  assign combined_listing_swatches_rendered = false
+  if has_combined_listing_metafield
+    capture combined_listing_output
+      render 'swatches-cl', block: block
+    endcapture
+    # Check if the output contains the actual product-swatches element (not just stylesheet)
+    if combined_listing_output contains '<product-swatches'
+      assign combined_listing_swatches_rendered = true
+      echo combined_listing_output
+    endif
   endif
 -%}
 
-{%- comment -%} Only render legacy swatches if product doesn't have combined listing {%- endcomment -%}
-{% unless has_combined_listing_metafield %}
-  {% if product_has_swatches %}
+{%- comment -%} Render normal swatches if:
+  1. Product doesn't have combined listing metafield, OR
+  2. Product has combined listing metafield but combined listing swatches didn't render (fallback to normal swatches)
+{%- endcomment -%}
+{% unless combined_listing_swatches_rendered %}
+  {% if product_has_normal_swatches %}
     <product-swatches
       data-product-id="{{ closest.product.id }}"
       data-product-url="{{ closest.product.url }}"
