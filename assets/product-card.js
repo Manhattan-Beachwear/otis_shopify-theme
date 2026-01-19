@@ -498,6 +498,11 @@ export class ProductCard extends Component {
    * @param {PointerEvent} [event] - The pointer event that triggered the preview.
    */
   previewVariant(id, event) {
+    // #region agent log
+    const logDataA = {location:'product-card.js:507',message:'previewVariant called',data:{hasEvent:!!event,id:id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'};
+    console.log('[DEBUG]', logDataA);
+    fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataA)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
+    // #endregion
     const { slideshow } = this.refs;
 
     if (!slideshow) return;
@@ -559,6 +564,11 @@ export class ProductCard extends Component {
 
     // Quick check: if no swatchElement found or no combined listing indicators, use legacy behavior
     if (!swatchElement || (!swatchElement.dataset.productId && !swatchElement.dataset.productUrl)) {
+      // #region agent log
+      const logDataB = {location:'product-card.js:561',message:'Legacy swatch path detected',data:{hasSwatchElement:!!swatchElement,hasProductId:!!swatchElement?.dataset.productId,hasProductUrl:!!swatchElement?.dataset.productUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'};
+      console.log('[DEBUG]', logDataB);
+      fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataB)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
+      // #endregion
       // Legacy swatch - use featured image URL to update current slide (like combined listings)
       // Get the featured image URL from the swatch element
       let featuredImageUrl = null;
@@ -581,6 +591,11 @@ export class ProductCard extends Component {
         }
       }
 
+      // #region agent log
+      const logDataC = {location:'product-card.js:585',message:'Featured image URL check',data:{hasFeaturedImageUrl:!!featuredImageUrl,featuredImageUrl:featuredImageUrl?.substring(0,50)||null,hasSlideshow:!!slideshow,hasSlides:!!slideshow?.slides,slidesLength:slideshow?.slides?.length||0},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'};
+      console.log('[DEBUG]', logDataC);
+      fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataC)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
+      // #endregion
       // If we have a featured image URL, update the current slide's image directly
       if (featuredImageUrl && slideshow.slides && slideshow.slides.length > 0) {
         const currentSlide = slideshow.slides[slideshow.current || 0];
@@ -624,6 +639,11 @@ export class ProductCard extends Component {
         return;
       }
 
+      // #region agent log
+      const logDataE = {location:'product-card.js:628',message:'Fallback to slideshow.select for legacy swatch',data:{idStr:idStr,reason:'no featuredImageUrl or no slides'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'};
+      console.log('[DEBUG]', logDataE);
+      fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataE)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
+      // #endregion
       // Fallback: try to find and select the slide by ID (original behavior)
       slideshow.select({ id: idStr }, undefined, { animate: false });
       return;
@@ -672,6 +692,11 @@ export class ProductCard extends Component {
       originalProductUrlBase && swatchProductUrlBase && swatchProductUrlBase === originalProductUrlBase
     );
 
+    // #region agent log
+    const logDataF = {location:'product-card.js:675',message:'Checking combined listing swatch',data:{hasSwatchElement:!!swatchElement,swatchProductId:swatchElement?.dataset.productId||null,thisProductId:this.dataset.productId||null,swatchProductUrl:swatchElement?.dataset.productUrl?.substring(0,50)||null,thisProductUrl:this.dataset.productUrl?.substring(0,50)||null,isOriginalProduct},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'};
+    console.log('[DEBUG]', logDataF);
+    fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataF)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
+    // #endregion
     // Check if this is a combined listing swatch (different product)
     // Legacy swatches don't have data-product-id or data-product-url on the input/label
     // Only combined listing swatches have these attributes
@@ -723,6 +748,11 @@ export class ProductCard extends Component {
               this.#originalImageSrc = img.src || '';
             }
 
+            // #region agent log
+            const logDataH = {location:'product-card.js:727',message:'Updating image for combined listing swatch',data:{featuredImageUrl:featuredImageUrl?.substring(0,50)||null,currentImgSrc:img.src?.substring(0,50)||null,isOriginalProduct,isCombinedListingSwatch},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'};
+            console.log('[DEBUG]', logDataH);
+            fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataH)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
+            // #endregion
             // Update the image source
             img.src = featuredImageUrl;
             img.srcset = featuredImageUrl;
@@ -740,6 +770,11 @@ export class ProductCard extends Component {
         }
       }
     } else {
+      // #region agent log
+      const logDataG = {location:'product-card.js:744',message:'Regular legacy swatch fallback',data:{idStr:idStr,hasFeaturedImageUrl:!!featuredImageUrl,isOriginalProduct,isCombinedListingSwatch},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'G'};
+      console.log('[DEBUG]', logDataG);
+      fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataG)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
+      // #endregion
       // Regular legacy swatch - original simple behavior
       slideshow.select({ id: idStr }, undefined, { animate: false });
     }
