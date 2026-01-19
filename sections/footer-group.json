@@ -164,6 +164,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
+                "image": "shopify://shop_images/B_CORP_Campaign_WEBSITE_FOOTER.jpg",
                 "link": "",
                 "hover_scale": false,
                 "image_ratio": "adapt",
@@ -309,7 +310,7 @@
         "copyright": {
           "type": "footer-copyright",
           "settings": {
-            "show_powered_by": false,
+            "show_powered_by": true,
             "font_size": "0.75rem",
             "case": "none"
           },

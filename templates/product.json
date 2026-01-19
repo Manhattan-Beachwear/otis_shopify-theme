@@ -16,7 +16,7 @@
           "type": "_product-media-gallery",
           "static": true,
           "settings": {
-            "media_presentation": "carousel",
+            "media_presentation": "grid",
             "media_columns": "two",
             "image_gap": 4,
             "large_first_image": false,
@@ -173,7 +173,7 @@
               },
               "blocks": {}
             },
-            "variant_picker_cl_jye8jk": {
+            "variant_picker_cl_pY9bnP": {
               "type": "variant-picker-cl",
               "name": "Combined Listing Picker",
               "settings": {
@@ -181,8 +181,7 @@
                 "show_swatches": true,
                 "show_product_image_swatches": true,
                 "product_image_swatch_style": "square",
-                "product_image_swatch_size": 60,
-                "show_product_image_swatch_variant_name": true,
+                "product_image_swatch_size": 44,
                 "alignment": "left",
                 "padding-block-start": 0,
                 "padding-block-end": 8,
@@ -256,7 +255,7 @@
           "block_order": [
             "group_icgrde",
             "divider_VJhene",
-            "variant_picker_cl_jye8jk",
+            "variant_picker_cl_pY9bnP",
             "buy_buttons_eYQEYi",
             "text_aEtTtq"
           ]
