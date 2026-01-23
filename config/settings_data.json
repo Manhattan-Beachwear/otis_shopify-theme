@@ -56,7 +56,7 @@
     "type_line_height_h6": "display-loose",
     "type_letter_spacing_h6": 0.1,
     "type_case_h6": "uppercase",
-    "page_width": "normal",
+    "page_width": "narrow",
     "page_transition_enabled": true,
     "transition_to_main_product": true,
     "card_hover_effect": "none",
@@ -666,5 +666,8 @@
         }
       }
     }
+  },
+  "platform_customizations": {
+    "custom_css": []
   }
 }

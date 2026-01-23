@@ -154,9 +154,9 @@
             "width": "fit-content",
             "max_width": "none",
             "alignment": "left",
-            "type_preset": "rte",
+            "type_preset": "custom",
             "font": "var(--font-body--family)",
-            "font_size": "1rem",
+            "font_size": "1.125rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
@@ -171,27 +171,11 @@
             "padding-inline-end": 0
           },
           "blocks": {}
-        },
-        "button_n9XdK6": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "Shop now",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "text_tEqMVQ",
-        "text_DGKyWL",
-        "button_n9XdK6"
+        "text_DGKyWL"
       ],
       "name": "t:names.rich_text_section",
       "settings": {
@@ -231,9 +215,9 @@
           "name": "t:names.heading",
           "settings": {
             "text": "<h2>GET IN TOUCH</h2>",
-            "width": "fit-content",
-            "max_width": "narrow",
-            "alignment": "left",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
             "type_preset": "rte",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
@@ -271,45 +255,6 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "accordion_row_d4UrV9": {
-              "type": "_accordion-row",
-              "settings": {
-                "heading": "AUSTRALIA",
-                "open_by_default": false,
-                "icon": "none",
-                "width": 20
-              },
-              "blocks": {
-                "text_8chMMN": {
-                  "type": "text",
-                  "settings": {
-                    "text": "<p><strong>The Leisure Collective Pty Ltd.</strong></p><p><strong>Email: </strong><a target=\"_blank\">cs_otis@leisurecollective.com.au</a></p><p><strong>Address: </strong>64 Commonage Road, Dunsborough 6281 Western Australia</p><p><strong>Phone Number:   </strong>(08) 9756 7311</p>",
-                    "width": "100%",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "rte",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "color": "var(--color-foreground)",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "text_8chMMN"
-              ]
-            },
             "accordion_row_ihCPBb": {
               "type": "_accordion-row",
               "settings": {
@@ -347,6 +292,45 @@
               },
               "block_order": [
                 "text_kaRQHU"
+              ]
+            },
+            "accordion_row_d4UrV9": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "AUSTRALIA",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_8chMMN": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p><strong>The Leisure Collective Pty Ltd.</strong></p><p><strong>Email: </strong><a target=\"_blank\">cs_otis@leisurecollective.com.au</a></p><p><strong>Address: </strong>64 Commonage Road, Dunsborough 6281 Western Australia</p><p><strong>Phone Number:   </strong>(08) 9756 7311</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_8chMMN"
               ]
             },
             "accordion_row_y87i3K": {
@@ -515,8 +499,8 @@
             }
           },
           "block_order": [
-            "accordion_row_d4UrV9",
             "accordion_row_ihCPBb",
+            "accordion_row_d4UrV9",
             "accordion_row_y87i3K",
             "accordion_row_Qgmik9",
             "accordion_row_dYTQHn",
@@ -528,6 +512,7 @@
         "text_wRD8Bp",
         "accordion_9ME7dn"
       ],
+      "custom_css": [],
       "name": "t:names.faq_section",
       "settings": {
         "content_direction": "column",
