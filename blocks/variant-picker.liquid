@@ -15,7 +15,7 @@
 -%}
 
 {% unless has_combined_listing %}
-  {% render 'variant-main-picker', product_resource: product_resource %}
+  {% render 'variant-main-picker', product_resource: product_resource, block: block %}
 {% endunless %}
 
 {% schema %}
@@ -52,6 +52,48 @@
       "id": "show_swatches",
       "label": "t:settings.swatches",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_image_swatches",
+      "label": "Show product images as swatches",
+      "default": false,
+      "info": "Display variant images instead of color swatches"
+    },
+    {
+      "type": "select",
+      "id": "product_image_swatch_style",
+      "label": "Product image swatch style",
+      "options": [
+        {
+          "value": "circle",
+          "label": "Circle"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        }
+      ],
+      "default": "circle",
+      "info": "Choose between circular or square layout for product image swatches"
+    },
+    {
+      "type": "range",
+      "id": "product_image_swatch_size",
+      "label": "Product image swatch size",
+      "min": 40,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60,
+      "info": "Size of product image swatches"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_image_swatch_variant_name",
+      "label": "Show variant name below image swatches",
+      "default": true,
+      "info": "Display variant option values below each product image swatch"
     },
     {
       "type": "text_alignment",

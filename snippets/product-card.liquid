@@ -185,6 +185,45 @@
   product-card-link,
   :not(product-card-link) product-card {
     width: 100%;
+    overflow: visible;
+  }
+
+  .product-card__content {
+    transition: box-shadow var(--hover-transition-duration) var(--hover-transition-timing),
+                padding var(--hover-transition-duration) var(--hover-transition-timing),
+                margin var(--hover-transition-duration) var(--hover-transition-timing);
+    padding: 0;
+    margin: 0;
+    box-sizing: content-box;
+  }
+
+  .product-card:hover .product-card__content {
+    background-color: #fff;
+    box-shadow: 0 6px 12px #d3d4d5;
+    padding: 20px;
+    margin: -20px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .product-card:hover .product-grid[data-product-card-size='extra-large'] .product-card__content {
+      padding: 28px;
+      margin: -28px;
+    }
+
+    .product-card:hover .product-grid[data-product-card-size='large'] .product-card__content {
+      padding: 24px;
+      margin: -24px;
+    }
+
+    .product-card:hover .product-grid[data-product-card-size='medium'] .product-card__content {
+      padding: 20px;
+      margin: -20px;
+    }
+
+    .product-card:hover .product-grid[data-product-card-size='small'] .product-card__content {
+      padding: 16px;
+      margin: -16px;
+    }
   }
 
   .product-card__placeholder-image svg {

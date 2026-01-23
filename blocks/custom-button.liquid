@@ -1,0 +1,189 @@
+{% doc %}
+  @example
+  {% content_for 'block', type: 'custom-button', id: 'prescription-btn' %}
+{% enddoc %}
+
+{%- liquid
+  assign button_text = block.settings.button_text | default: 'Custom Button'
+  assign button_url = block.settings.button_url
+  assign button_style = block.settings.button_style
+  assign show_icon = block.settings.show_icon
+  assign icon_name = block.settings.icon_name
+  assign open_in_new_tab = block.settings.open_in_new_tab
+  assign full_width = block.settings.full_width
+-%}
+
+<div 
+  class="custom-button-block"
+  {{ block.shopify_attributes }}
+  style="{% render 'spacing-style', settings: block.settings %}"
+>
+  {% if button_url != blank %}
+    <a 
+      href="{{ button_url }}"
+      class="button button--{{ button_style }}{% if full_width %} button--full-width{% endif %}"
+      {% if open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+    >
+      {% if show_icon and icon_name != blank %}
+        <span class="button__icon" aria-hidden="true">
+          {% render 'icon', icon: icon_name, size: 'small' %}
+        </span>
+      {% endif %}
+      <span class="button__text">{{ button_text | escape }}</span>
+    </a>
+  {% else %}
+    <button 
+      type="button"
+      class="button button--{{ button_style }}{% if full_width %} button--full-width{% endif %}"
+      onclick="{{ block.settings.onclick }}"
+    >
+      {% if show_icon and icon_name != blank %}
+        <span class="button__icon" aria-hidden="true">
+          {% render 'icon', icon: icon_name, size: 'small' %}
+        </span>
+      {% endif %}
+      <span class="button__text">{{ button_text | escape }}</span>
+    </button>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .custom-button-block {
+    width: 100%;
+  }
+
+  .button__icon {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.5rem;
+  }
+
+  .button__icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .button__text {
+    display: inline-flex;
+    align-items: center;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Custom Button",
+  "settings": [
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Buy with Prescription"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL",
+      "info": "Leave empty to use as a button element (requires onclick)"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "tertiary",
+          "label": "Tertiary"
+        }
+      ],
+      "default": "secondary"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show Icon",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "icon_name",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "external",
+          "label": "External Link"
+        },
+        {
+          "value": "cart",
+          "label": "Cart"
+        },
+        {
+          "value": "checkmark",
+          "label": "Checkmark"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "Open in New Tab",
+      "default": false,
+      "info": "Only applies if Button URL is set"
+    },
+    {
+      "type": "text",
+      "id": "onclick",
+      "label": "onClick JavaScript",
+      "info": "Only used if Button URL is empty. Example: openPrescriptionModal()"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Button",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,162 @@
+{% doc %}
+  @example
+  {% content_for 'block', type: 'product-features', id: 'features' %}
+{% enddoc %}
+
+<div 
+  class="product-features"
+  {{ block.shopify_attributes }}
+>
+  <ul class="product-features__list" role="list">
+    {% if block.settings.show_feature_1 and block.settings.feature_1_text != blank %}
+      <li class="product-features__item">
+        <span class="product-features__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </span>
+        <span class="product-features__text">
+          {{ block.settings.feature_1_text }}
+        </span>
+      </li>
+    {% endif %}
+
+    {% if block.settings.show_feature_2 and block.settings.feature_2_text != blank %}
+      <li class="product-features__item">
+        <span class="product-features__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </span>
+        <span class="product-features__text">
+          {{ block.settings.feature_2_text }}
+        </span>
+      </li>
+    {% endif %}
+
+    {% if block.settings.show_feature_3 and block.settings.feature_3_text != blank %}
+      <li class="product-features__item">
+        <span class="product-features__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="7"></circle>
+            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+          </svg>
+        </span>
+        <span class="product-features__text">
+          {{ block.settings.feature_3_text }}
+        </span>
+      </li>
+    {% endif %}
+  </ul>
+</div>
+
+{% stylesheet %}
+  .product-features {
+    justify-items: center;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .product-features__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .product-features__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-foreground);
+  }
+
+  .product-features__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-foreground);
+  }
+
+  .product-features__icon svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+
+  .product-features__text {
+    flex: 1;
+    margin: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product Features",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Feature 1 (Shield Icon)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_feature_1",
+      "label": "Show Feature 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "feature_1_text",
+      "label": "Feature 1 Text",
+      "default": "Scratch Resistant Lenses"
+    },
+    {
+      "type": "header",
+      "content": "Feature 2 (Globe Icon)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_feature_2",
+      "label": "Show Feature 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "feature_2_text",
+      "label": "Feature 2 Text",
+      "default": "Free shipping US wide"
+    },
+    {
+      "type": "header",
+      "content": "Feature 3 (Badge Icon)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_feature_3",
+      "label": "Show Feature 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "feature_3_text",
+      "label": "Feature 3 Text",
+      "default": "Lifetime Warranty"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Features",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
