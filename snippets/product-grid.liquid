@@ -19,7 +19,19 @@
     {% case section.settings.layout_type %}
       {% when 'grid' %}
         .product-grid--{{ section.id }}:is(.product-grid--grid) {
-          --product-grid-columns-desktop: repeat(auto-fill, minmax({{ product_card_size }}, 1fr));
+          --product-grid-columns-desktop: repeat(4, 1fr);
+        }
+
+        @container product-grid (max-width: 1200px) {
+          .product-grid--{{ section.id }}:is(.product-grid--grid) {
+            --product-grid-columns-desktop: repeat(3, 1fr);
+          }
+        }
+
+        @container product-grid (max-width: 900px) {
+          .product-grid--{{ section.id }}:is(.product-grid--grid) {
+            --product-grid-columns-desktop: repeat(2, 1fr);
+          }
         }
 
 
@@ -184,6 +196,10 @@
     }
   }
 
+  .product-grid__item {
+    overflow: visible;
+  }
+
   /* This triggers iOS < 16.4 */
   @supports not (background-color: rgb(from red 150 g b / alpha)) {
     /* Force aspect ratio to auto for iOS < 16.4 since it's not compatible with the infinite pagination */
@@ -198,6 +214,11 @@
 
     @media screen and (min-width: 750px) {
       padding: var(--padding-block-start) var(--padding-inline-end) var(--padding-block-end) var(--padding-inline-start);
+    }
+
+    @media screen and (min-width: 1600px) {
+      max-width: 1500px;
+      margin: auto;
     }
   }
 

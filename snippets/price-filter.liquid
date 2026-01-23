@@ -5,6 +5,7 @@
   @param {string} filter_style - The filter style, can be 'horizontal' or 'vertical'.
   @param {boolean} [autofocus] - Whether to autofocus the filter.
   @param {boolean} [should_render_clear] - Whether to render the clear button.
+  @param {boolean} [open_by_default] - Whether to open the filter by default.
 
   @example
   {% render 'price-filter', filter: filter, filter_style: 'vertical' %}
@@ -18,17 +19,18 @@
   {% endif %}
 
   open-by-default-on-mobile
-  {%- comment -%}
-  {% if filter_style == 'vertical' %}
+  {% if open_by_default %}
     open
     open-by-default-on-desktop
   {% endif %}
-  {%- endcomment -%}
 >
   <details
     class="facets__panel"
     {% if filter_style == 'horizontal' %}
       data-auto-close-details="desktop"
+    {% endif %}
+    {% if open_by_default %}
+      open
     {% endif %}
   >
     <summary class="facets__summary">

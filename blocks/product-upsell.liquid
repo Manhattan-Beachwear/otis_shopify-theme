@@ -1,0 +1,395 @@
+{%- doc -%}
+  @example
+{%- enddoc -%}
+
+{% liquid
+  assign product = closest.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+
+  assign upsell_products = blank
+  
+  if block.settings.product_list != blank
+    assign upsell_products = block.settings.product_list
+  elsif product.metafields.custom.upsell_products != blank
+    assign upsell_products = product.metafields.custom.upsell_products.value
+  endif
+%}
+
+<div
+  class="product-upsell-block spacing-style"
+  style="{% render 'spacing-style', settings: block.settings %}"
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.heading != blank %}
+    <h3 class="product-upsell__heading">{{ block.settings.heading }}</h3>
+  {% endif %}
+
+  {% if upsell_products != blank and upsell_products.size > 0 %}
+    <div class="product-upsell__grid">
+      {% for upsell_product in upsell_products limit: block.settings.products_to_show %}
+        {% assign upsell_variant = upsell_product.selected_or_first_available_variant %}
+        
+        <div class="product-upsell__item">
+          {% if upsell_product.featured_image %}
+            <div class="product-upsell__image">
+              <img
+                src="{{ upsell_product.featured_image | image_url: width: 200 }}"
+                alt="{{ upsell_product.featured_image.alt | escape }}"
+                loading="lazy"
+                width="100"
+                height="{{ 100 | divided_by: upsell_product.featured_image.aspect_ratio | ceil }}"
+              >
+            </div>
+          {% endif %}
+
+          <div class="product-upsell__details">
+            <div class="product-upsell__info">
+              <p class="product-upsell__title">{{ upsell_product.title }}</p>
+              {% if upsell_variant.title != 'Default Title' %}
+                <p class="product-upsell__variant">{{ upsell_variant.title }}</p>
+              {% endif %}
+
+              {% if block.settings.show_size_selector and upsell_product.has_only_default_variant == false %}
+                <div class="product-upsell__size-selector">
+                  <select
+                    class="product-upsell__select"
+                    data-product-id="{{ upsell_product.id }}"
+                    aria-label="Select size for {{ upsell_product.title }}"
+                  >
+                    {% for variant in upsell_product.variants %}
+                      <option
+                        value="{{ variant.id }}"
+                        {% if variant.available == false %}disabled{% endif %}
+                      >
+                        {{ variant.title }}
+                        {% unless variant.available %}- Sold Out{% endunless %}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="product-upsell__action">
+              <button
+                type="button"
+                class="product-upsell__add-btn"
+                data-product-id="{{ upsell_product.id }}"
+                data-variant-id="{{ upsell_variant.id }}"
+                {% unless upsell_variant.available %}disabled{% endunless %}
+              >
+                {% if upsell_variant.available %}
+                  Add {{ upsell_variant.price | money }}
+                {% else %}
+                  Sold Out
+                {% endif %}
+              </button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    {% if request.visual_preview_mode %}
+      <div class="product-upsell__placeholder">
+        <p>{{ 'blocks.product_upsell.no_products' | t | default: 'Select products to display as upsells' }}</p>
+      </div>
+    {% endif %}
+  {% endif %}
+</div>
+
+<script type="module">
+  document.querySelectorAll('.product-upsell__add-btn').forEach(button => {
+    button.addEventListener('click', async (e) => {
+      const btn = e.currentTarget;
+      const variantId = btn.dataset.variantId;
+      const productId = btn.dataset.productId;
+      
+      const select = btn.closest('.product-upsell__item').querySelector('.product-upsell__select');
+      const finalVariantId = select ? select.value : variantId;
+      
+      if (!finalVariantId) return;
+      
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = 'Adding...';
+      
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: finalVariantId,
+            quantity: 1
+          })
+        });
+        
+        if (response.ok) {
+          btn.textContent = 'Added!';
+          
+          document.dispatchEvent(new CustomEvent('cart:updated'));
+          
+          setTimeout(() => {
+            btn.textContent = originalText;
+            btn.disabled = false;
+          }, 2000);
+        } else {
+          throw new Error('Failed to add to cart');
+        }
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        btn.textContent = 'Error';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }, 2000);
+      }
+    });
+  });
+
+  document.querySelectorAll('.product-upsell__select').forEach(select => {
+    select.addEventListener('change', (e) => {
+      const newVariantId = e.target.value;
+      const button = e.target.closest('.product-upsell__item').querySelector('.product-upsell__add-btn');
+      button.dataset.variantId = newVariantId;
+    });
+  });
+</script>
+
+{% stylesheet %}
+  .product-upsell-block {
+    width: 100%;
+    margin: 24px 0;
+  }
+
+  .product-upsell__heading {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin: 0 0 16px;
+    color: var(--color-foreground);
+  }
+
+  .product-upsell__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .product-upsell__item {
+    display: flex;
+    max-width: 500px;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    background: var(--color-background, #fff);
+  }
+
+  .product-upsell__image {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .product-upsell__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-upsell__details {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .product-upsell__info {
+    flex: 1;
+  }
+
+  .product-upsell__title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0 0 4px;
+    line-height: 1.3;
+    color: var(--color-foreground);
+  }
+
+  .product-upsell__variant {
+    font-size: 0.8125rem;
+    margin: 0 0 8px;
+    color: var(--color-foreground-secondary, rgba(0, 0, 0, 0.6));
+  }
+
+  .product-upsell__size-selector {
+    margin-top: 8px;
+  }
+
+  .product-upsell__select {
+    width: 100%;
+    max-width: 200px;
+    padding: 6px 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    font-size: 0.8125rem;
+    background: var(--color-background, #fff);
+    cursor: pointer;
+  }
+
+  .product-upsell__select:focus {
+    outline: none;
+    border-color: var(--color-foreground);
+  }
+
+  .product-upsell__action {
+    flex-shrink: 0;
+  }
+
+  .product-upsell__add-btn {
+    padding: 8px 16px;
+    background: var(--color-background, #fff);
+    color: var(--color-foreground);
+    border: 1px solid var(--color-foreground);
+    border-radius: 4px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    min-width: 80px;
+  }
+
+  .product-upsell__add-btn:hover:not(:disabled) {
+    background: var(--color-foreground);
+    color: var(--color-background, #fff);
+  }
+
+  .product-upsell__add-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .product-upsell__placeholder {
+    padding: 24px;
+    text-align: center;
+    border: 2px dashed rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    color: var(--color-foreground-secondary, rgba(0, 0, 0, 0.6));
+  }
+
+  @media (max-width: 749px) {
+    .product-upsell__item {
+      flex-wrap: wrap;
+    }
+
+    .product-upsell__details {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .product-upsell__action {
+      width: 100%;
+    }
+
+    .product-upsell__add-btn {
+      width: 100%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product Upsell",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Looking for something extra?"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Select Products",
+      "limit": 5,
+      "info": "Select up to 5 products to display as upsells. You can also use product metafield 'custom.upsell_products' for dynamic upsells."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to Show",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "checkbox",
+      "id": "show_size_selector",
+      "label": "Show Size/Variant Selector",
+      "default": true,
+      "info": "Display dropdown for products with multiple variants"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Padding Block Start",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Padding Block End",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Padding Inline Start",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Padding Inline End",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Upsell",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

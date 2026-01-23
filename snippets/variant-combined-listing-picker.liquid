@@ -86,6 +86,15 @@
     assign product_image_swatch_style = settings.product_image_swatch_style
   endif
   
+  assign show_horizontal_scroll = false
+  if block != blank and block_settings != blank and block_settings.show_horizontal_scroll
+    assign show_horizontal_scroll = true
+  elsif section != blank and section.settings != blank and section.settings.show_horizontal_scroll
+    assign show_horizontal_scroll = true
+  elsif settings.show_horizontal_scroll
+    assign show_horizontal_scroll = true
+  endif
+  
   if block != blank and block_settings != blank and block_settings.product_image_swatch_size != blank
     assign product_image_swatch_size = block_settings.product_image_swatch_size
   elsif section != blank and section.settings != blank and section.settings.product_image_swatch_size != blank
@@ -1215,20 +1224,7 @@
     assign dual_swatch_size = product_image_swatch_size
   %}
   <variant-picker-cl-dual
-    class="variant-picker-cl-dual spacing-style variant-picker-cl-dual--{{ alignment_value }}"
-    style="--color-strikethrough-mix: {{ strikethrough_color_mix }}; --product-image-swatch-size: {{ dual_swatch_size }}px; {% render 'spacing-style', settings: block_settings %}"
-    data-section-id="{{ section.id }}"
-    data-product-id="{{ product_resource.id }}"
-    data-product-url="{{ product_resource.url }}"
-    {% if product.id == product_resource.id %}
-      data-template-product-match="true"
-    {% endif %}
-    data-block-id="{{ block.id }}"
-    data-combinations="{{ dual_variant_data_for_js | escape }}"
-    data-current-color="{{ current_color_value | escape }}"
-    data-current-size="{{ current_size_value | escape }}"
-    {{ block.shopify_attributes }}
-  >
+    class="variant-picker-cl-dual spacing-style variant-picker-cl-dual--{{ alignment_value }}{% if show_product_image_swatches and show_horizontal_scroll %} variant-picker-cl-dual--horizontal-scroll{% endif %}\"\n    style="--color-strikethrough-mix: {{ strikethrough_color_mix }}; --product-image-swatch-size: {{ dual_swatch_size }}px; {% render 'spacing-style', settings: block_settings %}"\n    data-section-id="{{ section.id }}"\n    data-product-id="{{ product_resource.id }}"\n    data-product-url="{{ product_resource.url }}"\n    data-horizontal-scroll="{{ show_horizontal_scroll }}"\n    {% if product.id == product_resource.id %}\n      data-template-product-match="true"\n    {% endif %}\n    data-block-id="{{ block.id }}"\n    data-combinations="{{ dual_variant_data_for_js | escape }}"\n    data-current-color="{{ current_color_value | escape }}"\n    data-current-size="{{ current_size_value | escape }}"\n    {{ block.shopify_attributes }}\n  >
     <form class="variant-picker-cl-dual__form">
       {% comment %} Color Picker {% endcomment %}
       {%- liquid
@@ -3061,12 +3057,20 @@
     endif
   -%}
   {%- if use_swatches -%}
+    {%- liquid
+      # Get product image swatch size for CSS variable
+      assign single_swatch_size = product_image_swatch_size
+      if single_swatch_size == blank
+        assign single_swatch_size = 60
+      endif
+    -%}
     <swatches-variant-picker-component
       data-product-id="{{ product_resource.id }}"
       data-product-url="{{ product_resource.url }}"
       {% if product.id == product_resource.id %}
         data-template-product-match="true"
       {% endif %}
+      style="--product-image-swatch-size: {{ single_swatch_size }}px;"
       ref="swatchesVariantPicker"
     >
       <form>
@@ -4252,9 +4256,10 @@
     width: var(--swatch-size);
     height: var(--swatch-size);
     padding: 0;
-    border: var(--focus-outline-width) solid rgb(var(--color-foreground-rgb) / 0.2);
+    border: none;
+    border-radius: 0;
     overflow: hidden;
-    background: var(--color-background);
+    background: transparent;
   }
 
   .variant-option__button-label--product-image .swatch,
@@ -4262,6 +4267,7 @@
     width: 100%;
     height: 100%;
     border-radius: 0;
+    background-color: transparent;
     background-size: cover !important;
     background-repeat: no-repeat !important;
     background-position: center !important;
@@ -4277,60 +4283,110 @@
   /* Circle layout */
   .variant-option__button-label--product-image-circle,
   .variant-picker-cl-dual__label--product-image-circle {
-    border-radius: 50% !important;
+    border-radius: 0;
   }
 
   .variant-option__button-label--product-image-circle .swatch,
   .variant-picker-cl-dual__label--product-image-circle .swatch {
-    border-radius: 50% !important;
+    border-radius: 0;
   }
 
   /* Square layout */
   .variant-option__button-label--product-image-square,
   .variant-picker-cl-dual__label--product-image-square {
-    border-radius: var(--border-radius, 4px) !important;
+    border-radius: 0;
   }
 
   .variant-option__button-label--product-image-square .swatch,
   .variant-picker-cl-dual__label--product-image-square .swatch {
-    border-radius: var(--border-radius, 4px) !important;
+    border-radius: 0;
   }
 
-  /* Selected state for product image swatches */
+  /* Selected state - thin black border only */
   .variant-option__button-label--product-image:has(:checked),
   .variant-picker-cl-dual__label--product-image:has(:checked) {
-    border-color: var(--color-foreground);
-    border-width: calc(var(--focus-outline-width) * 1.5);
+    border: 2px solid #000;
+    border-radius: 0;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove all outlines on focus, hover, active */
+  .variant-option__button-label--product-image:hover,
+  .variant-option__button-label--product-image:focus,
+  .variant-option__button-label--product-image:focus-visible,
+  .variant-option__button-label--product-image:active,
+  .variant-picker-cl-dual__label--product-image:hover,
+  .variant-picker-cl-dual__label--product-image:focus,
+  .variant-picker-cl-dual__label--product-image:focus-visible,
+  .variant-picker-cl-dual__label--product-image:active {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .variant-option__button-label--product-image input:focus,
+  .variant-option__button-label--product-image input:focus-visible,
+  .variant-picker-cl-dual__label--product-image input:focus,
+  .variant-picker-cl-dual__label--product-image input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
   }
 
   /* Ensure circle stays round when selected */
   .variant-option__button-label--product-image-circle:has(:checked),
   .variant-picker-cl-dual__label--product-image-circle:has(:checked) {
-    border-radius: 50% !important;
+    border-radius: 0;
   }
 
   /* Ensure square stays square when selected */
   .variant-option__button-label--product-image-square:has(:checked),
   .variant-picker-cl-dual__label--product-image-square:has(:checked) {
-    border-radius: var(--border-radius, 4px) !important;
+    border-radius: 0;
   }
 
-  /* Hover state for product image swatches */
-  .variant-option__button-label--product-image:hover,
-  .variant-picker-cl-dual__label--product-image:hover {
-    border-color: rgb(var(--color-foreground-rgb) / 0.5);
+  /* Reduce spacing */
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches {
+    gap: 8px;
   }
 
-  /* Ensure circle stays round on hover */
-  .variant-option__button-label--product-image-circle:hover,
-  .variant-picker-cl-dual__label--product-image-circle:hover {
-    border-radius: 50% !important;
+  /* Enable scrolling only when horizontal scroll is enabled */
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list {
+    width: 100%;
+    max-width: 100%;
   }
 
-  /* Ensure square stays square on hover */
-  .variant-option__button-label--product-image-square:hover,
-  .variant-picker-cl-dual__label--product-image-square:hover {
-    border-radius: var(--border-radius, 4px) !important;
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list) {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding-bottom: 10px;
+  }
+
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar {
+    height: 2px;
+  }
+
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar-track {
+    background: #e5e5e5;
+    border-radius: 0;
+  }
+
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar-thumb {
+    background: #b0b0b0;
+    border-radius: 0;
+  }
+
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar-thumb:hover {
+    background: #909090;
+  }
+
+  /* Hide the +more button when horizontal scroll is enabled */
+  .variant-picker-cl-dual--horizontal-scroll .hidden-swatches__count {
+    display: none !important;
   }
 {% endstylesheet %}
 

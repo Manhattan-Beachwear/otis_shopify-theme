@@ -141,6 +141,12 @@
             can_add_to_cart: can_add_to_cart,
             form_obj: form
           %}
+
+          {% content_for 'block',
+            type: 'notify-me-when-available',
+            id: 'notify-me-when-available',
+            can_add_to_cart: can_add_to_cart
+          %}
         </div>
       {%- endform -%}
     </product-form-component>
@@ -566,6 +572,23 @@
       "default": 0
     }
   ],
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "quantity"
+    },
+    {
+      "type": "add-to-cart"
+    },
+    {
+      "type": "accelerated-checkout"
+    },
+    {
+      "type": "notify-me-when-available"
+    }
+  ],
   "presets": [
     {
       "name": "t:names.product_buy_buttons",
@@ -584,6 +607,10 @@
         },
         "accelerated-checkout": {
           "type": "accelerated-checkout",
+          "static": true
+        },
+        "notify-me-when-available": {
+          "type": "notify-me-when-available",
           "static": true
         }
       }

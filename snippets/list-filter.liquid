@@ -9,6 +9,7 @@
   @param {boolean} [should_render_clear] - Whether to render the clear button
   @param {boolean} [show_swatch_label] - Whether to show the swatch label
   @param {boolean} [in_drawer] - Whether the filter is in a drawer
+  @param {boolean} [open_by_default] - Whether to open the filter by default
 {%- enddoc -%}
 
 {% liquid
@@ -32,12 +33,10 @@
     data-close-with-escape="true"
   {% endif %}
   open-by-default-on-mobile
-  {%- comment -%}
-  {% if filter_style == 'vertical' %}
+  {% if open_by_default %}
     open
     open-by-default-on-desktop
   {% endif %}
-  {%- endcomment -%}
   data-filter-param-name="{{ filter.param_name | escape | replace: '.', '-' }}"
 >
   <details
@@ -45,6 +44,9 @@
     class="facets__panel"
     {% if filter_style == 'horizontal' %}
       data-auto-close-details="desktop"
+    {% endif %}
+    {% if open_by_default %}
+      open
     {% endif %}
   >
     <summary class="facets__summary">
