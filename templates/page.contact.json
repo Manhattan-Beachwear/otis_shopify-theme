@@ -283,7 +283,7 @@
                 "text_8chMMN": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Our goal is for every customer to be totally satisfied with their purchase. If this isn't the case, let us know and we'll do our best to work with you to make it right.</p>",
+                    "text": "<p><strong>The Leisure Collective Pty Ltd.</strong></p><p><strong>Email: </strong><a target=\"_blank\">cs_otis@leisurecollective.com.au</a></p><p><strong>Address: </strong>64 Commonage Road, Dunsborough 6281 Western Australia</p><p><strong>Phone Number:   </strong>(08) 9756 7311</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -322,7 +322,7 @@
                 "text_kaRQHU": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>We are unable to accept returns on certain items. These will be carefully marked before purchase.</p>",
+                    "text": "<p><strong>The Leisure Collective Inc.</strong></p><p><strong>Email:</strong>cs@leisurecollectiveinc.com</p><p><strong>Address: </strong>6189 El Camino Real Suite #101 Carlsbad, CA 92009</p><p><strong>Phone Number: </strong>760 814 2840</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -363,7 +363,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>We will work quickly to ship your order as soon as possible. Once your order has shipped, you will receive an email with further information. Delivery times vary depending on your location.</p>",
+                    "text": "<p><strong>Ola Surf & Lifestyle</strong></p><p><strong>Email:   </strong>info@olaproducts.co.nz</p><p><strong>Address: </strong>Unit 1,<strong> </strong>80 Westpoint Drive, Hobsonville, Auckland, 0618, New Zealand</p><p><strong>Phone Number: </strong>+64 212 457 873</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -404,7 +404,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Our products are manufactured both locally and globally. We carefully select our manufacturing partners to ensure our products are high quality and a fair value.</p>",
+                    "text": "<p><strong>Focus Hub SL</strong></p><p><strong>Email:   </strong>otis@focushubsolutions.com</p><p><strong>Address: </strong>FOCUS HUB SL - AV.VICENTE RISCO ESQ. - OTERO PEDRAYO 76 - NARON 15570 - Spain</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -445,7 +445,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Shipping is calculated based on your location and the items in your order. You will always know the shipping price before you purchase.</p>",
+                    "text": "<p><strong>The Eyewear Collective</strong></p><p><strong>Email:   </strong><a href=\"mailto:otis@theeyewearcollective.co.uk\"><span style=\"text-decoration:underline\">otis@theeyewearcollective.co.uk</span></a></p><p><strong>Address: </strong>188-192 Sutton Court Road, London W4 3HR, United Kingdom</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -471,6 +471,47 @@
               "block_order": [
                 "text_ddgGBj"
               ]
+            },
+            "accordion_row_9gzEd7": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_row",
+              "settings": {
+                "heading": "JAPAN",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_DpMNCh": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p><strong>Alco Group</strong></p><p><strong>Address: </strong>PRIME GATE UMEDA 8F, 2-2, Ofuka-cho, Kita-kuOsaka, 530-0011, Japan</p><p><strong>Phone: </strong>+81 6 6563 7346</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_DpMNCh"
+              ]
             }
           },
           "block_order": [
@@ -478,7 +519,8 @@
             "accordion_row_ihCPBb",
             "accordion_row_y87i3K",
             "accordion_row_Qgmik9",
-            "accordion_row_dYTQHn"
+            "accordion_row_dYTQHn",
+            "accordion_row_9gzEd7"
           ]
         }
       },
