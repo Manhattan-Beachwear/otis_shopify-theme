@@ -124,7 +124,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>LEAVE US A MESSAGE</h2>",
+            "text": "<h2>Contact Us</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -150,9 +150,9 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+            "text": "<p>If you have a quick or urgent question, please feel free to contact us.</p><p>For Customer Service assistance, please reach out to one of our team's listed below where we will be available to assist you as best we can.</p><p>Please note, OTIS does not operate on public holidays or weekends.</p>",
             "width": "fit-content",
-            "max_width": "normal",
+            "max_width": "none",
             "alignment": "left",
             "type_preset": "rte",
             "font": "var(--font-body--family)",
@@ -558,112 +558,6 @@
         "padding-block-end": 48
       }
     },
-    "section_3xEwD6": {
-      "type": "section",
-      "blocks": {
-        "text_jzH4d8": {
-          "type": "text",
-          "name": "t:names.heading",
-          "settings": {
-            "text": "<h2>Contact Us</h2>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "text_RtrHkK": {
-          "type": "text",
-          "name": "t:names.text",
-          "settings": {
-            "text": "<p>If you have a quick or urgent question, please feel free to contact us. For Customer Service assistance, please reach out to one of our team's listed below where we will be available to assist you as best we can. Please note, OTIS does not operate on public holidays or weekends.</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "button_xpXLiz": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "Shop now",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "text_jzH4d8",
-        "text_RtrHkK",
-        "button_xpXLiz"
-      ],
-      "name": "t:names.rich_text_section",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 25,
-        "section_width": "page-width",
-        "section_height": "small",
-        "section_height_custom": 50,
-        "color_scheme": "",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "image_zoom_fade_animation": false,
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 48,
-        "padding-block-end": 48
-      }
-    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -671,7 +565,7 @@
           "type": "text",
           "name": "t:names.title",
           "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
+            "text": "<h2>LEAVE US A MESSAGE</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -754,10 +648,10 @@
               "type": "contact-form-submit-button",
               "static": true,
               "settings": {
-                "label": "Submit",
-                "style_class": "button",
+                "label": "SEND",
+                "style_class": "button-secondary",
                 "width": "fit-content",
-                "custom_width": 100,
+                "custom_width": 15,
                 "width_mobile": "fit-content",
                 "custom_width_mobile": 100
               },
@@ -805,7 +699,6 @@
     "hero_drGECj",
     "section_UHdgpD",
     "section_DbRJCk",
-    "section_3xEwD6",
     "main",
     "form"
   ]
