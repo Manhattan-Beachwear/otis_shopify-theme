@@ -454,7 +454,7 @@
           "type": "video",
           "name": "t:names.video",
           "settings": {
-            "source": "url",
+            "source": "uploaded",
             "video": "shopify://files/videos/9cf93b7c5405473d952f1fd98f77a31c.HD-1080p-2.5Mbps-45110415.mp4",
             "video_autoplay": true,
             "video_loop": true,
