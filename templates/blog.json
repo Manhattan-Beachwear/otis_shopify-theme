@@ -76,7 +76,7 @@
               "settings": {
                 "show_date": true,
                 "show_author": false,
-                "type_preset": "",
+                "type_preset": "h5",
                 "alignment": "left",
                 "show_alignment": false,
                 "padding-block-start": 0,
@@ -86,10 +86,9 @@
             },
             "content": {
               "type": "_blog-post-description",
-              "disabled": true,
               "static": true,
               "settings": {
-                "type_preset": "rte",
+                "type_preset": "paragraph",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
