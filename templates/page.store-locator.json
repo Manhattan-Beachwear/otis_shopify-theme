@@ -20,26 +20,64 @@
         "padding-block-end": 80
       }
     },
-    "advanced_content_rLciTz": {
-      "type": "advanced-content",
+    "hero_slideshow_QGHxwT": {
+      "type": "hero-slideshow",
       "blocks": {
-        "image_T6MAat": {
-          "type": "image",
+        "hero_slide_PFaqfz": {
+          "type": "_hero-slide",
           "settings": {
-            "image": "shopify://shop_images/image_35824008-36a3-4554-a4ed-c0d611762ba2.png",
-            "link": "",
-            "width": "50%",
-            "alignment": "center"
-          }
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/image_35824008-36a3-4554-a4ed-c0d611762ba2.png",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "image_T6MAat"
+        "hero_slide_PFaqfz"
       ],
-      "name": "Custom content",
+      "name": "t:names.hero_slideshow",
       "settings": {
-        "full_width": false,
-        "space_around": true
+        "color_scheme": "",
+        "icons_style": "arrows_large",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "section_width": "full-width",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 0,
+        "border_opacity": 100,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     },
     "section_binCXY": {
@@ -70,37 +108,10 @@
             "padding-inline-end": 0
           },
           "blocks": {}
-        },
-        "text_Xp4WEH": {
-          "type": "text",
-          "name": "t:names.heading",
-          "settings": {
-            "text": "<h3>Find an OTIS Stockists</h3>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 78,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "text_HfXGAw",
-        "text_Xp4WEH"
+        "text_HfXGAw"
       ],
       "name": "t:names.rich_text_section",
       "settings": {
@@ -156,7 +167,7 @@
   },
   "order": [
     "main",
-    "advanced_content_rLciTz",
+    "hero_slideshow_QGHxwT",
     "section_binCXY",
     "advanced_content_wyVPh9"
   ]
