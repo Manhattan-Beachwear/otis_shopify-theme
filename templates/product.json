@@ -393,24 +393,15 @@
                     "width": 20
                   },
                   "blocks": {
-                    "text_TgbVek": {
-                      "type": "text",
+                    "page_YPEDLU": {
+                      "type": "page",
+                      "name": "t:names.page",
                       "settings": {
-                        "text": "<p>We will work quickly to ship your order as soon as possible. Once your order has shipped, you will receive an email with further information. Delivery times vary depending on your location.</p>",
-                        "width": "100%",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "rte",
-                        "font": "var(--font-body--family)",
-                        "font_size": "1rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "color": "var(--color-foreground)",
+                        "page": "warranty",
+                        "inherit_color_scheme": true,
+                        "color_scheme": "",
                         "background": false,
                         "background_color": "#00000026",
-                        "corner_radius": 0,
                         "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
@@ -420,7 +411,7 @@
                     }
                   },
                   "block_order": [
-                    "text_TgbVek"
+                    "page_YPEDLU"
                   ]
                 },
                 "accordion_row_4fhihC": {
