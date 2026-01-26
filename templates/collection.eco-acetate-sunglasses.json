@@ -455,7 +455,7 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 48,
-        "padding-block-end": 0
+        "padding-block-end": 48
       }
     },
     "section_nmFpnL": {
@@ -1319,7 +1319,7 @@
                 "text_CxgpLY": {
                   "type": "text",
                   "settings": {
-                    "text": "<h2>Made with care</h2>",
+                    "text": "<h2>Eco-Friendly</h2>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -1470,7 +1470,7 @@
                 "text_rBhxe6": {
                   "type": "text",
                   "settings": {
-                    "text": "<h2>A team with a goal</h2>",
+                    "text": "<h2>Scratch-Resistant</h2>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -1495,7 +1495,7 @@
                 "text_9DNxX8": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Incredibly durable and resistant to scratching, so you see the world in perfect detail. High-quality materials mean you can hang on to your sunnies for years.</p>",
+                    "text": "<p>Incredibly resistant to scratching, so you see the world in perfect detail. High-quality materials mean you can hang on to your sunnies for years.</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
