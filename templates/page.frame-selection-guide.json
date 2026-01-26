@@ -9,6 +9,429 @@
  */
 {
   "sections": {
+    "rich_text_3CqQDm": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_AqeER4": {
+          "type": "heading",
+          "settings": {
+            "title": "WHICH FRAME SUITS YOUR FACE?"
+          }
+        },
+        "text_peecR4": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p>The key to choosing eyewear is finding a frame that compliments your face shape. Before you start shopping around for different colours and frame styles you need to get an idea for what your face shape is. Use the guide below to first identify your facial features:</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_AqeER4",
+        "text_peecR4"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    },
+    "text_and_image_JJ44ED": {
+      "type": "text-and-image",
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/FACE_SHAPE_WEB_LAYOUT3_540x_7405a773-52b1-42af-b9e8-3058fa261e44.webp",
+        "image_width": 520,
+        "subtitle": "",
+        "title": "HEART FACE",
+        "text": "<p>A heart-shaped face has a wide top third and narrow bottom third. Being the most versatile of face shapes, go for styles that are slightly bottom-heavy and slightly wider than your forehead. </p>",
+        "button_label": "FRAMES FOR HEART FACES",
+        "button_link": "https://us.otiseyewear.com/collections/sunglasses-for-heart-faces",
+        "button_style": "secondary",
+        "align_text": "left",
+        "layout": "right",
+        "divider": false
+      }
+    },
+    "hero_slideshow_xWr8fT": {
+      "type": "hero-slideshow",
+      "blocks": {
+        "hero_slide_kUKXaw": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/heart_face.jpg",
+            "image_1_mobile": "shopify://shop_images/heart_face.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "hero_slide_9dFz3M": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/heart_face.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "hero_slide_kUKXaw",
+        "hero_slide_9dFz3M"
+      ],
+      "name": "t:names.hero_slideshow",
+      "settings": {
+        "color_scheme": "",
+        "icons_style": "arrows_large",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "section_width": "full-width",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 0,
+        "border_opacity": 100,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "text_and_image_RR3xkJ": {
+      "type": "text-and-image",
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/quiz-SQUARE.webp",
+        "image_width": 520,
+        "subtitle": "",
+        "title": "SQUARE FACE",
+        "text": "<p>You have more distance between your eyebrows, well defined cheekbones and prominent jaw lines. Choose frames wider than they are tall to help slim down the proportions of your face. Avoid frames that are rectangle or small. </p>",
+        "button_label": "FRAMES FOR SQUARE FACES",
+        "button_link": "https://us.otiseyewear.com/collections/sunglasses-for-square-face-shapes",
+        "button_style": "secondary",
+        "align_text": "left",
+        "layout": "right",
+        "divider": false
+      }
+    },
+    "hero_slideshow_ygdm6U": {
+      "type": "hero-slideshow",
+      "blocks": {
+        "hero_slide_YLNPfC": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/square_face.jpg",
+            "image_1_mobile": "shopify://shop_images/square_face.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "hero_slide_r4hCzd": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/square_face.jpg",
+            "image_1_mobile": "shopify://shop_images/square_face.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "hero_slide_YLNPfC",
+        "hero_slide_r4hCzd"
+      ],
+      "name": "t:names.hero_slideshow",
+      "settings": {
+        "color_scheme": "",
+        "icons_style": "arrows_large",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "section_width": "full-width",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 0,
+        "border_opacity": 100,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "text_and_image_KAJYRT": {
+      "type": "text-and-image",
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/square.webp",
+        "image_width": 520,
+        "subtitle": "",
+        "title": "OVAL FACE",
+        "text": "<p>An oval face has cheekbones being the widest part of the face. Maintain the natural balance of your face and look for frames that are as wide or wider than the broadest part of your face. </p>",
+        "button_label": "FRAMES FOR OVAL FACES",
+        "button_link": "https://us.otiseyewear.com/collections/sunglasses-for-oval-face-shapes",
+        "button_style": "secondary",
+        "align_text": "left",
+        "layout": "right",
+        "divider": false
+      }
+    },
+    "hero_slideshow_7tU9FY": {
+      "type": "hero-slideshow",
+      "blocks": {
+        "hero_slide_NWKkdh": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/oval_face_30abed8d-3640-4058-8323-75fa61ce6a0c.jpg",
+            "image_1_mobile": "shopify://shop_images/oval_face_30abed8d-3640-4058-8323-75fa61ce6a0c.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "hero_slide_NWKkdh"
+      ],
+      "name": "t:names.hero_slideshow",
+      "settings": {
+        "color_scheme": "",
+        "icons_style": "arrows_large",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "section_width": "full-width",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 0,
+        "border_opacity": 100,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "text_and_image_EJWUhn": {
+      "type": "text-and-image",
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/ROUND.webp",
+        "image_width": 520,
+        "subtitle": "",
+        "title": "ROUND FACE",
+        "text": "<p>Your face is circular with soft curves. Length and width are at similar proportions. Opt for angular frames to provide contrast and balance to our softer curves and features. This includes square frames, rectangular frames, cat eye frames and aviators. </p>",
+        "button_label": "FRAMES FOR ROUND FACES",
+        "button_link": "",
+        "button_style": "secondary",
+        "align_text": "left",
+        "layout": "right",
+        "divider": false
+      }
+    },
+    "hero_slideshow_mXExzD": {
+      "type": "hero-slideshow",
+      "blocks": {
+        "hero_slide_QHFXGN": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/round_face_shape.jpg",
+            "image_1_mobile": "shopify://shop_images/round_face_shape.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "hero_slide_BnTter": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/round_face_shape.jpg",
+            "image_1_mobile": "shopify://shop_images/round_face_shape.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "hero_slide_QHFXGN",
+        "hero_slide_BnTter"
+      ],
+      "name": "t:names.hero_slideshow",
+      "settings": {
+        "color_scheme": "",
+        "icons_style": "arrows_large",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "section_width": "full-width",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 0,
+        "border_opacity": 100,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -16,10 +439,10 @@
           "type": "text",
           "name": "Title",
           "settings": {
-            "text": "<p>{{ closest.page.title }}</p>",
+            "text": "<h1>Frame Dimensions Guide</h1>",
             "width": "100%",
             "max_width": "normal",
-            "alignment": "left",
+            "alignment": "center",
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "",
@@ -50,99 +473,96 @@
         "padding-block-end": 80
       }
     },
-    "advanced_content_VaEGRN": {
-      "type": "advanced-content",
+    "rich_text_3EUNDU": {
+      "type": "rich-text",
       "blocks": {
-        "image_PqhN48": {
-          "type": "image",
+        "text_LaLWWB": {
+          "type": "text",
           "settings": {
-            "image": "shopify://shop_images/image_35824008-36a3-4554-a4ed-c0d611762ba2.png",
-            "link": "",
-            "width": "50%",
-            "alignment": "center"
+            "enlarge_text": true,
+            "text": "<p>This information shows you the different dimensions of your eyewear; the lens diameter, the bridge width and the temple length, all measured in millimetres. The lens diameter is the width of the lens (in mm), measured from the bridge. It can be a matter of personal choice, but it's also determined by your frame style and what you enjoy wearing. </p><p>For additional assistance on our frame dimensions and specifics, please contact tlccs@mbwswim.com</p>"
           }
         }
       },
       "block_order": [
-        "image_PqhN48"
+        "text_LaLWWB"
       ],
-      "name": "Custom content",
+      "name": "Rich text",
       "settings": {
-        "full_width": false,
-        "space_around": true
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
       }
     },
-    "section_7CFGaC": {
+    "rich_text_xxhhYK": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_pAVktM": {
+          "type": "heading",
+          "settings": {
+            "title": "Explore Mineral Glass Eyewear from OTIS"
+          }
+        },
+        "text_NggyrR": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p>OTIS Eyewear mineral glass lenses are 12x more scratch resistant than regular plastic lenses. All of our premium eyewear for men and women is made from 100% thermally hardened mineral glass, widely regarded as the best lens material on the planet. When you're looking for scratch resistant sunglasses, polarized sunglasses and sunglasses with durability, OTIS has you covered.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_pAVktM",
+        "text_NggyrR"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    },
+    "section_dykCM6": {
       "type": "section",
       "blocks": {
-        "text_fg8nUt": {
-          "type": "text",
-          "name": "t:names.text",
+        "image_e36dnm": {
+          "type": "image",
           "settings": {
-            "text": "<p>Welcome to our online store locator, where you can find your nearest retail stockist. If you have any questions or queries about where OTIS is sold, just reach out to our customer service team, and they can point you in the right direction. If you are after a particular eyewear style, please reach out to stores directly to check stock levels.</p>",
-            "width": "100%",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
+            "image": "shopify://shop_images/Screen_Shot_2018-03-21_at_12.16.26_PM_600x600_44fd4194-d4fe-4d82-86f9-c9811ff237ff.png",
+            "link": "",
+            "hover_scale": false,
+            "image_ratio": "square",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {}
-        },
-        "text_jNGJEr": {
-          "type": "text",
-          "name": "t:names.heading",
-          "settings": {
-            "text": "<h3>Find an OTIS Stockists</h3>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 78,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "text_fg8nUt",
-        "text_jNGJEr"
+        "image_e36dnm"
       ],
-      "name": "t:names.rich_text_section",
+      "name": "t:names.image_with_text",
       "settings": {
-        "content_direction": "column",
+        "content_direction": "row",
         "vertical_on_mobile": true,
         "horizontal_alignment": "flex-start",
         "vertical_alignment": "center",
         "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
+        "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 0,
-        "section_width": "full-width",
+        "gap": 32,
+        "section_width": "page-width",
         "section_height": "",
         "section_height_custom": 50,
         "color_scheme": "",
@@ -158,36 +578,24 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 48,
-        "padding-block-end": 48
-      }
-    },
-    "advanced_content_TjgTKz": {
-      "type": "advanced-content",
-      "blocks": {
-        "liquid_TWDr6R": {
-          "type": "liquid",
-          "settings": {
-            "code": "<div id='storemapper' style='width:100%;'>\n  <p>Store Locator is loading from <a href='https://www.storemapper.co'>Storemapper plugin</a>...</p>\n</div>\n<script data-storemapper-start='2016,08,15'\n  data-storemapper-id='3254'>\n  (function() {var script = document.createElement('script');\n    script.type  = 'text/javascript';script.async = true;\n    script.src = 'https://www.storemapper.co/js/widget.js';\n    var entry = document.getElementsByTagName('script')[0];\n    entry.parentNode.insertBefore(script, entry);}\n  ());\n</script>\n<!-- Storemapper code ends here -->",
-            "width": "100%",
-            "alignment": "center"
-          }
-        }
-      },
-      "block_order": [
-        "liquid_TWDr6R"
-      ],
-      "name": "Custom content",
-      "settings": {
-        "full_width": false,
-        "space_around": true
+        "padding-block-start": 40,
+        "padding-block-end": 40
       }
     }
   },
   "order": [
+    "rich_text_3CqQDm",
+    "text_and_image_JJ44ED",
+    "hero_slideshow_xWr8fT",
+    "text_and_image_RR3xkJ",
+    "hero_slideshow_ygdm6U",
+    "text_and_image_KAJYRT",
+    "hero_slideshow_7tU9FY",
+    "text_and_image_EJWUhn",
+    "hero_slideshow_mXExzD",
     "main",
-    "advanced_content_VaEGRN",
-    "section_7CFGaC",
-    "advanced_content_TjgTKz"
+    "rich_text_3EUNDU",
+    "section_dykCM6",
+    "rich_text_xxhhYK"
   ]
 }
