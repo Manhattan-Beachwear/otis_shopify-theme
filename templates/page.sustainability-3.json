@@ -50,144 +50,378 @@
         "padding-block-end": 80
       }
     },
-    "advanced_content_VaEGRN": {
-      "type": "advanced-content",
+    "hero_video_iry96c": {
+      "type": "hero-video",
+      "name": "Video hero",
+      "settings": {
+        "title": "",
+        "title_size": 80,
+        "subheading": "",
+        "link_text": "",
+        "link": "",
+        "color_accent": "rgba(0,0,0,0)",
+        "text_align": "vertical-center horizontal-center",
+        "video_url": "https://www.youtube.com/watch?v=5FMfRcv0eHY",
+        "overlay_opacity": 0,
+        "section_height": "650px",
+        "mobile_height": "auto"
+      }
+    },
+    "text_and_image_XP4WYy": {
+      "type": "text-and-image",
+      "settings": {
+        "image": "shopify://shop_images/Corina_Rose_Image.jpg",
+        "image_width": 510,
+        "subtitle": "What makes more sustainable sunglasses?",
+        "title": "",
+        "text": "<p><br/>OTIS is committed to creating more sustainable sunglasses than regular plastic alternatives. Our range is a testament to our dedication to environmental responsibility and our commitment to providing the best sustainable sunglasses in Australia.</p><p>Since OTIS was founded in 2000, we've always used mineral glass lenses that are scratch resistant, optically correct and endlessly recyclable. As part of our sustainability mission, we also had a vision to offer EcoAceate frame options that biodegrade at their end of life in landfill. There’s also our EcoGrilamid materials, which are made from 50% renewable resources, using castor oil instead of petrochemicals for a long-lasting, lightweight material.</p>",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "primary",
+        "align_text": "left",
+        "layout": "left",
+        "divider": false
+      }
+    },
+    "slideshow_zqg3FF": {
+      "type": "slideshow",
       "blocks": {
-        "image_PqhN48": {
+        "image_7dUG8P": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/image_35824008-36a3-4554-a4ed-c0d611762ba2.png",
+            "top_subheading": "",
+            "title": "",
+            "title_size": 86,
+            "subheading": "",
             "link": "",
-            "width": "50%",
-            "alignment": "center"
+            "link_text": "",
+            "link_2": "",
+            "link_text_2": "",
+            "color_accent": "rgba(0,0,0,0)",
+            "text_align": "vertical-center horizontal-center",
+            "image": "shopify://shop_images/OTIS_BANNER_JACK_MEDLAND_desktop_c91cb6d8-4350-4930-ac49-354dbae714df.jpg",
+            "image_mobile": "shopify://shop_images/OTIS_BANNER_JACK_MEDLAND_desktop.jpg",
+            "overlay_opacity": 0,
+            "focal_point": "center center"
           }
         }
       },
       "block_order": [
-        "image_PqhN48"
+        "image_7dUG8P"
       ],
-      "name": "Custom content",
+      "name": "Hero (optional slideshow)",
       "settings": {
-        "full_width": false,
-        "space_around": true
+        "section_height": "650px",
+        "mobile_height": "auto",
+        "parallax": true,
+        "style": "bars",
+        "autoplay": true,
+        "autoplay_speed": 5
       }
     },
-    "section_7CFGaC": {
-      "type": "section",
+    "text_columns_brFbzD": {
+      "type": "text-columns",
       "blocks": {
-        "text_fg8nUt": {
-          "type": "text",
-          "name": "t:names.text",
+        "text_block_wRjfdB": {
+          "type": "text_block",
           "settings": {
-            "text": "<p>Welcome to our online store locator, where you can find your nearest retail stockist. If you have any questions or queries about where OTIS is sold, just reach out to our customer service team, and they can point you in the right direction. If you are after a particular eyewear style, please reach out to stores directly to check stock levels.</p>",
-            "width": "100%",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "enable_image": true,
+            "image": "shopify://shop_images/PACKAGING4_1512x_698aeb17-e0b1-420d-b2ea-8e37f47e6560.webp",
+            "image_width": 650,
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
         },
-        "text_jNGJEr": {
-          "type": "text",
-          "name": "t:names.heading",
+        "text_block_9AqpBM": {
+          "type": "text_block",
           "settings": {
-            "text": "<h3>Find an OTIS Stockists</h3>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 78,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "text_fg8nUt",
-        "text_jNGJEr"
-      ],
-      "name": "t:names.rich_text_section",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 0,
-        "section_width": "full-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "color_scheme": "",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "image_zoom_fade_animation": false,
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 48,
-        "padding-block-end": 48
-      }
-    },
-    "advanced_content_TjgTKz": {
-      "type": "advanced-content",
-      "blocks": {
-        "liquid_TWDr6R": {
-          "type": "liquid",
-          "settings": {
-            "code": "<div id='storemapper' style='width:100%;'>\n  <p>Store Locator is loading from <a href='https://www.storemapper.co'>Storemapper plugin</a>...</p>\n</div>\n<script data-storemapper-start='2016,08,15'\n  data-storemapper-id='3254'>\n  (function() {var script = document.createElement('script');\n    script.type  = 'text/javascript';script.async = true;\n    script.src = 'https://www.storemapper.co/js/widget.js';\n    var entry = document.getElementsByTagName('script')[0];\n    entry.parentNode.insertBefore(script, entry);}\n  ());\n</script>\n<!-- Storemapper code ends here -->",
-            "width": "100%",
-            "alignment": "center"
+            "enable_image": true,
+            "image": "shopify://shop_images/PACKAGING_1512x_637891e6-d414-43ea-8700-5aa019f3bbab.webp",
+            "image_width": 650,
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
           }
         }
       },
       "block_order": [
-        "liquid_TWDr6R"
+        "text_block_wRjfdB",
+        "text_block_9AqpBM"
       ],
-      "name": "Custom content",
       "settings": {
-        "full_width": false,
-        "space_around": true
+        "title": "",
+        "align_text": "center",
+        "divider": false,
+        "color_bg": ""
+      }
+    },
+    "rich_text_HcWfkQ": {
+      "type": "rich-text",
+      "blocks": {
+        "text_gMjtfx": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<h2>Materials for more sustainable sunglasses<br/></h2><p>Products that are used and loved for a long time means less virgin materials are used long-term, resulting in reduced environmental impact. Our eyewear utilises low impact, high-quality materials, ensuring the the product will withstand years of adventures.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_gMjtfx"
+      ],
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    },
+    "text_and_image_qFykxR": {
+      "type": "text-and-image",
+      "settings": {
+        "image": "shopify://shop_images/B_CORP_CERTIFIED.jpg",
+        "image_width": 500,
+        "subtitle": "",
+        "title": "B CORP Certified",
+        "text": "<p>It can be hard to tell the difference between regular options from more ethical sunglasses. One badge that makes a difference, is being Corp certified. As a B Corp OTIS is part of a global community of businesses that meet high standards of social and environmental impact. We proudly accept the responsibility this gold-standard expects from companies to genuinely use their business as a force for good.</p><p>Being a certified B Corp since 2022 reflects the core of our journey towards responsibility, it signifies our commitment to acknowledging issues and actively working to address them. We understand that every pair of frames we produce, sell, and ship has an environmental impact. Our aim is to be transparent about our current standing, highlighting achievements but also identifying opportunities for improvement. We believe in creating products that not only serve our customers but also contribute positively to society and the environment. Sustainability isn't just a buzzword for us; it's an integral part of who we are. Read more in our responsibility report:</p>",
+        "button_label": "Responsibility Report 23",
+        "button_link": "https://cdn.shopify.com/s/files/1/1364/6913/files/OTIS_RESPONSIBILITY_REPORT.pdf?v=1712910243",
+        "button_style": "primary",
+        "align_text": "left",
+        "layout": "right",
+        "divider": false
+      }
+    },
+    "text_columns_HmrFGT": {
+      "type": "text-columns",
+      "blocks": {
+        "text_block_QMWnWt": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/Screenshot_2024-04-15_at_1.11.48_PM.png",
+            "image_width": 650,
+            "title": "Eco Acetate",
+            "text": "<p>Our Eco-Acetate frames are made from renewable resources present in nature. Derived from cotton seeds & plant matter, Eco-Acetate is <strong>recyclable, biodegradable and eco-friendly.</strong> It helps close a circular economy, and feeds the earth at the end of life for more natural materials to grow.</p>",
+            "button_label": "",
+            "button_link": "https://us.otiseyewear.com/blogs/explore-otis/eco-acetate-by-otis?_pos=1&_psq=eco&_ss=e&_v=1.0"
+          }
+        },
+        "text_block_BgRKaQ": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/Screenshot_2024-04-15_at_12.40.06_PM.png",
+            "image_width": 650,
+            "title": "Eco Grilamid",
+            "text": "<p>Our Eco-Grilamid frames are made from a bio-based material that is <strong>better for the environment</strong> than normal plastics you see everyday. Its main ingredient, castor oil, comes from plants grown in semi-arid areas that don’t compete for land used in food production.</p><p></p>",
+            "button_label": "",
+            "button_link": "https://us.otiseyewear.com/collections/eco-grilamid?_pos=1&_psq=eco-grilamid&_ss=e&_v=1.0"
+          }
+        },
+        "text_block_KTt4L6": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/Screenshot_2024-04-15_at_12.40.14_PM.png",
+            "image_width": 650,
+            "title": "Mineral Glass",
+            "text": "<p>OTIS uses mineral glass lenses across the range. Mineral glass is created from natural elements like sand & soda ash. It’s <strong>recyclable & harmless</strong> to humans and animals alike. Its optical clarity, resistance to scratch, and lack of distortion make it a super durable lens material.</p>",
+            "button_label": "",
+            "button_link": "https://us.otiseyewear.com/blogs/explore-otis/mineral-glass-vs-plastic?_pos=1&_psq=mineral-glass&_ss=e&_v=1.0"
+          }
+        }
+      },
+      "block_order": [
+        "text_block_QMWnWt",
+        "text_block_BgRKaQ",
+        "text_block_KTt4L6"
+      ],
+      "name": "Text columns with images",
+      "settings": {
+        "title": "",
+        "align_text": "center",
+        "divider": false,
+        "color_bg": ""
+      }
+    },
+    "text_columns_8VrNPr": {
+      "type": "text-columns",
+      "blocks": {
+        "text_block_qbLVLt": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/PACKAGING4_1512x_698aeb17-e0b1-420d-b2ea-8e37f47e6560.webp",
+            "image_width": 650,
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_cJ3caz": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/PACKAGING_1512x_637891e6-d414-43ea-8700-5aa019f3bbab.webp",
+            "image_width": 650,
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_block_qbLVLt",
+        "text_block_cJ3caz"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "center",
+        "divider": false,
+        "color_bg": ""
+      }
+    },
+    "rich_text_mWVhxJ": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_VUBRw9": {
+          "type": "heading",
+          "settings": {
+            "title": "More Sustainable Sunglasses Need Better Packaging"
+          }
+        },
+        "text_68eHAN": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": false,
+            "text": "<p>Our commitment to creating ethical eyewear extends beyond our products to our operations and business practices.</p><p>We've eliminated plastic in our primary packaging, using recyclable card instead. Every OTIS style also comes wrapped in an cloth made from recycled PET. A way to keep your eyewear (and the planet) that little more cleaner. </p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_VUBRw9",
+        "text_68eHAN"
+      ],
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    },
+    "hero_video_NrqFCx": {
+      "type": "hero-video",
+      "settings": {
+        "title": "",
+        "title_size": 80,
+        "subheading": "",
+        "link_text": "",
+        "link": "",
+        "color_accent": "rgba(0,0,0,0)",
+        "text_align": "vertical-center horizontal-center",
+        "video_url": "https://www.youtube.com/watch?v=VgZYbf0Q17w",
+        "overlay_opacity": 0,
+        "section_height": "650px",
+        "mobile_height": "auto"
+      }
+    },
+    "text_columns_DQ3E3H": {
+      "type": "text-columns",
+      "blocks": {
+        "text_block_HwFEtU": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/tile_1.webp",
+            "image_width": 650,
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_6zfbJq": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/tile_2.webp",
+            "image_width": 650,
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_WqqKUA": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/tile_3.webp",
+            "image_width": 650,
+            "title": "",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_block_HwFEtU",
+        "text_block_6zfbJq",
+        "text_block_WqqKUA"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "center",
+        "divider": false,
+        "color_bg": ""
+      }
+    },
+    "rich_text_z9GbhA": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_h9prit": {
+          "type": "heading",
+          "settings": {
+            "title": "Join the Revolution Today"
+          }
+        },
+        "text_Rc86EY": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p>It's time to make a change and embrace more sustainable fashion. Choose from our wide range of more sustainable sunglasses, made with love for our planet. With <a href=\"https://au.otiseyewear.com/pages/our-story\"><span style=\"text-decoration:underline\">OTIS</span></a>, you're not just buying sunglasses; you're supporting a movement towards a more sustainable future.</p><p>Don't wait, take advantage of our Afterpay option and <a href=\"https://au.otiseyewear.com/pages/shipping\"><span style=\"text-decoration:underline\">enjoy free shipping on all orders</span></a> within the United States. <a href=\"https://au.otiseyewear.com/collections\"><span style=\"text-decoration:underline\">Shop for more sustainable sunglasses</span></a> today.</p><p><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_h9prit",
+        "text_Rc86EY"
+      ],
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
       }
     }
   },
   "order": [
     "main",
-    "advanced_content_VaEGRN",
-    "section_7CFGaC",
-    "advanced_content_TjgTKz"
+    "hero_video_iry96c",
+    "text_and_image_XP4WYy",
+    "slideshow_zqg3FF",
+    "text_columns_brFbzD",
+    "rich_text_HcWfkQ",
+    "text_and_image_qFykxR",
+    "text_columns_HmrFGT",
+    "text_columns_8VrNPr",
+    "rich_text_mWVhxJ",
+    "hero_video_NrqFCx",
+    "text_columns_DQ3E3H",
+    "rich_text_z9GbhA"
   ]
 }
