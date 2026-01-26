@@ -183,6 +183,7 @@
                 "product_image_swatch_style": "square",
                 "product_image_swatch_size": 60,
                 "show_product_image_swatch_variant_name": true,
+                "show_horizontal_scroll": false,
                 "alignment": "left",
                 "padding-block-start": 0,
                 "padding-block-end": 8,
@@ -222,6 +223,25 @@
                   "static": true,
                   "settings": {},
                   "blocks": {}
+                },
+                "notify-me-when-available": {
+                  "type": "notify-me-when-available",
+                  "static": true,
+                  "settings": {
+                    "button_text": "Notify me when available",
+                    "modal_title": "Notify me",
+                    "modal_description": "Don't miss out! Register your email address below to receive an alert when this product is back in stock.",
+                    "color_scheme": "",
+                    "email_label": "Email address",
+                    "email_placeholder": "Email address",
+                    "submit_button_text": "Notify me when available!",
+                    "show_disclaimer": true,
+                    "disclaimer_text": "Promise we won't spam. You'll only receive notifications for this product.",
+                    "success_message": "Thank you! We'll notify you when this product is back in stock.",
+                    "show_powered_by": true,
+                    "powered_by_text": "Powered by STOQ"
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": []
@@ -234,7 +254,7 @@
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "rte",
+                "type_preset": "paragraph",
                 "font": "var(--font-primary--family)",
                 "font_size": "",
                 "line_height": "normal",
@@ -251,6 +271,140 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "accordion_8ECANU": {
+              "type": "accordion",
+              "name": "t:names.accordion",
+              "settings": {
+                "icon": "caret",
+                "dividers": true,
+                "type_preset": "h6",
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "accordion_row_Ud4Hw8": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "{{ closest.product.title }} Features",
+                    "open_by_default": true,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "page_93wBxw": {
+                      "type": "page",
+                      "name": "t:names.page",
+                      "settings": {
+                        "page": "{{ closest.product.metafields.my_fields.features_page.value }}",
+                        "inherit_color_scheme": true,
+                        "color_scheme": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "page_93wBxw"
+                  ]
+                },
+                "accordion_row_eYxTEX": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Shipping",
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text_YUxz6B": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>We will work quickly to ship your order as soon as possible. Once your order has shipped, you will receive an email with further information. Delivery times vary depending on your location.</p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text_YUxz6B"
+                  ]
+                },
+                "accordion_row_PDhXiN": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Manufacturing",
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text_n6XnTq": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Our products are manufactured both locally and globally. We carefully select our manufacturing partners to ensure our products are high quality and a fair value.</p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text_n6XnTq"
+                  ]
+                }
+              },
+              "block_order": [
+                "accordion_row_Ud4Hw8",
+                "accordion_row_eYxTEX",
+                "accordion_row_PDhXiN"
+              ]
             }
           },
           "block_order": [
@@ -258,7 +412,8 @@
             "divider_VJhene",
             "variant_picker_cl_jye8jk",
             "buy_buttons_eYQEYi",
-            "text_aEtTtq"
+            "text_aEtTtq",
+            "accordion_8ECANU"
           ]
         }
       },
