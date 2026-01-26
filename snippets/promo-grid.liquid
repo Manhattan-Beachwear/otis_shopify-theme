@@ -159,8 +159,8 @@
                       }
                     {%- endstyle -%}
 
+                    {%- comment -%}
                     {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-
                     <img
                       class="image-fit promo-grid__bg-image promo-grid__bg-image--{{ block.id }} lazyload"
                       src="{{ block.settings.image | img_url: '300x' }}"
@@ -174,6 +174,13 @@
                         src="{{ block.settings.image | img_url: '1800x' }}"
                         alt="{{ block.settings.image.alt }}">
                     </noscript>
+                    {%- endcomment -%}
+                    <img
+                      class="image-fit promo-grid__bg-image promo-grid__bg-image--{{ block.id }}"
+                      src="{{ block.settings.image | img_url: '1920x' }}"
+                      alt="{{ block.settings.image.alt | escape }}"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}">
                   {%- else -%}
                     {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
                   {%- endif -%}
@@ -249,6 +256,7 @@
                     <div class="type-sale-images__image">
                       {%- if collection_image_1 != blank -%}
                         <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: collection_image_1.aspect_ratio }}%;">
+                          {%- comment -%}
                           {%- assign img_url = collection_image_1 | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
                           <img class="lazyload"
                               data-src="{{ img_url }}"
@@ -259,6 +267,11 @@
                           <noscript>
                             <img class="lazyloaded" src="{{ collection_image_1 | img_url: '800x' }}" alt="{{ image.alt }}">
                           </noscript>
+                          {%- endcomment -%}
+                          <img src="{{ collection_image_1 | img_url: '800x' }}"
+                              alt="{{ collection_image_1.alt }}"
+                              width="{{ collection_image_1.width }}"
+                              height="{{ collection_image_1.height }}">
                         </div>
                       {%- endif -%}
                     </div>
@@ -266,6 +279,7 @@
                     <div class="type-sale-images__image">
                       {%- if collection_image_2 != blank -%}
                         <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: collection_image_2.aspect_ratio }}%;">
+                          {%- comment -%}
                           {%- assign img_url = collection_image_2 | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
                           <img class="lazyload"
                               data-src="{{ img_url }}"
@@ -276,6 +290,11 @@
                           <noscript>
                             <img class="lazyloaded" src="{{ collection_image_2 | img_url: '800x' }}" alt="{{ image.alt }}">
                           </noscript>
+                          {%- endcomment -%}
+                          <img src="{{ collection_image_2 | img_url: '800x' }}"
+                              alt="{{ collection_image_2.alt }}"
+                              width="{{ collection_image_2.width }}"
+                              height="{{ collection_image_2.height }}">
                         </div>
                       {%- endif -%}
                     </div>
@@ -318,14 +337,20 @@
 
               <div class="promo-grid__bg">
                 {%- if block_img != blank -%}
+                  {%- comment -%}
                   {%- assign img_url = block_img | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-
                   <img class="image-fit lazyload"
                     src=""
                     data-src="{{ img_url }}"
                     data-aspectratio="{{ block_img.aspect_ratio }}"
                     data-sizes="auto"
                     alt="{{ block_img.alt | escape }}">
+                  {%- endcomment -%}
+                  <img class="image-fit"
+                    src="{{ block_img | img_url: '1920x' }}"
+                    alt="{{ block_img.alt | escape }}"
+                    width="{{ block_img.width }}"
+                    height="{{ block_img.height }}">
                 {%- else -%}
                   {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
                 {%- endif -%}
@@ -351,6 +376,7 @@
               {%- endif -%}
                 {%- if block.settings.image != blank -%}
                   <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
+                    {%- comment -%}
                     {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
                     <img class="lazyload"
                         data-src="{{ img_url }}"
@@ -362,6 +388,12 @@
                     <noscript>
                       <img class="lazyloaded" src="{{ block.settings.image | img_url: '600x' }}" alt="{{ block.settings.image.alt }}">
                     </noscript>
+                    {%- endcomment -%}
+                    <img src="{{ block.settings.image | img_url: '1200x' }}"
+                        role="presentation"
+                        alt="{{ block.settings.image.alt }}"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}">
                   </div>
                 {%- else -%}
                   {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -380,6 +412,7 @@
                   {%- if block.settings.image != blank -%}
                     <div class="type-banner__image">
                       <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
+                        {%- comment -%}
                         {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
                         <img class="lazyload"
                             data-src="{{ img_url }}"
@@ -391,6 +424,12 @@
                         <noscript>
                           <img class="lazyloaded" src="{{ block.settings.image | img_url: '300x' }}" alt="{{ block.settings.image.alt }}">
                         </noscript>
+                        {%- endcomment -%}
+                        <img src="{{ block.settings.image | img_url: '600x' }}"
+                            role="presentation"
+                            alt="{{ block.settings.image.alt }}"
+                            width="{{ block.settings.image.width }}"
+                            height="{{ block.settings.image.height }}">
                       </div>
                     </div>
                   {%- endif -%}
@@ -467,6 +506,7 @@
                               </div>
                             {%- endif -%}
                             <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: image.aspect_ratio }}%;">
+                              {%- comment -%}
                               {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
                               <a href="{{ product.url }}">
                                 <img class="lazyload"
@@ -478,6 +518,13 @@
                                 <noscript>
                                   <img class="lazyloaded" src="{{ image | img_url: '600x' }}" alt="{{ image.alt }}">
                                 </noscript>
+                              </a>
+                              {%- endcomment -%}
+                              <a href="{{ product.url }}">
+                                <img src="{{ image | img_url: '1200x' }}"
+                                    alt="{{ image.alt }}"
+                                    width="{{ image.width }}"
+                                    height="{{ image.height }}">
                               </a>
                             </div>
                           </div>
