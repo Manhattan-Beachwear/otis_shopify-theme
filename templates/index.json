@@ -221,7 +221,7 @@
                 "text_AXXX9F": {
                   "type": "text",
                   "settings": {
-                    "text": "<h3><strong>Make moves with our active collection</strong></h3>",
+                    "text": "<h3><strong>Make Moves With Our Active Collection</strong></h3>",
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "left",
@@ -252,7 +252,7 @@
                     "alignment": "left",
                     "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "font_size": "1.25rem",
+                    "font_size": "1.5rem",
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
