@@ -46,7 +46,7 @@
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "rte",
+            "type_preset": "paragraph",
             "font": "var(--font-primary--family)",
             "font_size": "",
             "line_height": "normal",
@@ -93,7 +93,7 @@
         "border_opacity": 100,
         "border_radius": 0,
         "toggle_overlay": true,
-        "overlay_color": "#0000008f",
+        "overlay_color": "#00000040",
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 48,
@@ -107,6 +107,7 @@
           "type": "filters",
           "static": true,
           "settings": {
+            "use_simple_controls": true,
             "enable_filtering": true,
             "filter_style": "horizontal",
             "filter_width": "centered",
@@ -239,8 +240,8 @@
         "full_width_on_mobile": true,
         "columns_gap_horizontal": 16,
         "columns_gap_vertical": 24,
-        "padding-inline-start": 0,
-        "padding-inline-end": 0,
+        "padding-inline-start": 48,
+        "padding-inline-end": 48,
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
         "padding-block-end": 32,
@@ -248,7 +249,8 @@
         "show_product_image_swatches": true,
         "product_image_swatch_style": "square",
         "product_image_swatch_size": 60,
-        "show_product_image_swatch_variant_name": true
+        "show_product_image_swatch_variant_name": true,
+        "show_horizontal_scroll": true
       }
     }
   },
