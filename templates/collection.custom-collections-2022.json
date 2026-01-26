@@ -428,7 +428,7 @@
         "group_itcDGb",
         "group_miXfUE"
       ],
-      "name": "t:names.rich_text_section",
+      "name": "Image with Text",
       "settings": {
         "content_direction": "row",
         "vertical_on_mobile": true,
