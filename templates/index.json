@@ -1409,7 +1409,7 @@
           "name": "t:names.blog_card",
           "static": true,
           "settings": {
-            "alignment": "left",
+            "alignment": "center",
             "gap": 8,
             "inherit_color_scheme": true,
             "color_scheme": "",
@@ -1448,7 +1448,7 @@
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "color": "var(--color-foreground)",
+                "color": "var(--color-foreground-heading)",
                 "text": "<h4>{{ closest.article.title }}</h4>",
                 "read_only": false,
                 "alignment": "left",
