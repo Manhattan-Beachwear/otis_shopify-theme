@@ -1119,9 +1119,9 @@
           "static": true,
           "settings": {
             "text": "<h2>OTIS Journal</h2>",
-            "width": "fit-content",
+            "width": "100%",
             "max_width": "normal",
-            "alignment": "left",
+            "alignment": "center",
             "type_preset": "h2",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
@@ -1145,7 +1145,7 @@
           "name": "t:names.blog_card",
           "static": true,
           "settings": {
-            "alignment": "center",
+            "alignment": "left",
             "gap": 8,
             "inherit_color_scheme": true,
             "color_scheme": "",
@@ -1163,7 +1163,7 @@
               "type": "_featured-blog-posts-image",
               "static": true,
               "settings": {
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "square",
                 "border": "none",
                 "border_width": 1,
@@ -1203,7 +1203,7 @@
               "settings": {
                 "show_date": true,
                 "show_author": false,
-                "type_preset": "",
+                "type_preset": "paragraph",
                 "alignment": "left",
                 "show_alignment": false,
                 "padding-block-start": 0,
@@ -1518,7 +1518,7 @@
         "border_opacity": 100,
         "border_radius": 0,
         "toggle_overlay": true,
-        "overlay_color": "#00000010",
+        "overlay_color": "#0000000f",
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 100,
