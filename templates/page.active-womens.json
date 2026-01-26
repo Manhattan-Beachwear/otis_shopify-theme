@@ -42,6 +42,7 @@
       "block_order": [
         "heading"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -49,9 +50,187 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "hero_slideshow_tzJMxE": {
+      "type": "hero-slideshow",
+      "blocks": {
+        "hero_slide_nLmKcF": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/513db9cf-268d-46f8-8e5d-ee6f589b9896.jpg",
+            "image_1_mobile": "shopify://shop_images/513db9cf-268d-46f8-8e5d-ee6f589b9896.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "hero_slide_nLmKcF"
+      ],
+      "name": "t:names.hero_slideshow",
+      "settings": {
+        "color_scheme": "",
+        "icons_style": "arrows_large",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "section_width": "full-width",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 0,
+        "border_opacity": 100,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "text_columns_FCpPK6": {
+      "type": "text-columns",
+      "blocks": {
+        "text_block_bM9qVR": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/165-2201LL_A_1.jpg",
+            "image_width": 650,
+            "title": "Aerial",
+            "text": "<p>Aerial is made from a lightweight yet strong Eco-Grilamid frame with a sporty feel, that brings in cat eye inspired style for extra coverage. Perfect for those who want to stay light. and bright, yet always feel like they're looking their best. </p>",
+            "button_label": "shop now",
+            "button_link": "shopify://products/aerial"
+          }
+        },
+        "text_block_3jrTVP": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/166-2202LL_A_1.jpg",
+            "image_width": 650,
+            "title": "Odyssey",
+            "text": "<p>Take a trip to a bold frame of mind - Odyssey lets you step out with confidence. The Eco-Grilamid frames are lightweight yet strong, with Vissottica hinges to keep that style together. Your striking companion for beach adventures and hiking.</p>",
+            "button_label": "Shop Now",
+            "button_link": "shopify://products/odyssey"
+          }
+        }
+      },
+      "block_order": [
+        "text_block_bM9qVR",
+        "text_block_3jrTVP"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "center",
+        "divider": false,
+        "color_bg": ""
+      }
+    },
+    "text_columns_GyNYhh": {
+      "type": "text-columns",
+      "settings": {
+        "title": "",
+        "align_text": "center",
+        "divider": false,
+        "color_bg": ""
+      }
+    },
+    "text_columns_rBriBC": {
+      "type": "text-columns",
+      "blocks": {
+        "text_block_pyYx7V": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/Screen_Shot_2023-01-18_at_11.26.56_AM.png",
+            "image_width": 650,
+            "title": "L.I.T. Lenses",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_U6pGBz": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/Screen_Shot_2023-01-18_at_11.27.02_AM.png",
+            "image_width": 650,
+            "title": "Eco-Grilamid Frame",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_iJTQRf": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "image": "shopify://shop_images/Screen_Shot_2023-01-18_at_11.27.07_AM.png",
+            "image_width": 650,
+            "title": "Sport Features",
+            "text": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_pazqwH": {
+          "type": "text_block",
+          "disabled": true,
+          "settings": {
+            "enable_image": true,
+            "image_width": 650,
+            "title": "Example title",
+            "text": "<p>Use this section to explain a set of product features, to link to a series of pages, or to answer common questions about your products. Add images for emphasis.</p>",
+            "button_label": "Optional button",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_block_pyYx7V",
+        "text_block_U6pGBz",
+        "text_block_iJTQRf",
+        "text_block_pazqwH"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "center",
+        "divider": false,
+        "color_bg": ""
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "hero_slideshow_tzJMxE",
+    "text_columns_FCpPK6",
+    "text_columns_GyNYhh",
+    "text_columns_rBriBC"
   ]
 }
