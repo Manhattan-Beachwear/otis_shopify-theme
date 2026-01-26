@@ -907,7 +907,7 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 24,
-            "padding-inline-end": 0
+            "padding-inline-end": 24
           },
           "blocks": {
             "icon_c68dzB": {
@@ -915,7 +915,7 @@
               "settings": {
                 "icon": "eye",
                 "image_upload": "shopify://shop_images/lifetime-warranty_ae9fb8ae-e17e-4b34-a5a7-2b8e40da203a.png",
-                "width": 200,
+                "width": 150,
                 "link": "",
                 "open_in_new_tab": false
               },
@@ -1066,7 +1066,7 @@
               "settings": {
                 "icon": "heart",
                 "image_upload": "shopify://shop_images/eco-friendly_aadf138a-20a4-4f67-9ca9-2b8ef9873962.png",
-                "width": 200,
+                "width": 150,
                 "link": "",
                 "open_in_new_tab": false
               },
@@ -1217,7 +1217,7 @@
               "settings": {
                 "icon": "silhouette",
                 "image_upload": "shopify://shop_images/scratch-resistant_5583e8bf-6377-4195-b97f-eab226ec1f99.png",
-                "width": 200,
+                "width": 150,
                 "link": "",
                 "open_in_new_tab": false
               },
