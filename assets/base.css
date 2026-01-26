@@ -4159,6 +4159,7 @@ slideshow-arrows .slideshow-control.slideshow-control--style-none {
   position: relative;
   container-type: inline-size;
   container-name: resource-list-carousel;
+  overflow: hidden;
 
   .slideshow-control[disabled] {
     display: none;
