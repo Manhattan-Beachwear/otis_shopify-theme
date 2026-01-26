@@ -7,7 +7,7 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "section": {
       "type": "main-blog-post",
@@ -46,7 +46,7 @@
           "settings": {
             "show_date": true,
             "show_author": false,
-            "type_preset": "",
+            "type_preset": "paragraph",
             "alignment": "center",
             "show_alignment": true,
             "padding-block-start": 24,
@@ -90,9 +90,64 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "section_mCaPWQ": {
+      "type": "section",
+      "blocks": {
+        "custom_button_wzDmUj": {
+          "type": "custom-button",
+          "name": "Custom Button",
+          "settings": {
+            "button_text": "Back to Journal",
+            "button_url": "",
+            "button_style": "secondary",
+            "full_width": true,
+            "show_icon": true,
+            "icon_name": "external",
+            "open_in_new_tab": false,
+            "onclick": "",
+            "padding-block-start": 0,
+            "padding-block-end": 8
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "custom_button_wzDmUj"
+      ],
+      "name": "CTA",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 24,
+        "padding-block-end": 24
+      }
     }
   },
   "order": [
-    "section"
+    "section",
+    "section_mCaPWQ"
   ]
 }
