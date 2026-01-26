@@ -1,73 +1,281 @@
 <!doctype html>
-<html
-  class="no-js{% if request.design_mode %} shopify-design-mode{% endif %}"
-  lang="{{ request.locale.iso_code }}"
->
+<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ settings.text_direction }}">
   <head>
+    {% render 'geolizr-init' %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_button }}">
+    {% if template contains 'collection' and current_tags %}
+      <meta name="robots" content="noindex">
+      <link rel="canonical" href="{{ shop.url }}{{ collection.url }}">
+    {% elsif template contains 'blog' and current_tags %}
+      <meta name="robots" content="noindex">
+      <link rel="canonical" href="{{ shop.url }}{{ blog.url }}">
+    {% else %}
+      <link rel="canonical" href="{{ canonical_url }}">
+    {% endif %}
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="preconnect" href="https://fonts.shopifycdn.com">
+    <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+    <link rel="dns-prefetch" href="https://ajax.googleapis.com">
+    <link rel="dns-prefetch" href="https://maps.googleapis.com">
+    <link rel="dns-prefetch" href="https://maps.gstatic.com">
+
+    <!-- FHL Global site tag (gtag.js) - Google Ads: 400968584 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-400968584"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-400968584', {'allow_enhanced_conversions':true});
+    </script>
+    <!-- END FHL Global site tag (gtag.js) - Google Ads: 400968584 -->
+
+    <!-- Google Tag Manager -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+    </script>
+
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-WWX7BDD');
+    </script>
+    <!-- End Google Tag Manager -->
+
     {%- if settings.favicon != blank -%}
-      <link
-        rel="icon"
-        type="image/png"
-        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
-      >
+      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
     {%- endif -%}
 
-    {% comment %} This a way to wait for main content to load when navigating to a new page so that the view transitions can work consistently {% endcomment %}
-    <link
-      rel="expect"
-      href="#MainContent"
-      blocking="render"
-      id="view-transition-render-blocker"
-    >
+    {%- render 'seo-title' -%}
 
-    {%- render 'meta-tags' -%}
-    {%- render 'stylesheets' -%}
-    {%- render 'fonts' -%}
-    {%- render 'scripts' -%}
-    {%- render 'theme-styles-variables' -%}
-    {%- render 'color-schemes' -%}
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
 
-    {% if request.design_mode %}
-      {%- render 'theme-editor' -%}
-    {% endif %}
+    {%- render 'social-meta-tags' -%}
+
+    {%- render 'font-face' -%}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {%- render 'css-variables' -%}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+
+      window.theme = window.theme || {};
+      theme.routes = {
+        home: "{{ routes.root_url }}",
+        cart: "{{ routes.cart_url | append: '.js' }}",
+        cartPage: "{{ routes.cart_url }}",
+        cartAdd: "{{ routes.cart_add_url | append: '.js' }}",
+        cartChange: "{{ routes.cart_change_url | append: '.js' }}"
+      };
+      theme.strings = {
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        inStockLabel: {{ 'products.product.in_stock_label' | t | json }},
+        stockLabel: {{ 'products.product.stock_label' | t: count: '[count]' | json }},
+        willNotShipUntil: {{ 'products.product.will_not_ship_until' | t: date: '[date]' | json }},
+        willBeInStockAfter: {{ 'products.product.will_be_in_stock_after' | t: date: '[date]' | json }},
+        waitingForStock: {{ 'products.product.waiting_for_stock' | t | json }},
+        savePrice: {{ 'products.general.save_html' | t: saved_amount: '[saved_amount]' | json }},
+        cartEmpty: {{ 'cart.general.empty' | t | json }},
+        cartTermsConfirmation: {{ 'cart.general.terms_confirm' | t | json }},
+        searchCollections: {{ 'general.search.collections' | t | json }},
+        searchPages: {{ 'general.search.pages' | t | json }},
+        searchArticles: {{ 'general.search.articles' | t | json }}
+      };
+      theme.settings = {
+        dynamicVariantsEnable: true,
+        cartType: {{ settings.cart_type | json }},
+        isCustomerTemplate: {% if request.page_type contains 'customers/' %}true{% else %}false{% endif %},
+        moneyFormat: {{ shop.money_format | json }},
+        saveType: {{ settings.product_save_type | json }},
+        productImageSize: {{ settings.product_grid_image_size | json }},
+        productImageCover: {{ settings.product_grid_image_fill }},
+        predictiveSearch: {{ settings.predictive_search_enabled }},
+        predictiveSearchType: {{ settings.search_type | json }},
+        quickView: {{ settings.quick_shop_enable }},
+        themeName: 'Impulse',
+        themeVersion: "5.2.1"
+      };
+    </script>
 
     {{ content_for_header }}
 
-    {%- render 'store-custom-head' -%}
+    <script src="{{ 'vendor-scripts-v10.js' | asset_url | split: '?' | first }}" defer="defer"></script>
+
+    {% comment %}{% include 'cart-attributes' %}{% endcomment %}
+
+    {%- if shop.enabled_currencies.size > 1 -%}
+      <link
+        rel="preload"
+        as="style"
+        href="{{ 'currency-flags.css' | asset_url | split: '?' | first }}"
+        onload="this.onload=null;this.rel='stylesheet'"
+      >
+      <link rel="stylesheet" href="{{ 'currency-flags.css' | asset_url | split: '?' | first }}">
+    {%- endif -%}
+
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+
+    {%- if request.page_type contains 'customers/' -%}
+      <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    <!-- Hotjar Tracking FHL -->
+    <script>
+      (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:2710597,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+      })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+    <!-- End Hotjar Tracking FHL -->
+
+    {% render 'geo' %}
+    
   </head>
 
-  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}{% if template == 'page.contact' %} template-page page-contact{% elsif template == 'page.faq' %} template-page{% elsif template == 'page.store-locator' %} template-page{% endif %}" data-template="{{ template }}">
-    {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
-    <div id="header-group">
-      {% sections 'header-group' %}
+  <a
+    href="https://us.otiseyewear.com/pages/accessibility-statement"
+    class="screen-reader-only"
+    aria-label="Accessibility Statement"
+    >Accessibility Statement</a
+  >
+
+  <body
+    class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}{% if request.path == '/challenge' %} template-challange{% endif %}"
+    data-center-text="{{ settings.type_body_align_text }}"
+    data-button_style="{{ settings.button_style }}"
+    data-type_header_capitalize="{{ settings.type_header_capitalize }}"
+    data-type_headers_align_text="{{ settings.type_headers_align_text }}"
+    data-type_product_capitalize="{{ settings.type_product_capitalize }}"
+    data-swatch_style="{{ settings.swatch_style }}"
+    {% if settings.disable_animations %}
+      data-disable-animations="true"
+    {% endif %}
+  >
+    <!-- Custom SDK for giveaway - remove after campaign -->
+    <div id="woobox-root"></div>
+    <script>
+      (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "https://woobox.com/js/plugins/woo.js";
+      fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'woobox-sdk'));
+    </script>
+    <!-- End custom SDK -->
+
+    <!-- Klarna -->
+    <script>
+      window.KlarnaThemeGlobals={};{%case template.name%} {%when"product"%} {% if product.first_available_variant.price %}window.KlarnaThemeGlobals.data_purchase_amount = {{ product.first_available_variant.price }};{% endif %}window.KlarnaThemeGlobals.productVariants={{product.variants|json}};window.KlarnaThemeGlobals.documentCopy=document.cloneNode(true);{%when"cart"%} window.KlarnaThemeGlobals.data_purchase_amount={{cart.total_price}};window.KlarnaThemeGlobals.documentCopy=document.cloneNode(true);{%endcase%}
+    </script>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-WWX7BDD"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <a class="in-page-link visually-hidden skip-link" href="#MainContent">
+      {{- 'general.accessibility.skip_to_content' | t -}}
+    </a>
+
+    <div id="PageContainer" class="page-container">
+      <div class="transition-body">
+        {%- section 'header' -%}
+
+        <main class="main-content" id="MainContent">
+          {{ content_for_layout }}
+
+          {% include 'stockify' %}
+        </main>
+
+        {%- section 'footer-promotions' -%}
+        {%- section 'footer' -%}
+      </div>
     </div>
 
-    <script
-      src="{{ 'critical.js' | asset_url }}"
-      type="module"
-      async
-      blocking="render"
-    ></script>
+    {% include 'swymSnippet' %}
 
-    <main
-      id="MainContent"
-      class="content-for-layout"
-      role="main"
-      data-page-transition-enabled="{{ settings.page_transition_enabled }}"
-      data-product-transition="{{ settings.transition_to_main_product }}"
-      data-template="{{ template }}"
-    >
-      {{ content_for_layout }}
-    </main>
+    {%- section 'newsletter-popup' -%}
 
-    {% sections 'footer-group' %}
+    {%- liquid
+      render 'video-modal'
+      render 'photoswipe-template'
+    -%}
+    {% render 'geolizr-currency-converter' %}
 
-    {% render 'search-modal' %}
+    {% render 'special-offers' %}
 
-    {% if settings.quick_add or settings.mobile_quick_add %}
-      {% render 'quick-add-modal' %}
+    {% render 'special-offers-ajax-lib' %}
+
+    <!-- **BEGIN** Hextom QAB Integration // Main Include - DO NOT MODIFY -->
+    {% render 'hextom_qab_main', product: product, customer: customer %}
+    <!-- **END** Hextom QAB Integration // Main Include - DO NOT MODIFY -->
+    {% if product %}
+      <script>
+window.addEventListener('load', function() {
+var _learnq = window._learnq || [];
+function addedToCart() {
+  fetch(`${window.location.origin}/cart.js`)
+  .then(res => res.clone().json().then(data => {
+    var cart = {
+      total_price: data.total_price/100,
+      $value: data.total_price/100,
+      total_discount: data.total_discount,
+      original_total_price: data.original_total_price/100,
+      items: data.items
+    }
+    if (item !== 'undefined') {
+      cart = Object.assign(cart, item)
+    }
+    if (klAjax) {
+        _learnq.push(['track', 'Added to Cart', cart]);
+        klAjax = false;
+      }
+  }))
+};
+(function (ns, fetch) {
+  ns.fetch = function() {
+    const response = fetch.apply(this, arguments);
+    response.then(res => {
+      if (`${window.location.origin}/cart/add.js`
+      	.includes(res.url)) {
+        	addedToCart()
+      }
+    });
+    return response
+  }
+}(window, window.fetch));
+var klAjax = true;
+var atcButtons = document.querySelectorAll("form[action*='/cart/add'] button[type='submit']");
+for (var i = 0; i < atcButtons.length; i++) {
+    atcButtons[i].addEventListener("click", function() {
+      if (klAjax) {
+        _learnq.push(['track', 'Added to Cart', item]);
+        klAjax = false;
+      }
+    })
+}
+});
+      </script>
     {% endif %}
-
-    {%- render 'store-custom-body' -%}
   </body>
 </html>
