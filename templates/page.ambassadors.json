@@ -42,6 +42,7 @@
       "block_order": [
         "heading"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -50,144 +51,99 @@
         "padding-block-end": 80
       }
     },
-    "advanced_content_VaEGRN": {
-      "type": "advanced-content",
+    "rich_text_xEiXBA": {
+      "type": "rich-text",
       "blocks": {
-        "image_PqhN48": {
-          "type": "image",
+        "heading_ThiQU3": {
+          "type": "heading",
           "settings": {
-            "image": "shopify://shop_images/image_35824008-36a3-4554-a4ed-c0d611762ba2.png",
-            "link": "",
-            "width": "50%",
-            "alignment": "center"
+            "title": "AMBASSADORS"
           }
         }
       },
       "block_order": [
-        "image_PqhN48"
+        "heading_ThiQU3"
       ],
-      "name": "Custom content",
+      "name": "Rich text",
       "settings": {
-        "full_width": false,
-        "space_around": true
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
       }
     },
-    "section_7CFGaC": {
-      "type": "section",
-      "blocks": {
-        "text_fg8nUt": {
-          "type": "text",
-          "name": "t:names.text",
-          "settings": {
-            "text": "<p>Welcome to our online store locator, where you can find your nearest retail stockist. If you have any questions or queries about where OTIS is sold, just reach out to our customer service team, and they can point you in the right direction. If you are after a particular eyewear style, please reach out to stores directly to check stock levels.</p>",
-            "width": "100%",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "text_jNGJEr": {
-          "type": "text",
-          "name": "t:names.heading",
-          "settings": {
-            "text": "<h3>Find an OTIS Stockists</h3>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 78,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "text_fg8nUt",
-        "text_jNGJEr"
-      ],
-      "name": "t:names.rich_text_section",
+    "text_and_image_tzTTmL": {
+      "type": "text-and-image",
       "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 0,
-        "section_width": "full-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "color_scheme": "",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "image_zoom_fade_animation": false,
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "image": "shopify://shop_images/1_08cd5b25-42e5-4848-b070-f28cbc59f006_1080x_1.png",
+        "image_width": 500,
+        "subtitle": "",
+        "title": "Imogen Caldwell",
+        "text": "<p>When it comes to muses, there’s not many people who inspire us more than surf gypsy, adventurer, mum, and model Imogen Caldwell. From small-town roots in Western Australia, she’s the perfect mix of down-to-earth meets free spirit, living the life OTIS stands for. </p><p></p><p>Imogen also has a keen eye for style so when it came to people to create an exclusive capsule with, she was top of the list.</p>",
+        "button_label": "@imogencaldwell",
+        "button_link": "https://www.instagram.com/imogencaldwell/",
+        "button_style": "primary",
+        "align_text": "left",
+        "layout": "left",
+        "divider": false
       }
     },
-    "advanced_content_TjgTKz": {
-      "type": "advanced-content",
-      "blocks": {
-        "liquid_TWDr6R": {
-          "type": "liquid",
-          "settings": {
-            "code": "<div id='storemapper' style='width:100%;'>\n  <p>Store Locator is loading from <a href='https://www.storemapper.co'>Storemapper plugin</a>...</p>\n</div>\n<script data-storemapper-start='2016,08,15'\n  data-storemapper-id='3254'>\n  (function() {var script = document.createElement('script');\n    script.type  = 'text/javascript';script.async = true;\n    script.src = 'https://www.storemapper.co/js/widget.js';\n    var entry = document.getElementsByTagName('script')[0];\n    entry.parentNode.insertBefore(script, entry);}\n  ());\n</script>\n<!-- Storemapper code ends here -->",
-            "width": "100%",
-            "alignment": "center"
-          }
-        }
-      },
-      "block_order": [
-        "liquid_TWDr6R"
-      ],
-      "name": "Custom content",
+    "text_and_image_VN9QBU": {
+      "type": "text-and-image",
       "settings": {
-        "full_width": false,
-        "space_around": true
+        "image": "shopify://shop_images/Jay_Square.jpg",
+        "image_width": 500,
+        "subtitle": "",
+        "title": "JAY DAVIES",
+        "text": "<p>Jay Davies looks at waves a little differently than most. Where some see unmakeable, he sees a challenge. Where some see too steep, he sees a ramp. Where some think I wish, he thinks I will… </p><p></p><p>Jay is a mix of casual style and reckless abandon—humble on land yet a total beast in the ocean.</p>",
+        "button_label": "@jay_davies",
+        "button_link": "shopify://collections/jay-davies-favorites",
+        "button_style": "primary",
+        "align_text": "left",
+        "layout": "right",
+        "divider": false
+      }
+    },
+    "text_and_image_x4CBP7": {
+      "type": "text-and-image",
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/Screenshot_2025-10-14_161223.png",
+        "image_width": 700,
+        "subtitle": "",
+        "title": "OTIS BUCKINGHAM",
+        "text": "<p>Hailing from Haiku, Maui, Otis is a natural born watermen with an aptitude for heavy water and pushing the limits. One of our youngest ambassadors, Otis is currently studying construction management at the University of Hawaii, bound for big things on the islands and beyond. Constantly surrounded by wind, ocean and sun, the OTIS connection is kindred. </p>",
+        "button_label": "@otisbuckingham",
+        "button_link": "https://www.instagram.com/otisbuckingham/",
+        "button_style": "primary",
+        "align_text": "left",
+        "layout": "right",
+        "divider": false
+      }
+    },
+    "text_and_image_RxJEw3": {
+      "type": "text-and-image",
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/BIRDIE112.jpg",
+        "image_width": 700,
+        "subtitle": "",
+        "title": "JAMAICA SELBY",
+        "text": "<p>Jamaica Selby hails from Margaret River, Western Australia. She is vibrant and fearless, and brings an authentic blend of skill, style and elegance to the ocean's stage. A true embodiment of the wild west, Jamaica can be found adventuring up and down our beautiful coastline, putting OTIS lenses to the ultimate test.</p>",
+        "button_label": "@jamaicaselby",
+        "button_link": "",
+        "button_style": "primary",
+        "align_text": "left",
+        "layout": "left",
+        "divider": false
       }
     }
   },
   "order": [
     "main",
-    "advanced_content_VaEGRN",
-    "section_7CFGaC",
-    "advanced_content_TjgTKz"
+    "rich_text_xEiXBA",
+    "text_and_image_tzTTmL",
+    "text_and_image_VN9QBU",
+    "text_and_image_x4CBP7",
+    "text_and_image_RxJEw3"
   ]
 }
