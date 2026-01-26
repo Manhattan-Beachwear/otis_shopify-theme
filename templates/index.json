@@ -105,7 +105,7 @@
                 "text_XiH6i7": {
                   "type": "text",
                   "settings": {
-                    "text": "<h1>Explore the 'Active' Collection</h1>",
+                    "text": "<h2>Explore the 'Active' Collection</h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -575,7 +575,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
-                "image_ratio": "landscape",
+                "image_ratio": "adapt",
                 "media_fit": "contain",
                 "border": "none",
                 "border_width": 1,
@@ -594,8 +594,8 @@
               "settings": {
                 "width": "100%",
                 "max_width": "normal",
-                "alignment": "center",
-                "type_preset": "rte",
+                "alignment": "left",
+                "type_preset": "h4",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -622,7 +622,7 @@
                 "show_tax_info": false,
                 "type_preset": "h6",
                 "width": "100%",
-                "alignment": "center",
+                "alignment": "left",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -640,8 +640,8 @@
               "type": "swatches",
               "name": "t:names.swatches",
               "settings": {
-                "product_swatches_alignment": "center",
-                "product_swatches_alignment_mobile": "center",
+                "product_swatches_alignment": "flex-start",
+                "product_swatches_alignment_mobile": "flex-start",
                 "hide_padding": false,
                 "product_swatches_padding_top": 4,
                 "product_swatches_padding_bottom": 0,
@@ -676,7 +676,7 @@
         "icons_style": "arrow",
         "icons_shape": "none",
         "section_width": "page-width",
-        "horizontal_alignment": "center",
+        "horizontal_alignment": "flex-start",
         "gap": 48,
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
