@@ -252,10 +252,39 @@
         "show_product_image_swatch_variant_name": true,
         "show_horizontal_scroll": true
       }
+    },
+    "rich_text_8EDHbc": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_R89W6D": {
+          "type": "heading",
+          "settings": {
+            "title": "Rich text"
+          }
+        },
+        "text_hFeiBT": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_R89W6D",
+        "text_hFeiBT"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
     }
   },
   "order": [
     "section",
-    "main"
+    "main",
+    "rich_text_8EDHbc"
   ]
 }
