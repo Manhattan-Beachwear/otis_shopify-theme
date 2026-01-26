@@ -68,6 +68,32 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "text_HKKUNz": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Brand</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h6",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "menu_HpGdEt": {
               "type": "menu",
               "name": "t:names.menu",
@@ -91,6 +117,7 @@
             }
           },
           "block_order": [
+            "text_HKKUNz",
             "menu_HpGdEt"
           ]
         },
