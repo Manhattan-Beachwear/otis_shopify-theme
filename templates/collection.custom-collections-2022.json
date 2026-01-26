@@ -907,7 +907,7 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 24,
-            "padding-inline-end": 24
+            "padding-inline-end": 0
           },
           "blocks": {
             "icon_c68dzB": {
@@ -1057,8 +1057,8 @@
             "placeholder": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-start": 24,
+            "padding-inline-end": 24
           },
           "blocks": {
             "icon_EqUWr7": {
@@ -1208,8 +1208,8 @@
             "placeholder": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-start": 24,
+            "padding-inline-end": 24
           },
           "blocks": {
             "icon_HmgaWT": {
