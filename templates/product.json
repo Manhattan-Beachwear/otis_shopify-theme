@@ -355,41 +355,49 @@
                 },
                 "accordion_row_PDhXiN": {
                   "type": "_accordion-row",
+                  "name": "Contact Form",
                   "settings": {
-                    "heading": "Manufacturing",
+                    "heading": "Ask a Question",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
                   },
                   "blocks": {
-                    "text_n6XnTq": {
-                      "type": "text",
+                    "contact_form_yTUckR": {
+                      "type": "contact-form",
+                      "name": "t:names.contact_form",
                       "settings": {
-                        "text": "<p>Our products are manufactured both locally and globally. We carefully select our manufacturing partners to ensure our products are high quality and a fair value.</p>",
-                        "width": "100%",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "rte",
-                        "font": "var(--font-body--family)",
-                        "font_size": "1rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "color": "var(--color-foreground)",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
+                        "width": "fit-content",
+                        "custom_width": 100,
+                        "width_mobile": "fit-content",
+                        "custom_width_mobile": 100,
+                        "inherit_color_scheme": true,
+                        "color_scheme": "",
                         "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
                         "padding-inline-end": 0
                       },
-                      "blocks": {}
+                      "blocks": {
+                        "submit-button": {
+                          "type": "contact-form-submit-button",
+                          "static": true,
+                          "settings": {
+                            "label": "Submit",
+                            "style_class": "button",
+                            "width": "fit-content",
+                            "custom_width": 100,
+                            "width_mobile": "fit-content",
+                            "custom_width_mobile": 100
+                          },
+                          "blocks": {}
+                        }
+                      },
+                      "block_order": []
                     }
                   },
                   "block_order": [
-                    "text_n6XnTq"
+                    "contact_form_yTUckR"
                   ]
                 }
               },
