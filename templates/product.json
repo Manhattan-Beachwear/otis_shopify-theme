@@ -277,6 +277,7 @@
             "notify_me_when_available_rQEAnr": {
               "type": "notify-me-when-available",
               "name": "Notify When Available",
+              "disabled": true,
               "settings": {
                 "button_text": "Notify me when available",
                 "modal_title": "Notify me",
@@ -353,8 +354,9 @@
               "blocks": {
                 "accordion_row_cpBBwz": {
                   "type": "_accordion-row",
+                  "name": "Features",
                   "settings": {
-                    "heading": "Return policy",
+                    "heading": "Features",
                     "open_by_default": true,
                     "icon": "none",
                     "width": 20
