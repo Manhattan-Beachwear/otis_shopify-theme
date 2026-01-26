@@ -603,10 +603,10 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/Screen_Shot_2023-11-10_at_10.59.38_AM.png",
+                "image": "shopify://shop_images/163-2101P-JD_C.jpg",
                 "link": "",
                 "hover_scale": false,
-                "image_ratio": "portrait",
+                "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
                 "width_mobile": "fill",
