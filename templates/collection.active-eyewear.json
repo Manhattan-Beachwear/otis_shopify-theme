@@ -248,7 +248,7 @@
         "enable_combined_listings": true,
         "show_product_image_swatches": true,
         "product_image_swatch_style": "square",
-        "product_image_swatch_size": 60,
+        "product_image_swatch_size": 48,
         "show_product_image_swatch_variant_name": true,
         "show_horizontal_scroll": true
       }
