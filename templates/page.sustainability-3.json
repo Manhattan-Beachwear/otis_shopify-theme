@@ -42,6 +42,7 @@
       "block_order": [
         "heading"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -50,21 +51,64 @@
         "padding-block-end": 80
       }
     },
-    "hero_video_iry96c": {
-      "type": "hero-video",
-      "name": "Video hero",
+    "section_F4biVj": {
+      "type": "section",
+      "blocks": {
+        "video_LQ33CR": {
+          "type": "video",
+          "name": "t:names.video",
+          "settings": {
+            "source": "url",
+            "video_url": "https://www.youtube.com/watch?v=5FMfRcv0eHY",
+            "video_autoplay": true,
+            "video_loop": true,
+            "alt": "",
+            "custom_width": 100,
+            "custom_width_mobile": 100,
+            "aspect_ratio": "16/9",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "video_LQ33CR"
+      ],
+      "name": "t:names.video_section",
       "settings": {
-        "title": "",
-        "title_size": 80,
-        "subheading": "",
-        "link_text": "",
-        "link": "",
-        "color_accent": "rgba(0,0,0,0)",
-        "text_align": "vertical-center horizontal-center",
-        "video_url": "https://www.youtube.com/watch?v=5FMfRcv0eHY",
-        "overlay_opacity": 0,
-        "section_height": "650px",
-        "mobile_height": "auto"
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 32,
+        "padding-block-end": 32
       }
     },
     "text_and_image_XP4WYy": {
@@ -109,6 +153,7 @@
       "block_order": [
         "image_7dUG8P"
       ],
+      "disabled": true,
       "name": "Hero (optional slideshow)",
       "settings": {
         "section_height": "650px",
@@ -117,6 +162,67 @@
         "style": "bars",
         "autoplay": true,
         "autoplay_speed": 5
+      }
+    },
+    "hero_slideshow_xLQm6n": {
+      "type": "hero-slideshow",
+      "blocks": {
+        "hero_slide_4hrtzR": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/OTIS_BANNER_JACK_MEDLAND_desktop_c91cb6d8-4350-4930-ac49-354dbae714df.jpg",
+            "image_1_mobile": "shopify://shop_images/OTIS_BANNER_JACK_MEDLAND_desktop.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "hero_slide_4hrtzR"
+      ],
+      "name": "t:names.hero_slideshow",
+      "settings": {
+        "color_scheme": "",
+        "icons_style": "arrows_large",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "section_width": "full-width",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 0,
+        "border_opacity": 100,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     },
     "text_columns_brFbzD": {
@@ -313,20 +419,64 @@
         "divider": false
       }
     },
-    "hero_video_NrqFCx": {
-      "type": "hero-video",
+    "section_ghwBQW": {
+      "type": "section",
+      "blocks": {
+        "video_jEwVU8": {
+          "type": "video",
+          "name": "t:names.video",
+          "settings": {
+            "source": "url",
+            "video_url": "https://www.youtube.com/watch?v=VgZYbf0Q17w",
+            "video_autoplay": true,
+            "video_loop": true,
+            "alt": "",
+            "custom_width": 100,
+            "custom_width_mobile": 100,
+            "aspect_ratio": "16/9",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "video_jEwVU8"
+      ],
+      "name": "t:names.video_section",
       "settings": {
-        "title": "",
-        "title_size": 80,
-        "subheading": "",
-        "link_text": "",
-        "link": "",
-        "color_accent": "rgba(0,0,0,0)",
-        "text_align": "vertical-center horizontal-center",
-        "video_url": "https://www.youtube.com/watch?v=VgZYbf0Q17w",
-        "overlay_opacity": 0,
-        "section_height": "650px",
-        "mobile_height": "auto"
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 32,
+        "padding-block-end": 32
       }
     },
     "text_columns_DQ3E3H": {
@@ -411,16 +561,17 @@
   },
   "order": [
     "main",
-    "hero_video_iry96c",
+    "section_F4biVj",
     "text_and_image_XP4WYy",
     "slideshow_zqg3FF",
+    "hero_slideshow_xLQm6n",
     "text_columns_brFbzD",
     "rich_text_HcWfkQ",
     "text_and_image_qFykxR",
     "text_columns_HmrFGT",
     "text_columns_8VrNPr",
     "rich_text_mWVhxJ",
-    "hero_video_NrqFCx",
+    "section_ghwBQW",
     "text_columns_DQ3E3H",
     "rich_text_z9GbhA"
   ]
