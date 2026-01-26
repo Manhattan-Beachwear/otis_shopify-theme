@@ -199,27 +199,6 @@
               },
               "blocks": {}
             },
-            "product_upsell_i8kgRF": {
-              "type": "product-upsell",
-              "name": "Product Upsell",
-              "settings": {
-                "heading": "Looking for something extra?",
-                "product_list": [
-                  "rx-100-club",
-                  "a-day-late",
-                  "addison-rx",
-                  "after-dark",
-                  "after-dark-x"
-                ],
-                "products_to_show": 2,
-                "show_size_selector": true,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
               "settings": {
@@ -273,6 +252,28 @@
                 }
               },
               "block_order": []
+            },
+            "product_upsell_i8kgRF": {
+              "type": "product-upsell",
+              "name": "Product Upsell",
+              "disabled": true,
+              "settings": {
+                "heading": "Looking for something extra?",
+                "product_list": [
+                  "rx-100-club",
+                  "a-day-late",
+                  "addison-rx",
+                  "after-dark",
+                  "after-dark-x"
+                ],
+                "products_to_show": 2,
+                "show_size_selector": true,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
             },
             "notify_me_when_available_rQEAnr": {
               "type": "notify-me-when-available",
@@ -425,8 +426,8 @@
             "group_icgrde",
             "divider_VJhene",
             "variant_picker_cl_jye8jk",
-            "product_upsell_i8kgRF",
             "buy_buttons_eYQEYi",
+            "product_upsell_i8kgRF",
             "notify_me_when_available_rQEAnr",
             "product_features_F6DFVr",
             "text_aEtTtq",
