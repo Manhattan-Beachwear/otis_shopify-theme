@@ -42,6 +42,7 @@
       "block_order": [
         "heading"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -50,59 +51,93 @@
         "padding-block-end": 80
       }
     },
-    "slideshow_xhriLJ": {
-      "type": "slideshow",
+    "hero_slideshow_n9cGUH": {
+      "type": "hero-slideshow",
       "blocks": {
-        "image_hytVxf": {
-          "type": "image",
+        "hero_slide_K8KwCC": {
+          "type": "_hero-slide",
           "settings": {
-            "top_subheading": "",
-            "title": "",
-            "title_size": 60,
-            "subheading": "",
-            "link": "",
-            "link_text": "",
-            "link_2": "",
-            "link_text_2": "",
-            "color_accent": "rgba(0,0,0,0)",
-            "text_align": "vertical-center horizontal-center",
-            "image": "shopify://shop_images/0016_LIT-1.jpg",
-            "image_mobile": "shopify://shop_images/JWattPhoto_Bahamas-453.jpg",
-            "overlay_opacity": 0,
-            "focal_point": "center center"
-          }
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/0016_LIT-1.jpg",
+            "image_1_mobile": "shopify://shop_images/JWattPhoto_Bahamas-453.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         },
-        "image_kghtRJ": {
-          "type": "image",
+        "hero_slide_zWeJeW": {
+          "type": "_hero-slide",
           "settings": {
-            "top_subheading": "",
-            "title": "",
-            "title_size": 80,
-            "subheading": "",
-            "link": "",
-            "link_text": "",
-            "link_2": "",
-            "link_text_2": "",
-            "color_accent": "rgba(0,0,0,0)",
-            "text_align": "vertical-center horizontal-center",
-            "image": "shopify://shop_images/JWattPhoto_Bahamas-2169_cfe174ab-e4da-4626-bc05-28b96f4de343.jpg",
-            "image_mobile": "shopify://shop_images/LIT-CAICOS_1.jpg",
-            "overlay_opacity": 0,
-            "focal_point": "center center"
-          }
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/JWattPhoto_Bahamas-2169_cfe174ab-e4da-4626-bc05-28b96f4de343.jpg",
+            "image_1_mobile": "shopify://shop_images/LIT-CAICOS_1.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "image_hytVxf",
-        "image_kghtRJ"
+        "hero_slide_K8KwCC",
+        "hero_slide_zWeJeW"
       ],
+      "name": "t:names.hero_slideshow",
       "settings": {
-        "section_height": "550px",
-        "mobile_height": "500px",
-        "parallax": false,
-        "style": "bars",
+        "color_scheme": "",
+        "icons_style": "arrows_large",
+        "slideshow_controls_style": "dots",
         "autoplay": false,
-        "autoplay_speed": 5
+        "autoplay_speed": 4,
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "section_width": "full-width",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 0,
+        "border_opacity": 100,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     },
     "rich_text_hb7yfD": {
@@ -515,44 +550,70 @@
         "show_horizontal_scroll": true
       }
     },
-    "slideshow_kHTC3t": {
-      "type": "slideshow",
+    "hero_slideshow_Ua9mHB": {
+      "type": "hero-slideshow",
       "blocks": {
-        "image_nTNx8J": {
-          "type": "image",
+        "hero_slide_CaWKpg": {
+          "type": "_hero-slide",
           "settings": {
-            "top_subheading": "",
-            "title": "",
-            "title_size": 80,
-            "subheading": "",
-            "link": "",
-            "link_text": "",
-            "link_2": "",
-            "link_text_2": "",
-            "color_accent": "rgba(0,0,0,0)",
-            "text_align": "vertical-center horizontal-center",
-            "image": "shopify://shop_images/JWattPhoto_Bahamas-3350.jpg",
-            "overlay_opacity": 0,
-            "focal_point": "center center"
-          }
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/JWattPhoto_Bahamas-3350.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "image_nTNx8J"
+        "hero_slide_CaWKpg"
       ],
+      "name": "t:names.hero_slideshow",
       "settings": {
-        "section_height": "550px",
-        "mobile_height": "250px",
-        "parallax": false,
-        "style": "bars",
-        "autoplay": true,
-        "autoplay_speed": 5
+        "color_scheme": "",
+        "icons_style": "arrows_large",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "section_width": "full-width",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 0,
+        "border_opacity": 100,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     }
   },
   "order": [
     "main",
-    "slideshow_xhriLJ",
+    "hero_slideshow_n9cGUH",
     "rich_text_hb7yfD",
     "hero_video_9ri6jX",
     "text_columns_TJg83R",
@@ -560,6 +621,6 @@
     "text_columns_7tt9tL",
     "rich_text_nqjeKh",
     "product_list_JK6n6Y",
-    "slideshow_kHTC3t"
+    "hero_slideshow_Ua9mHB"
   ]
 }
