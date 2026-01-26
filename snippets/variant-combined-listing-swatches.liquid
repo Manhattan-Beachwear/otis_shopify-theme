@@ -1245,7 +1245,7 @@
   .variant-option__swatch .variant-option__swatch-name {
     display: block;
     margin-top: 4px;
-    font-size: 12px;
+    font-size: var(--font-size--2xs);
     text-align: center;
     color: var(--color-foreground);
     line-height: 1.2;
@@ -1273,7 +1273,7 @@
 
   /* Selected state */
   .variant-option__button-label--product-image:has(:checked) {
-    border: 2px solid #000;
+    border: 2px solid var(--color-foreground);
     border-radius: 0;
     outline: none !important;
     box-shadow: none !important;
@@ -1338,12 +1338,12 @@
   }
 
   .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar-thumb {
-    background-color: rgba(34, 34, 34, 0.7) !important;
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-70)) !important;
     border-radius: 9999px !important;
   }
 
   .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(34, 34, 34, 0.9) !important;
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-90)) !important;
   }
 
   /* Hide +more button when horizontal scroll is enabled */

@@ -1,24 +1,30 @@
 /* FAQ Page Specific Styles */
 
-/* Max-width constraint for FAQ page sections */
-body[data-template="page.faq"] .section-wrapper .section,
-body[data-template="page.faq"] .section {
+body[data-template="page.faq"] .section-wrapper .section:not(:first-child),
+body[data-template="page.faq"] .section:not(:first-child) {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
 }
 
 /* Accordion styling for FAQ page */
-body[data-template="page.faq"] .accordion .details__header {
+body[data-template="page.faq"] accordion-custom details summary {
   padding: 16px 0;
+  display: flex;
+  align-items: center;
 }
 
-body[data-template="page.faq"] .accordion .details__header .svg-wrapper {
-  order: 1;
-  margin-left: auto;
-  margin-right: 0;
+body[data-template="page.faq"] accordion-custom details summary .svg-wrapper {
+  order: -1;
+  margin-left: 0;
+  margin-right: var(--margin-md);
+  margin-inline-start: 0;
 }
 
-body[data-template="page.faq"] .accordion .icon-plus {
+body[data-template="page.faq"] accordion-custom .icon-plus {
   display: none;
+}
+
+body[data-template="page.faq"] accordion-custom .icon-caret {
+  display: block;
 }

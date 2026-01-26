@@ -85,7 +85,7 @@
             {%- assign accent_brightness = block.settings.color_accent | color_extract: 'lightness' -%}
 
             {% if accent_brightness > 60 %}
-              color: #000 !important;
+              color: var(--color-foreground) !important;
             {% endif %}
           }
 
@@ -122,16 +122,19 @@
         {% endif %}
 
         {% if block.settings.text_size %}
+          .flex-grid__item--{{ block.id }} {
+            --text-size-scale: {{ block.settings.text_size | default: 100.0 | divided_by: 100.0 }};
+          }
           .flex-grid__item--{{ block.id }} .promo-grid__text {
-            font-size: {{ block.settings.text_size | default: 100.0 | divided_by: 100.0 | times: 0.85 }}em;
+            font-size: calc(var(--font-paragraph--size) * var(--text-size-scale) * 0.85);
           }
           .flex-grid__item--{{ block.id }}.flex-grid__item--50 .promo-grid__text {
-            font-size: {{ block.settings.text_size | default: 100.0 | divided_by: 100.0 }}em;
+            font-size: calc(var(--font-paragraph--size) * var(--text-size-scale));
           }
 
           @media only screen and (min-width: 769px) {
             .flex-grid__item--{{ block.id }} .promo-grid__text {
-              font-size: {{ block.settings.text_size | default: 100.0 | divided_by: 100.0 }}em;
+              font-size: calc(var(--font-paragraph--size) * var(--text-size-scale));
             }
           }
         {% endif %}
@@ -435,7 +438,7 @@
                   {%- endif -%}
                   <div class="type-banner__text">
                     {%- if block.settings.heading != blank -%}
-                      <p class="h3">{{ block.settings.heading }}</p>
+                      <h3>{{ block.settings.heading }}</h3>
                     {%- endif -%}
                     {%- if block.settings.text != blank -%}
                       <p>{{ block.settings.text }}</p>

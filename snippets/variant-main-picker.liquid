@@ -42,9 +42,9 @@
   {% liquid
     assign button_background_brightness = section.settings.color_scheme.settings.foreground | color_brightness
     if button_background_brightness < 105
-      assign strikethrough_color_mix = '#000'
+      assign strikethrough_color_mix = 'var(--color-black)'
     else
-      assign strikethrough_color_mix = '#fff'
+      assign strikethrough_color_mix = 'var(--color-white)'
     endif
   %}
   <variant-picker
@@ -830,7 +830,7 @@
   .variant-option__swatch-name {
     display: block;
     margin-top: 4px;
-    font-size: 12px;
+    font-size: var(--font-size--2xs);
     text-align: center;
     color: var(--color-foreground);
     line-height: 1.2;
@@ -859,7 +859,7 @@
 
   /* Selected state - thin black border only */
   .variant-option__button-label--product-image:has(:checked) {
-    border: 2px solid #000;
+    border: 2px solid var(--color-foreground);
     border-radius: 0;
     outline: none !important;
     box-shadow: none !important;
@@ -913,16 +913,16 @@
   }
 
   .variant-picker--horizontal-scroll .variant-option--swatches::-webkit-scrollbar-track {
-    background: #e5e5e5;
+    background: rgb(var(--color-border-rgb) / var(--opacity-30));
     border-radius: 0;
   }
 
   .variant-picker--horizontal-scroll .variant-option--swatches::-webkit-scrollbar-thumb {
-    background: #b0b0b0;
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-50));
     border-radius: 0;
   }
 
   .variant-picker--horizontal-scroll .variant-option--swatches::-webkit-scrollbar-thumb:hover {
-    background: #909090;
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-60));
   }
 {% endstylesheet %}

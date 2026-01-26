@@ -95,12 +95,15 @@
               data-id="{{ block.id }}">
 
               {%- style -%}
+                .slideshow__slide--{{ block.id }} {
+                  --title-size-px: {{ block.settings.title_size }}px;
+                }
                 .slideshow__slide--{{ block.id }} .hero__title {
-                  font-size: {{ block.settings.title_size | times: 0.5 }}px;
+                  font-size: calc(var(--title-size-px) * 0.5);
                 }
                 @media only screen and (min-width: 769px) {
                   .slideshow__slide--{{ block.id }} .hero__title {
-                    font-size: {{ block.settings.title_size }}px;
+                    font-size: var(--title-size-px);
                   }
                 }
 
@@ -113,7 +116,7 @@
                     {%- assign accent_brightness = block.settings.color_accent | color_extract: 'lightness' -%}
 
                     {% if accent_brightness > 40 %}
-                      color: #000 !important;
+                      color: var(--color-foreground) !important;
                     {% endif %}
                   }
 
@@ -135,7 +138,7 @@
                     top: 0;
                     bottom: 0;
                     z-index: 3;
-                    background-color: #000;
+                    background-color: var(--color-black);
                     opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
                   }
                 {% endif %}
