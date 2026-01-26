@@ -16,6 +16,7 @@
             <div>
               {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}<a href="{{ section.settings.button_link }}" aria-label="Featured row">{%- endif -%}
                 <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image.aspect_ratio }}%;">
+                  {%- comment -%}
                   {%- assign img_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
                   <img class="feature-row__image lazyload"
                     data-src="{{ img_url }}"
@@ -23,6 +24,13 @@
                     data-aspectratio="{{ section.settings.image.aspect_ratio }}"
                     data-sizes="auto"
                     alt="{{ section.settings.image.alt }}"
+                    loading="eager">
+                  {%- endcomment -%}
+                  <img class="feature-row__image"
+                    src="{{ section.settings.image | img_url: '800x' }}"
+                    alt="{{ section.settings.image.alt }}"
+                    width="{{ section.settings.image.width }}"
+                    height="{{ section.settings.image.height }}"
                     loading="eager">
                 </div>
               {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}</a>{%- endif -%}
@@ -32,6 +40,7 @@
             <div>
               {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}<a href="{{ section.settings.button_link }}">{%- endif -%}
                 <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image2.aspect_ratio }}%;">
+                  {%- comment -%}
                   {%- assign img_url = section.settings.image2 | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
                   <img class="feature-row__image lazyload"
                     data-src="{{ img_url }}"
@@ -39,6 +48,13 @@
                     data-aspectratio="{{ section.settings.image2.aspect_ratio }}"
                     data-sizes="auto"
                     alt="{{ section.settings.image2.alt }}"
+                    loading="eager">
+                  {%- endcomment -%}
+                  <img class="feature-row__image"
+                    src="{{ section.settings.image2 | img_url: '800x' }}"
+                    alt="{{ section.settings.image2.alt }}"
+                    width="{{ section.settings.image2.width }}"
+                    height="{{ section.settings.image2.height }}"
                     loading="eager">
                 </div>
               {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}</a>{%- endif -%}
