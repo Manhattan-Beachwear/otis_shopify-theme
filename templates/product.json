@@ -293,7 +293,7 @@
               "blocks": {
                 "accordion_row_Ud4Hw8": {
                   "type": "_accordion-row",
-                  "name": "Warranty",
+                  "name": "Features",
                   "settings": {
                     "heading": "{{ closest.product.title }} Features",
                     "open_by_default": true,
@@ -324,6 +324,7 @@
                 },
                 "accordion_row_eYxTEX": {
                   "type": "_accordion-row",
+                  "name": "Warranty",
                   "settings": {
                     "heading": "Warranty",
                     "open_by_default": false,
