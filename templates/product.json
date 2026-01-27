@@ -335,7 +335,7 @@
                   "type": "_accordion-row",
                   "name": "Features",
                   "settings": {
-                    "heading": "Features",
+                    "heading": "{{ closest.product.title }} Features",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
