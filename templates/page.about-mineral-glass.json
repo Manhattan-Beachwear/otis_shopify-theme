@@ -1454,7 +1454,7 @@
                   "type": "text",
                   "name": "t:names.description",
                   "settings": {
-                    "text": "<p>OTIS Polarized Lenses are especially good for surfers, fisherman, hikers, and those who live an active, outdoor lifestyle. They neutralise glare that bounces into your eyes from surfaces like snow, the ocean and more. .</p>",
+                    "text": "<p>OTIS standard lenses are a great general-purpose option that offers 100% protection against harmful UV rays and a high level of protection from sun glare.</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -1638,7 +1638,7 @@
                   "type": "text",
                   "name": "t:names.description",
                   "settings": {
-                    "text": "<p>We're always on your side: keeping our loyal customers happy is our top priority and number one goal.</p>",
+                    "text": "<p>OTIS Polarized Lenses are especially good for surfers, fisherman, hikers, and those who live an active, outdoor lifestyle. They neutralize glare that bounces into your eyes from surfaces like snow, the ocean and more. .</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
