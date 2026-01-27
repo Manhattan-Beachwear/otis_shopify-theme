@@ -1893,7 +1893,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Shop our Standard Lenses",
-                "link": "shopify://collections/best-sellers",
+                "link": "shopify://collections/reflective-sunglasses",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
@@ -1954,7 +1954,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/polarised_lens2.png",
+                "image": "shopify://shop_images/polarised_lens.png",
                 "link": "",
                 "hover_scale": false,
                 "image_ratio": "adapt",
@@ -2018,7 +2018,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2>Polarized Lenses</h2>",
+                    "text": "<h2>LIT Lenses</h2>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -2044,7 +2044,7 @@
                   "type": "text",
                   "name": "t:names.description",
                   "settings": {
-                    "text": "<p>OTIS Polarized Lenses are especially good for surfers, fisherman, hikers, and those who live an active, outdoor lifestyle. They neutralize glare that bounces into your eyes from surfaces like snow, the ocean and more. .</p>",
+                    "text": "<p>OTIS LIT Lenses these are like polarized lenses on steroids. They not only significantly reduce surface glare, but also lift the color profile of your surroundings to make your vision more vivid and precise. Great for those who want the best lenses money can buy.</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
