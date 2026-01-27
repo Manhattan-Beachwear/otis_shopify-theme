@@ -2288,7 +2288,7 @@
                 "text_wbzyQN": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>The Omar's are by far the best fitting sunglasses I have ever owned. Durable, comfortable and stylish all in one!</p>",
+                    "text": "<p>These were my first pair of Otis sunglasses, and I can only say I am in love. This style is stylish, but perfect for everyday too. Nicest pair of sunglasses I have ever purchased. :)</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "center",
@@ -2321,7 +2321,7 @@
                     "case": "none",
                     "wrap": "pretty",
                     "color": "var(--color-foreground)",
-                    "text": "<p>Rory</p>",
+                    "text": "<p>Emma P.</p>",
                     "read_only": false,
                     "alignment": "center",
                     "show_alignment": true,
@@ -2335,7 +2335,7 @@
                 "text_GzQFVK": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>New York</p>",
+                    "text": "<p>New Jersey</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "center",
