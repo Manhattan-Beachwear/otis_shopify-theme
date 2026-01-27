@@ -861,23 +861,6 @@
         "padding-block-end": 0
       }
     },
-    "text_and_image_qkDFLR": {
-      "type": "text-and-image",
-      "name": "Image with text",
-      "settings": {
-        "image": "shopify://shop_images/SCRATCHEST-Active-Single-Video-Brand-Direct-Home_Page.gif",
-        "image_width": 700,
-        "subtitle": "What makes OTIS so unique?",
-        "title": "Mineral glass eyewear",
-        "text": "<p>Every OTIS lens is made from non-toxic natural materials like sand and soda ash. At the end of their long life, they’re also endlessly recyclable. </p><p>They are thermally hardened, enhancing their already natural scratch resistance and durability. They’re also ground, polished and precision tested for clarity control, making them 100% optically correct.<br/></p>",
-        "button_label": "explore mineral glass",
-        "button_link": "",
-        "button_style": "primary",
-        "align_text": "left",
-        "layout": "right",
-        "divider": false
-      }
-    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -1964,7 +1947,6 @@
   "order": [
     "hero_slideshow_PLDBig",
     "section_AtiTmC",
-    "text_and_image_qkDFLR",
     "product_list_fa6P9H",
     "rich_text_djTzcM",
     "section_UMG4e8",
