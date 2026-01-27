@@ -781,11 +781,11 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+                "text": "<p>Every OTIS lens is made from non-toxic natural materials like sand and soda ash. At the end of their long life, they’re also endlessly recyclable. </p><p>They are thermally hardened, enhancing their already natural scratch resistance and durability. They’re also ground, polished and precision tested for clarity control, making them 100% optically correct.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "rte",
+                "type_preset": "paragraph",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
