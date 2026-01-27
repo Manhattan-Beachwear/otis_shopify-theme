@@ -806,7 +806,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/square_format.png",
+                "image": "shopify://shop_images/mineral_glass_benefits6.png",
                 "link": "",
                 "hover_scale": true,
                 "image_ratio": "adapt",
@@ -856,7 +856,7 @@
               "type": "text",
               "name": "t:names.description",
               "settings": {
-                "text": "<p>A hybrid glass half the weight and twice the strength of standard crown glass, delivering unparalleled clarity, making it the perfect lens material.</p>",
+                "text": "<p>A mixture of elements such as silica sand, limestone and soda ash, mineral glass is naturally sourced directly from the earth. Mineral glass is also 100% recyclable.</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -929,7 +929,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/mineral_glass_benefits2.png",
+                "image": "shopify://shop_images/mineral_glass_benefits.png",
                 "link": "",
                 "hover_scale": true,
                 "image_ratio": "adapt",
@@ -979,7 +979,7 @@
               "type": "text",
               "name": "t:names.description",
               "settings": {
-                "text": "<p>Unlike materials such as plastic, Mineral glass a hard and dense material, making it the most scratch-resistant lens material on the planet.</p>",
+                "text": "<p>At OTIS we use a heating and cooling process by which the natural toughness of mineral glass is even further enhanced to increase durability.</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -1052,7 +1052,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/mineral_glass_benefits3.png",
+                "image": "shopify://shop_images/mineral_glass_benefits5.png",
                 "link": "",
                 "hover_scale": true,
                 "image_ratio": "adapt",
@@ -1102,7 +1102,7 @@
               "type": "text",
               "name": "t:names.description",
               "settings": {
-                "text": "<p>We use precision-ground mineral glass which creates the ultimate distortion-free vision, and is currently the most stable lens material in the world.</p>",
+                "text": "<p>Mineral glass is created in permanent lens tints and provides the most stable colour contrast of any lens material. OTIS lenses will never warp, peel or fade over time.</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -1167,75 +1167,6 @@
         "padding-block-end": 48
       }
     },
-    "text_columns_dEgrmC": {
-      "type": "text-columns",
-      "blocks": {
-        "text_block_7bw43P": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/mineral_glass_benefits6.png",
-            "image_width": 420,
-            "title": "",
-            "text": "<h2>Eco Friendly</h2><p>A mixture of elements such as silica sand, limestone and soda ash, mineral glass is naturally sourced directly from the earth. Mineral glass is also 100% recyclable. </p>",
-            "button_label": "",
-            "button_link": ""
-          }
-        },
-        "text_block_JxBq8y": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/mineral_glass_benefits.png",
-            "image_width": 420,
-            "title": "",
-            "text": "<h2>Thermal Hardened</h2><p>At OTIS we use a heating and cooling process by which the natural toughness of mineral glass is even further enhanced to increase durability.</p>",
-            "button_label": "",
-            "button_link": ""
-          }
-        },
-        "text_block_LNGAFt": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/mineral_glass_benefits5.png",
-            "image_width": 420,
-            "title": "",
-            "text": "<h2>Permanent Tinting</h2><p>Mineral glass is created in permanent lens tints and provides the most stable colour contrast of any lens material. OTIS lenses will never warp, peel or fade over time.</p>",
-            "button_label": "",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "text_block_7bw43P",
-        "text_block_JxBq8y",
-        "text_block_LNGAFt"
-      ],
-      "settings": {
-        "title": "",
-        "align_text": "center",
-        "divider": false,
-        "color_bg": ""
-      }
-    },
-    "hero_video_Qgfmry": {
-      "type": "hero-video",
-      "disabled": true,
-      "settings": {
-        "title": "",
-        "title_size": 80,
-        "subheading": "",
-        "link_text": "",
-        "link": "",
-        "color_accent": "rgba(0,0,0,0)",
-        "text_align": "vertical-center horizontal-center",
-        "video_url": "https://youtu.be/tLyPLICeA8E",
-        "overlay_opacity": 0,
-        "section_height": "650px",
-        "mobile_height": "auto"
-      }
-    },
     "section_EKdb9P": {
       "type": "section",
       "blocks": {
@@ -1245,7 +1176,7 @@
           "settings": {
             "source": "url",
             "video_url": "https://youtu.be/tLyPLICeA8E",
-            "video_autoplay": false,
+            "video_autoplay": true,
             "video_loop": true,
             "alt": "",
             "custom_width": 100,
@@ -1296,31 +1227,500 @@
         "padding-block-end": 32
       }
     },
-    "rich_text_rYxgLX": {
-      "type": "rich-text",
+    "section_4f6tAn": {
+      "type": "section",
       "blocks": {
-        "heading_ekP4aQ": {
-          "type": "heading",
-          "settings": {
-            "title": "Our Different Lens Types Explained"
-          }
-        },
-        "text_HrifYA": {
+        "text_HQw99t": {
           "type": "text",
+          "name": "t:names.heading",
           "settings": {
-            "enlarge_text": true,
-            "text": "<p>Every piece of Otis eyewear uses mineral glass lenses. They’re environmentally friendly, scratch resistant and offer perfect visual clarity. But inside the mineral glass lens family there are a few different finishes. The key options are Standard, Polarised, Reflect and LIT.</p><p></p>"
-          }
+            "text": "<h2>Our Different Lens Types Explained</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_axcxPh": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Every piece of Otis eyewear uses mineral glass lenses. They’re environmentally friendly, scratch resistant and offer perfect visual clarity. But inside the mineral glass lens family there are a few different finishes. The key options are Standard, Polarised, Reflect and LIT.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "heading_ekP4aQ",
-        "text_HrifYA"
+        "text_HQw99t",
+        "text_axcxPh"
       ],
+      "name": "t:names.rich_text_section",
       "settings": {
-        "align_text": "center",
-        "narrow_column": true,
-        "divider": false
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "section_GRyQbC": {
+      "type": "section",
+      "blocks": {
+        "group_m7ErpJ": {
+          "type": "group",
+          "name": "t:names.column",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "space-between",
+            "gap": 38,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_BXN7A6": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/regular_lenses.png",
+                "link": "",
+                "hover_scale": false,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_xVjN87": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_ftG7d6": {
+                  "type": "text",
+                  "name": "t:names.heading",
+                  "settings": {
+                    "text": "<h2>Standard Lenses</h2>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "h2",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_4tARnx": {
+                  "type": "text",
+                  "name": "t:names.description",
+                  "settings": {
+                    "text": "<p>OTIS Polarized Lenses are especially good for surfers, fisherman, hikers, and those who live an active, outdoor lifestyle. They neutralise glare that bounces into your eyes from surfaces like snow, the ocean and more. .</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_ftG7d6",
+                "text_4tARnx"
+              ]
+            },
+            "button_4Pgtfc": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Shop our Standard Lenses",
+                "link": "shopify://collections/best-sellers",
+                "open_in_new_tab": false,
+                "style_class": "button-secondary",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_BXN7A6",
+            "group_xVjN87",
+            "button_4Pgtfc"
+          ]
+        },
+        "group_fxrFLi": {
+          "type": "group",
+          "name": "t:names.column",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "space-between",
+            "gap": 38,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_t4Bkza": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/polarised_lens2.png",
+                "link": "",
+                "hover_scale": false,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_9MmB8J": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_XFDLQT": {
+                  "type": "text",
+                  "name": "t:names.heading",
+                  "settings": {
+                    "text": "<h2>Polarized Lenses</h2>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "h2",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_KRUrML": {
+                  "type": "text",
+                  "name": "t:names.description",
+                  "settings": {
+                    "text": "<p>We're always on your side: keeping our loyal customers happy is our top priority and number one goal.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_XFDLQT",
+                "text_KRUrML"
+              ]
+            },
+            "button_iV4nzk": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Shop our Polarized Lenses",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_t4Bkza",
+            "group_9MmB8J",
+            "button_iV4nzk"
+          ]
+        }
+      },
+      "block_order": [
+        "group_m7ErpJ",
+        "group_fxrFLi"
+      ],
+      "name": "t:names.multicolumn",
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "flex-start",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 100,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-4",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     },
     "text_columns_x63Fnf": {
@@ -1410,7 +1810,7 @@
           "settings": {
             "source": "url",
             "video_url": "https://www.youtube.com/watch?v=MI6yRYwpw_k",
-            "video_autoplay": false,
+            "video_autoplay": true,
             "video_loop": true,
             "alt": "",
             "custom_width": 100,
@@ -1497,10 +1897,9 @@
     "section_NpFqwF",
     "section_iixmh3",
     "section_ckTQTN",
-    "text_columns_dEgrmC",
-    "hero_video_Qgfmry",
     "section_EKdb9P",
-    "rich_text_rYxgLX",
+    "section_4f6tAn",
+    "section_GRyQbC",
     "text_columns_x63Fnf",
     "text_columns_z6X6ej",
     "section_9zDbTy",
