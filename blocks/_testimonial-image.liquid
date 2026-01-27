@@ -1,0 +1,412 @@
+{% liquid
+  assign block_settings = block.settings
+  assign ratio = 1
+
+  case block_settings.image_ratio
+    when 'landscape'
+      assign ratio = '16 / 9'
+    when 'portrait'
+      assign ratio = '4 / 5'
+    when 'square'
+      assign ratio = '1 / 1'
+    when 'adapt'
+      assign ratio = block_settings.image.aspect_ratio
+  endcase
+
+  if ratio == 0 or ratio == null
+    assign ratio = 1
+  endif
+%}
+
+{% capture class %}
+  testimonial-image testimonial-image--{{ block.id }} testimonial-image--height-{{ block_settings.height }} spacing-style size-style
+{% endcapture %}
+
+{% liquid
+  # Build max-width styles
+  assign max_width_style = ''
+  if block_settings.max_width_desktop > 0
+    assign max_width_style = 'max-width: ' | append: block_settings.max_width_desktop | append: 'px;'
+  endif
+  
+  assign mobile_max_width_style = ''
+  if block_settings.max_width_mobile > 0
+    assign mobile_max_width_style = '--max-width-mobile: ' | append: block_settings.max_width_mobile | append: 'px;'
+  endif
+%}
+
+{% capture style %}
+  --ratio: {{ ratio }};
+  {% render 'size-style', settings: block_settings %}
+  {% render 'spacing-style', settings: block_settings %}
+  {{ max_width_style }}
+  {{ mobile_max_width_style }}
+{% endcapture %}
+
+{% liquid
+  # Calculate border radius - if >= 50px and square aspect ratio, make it circular
+  assign border_radius_value = block_settings.border_radius
+  if block_settings.border_radius >= 50 and block_settings.image_ratio == 'square'
+    assign border_radius_value = '50%'
+  elsif block_settings.border_radius > 0
+    assign border_radius_value = block_settings.border_radius | append: 'px'
+  else
+    assign border_radius_value = '0'
+  endif
+%}
+
+{% capture image_border_style %}
+  --ratio: {{ ratio }};
+  {% render 'border-override', settings: block_settings %}
+  {% if border_radius_value != '0' %}
+    border-radius: {{ border_radius_value }};
+  {% endif %}
+{% endcapture %}
+
+{% liquid
+  assign media_width_desktop = '100vw'
+  assign media_width_mobile = '100vw'
+  assign sizes = 'auto, (min-width: 750px) ' | append: media_width_desktop | append: ', ' | append: media_width_mobile
+  assign widths = '240, 352, 832, 1200, 1600, 1920, 2560, 3840'
+%}
+
+{% capture image %}
+  {%- if block_settings.image -%}
+    {{
+      block_settings.image
+      | image_url: width: 3840
+      | image_tag:
+        width: block_settings.image.width,
+        widths: widths,
+        height: block_settings.image.height,
+        class: 'testimonial-image__image border-style',
+        style: image_border_style,
+        sizes: sizes,
+        alt: block_settings.image.alt | default: 'Testimonial image'
+    }}
+  {%- else -%}
+    <div class="placeholder-image border-style size-style" style="{{ image_border_style }}">
+      {{ 'detailed-apparel-1' | placeholder_svg_tag: 'testimonial-image__placeholder' }}
+    </div>
+  {%- endif -%}
+{% endcapture %}
+
+<div
+  class="{{ class }}"
+  style="{{ style }}"
+  {% if block_settings.max_width_mobile > 0 %}
+    data-max-width-mobile
+  {% endif %}
+  {{ block.shopify_attributes }}
+>
+  {{ image }}
+</div>
+
+{% stylesheet %}
+  .testimonial-image {
+    display: flex;
+    justify-content: var(--horizontal-alignment, center);
+    align-items: var(--vertical-alignment, center);
+    width: 100%;
+  }
+  
+  .testimonial-image__image {
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Mobile max-width override */
+  @media screen and (max-width: 749px) {
+    .testimonial-image[data-max-width-mobile] {
+      max-width: var(--max-width-mobile, none);
+    }
+  }
+
+  .placeholder-image {
+    position: relative;
+    aspect-ratio: var(--ratio);
+    overflow: hidden;
+    background-color: rgb(var(--color-background));
+  }
+
+  .placeholder-image svg {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: var(--ratio);
+  }
+
+  .testimonial-image--height-fill .testimonial-image__image {
+    height: 100%;
+  }
+
+  .testimonial-image__image {
+    object-fit: cover;
+    aspect-ratio: var(--ratio);
+    width: 100%;
+    height: auto;
+  }
+
+  /* Ensure circular images when border-radius is 50% */
+  .testimonial-image__image[style*="border-radius: 50%"] {
+    border-radius: 50% !important;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+  
+  /* For square aspect ratio images, ensure they maintain 1:1 ratio for circular effect */
+  .testimonial-image[style*="--ratio: 1 / 1"] .testimonial-image__image {
+    aspect-ratio: 1 / 1;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Testimonial Image",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Upload a logo, avatar, headshot, or product image"
+    },
+    {
+      "type": "header",
+      "content": "t:content.size"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:settings.aspect_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:options.auto"
+        },
+        {
+          "value": "portrait",
+          "label": "t:options.portrait"
+        },
+        {
+          "value": "square",
+          "label": "t:options.square"
+        },
+        {
+          "value": "landscape",
+          "label": "t:options.landscape"
+        }
+      ],
+      "default": "square",
+      "info": "Square is recommended for avatars and logos. Use 'Auto' to maintain original image proportions."
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:settings.width_desktop",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "fill",
+          "label": "t:options.fill"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "t:settings.custom_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "width_mobile",
+      "label": "t:settings.width_mobile",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "fill",
+          "label": "t:options.fill"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "range",
+      "id": "custom_width_mobile",
+      "label": "t:settings.custom_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width_mobile == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "Maximum width"
+    },
+    {
+      "type": "range",
+      "id": "max_width_desktop",
+      "label": "Max width (desktop)",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 0,
+      "info": "Set maximum width in pixels. 0 = no limit (full width). Use this to constrain image size from full width down to just a few pixels. Adjustable in 10px increments."
+    },
+    {
+      "type": "range",
+      "id": "max_width_mobile",
+      "label": "Max width (mobile)",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 0,
+      "info": "Set maximum width in pixels for mobile devices. 0 = no limit. Adjustable in 10px increments."
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "t:settings.height",
+      "options": [
+        {
+          "value": "fit",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "fill",
+          "label": "t:options.fill"
+        }
+      ],
+      "default": "fit",
+      "visible_if": "{{ block.settings.image_ratio == 'adapt' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.borders"
+    },
+    {
+      "type": "select",
+      "id": "border",
+      "label": "t:settings.style",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "solid",
+          "label": "t:options.solid"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "t:settings.thickness",
+      "default": 1,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:settings.opacity",
+      "default": 100,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 0,
+      "info": "For a perfect circle: set aspect ratio to 'Square' and border radius to 50px or more. Lower values create rounded corners. Adjustable in 5px increments."
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial Image",
+      "category": "t:categories.basic"
+    }
+  ]
+}
+{% endschema %}
