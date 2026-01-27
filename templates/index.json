@@ -134,7 +134,7 @@
                     "label": "Shop",
                     "link": "shopify://collections/2026-collection",
                     "open_in_new_tab": false,
-                    "style_class": "button-secondary",
+                    "style_class": "button",
                     "width": "fit-content",
                     "custom_width": 100,
                     "width_mobile": "fit-content",
@@ -857,8 +857,8 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 20,
-        "padding-block-end": 20
+        "padding-block-start": 50,
+        "padding-block-end": 50
       }
     },
     "product_list_fa6P9H": {
@@ -1553,7 +1553,7 @@
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 16,
-        "section_width": "page-width",
+        "section_width": "full-width",
         "section_height": "large",
         "section_height_custom": 50,
         "color_scheme": "scheme-3",
@@ -2397,8 +2397,8 @@
   },
   "order": [
     "hero_slideshow_PLDBig",
-    "section_AtiTmC",
     "product_list_fa6P9H",
+    "section_AtiTmC",
     "rich_text_djTzcM",
     "section_UMG4e8",
     "section_RxxVae",
