@@ -1,0 +1,457 @@
+{%- capture children %}
+  {% content_for 'blocks' %}
+{% endcapture %}
+
+{%- assign block_settings = block.settings -%}
+
+<div
+  class="
+    testimonial-card
+    testimonial-card--height-{{ block_settings.height }}
+    testimonial-card--width-{{ block_settings.width }}
+    border-style
+    spacing-style
+    size-style
+    {% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}
+  "
+  style="
+    {% render 'border-override', settings: block_settings %}
+    {% render 'spacing-style', settings: block_settings %}
+    {% render 'size-style', settings: block_settings %}
+    {% if block_settings.background_color != blank %}
+      --testimonial-card-background: {{ block_settings.background_color }};
+    {% endif %}
+    {% if block_settings.box_shadow %}
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    {% endif %}
+  "
+  {{ block.shopify_attributes }}
+  data-testid="testimonial-card"
+>
+  <div
+    class="
+      testimonial-card-content
+      {% if request.design_mode %}testimonial-card-content--design-mode{% endif %}
+      layout-panel-flex
+      layout-panel-flex--{{ block_settings.content_direction | default: 'column' }}
+      {% if block_settings.vertical_on_mobile %} mobile-column{% endif %}
+    "
+    style="{% render 'layout-panel-style', settings: block_settings %}"
+  >
+    {{- children -}}
+  </div>
+</div>
+
+{% stylesheet %}
+  .testimonial-card {
+    background-color: var(--testimonial-card-background, rgb(var(--color-background)));
+    border-radius: var(--border-radius, 0);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: fit-content;
+  }
+
+  .testimonial-card-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: var(--gap, 12px);
+  }
+
+  /* Ensure nested blocks have proper spacing */
+  .testimonial-card-content > * {
+    width: 100%;
+  }
+
+  /* Typography defaults for testimonial content */
+  .testimonial-card-content .text {
+    text-align: center;
+  }
+
+  .testimonial-card-content .testimonial-rating-wrapper {
+    justify-content: center;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Testimonial Card",
+  "tag": null,
+  "blocks": [
+    {
+      "type": "_testimonial-rating"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "_heading"
+    },
+    {
+      "type": "group"
+    },
+    {
+      "type": "_divider"
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "select",
+      "id": "content_direction",
+      "label": "t:settings.direction",
+      "options": [
+        {
+          "value": "column",
+          "label": "t:options.vertical"
+        },
+        {
+          "value": "row",
+          "label": "t:options.horizontal"
+        }
+      ],
+      "default": "column"
+    },
+    {
+      "type": "checkbox",
+      "id": "vertical_on_mobile",
+      "label": "t:settings.vertical_on_mobile",
+      "default": true,
+      "visible_if": "{{ block.settings.content_direction == 'row' }}"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        },
+        {
+          "value": "space-between",
+          "label": "t:options.space_between"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.content_direction == 'row' }}"
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment",
+      "label": "t:settings.position",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.top"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.bottom"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.content_direction == 'row' }}"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment_flex_direction_column",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.content_direction != 'row' }}"
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment_flex_direction_column",
+      "label": "t:settings.position",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.top"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.bottom"
+        },
+        {
+          "value": "space-between",
+          "label": "t:options.space_between"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.content_direction != 'row' }}"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:settings.gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "t:content.size"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "fill",
+          "label": "t:options.fill"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "fill"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "t:settings.custom_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "width_mobile",
+      "label": "t:settings.width_mobile",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "fill",
+          "label": "t:options.fill"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "fill"
+    },
+    {
+      "type": "range",
+      "id": "custom_width_mobile",
+      "label": "t:settings.custom_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width_mobile == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "t:settings.height",
+      "options": [
+        {
+          "value": "fit",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "fill",
+          "label": "t:options.fill"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "fit"
+    },
+    {
+      "type": "range",
+      "id": "custom_height",
+      "label": "t:settings.custom_height",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.height == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.appearance"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_color_scheme",
+      "label": "t:settings.inherit_color_scheme",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "alpha": true,
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "box_shadow",
+      "label": "Box shadow",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "border",
+      "label": "t:settings.borders",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "solid",
+          "label": "t:options.solid"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "px",
+      "label": "t:settings.border_width",
+      "default": 1,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:settings.border_opacity",
+      "default": 100,
+      "visible_if": "{{ block.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "t:settings.border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial Card",
+      "category": "t:categories.layout"
+    }
+  ]
+}
+{% endschema %}

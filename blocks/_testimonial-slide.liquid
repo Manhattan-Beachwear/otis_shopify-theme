@@ -1,0 +1,24 @@
+{%- assign block_index = section.blocks | find_index: 'id', block.id -%}
+
+{% capture slide_content %}
+  {% content_for 'blocks' %}
+{% endcapture %}
+
+{% render 'slideshow-slide',
+  index: block_index,
+  children: slide_content,
+  attributes: block.shopify_attributes
+%}
+
+{% schema %}
+{
+  "name": "Testimonial Slide",
+  "tag": null,
+  "blocks": [
+    {
+      "type": "_testimonial-card"
+    }
+  ],
+  "settings": []
+}
+{% endschema %}
