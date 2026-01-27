@@ -669,7 +669,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h3>Explore what's new</h3>",
+                "text": "<h2>Explore what's new</h2>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
