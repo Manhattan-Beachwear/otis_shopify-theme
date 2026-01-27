@@ -1,0 +1,213 @@
+{% liquid
+  assign block_settings = block.settings
+  assign rating = block_settings.rating | default: 5.0
+  assign scale_max = 5
+
+  # Calculate star display
+  assign star_count_rating = scale_max
+  assign decimal_rating = 0
+  assign decimal = rating | modulo: 1
+
+  if decimal >= 0.3 and decimal <= 0.7
+    assign decimal_rating = 0.5
+  elsif decimal > 0.7
+    assign decimal_rating = 1
+  endif
+
+  # Calculate how many stars to fill
+  assign decimal_rounded = decimal_rating | ceil
+  assign svg_filled_stars = rating | floor | plus: decimal_rounded
+-%}
+
+<div
+  class="testimonial-rating-wrapper justify-{{ block_settings.alignment }} rating-color--{{ block_settings.rating_color }}"
+  {{ block.shopify_attributes }}
+>
+  <svg
+    class="visually-hidden"
+    style="width: 0; height: 0;"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 32 32"
+    role="presentation"
+  >
+    <defs>
+      <linearGradient id="half-{{ block.id }}" x1="0" x2="100%" y1="0" y2="0">
+        <stop offset="50%" stop-color="var(--star-fill-color)"></stop>
+        <stop offset="50%" stop-color="{% if block_settings.stars_style == "outline" %}transparent{% else %}rgb(var(--star-fill-color-rgb) / var(--opacity-20)){% endif %}"></stop>
+      </linearGradient>
+
+      <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="star-{{ block.id }}">
+        <path d="M31.547 12a.848.848 0 00-.677-.577l-9.427-1.376-4.224-8.532a.847.847 0 00-1.516 0l-4.218 8.534-9.427 1.355a.847.847 0 00-.467 1.467l6.823 6.664-1.612 9.375a.847.847 0 001.23.893l8.428-4.434 8.432 4.432a.847.847 0 001.229-.894l-1.615-9.373 6.822-6.665a.845.845 0 00.214-.869z" />
+      </symbol>
+    </defs>
+  </svg>
+  <div
+    class="testimonial-rating"
+    style="--star-size: calc(var(--font-{{ block_settings.type_preset }}--size) * 1.1);"
+    aria-label="{{ 'accessibility.rating' | t: rating: rating }}"
+  >
+    {%- for star in (1..star_count_rating) -%}
+      <svg
+        class="testimonial-rating__star {% if star <= svg_filled_stars %}filled-star{% endif %}"
+        viewBox="0 0 32 32"
+        style="--empty-star-fill-color:{% if block_settings.stars_style == 'outline' %}transparent{% else %}rgb(var(--star-fill-color-rgb) / var(--opacity-20)){% endif %}"
+        role="presentation"
+      >
+        <use xlink:href="#star-{{ block.id }}"{% if decimal_rating == 0.5 and star == svg_filled_stars %} fill="url(#half-{{ block.id }})"{% endif %}></use>
+        {% if block_settings.stars_style == "outline" %}
+          <use xlink:href="#star-{{ block.id }}" fill="none" stroke="var(--star-fill-color)" stroke-width="var(--icon-stroke-width)"></use>
+        {% endif %}
+      </svg>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .testimonial-rating-wrapper {
+    width: 100%;
+    gap: var(--gap-xs);
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+  }
+
+  .testimonial-rating-wrapper.justify-center {
+    justify-content: center;
+  }
+
+  .testimonial-rating-wrapper.justify-left {
+    justify-content: flex-start;
+  }
+
+  .testimonial-rating-wrapper.justify-right {
+    justify-content: flex-end;
+  }
+
+  .rating-color--primary {
+    --star-fill-color: var(--color-primary);
+    --star-fill-color-rgb: var(--color-primary-rgb);
+  }
+
+  .rating-color--foreground {
+    --star-fill-color: var(--color-foreground);
+    --star-fill-color-rgb: var(--color-foreground-rgb);
+  }
+
+  .testimonial-rating {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-3xs);
+  }
+
+  .testimonial-rating__star {
+    height: var(--star-size);
+    fill: var(--empty-star-fill-color);
+  }
+
+  .testimonial-rating__star.filled-star {
+    fill: var(--star-fill-color);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Star Rating",
+  "tag": null,
+  "settings": [
+    {
+      "type": "range",
+      "id": "rating",
+      "label": "Rating",
+      "min": 1,
+      "max": 5,
+      "step": 0.5,
+      "default": 5,
+      "info": "Rating value from 1 to 5 stars"
+    },
+    {
+      "type": "select",
+      "id": "stars_style",
+      "label": "t:settings.style",
+      "options": [
+        {
+          "value": "outline",
+          "label": "t:options.outline"
+        },
+        {
+          "value": "shaded",
+          "label": "t:options.shaded"
+        }
+      ],
+      "default": "shaded"
+    },
+    {
+      "type": "select",
+      "id": "rating_color",
+      "label": "t:settings.color",
+      "options": [
+        {
+          "value": "foreground",
+          "label": "t:options.text"
+        },
+        {
+          "value": "primary",
+          "label": "t:options.body"
+        }
+      ],
+      "default": "foreground"
+    },
+    {
+      "type": "header",
+      "content": "t:content.typography"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:settings.preset",
+      "options": [
+        {
+          "value": "paragraph",
+          "label": "t:options.paragraph"
+        },
+        {
+          "value": "h1",
+          "label": "t:options.h1"
+        },
+        {
+          "value": "h2",
+          "label": "t:options.h2"
+        },
+        {
+          "value": "h3",
+          "label": "t:options.h3"
+        },
+        {
+          "value": "h4",
+          "label": "t:options.h4"
+        },
+        {
+          "value": "h5",
+          "label": "t:options.h5"
+        },
+        {
+          "value": "h6",
+          "label": "t:options.h6"
+        }
+      ],
+      "default": "paragraph"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "default": "center"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Star Rating",
+      "category": "t:categories.basic"
+    }
+  ]
+}
+{% endschema %}
