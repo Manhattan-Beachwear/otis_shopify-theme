@@ -1366,7 +1366,7 @@
               "settings": {
                 "image": "shopify://shop_images/regular_lenses.png",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -1550,7 +1550,7 @@
               "settings": {
                 "image": "shopify://shop_images/polarised_lens2.png",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -1772,7 +1772,7 @@
               "settings": {
                 "image": "shopify://shop_images/mineral_glass_benefits4.png",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -1956,7 +1956,7 @@
               "settings": {
                 "image": "shopify://shop_images/polarised_lens.png",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -2129,45 +2129,6 @@
         "padding-block-end": 48
       }
     },
-    "text_columns_z6X6ej": {
-      "type": "text-columns",
-      "blocks": {
-        "text_block_Ug9beW": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/mineral_glass_benefits4.png",
-            "image_width": 650,
-            "title": "",
-            "text": "<h2>Reflect Lenses</h2><p>OTIS Reflect Lenses are great for people wanting to reduce glare even further than regular lenses. They have a mirrored finish that reflects light back out, instead of absorbing it. Available in both polar and non-polar options.</p><p></p>",
-            "button_label": "browse our reflect lenses",
-            "button_link": "shopify://collections/reflective-sunglasses"
-          }
-        },
-        "text_block_GAGMwj": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/polarised_lens.png",
-            "image_width": 650,
-            "title": "",
-            "text": "<h2>LIT Lenses</h2><p>OTIS LIT Lenses these are like polarised lenses on steroids. They not only significantly reduce surface glare, but also lift the colour profile of your surroundings to make your vision more vivid and precise. Great for those who want the best lenses money can buy.</p>",
-            "button_label": "Browse our lit lenses",
-            "button_link": "shopify://collections/l-i-t-lens"
-          }
-        }
-      },
-      "block_order": [
-        "text_block_Ug9beW",
-        "text_block_GAGMwj"
-      ],
-      "settings": {
-        "title": "",
-        "align_text": "center",
-        "divider": false,
-        "color_bg": ""
-      }
-    },
     "section_9zDbTy": {
       "type": "section",
       "blocks": {
@@ -2228,31 +2189,94 @@
         "padding-block-end": 32
       }
     },
-    "rich_text_WKL9Km": {
-      "type": "rich-text",
+    "section_xxppWk": {
+      "type": "section",
       "blocks": {
-        "heading_PRwHjy": {
-          "type": "heading",
-          "settings": {
-            "title": "Join us in Making a Positive Impact"
-          }
-        },
-        "text_dG8AWY": {
+        "text_aEfXtq": {
           "type": "text",
+          "name": "t:names.heading",
           "settings": {
-            "enlarge_text": true,
-            "text": "<p>Choose OTIS Eyewear for sustainable, high-quality sunglasses. We believe that our commitment to <a href=\"https://au.otiseyewear.com/pages/sustainability\">sustainability</a> and technical excellence is what sets us apart from the rest. We're proud to be leading the way in the industry, and we hope that you'll join us in making a positive impact on the environment.</p>"
-          }
+            "text": "<h2>Join us in Making a Positive Impact</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_efzfK7": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Choose OTIS Eyewear for sustainable, high-quality sunglasses. We believe that our commitment to <a href=\"https://au.otiseyewear.com/pages/sustainability\">sustainability</a> and technical excellence is what sets us apart from the rest. We're proud to be leading the way in the industry, and we hope that you'll join us in making a positive impact on the environment.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "heading_PRwHjy",
-        "text_dG8AWY"
+        "text_aEfXtq",
+        "text_efzfK7"
       ],
+      "name": "t:names.rich_text_section",
       "settings": {
-        "align_text": "center",
-        "narrow_column": true,
-        "divider": false
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     }
   },
@@ -2268,8 +2292,7 @@
     "section_4f6tAn",
     "section_GRyQbC",
     "section_keeBVz",
-    "text_columns_z6X6ej",
     "section_9zDbTy",
-    "rich_text_WKL9Km"
+    "section_xxppWk"
   ]
 }
