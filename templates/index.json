@@ -864,20 +864,65 @@
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
-        "button_HGyxJR": {
-          "type": "button",
-          "name": "t:names.button",
+        "group_w4BH9k": {
+          "type": "group",
+          "name": "t:names.group",
           "settings": {
-            "label": "View All",
-            "link": "shopify://collections/2026-collection",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "width": "fit-content",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
             "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
           },
-          "blocks": {}
+          "blocks": {
+            "button_rchFfD": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "View All",
+                "link": "shopify://collections/2026-collection",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_rchFfD"
+          ]
         },
         "static-header": {
           "type": "_product-list-content",
@@ -1078,7 +1123,7 @@
         }
       },
       "block_order": [
-        "button_HGyxJR"
+        "group_w4BH9k"
       ],
       "name": "t:names.featured_collection",
       "settings": {
