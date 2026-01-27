@@ -1645,7 +1645,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Your sunglasses’ hinges get folded thousands of times throughout their lifetime so it's critical they’re made to last. All of our frames use high-quality, Italian-designed Visottica hinges to keep things together, use after use after use.</p>",
+                "text": "<p>As part of our commitment to the planet, we’ve removed all non-biodegradable plastic from our packaging. Your glasses are instead wrapped in a reusable cleaning cloth, protected by a reusable case, and packaged in a recyclable craft card box.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1718,7 +1718,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/Hinge-detail-sqr.jpg",
+                "image": "shopify://shop_images/26-2313P-OK_F.jpg",
                 "link": "",
                 "hover_scale": false,
                 "image_ratio": "adapt",
@@ -1777,22 +1777,6 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
-    },
-    "text_and_image_TVhkBc": {
-      "type": "text-and-image",
-      "settings": {
-        "image": "shopify://shop_images/26-2313P-OK_F.jpg",
-        "image_width": 700,
-        "subtitle": "RECYCLABLE",
-        "title": "PLASTIC-FREE PACKAGING",
-        "text": "<p>As part of our commitment to the planet, we’ve removed all non-biodegradable plastic from our packaging. Your glasses are instead wrapped in a reusable cleaning cloth, protected by a reusable case, and packaged in a recyclable craft card box.</p>",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "primary",
-        "align_text": "left",
-        "layout": "right",
-        "divider": false
-      }
     }
   },
   "order": [
@@ -1803,7 +1787,6 @@
     "section_4XzqYp",
     "section_JkQXXh",
     "section_b3tqK7",
-    "section_CMqwUP",
-    "text_and_image_TVhkBc"
+    "section_CMqwUP"
   ]
 }
