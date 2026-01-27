@@ -1284,7 +1284,7 @@
         "group_mVKyf4",
         "group_NcxaPg"
       ],
-      "name": "Scratch Resistant",
+      "name": "Made to Last",
       "settings": {
         "content_direction": "row",
         "vertical_on_mobile": true,
@@ -1312,22 +1312,6 @@
         "gradient_direction": "to top",
         "padding-block-start": 48,
         "padding-block-end": 48
-      }
-    },
-    "text_and_image_wX6cnD": {
-      "type": "text-and-image",
-      "settings": {
-        "image": "shopify://shop_images/EcoAcetate_1.jpg",
-        "image_width": 700,
-        "subtitle": "MADE TO LAST",
-        "title": "HANDCRAFTED QUALITY",
-        "text": "<p>Each frame is carefully handcrafted and brought to life. This means every single frame is checked and finished to the highest standard.⁠⁠</p>",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "primary",
-        "align_text": "left",
-        "layout": "right",
-        "divider": false
       }
     },
     "text_and_image_id9y9z": {
@@ -1370,7 +1354,6 @@
     "section_biXTfa",
     "section_4XzqYp",
     "section_JkQXXh",
-    "text_and_image_wX6cnD",
     "text_and_image_id9y9z",
     "text_and_image_TVhkBc"
   ]
