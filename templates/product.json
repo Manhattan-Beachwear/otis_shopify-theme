@@ -1456,7 +1456,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Handcrafted Quality</h2>",
+                "text": "<h2>Visottica Hinges</h2>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1482,7 +1482,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Each frame is carefully handcrafted and brought to life. This means every single frame is checked and finished to the highest standard.⁠⁠</p>",
+                "text": "<p>Your sunglasses’ hinges get folded thousands of times throughout their lifetime so it's critical they’re made to last. All of our frames use high-quality, Italian-designed Visottica hinges to keep things together, use after use after use.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
