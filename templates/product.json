@@ -831,7 +831,7 @@
         "vertical_alignment_flex_direction_column": "center",
         "gap": 12,
         "section_width": "page-width",
-        "section_height": "small",
+        "section_height": "",
         "section_height_custom": 50,
         "color_scheme": "scheme-4",
         "background_media": "none",
@@ -846,8 +846,8 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     },
     "section_4XzqYp": {
@@ -1052,7 +1052,7 @@
         "group_TFPkcj",
         "group_HheEVV"
       ],
-      "name": "Find the Perfect Pair",
+      "name": "Scratch Resistant",
       "settings": {
         "content_direction": "row",
         "vertical_on_mobile": true,
@@ -1063,7 +1063,7 @@
         "vertical_alignment_flex_direction_column": "center",
         "gap": 12,
         "section_width": "page-width",
-        "section_height": "small",
+        "section_height": "",
         "section_height_custom": 50,
         "color_scheme": "scheme-4",
         "background_media": "none",
@@ -1078,7 +1078,7 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 0,
+        "padding-block-start": 48,
         "padding-block-end": 0
       }
     },
