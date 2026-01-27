@@ -1849,10 +1849,272 @@
           "block_order": [
             "testimonial_card_zcFBkA"
           ]
+        },
+        "testimonial_slide_DNMaP3": {
+          "type": "_testimonial-slide",
+          "settings": {},
+          "blocks": {
+            "testimonial_card_qnhB3w": {
+              "type": "_testimonial-card",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 80,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_color": "#ffffff",
+                "box_shadow": true,
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 8,
+                "padding-block-start": 32,
+                "padding-block-end": 32,
+                "padding-inline-start": 32,
+                "padding-inline-end": 32
+              },
+              "blocks": {
+                "testimonial_rating_4nLEdb": {
+                  "type": "_testimonial-rating",
+                  "settings": {
+                    "rating": 5,
+                    "stars_style": "shaded",
+                    "rating_color": "foreground",
+                    "type_preset": "paragraph",
+                    "alignment": "center"
+                  },
+                  "blocks": {}
+                },
+                "text_PNTafC": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>I just bought these they're my second pair of this style of glasses. I really love the clarity of the lenses. They also are very durable.</p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "heading_XQ3fWD": {
+                  "type": "_heading",
+                  "settings": {
+                    "type_preset": "h4",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "text": "<p>Cari</p>",
+                    "read_only": false,
+                    "alignment": "center",
+                    "show_alignment": true,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_98Y8V6": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>California</p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground-heading)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "testimonial_rating_4nLEdb",
+                "text_PNTafC",
+                "heading_XQ3fWD",
+                "text_98Y8V6"
+              ]
+            }
+          },
+          "block_order": [
+            "testimonial_card_qnhB3w"
+          ]
+        },
+        "testimonial_slide_RzjYyq": {
+          "type": "_testimonial-slide",
+          "settings": {},
+          "blocks": {
+            "testimonial_card_P8Rxdm": {
+              "type": "_testimonial-card",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 80,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_color": "#ffffff",
+                "box_shadow": true,
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 8,
+                "padding-block-start": 32,
+                "padding-block-end": 32,
+                "padding-inline-start": 32,
+                "padding-inline-end": 32
+              },
+              "blocks": {
+                "testimonial_rating_xzTG3g": {
+                  "type": "_testimonial-rating",
+                  "settings": {
+                    "rating": 5,
+                    "stars_style": "shaded",
+                    "rating_color": "foreground",
+                    "type_preset": "paragraph",
+                    "alignment": "center"
+                  },
+                  "blocks": {}
+                },
+                "text_C8pg8p": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>The Omar's are by far the best fitting sunglasses I have ever owned. Durable, comfortable and stylish all in one!</p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "heading_WkczR6": {
+                  "type": "_heading",
+                  "settings": {
+                    "type_preset": "h4",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "text": "<p>Rory</p>",
+                    "read_only": false,
+                    "alignment": "center",
+                    "show_alignment": true,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_jUdNpX": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>New York</p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground-heading)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "testimonial_rating_xzTG3g",
+                "text_C8pg8p",
+                "heading_WkczR6",
+                "text_jUdNpX"
+              ]
+            }
+          },
+          "block_order": [
+            "testimonial_card_P8Rxdm"
+          ]
         }
       },
       "block_order": [
-        "testimonial_slide_VyeJtM"
+        "testimonial_slide_VyeJtM",
+        "testimonial_slide_DNMaP3",
+        "testimonial_slide_RzjYyq"
       ],
       "name": "Testimonials",
       "settings": {
