@@ -2076,10 +2076,10 @@
               "type": "button",
               "name": "t:names.button",
               "settings": {
-                "label": "Shop our Polarized Lenses",
-                "link": "shopify://collections/all",
+                "label": "Shop our LIT Lenses",
+                "link": "shopify://collections/l-i-t-polarized",
                 "open_in_new_tab": false,
-                "style_class": "button",
+                "style_class": "button-secondary",
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
