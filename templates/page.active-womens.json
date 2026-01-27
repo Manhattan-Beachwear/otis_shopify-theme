@@ -285,9 +285,9 @@
                 "link": "shopify://products/divide-retail-exclusive",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
-                "width": "fit-content",
+                "width": "custom",
                 "custom_width": 100,
-                "width_mobile": "fit-content",
+                "width_mobile": "custom",
                 "custom_width_mobile": 100
               },
               "blocks": {}
@@ -469,9 +469,9 @@
                 "link": "shopify://products/odyssey",
                 "open_in_new_tab": true,
                 "style_class": "button-secondary",
-                "width": "fit-content",
+                "width": "custom",
                 "custom_width": 100,
-                "width_mobile": "fit-content",
+                "width_mobile": "custom",
                 "custom_width_mobile": 100
               },
               "blocks": {}
@@ -516,45 +516,6 @@
         "gradient_direction": "to top",
         "padding-block-start": 48,
         "padding-block-end": 48
-      }
-    },
-    "text_columns_FCpPK6": {
-      "type": "text-columns",
-      "blocks": {
-        "text_block_bM9qVR": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/165-2201LL_A_1.jpg",
-            "image_width": 650,
-            "title": "Aerial",
-            "text": "<p>Aerial is made from a lightweight yet strong Eco-Grilamid frame with a sporty feel, that brings in cat eye inspired style for extra coverage. Perfect for those who want to stay light. and bright, yet always feel like they're looking their best. </p>",
-            "button_label": "shop now",
-            "button_link": "shopify://products/aerial"
-          }
-        },
-        "text_block_3jrTVP": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/166-2202LL_A_1.jpg",
-            "image_width": 650,
-            "title": "Odyssey",
-            "text": "<p>Take a trip to a bold frame of mind - Odyssey lets you step out with confidence. The Eco-Grilamid frames are lightweight yet strong, with Vissottica hinges to keep that style together. Your striking companion for beach adventures and hiking.</p>",
-            "button_label": "Shop Now",
-            "button_link": "shopify://products/odyssey"
-          }
-        }
-      },
-      "block_order": [
-        "text_block_bM9qVR",
-        "text_block_3jrTVP"
-      ],
-      "settings": {
-        "title": "",
-        "align_text": "center",
-        "divider": false,
-        "color_bg": ""
       }
     },
     "text_columns_GyNYhh": {
@@ -636,7 +597,6 @@
     "main",
     "hero_slideshow_tzJMxE",
     "section_bkwDTF",
-    "text_columns_FCpPK6",
     "text_columns_GyNYhh",
     "text_columns_rBriBC"
   ]
