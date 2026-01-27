@@ -300,8 +300,8 @@
           "name": "Hero Slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/Corina_Journal_10_d62e7b44-d424-4e29-b989-13b769c59b70.jpg",
-            "image_1_mobile": "shopify://shop_images/2K2A6108_1.jpg",
+            "image_1": "shopify://shop_images/OTISXIMOGEN.FINAL-1_1.jpg",
+            "image_1_mobile": "shopify://shop_images/Screenshot_2026-01-26_161021.png",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -309,7 +309,7 @@
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-end",
             "vertical_alignment_flex_direction_column": "flex-end",
-            "gap": 12,
+            "gap": 0,
             "inherit_color_scheme": true,
             "color_scheme": "",
             "toggle_overlay": true,
@@ -364,7 +364,7 @@
                 "text_HbcjRG": {
                   "type": "text",
                   "settings": {
-                    "text": "<p><strong>Crafted in Western Australia</strong></p>",
+                    "text": "<p><strong>Inspired by our Western Australian Roots</strong></p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -389,13 +389,13 @@
                 "text_PMJ9wP": {
                   "type": "text",
                   "settings": {
-                    "text": "<h2>Premium Eyewear</h2>",
+                    "text": "<h2>Premium eyewear built for everything</h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
                     "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "font_size": "1.25rem",
+                    "font_size": "1.125rem",
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
@@ -669,7 +669,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h2>Explore what's new</h2>",
+                "text": "<h3>Explore what's new</h3>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
