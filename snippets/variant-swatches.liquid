@@ -8,38 +8,26 @@
   {% render 'variant-swatches', product_resource: product %}
 {%- enddoc -%}
 
+{% render 'swatch-styles' %}
+
 {%- liquid
-  assign show_product_image_swatches = false
-  if section != blank and section.settings != blank and section.settings.show_product_image_swatches
-    assign show_product_image_swatches = true
-  elsif settings.show_product_image_swatches
-    assign show_product_image_swatches = true
+  assign show_product_image_swatches = settings.show_product_image_swatches | default: false
+  if section != blank and section.settings != blank and section.settings.show_product_image_swatches != blank
+    assign show_product_image_swatches = section.settings.show_product_image_swatches
   endif
   
-  assign product_image_swatch_style = 'circle'
+  assign product_image_swatch_style = settings.product_image_swatch_style | default: 'circle'
   if section != blank and section.settings != blank and section.settings.product_image_swatch_style != blank
     assign product_image_swatch_style = section.settings.product_image_swatch_style
-  elsif settings.product_image_swatch_style != blank
-    assign product_image_swatch_style = settings.product_image_swatch_style
   endif
   
+  assign product_image_swatch_size = settings.product_image_swatch_size | default: 60
   if section != blank and section.settings != blank and section.settings.product_image_swatch_size != blank
     assign product_image_swatch_size = section.settings.product_image_swatch_size
-  elsif settings.product_image_swatch_size != blank
-    assign product_image_swatch_size = settings.product_image_swatch_size
   endif
   
-  assign show_product_image_swatch_variant_name = false
-  if section != blank and section.settings != blank and section.settings.show_product_image_swatch_variant_name
-    assign show_product_image_swatch_variant_name = true
-  elsif settings.show_product_image_swatch_variant_name
-    assign show_product_image_swatch_variant_name = true
-  endif
-  
-  assign show_horizontal_scroll = false
+  assign show_horizontal_scroll = settings.show_horizontal_scroll | default: false
   if section != blank and section.settings != blank and section.settings.show_horizontal_scroll
-    assign show_horizontal_scroll = true
-  elsif settings.show_horizontal_scroll
     assign show_horizontal_scroll = true
   endif
 -%}
@@ -230,9 +218,6 @@
                 {%- endif -%}
                 {% render 'strikethrough-variant', product_option: product_option_value %}
               </label>
-              {%- if show_product_image_swatches and show_product_image_swatch_variant_name -%}
-                <span class="variant-option__swatch-name">{{ product_option_value.name | escape }}</span>
-              {%- endif -%}
             </li>
             {%- endunless -%}
           {%- endfor -%}
@@ -261,138 +246,4 @@
 </swatches-variant-picker-component>
 
 {% stylesheet %}
-  .variant-option__button-label--product-image {
-    width: var(--product-image-swatch-size, 60px);
-    height: var(--product-image-swatch-size, 60px);
-    padding: 0;
-    border: none;
-    border-radius: 0;
-    overflow: hidden;
-    background: transparent;
-  }
-
-  .variant-option__button-label--product-image .swatch {
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-    background-color: transparent;
-    background-size: contain !important;
-    background-repeat: no-repeat !important;
-    background-position: center !important;
-  }
-
-  .variant-option__button-label--product-image .swatch__image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-  .variant-option__swatch .variant-option__swatch-name {
-    display: block;
-    margin-top: 4px;
-    font-size: var(--font-size--2xs);
-    text-align: center;
-    color: var(--color-foreground);
-    line-height: 1.2;
-    width: var(--product-image-swatch-size, 60px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .variant-option__button-label--product-image-circle {
-    border-radius: 0;
-  }
-
-  .variant-option__button-label--product-image-circle .swatch {
-    border-radius: 0;
-  }
-
-  .variant-option__button-label--product-image-square {
-    border-radius: 0;
-  }
-
-  .variant-option__button-label--product-image-square .swatch {
-    border-radius: 0;
-  }
-
-  /* Selected state */
-  .variant-option__button-label--product-image:has(:checked) {
-    border: 2px solid var(--color-foreground);
-    border-radius: 0;
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-  /* Remove all outlines on focus, hover, active */
-  .variant-option__button-label--product-image:hover,
-  .variant-option__button-label--product-image:focus,
-  .variant-option__button-label--product-image:focus-visible,
-  .variant-option__button-label--product-image:active {
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-  .variant-option__button-label--product-image input:focus,
-  .variant-option__button-label--product-image input:focus-visible {
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-  .variant-option__button-label--product-image-circle:has(:checked) {
-    border-radius: 0;
-  }
-
-  .variant-option__button-label--product-image-square:has(:checked) {
-    border-radius: 0;
-  }
-
-  /* Reduce spacing */
-  product-swatches:has(.variant-option__button-label--product-image) .variant-option--swatches {
-    gap: 8px;
-    overflow: visible !important;
-  }
-
-  /* Horizontal scroll enabled */
-  .variant-option--horizontal-scroll overflow-list {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .variant-option--horizontal-scroll overflow-list::part(list) {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    -webkit-overflow-scrolling: touch;
-    gap: 8px;
-    padding-bottom: 8px;
-    scrollbar-color: auto !important;
-  }
-
-  .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar {
-    height: 2px !important;
-  }
-
-  .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar-button {
-    display: none !important;
-  }
-
-  .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar-track {
-    background-color: transparent !important;
-  }
-
-  .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar-thumb {
-    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-70)) !important;
-    border-radius: 9999px !important;
-  }
-
-  .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-90)) !important;
-  }
-
-  /* Hide +more button when horizontal scroll is enabled */
-  .variant-option--horizontal-scroll .hidden-swatches__count {
-    display: none !important;
-  }
 {% endstylesheet %}

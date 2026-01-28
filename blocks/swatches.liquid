@@ -1,11 +1,12 @@
 {%- liquid
   assign block_settings = block.settings
   
-  # Check if combined listings are enabled (from section or block settings)
+  # Check if combined listings are enabled (prioritize block settings)
   assign enable_combined = false
-  if section.settings.enable_combined_listings
+  if block.settings.enable_combined_listings
     assign enable_combined = true
-  elsif block.settings.enable_combined_listings
+  elsif section.settings.enable_combined_listings
+    # Fallback to section settings for backwards compatibility
     assign enable_combined = true
   endif
   
@@ -214,6 +215,17 @@
         }
       ],
       "default": "flex-start"
+    },
+    {
+      "type": "header",
+      "content": "Combined Listings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_combined_listings",
+      "label": "Enable Combined Listings",
+      "default": false,
+      "info": "When enabled, products linked via combined listing metafield will appear as a single product with color variant swatches"
     },
     {
       "type": "header",
