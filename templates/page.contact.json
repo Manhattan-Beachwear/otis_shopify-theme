@@ -9,10 +9,10 @@
  */
 {
   "sections": {
-    "hero_drGECj": {
+    "hero_jGDcCn": {
       "type": "hero",
       "blocks": {
-        "text_XfyA8B": {
+        "text_YV9jHq": {
           "type": "text",
           "settings": {
             "text": "<h1>CONTACT US</h1>",
@@ -37,12 +37,13 @@
           },
           "blocks": {}
         },
-        "text_fTcyQc": {
+        "text_Jjw6LU": {
           "type": "text",
+          "name": "t:names.text",
           "settings": {
-            "text": "<p>OTIS Customer Service</p>",
+            "text": "<p>OTIS Eyewear Customer Service</p>",
             "width": "fit-content",
-            "max_width": "narrow",
+            "max_width": "normal",
             "alignment": "left",
             "type_preset": "rte",
             "font": "var(--font-body--family)",
@@ -56,37 +57,21 @@
             "background_color": "#00000026",
             "corner_radius": 0,
             "padding-block-start": 0,
-            "padding-block-end": 32,
+            "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "button_hYFA6A": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "Shop now",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
           },
           "blocks": {}
         }
       },
       "block_order": [
-        "text_XfyA8B",
-        "text_fTcyQc",
-        "button_hYFA6A"
+        "text_YV9jHq",
+        "text_Jjw6LU"
       ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
-        "image_1": "shopify://shop_images/HUNTER_JONES_X_OTIS_STEP_OUTSIDE_YOUR_COMFORT_ZONE_BLOG.png",
+        "image_1": "shopify://shop_images/HUNTER_JONES_X_OTIS_STEP_OUTSIDE_YOUR_COMFORT_ZONE_BLOG_86c29ecd-cf7b-4eac-8fbf-aa63ff36f60d.png",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
@@ -681,7 +666,7 @@
     }
   },
   "order": [
-    "hero_drGECj",
+    "hero_jGDcCn",
     "section_UHdgpD",
     "section_DbRJCk",
     "main",
