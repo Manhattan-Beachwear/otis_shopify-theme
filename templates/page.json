@@ -70,6 +70,9 @@
       "block_order": [
         "revenuehunt_recommender_quiz_v2_inline_quiz_JXnWcP"
       ],
+      "custom_css": [
+        ".shopify-app-block {width: 100%; height: 100vh;}"
+      ],
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
