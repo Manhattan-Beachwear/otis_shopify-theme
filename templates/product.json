@@ -293,42 +293,61 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "icon_3VXQa9": {
-                  "type": "icon",
-                  "name": "t:names.icon",
+                "group_jHaYg9": {
+                  "type": "group",
+                  "name": "t:names.group",
                   "settings": {
-                    "icon": "australia_map",
-                    "width": 24,
+                    "content_direction": "column",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "flex-start",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 12,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "background_media": "none",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
                     "link": "",
-                    "open_in_new_tab": false
-                  },
-                  "blocks": {}
-                },
-                "text_KKWxDa": {
-                  "type": "text",
-                  "name": "t:names.text",
-                  "settings": {
-                    "text": "<p>Designed in Australia</p>",
-                    "width": "fit-content",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "rte",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "color": "var(--color-foreground)",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
+                    "open_in_new_tab": false,
+                    "placeholder": "",
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
                     "padding-inline-end": 0
                   },
-                  "blocks": {}
+                  "blocks": {
+                    "icon_Ggn9Da": {
+                      "type": "icon",
+                      "name": "t:names.icon",
+                      "settings": {
+                        "icon": "price_tag",
+                        "width": 24,
+                        "link": "",
+                        "open_in_new_tab": false
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "icon_Ggn9Da"
+                  ]
                 },
                 "group_KN4NzA": {
                   "type": "group",
@@ -385,7 +404,7 @@
                       "type": "text",
                       "name": "t:names.text",
                       "settings": {
-                        "text": "<p>Scratch Resistant Lenses</p>",
+                        "text": "<p>12x Scratch Resistant Lenses</p>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -468,7 +487,7 @@
                       "type": "text",
                       "name": "t:names.text",
                       "settings": {
-                        "text": "<p>Free US Shipping</p>",
+                        "text": "<p>Free US Shipping & Returns</p>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -581,8 +600,7 @@
                 }
               },
               "block_order": [
-                "icon_3VXQa9",
-                "text_KKWxDa",
+                "group_jHaYg9",
                 "group_KN4NzA",
                 "group_cBJ7yU",
                 "group_teNzwR"
