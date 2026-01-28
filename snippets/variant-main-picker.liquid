@@ -5,30 +5,35 @@
   @param {object} [block] - The block object
 {%- enddoc -%}
 
-{% render 'swatch-styles' %}
-
 {% assign block_settings = block.settings %}
 
 {% liquid
-  assign show_product_image_swatches = settings.show_product_image_swatches | default: false
-  if block != blank and block_settings != blank and block_settings.show_product_image_swatches != blank
-    assign show_product_image_swatches = block_settings.show_product_image_swatches
+  assign show_product_image_swatches = false
+  if block != blank and block_settings != blank and block_settings.show_product_image_swatches
+    assign show_product_image_swatches = true
   endif
   
-  assign product_image_swatch_style = settings.product_image_swatch_style | default: 'circle'
+  assign product_image_swatch_style = 'circle'
   if block != blank and block_settings != blank and block_settings.product_image_swatch_style != blank
     assign product_image_swatch_style = block_settings.product_image_swatch_style
   endif
   
-  assign product_image_swatch_size = settings.product_image_swatch_size | default: 60
+  assign product_image_swatch_size = 60
   if block != blank and block_settings != blank and block_settings.product_image_swatch_size != blank
     assign product_image_swatch_size = block_settings.product_image_swatch_size
   endif
   
-  assign show_horizontal_scroll = settings.show_horizontal_scroll | default: false
+  assign show_product_image_swatch_variant_name = false
+  if block != blank and block_settings != blank and block_settings.show_product_image_swatch_variant_name
+    assign show_product_image_swatch_variant_name = true
+  endif
+  
+  assign show_horizontal_scroll = false
   if block != blank and block_settings != blank and block_settings.show_horizontal_scroll
     assign show_horizontal_scroll = true
   elsif section.settings.show_horizontal_scroll
+    assign show_horizontal_scroll = true
+  elsif settings.show_horizontal_scroll
     assign show_horizontal_scroll = true
   endif
 %}
@@ -130,6 +135,9 @@
               {% if product_option_value.size > longest_value and option_id_attribute %}
                 {% assign longest_value = product_option_value.size %}
               {% endif %}
+              {%- if variant_style == 'swatch' and show_product_image_swatches and show_product_image_swatch_variant_name -%}
+                <div class="variant-option__swatch-wrapper">
+              {%- endif -%}
               <label
                 class="variant-option__button-label{% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% if show_product_image_swatches %} variant-option__button-label--product-image variant-option__button-label--product-image-{{ product_image_swatch_style }}{% endif %}{% endif %}"
               >
@@ -138,7 +146,6 @@
                   name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
                   value="{{ product_option_value | escape }}"
                   aria-label="{{ product_option_value.name }}"
-                  data-variant-name="{{ product_option_value.name }}"
                   {% if product_option_value.available == false %}
                     aria-disabled="true"
                   {% endif %}
@@ -203,6 +210,9 @@
                       option_value_name: product_option_value.name,
                       force_image_swatch: true
                     %}
+                    {%- if show_product_image_swatch_variant_name -%}
+                      <span class="variant-option__swatch-name">{{ product_option_value.name | escape }}</span>
+                    {%- endif -%}
                   {% elsif variant_image_for_swatch != blank %}
                     {% render 'swatch',
                       swatch: product_option_value.swatch,
@@ -225,6 +235,10 @@
                 {% endif %}
                 {% render 'strikethrough-variant', product_option: product_option_value %}
               </label>
+              {%- if variant_style == 'swatch' and show_product_image_swatches and show_product_image_swatch_variant_name -%}
+                  <span class="variant-option__swatch-name">{{ product_option_value.name | escape }}</span>
+                </div>
+              {%- endif -%}
               {%- endunless -%}
             {%- endfor -%}
             {% if option_id_attribute %}
@@ -778,4 +792,137 @@
     justify-content: right;
   }
 
+  .variant-option__button-label--product-image {
+    --swatch-size: var(--product-image-swatch-size, 60px);
+    width: var(--swatch-size);
+    height: var(--swatch-size);
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  .variant-option__button-label--product-image .swatch {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    background-color: transparent;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+  }
+
+  .variant-option__button-label--product-image .swatch__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .variant-option__swatch-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: top;
+  }
+
+  .variant-option__swatch .variant-option__swatch-name,
+  .variant-option__swatch-name {
+    display: block;
+    margin-top: 4px;
+    font-size: var(--font-size--2xs);
+    text-align: center;
+    color: var(--color-foreground);
+    line-height: 1.2;
+    width: var(--product-image-swatch-size, 60px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .variant-option__button-label--product-image-circle {
+    border-radius: 0;
+  }
+
+  .variant-option__button-label--product-image-circle .swatch {
+    border-radius: 0;
+  }
+
+  /* Square layout */
+  .variant-option__button-label--product-image-square {
+    border-radius: 0;
+  }
+
+  .variant-option__button-label--product-image-square .swatch {
+    border-radius: 0;
+  }
+
+  /* Selected state - thin black border only */
+  .variant-option__button-label--product-image:has(:checked) {
+    border: 2px solid var(--color-foreground);
+    border-radius: 0;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove all outlines on focus, hover, active */
+  .variant-option__button-label--product-image:hover,
+  .variant-option__button-label--product-image:focus,
+  .variant-option__button-label--product-image:focus-visible,
+  .variant-option__button-label--product-image:active {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .variant-option__button-label--product-image input:focus,
+  .variant-option__button-label--product-image input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Ensure circle stays round when selected */
+  .variant-option__button-label--product-image-circle:has(:checked) {
+    border-radius: 0;
+  }
+
+  /* Ensure square stays square when selected */
+  .variant-option__button-label--product-image-square:has(:checked) {
+    border-radius: 0;
+  }
+
+  /* Reduce spacing between swatches */
+  .variant-picker--horizontal-scroll .variant-option--swatches {
+    gap: 8px;
+  }
+
+  /* Enable horizontal scrolling for product image swatches only when enabled */
+  .variant-picker--horizontal-scroll .variant-option--swatches {
+    width: 100%;
+    max-width: 100%;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+  }
+
+  .variant-picker--horizontal-scroll .variant-option--swatches::-webkit-scrollbar {
+    height: 10px;
+  }
+
+  .variant-picker--horizontal-scroll .variant-option--swatches::-webkit-scrollbar-track {
+    background: rgb(var(--color-border-rgb) / var(--opacity-30));
+    border-radius: 0;
+  }
+
+  .variant-picker--horizontal-scroll .variant-option--swatches::-webkit-scrollbar-thumb {
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-50));
+    border-radius: 0;
+  }
+
+  .variant-picker--horizontal-scroll .variant-option--swatches::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-60));
+  }
 {% endstylesheet %}
