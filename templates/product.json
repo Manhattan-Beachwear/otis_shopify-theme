@@ -921,7 +921,7 @@
                 "text_J3DMLa": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Every OTIS lens is made from non-toxic natural materials like sand and soda ash. At the end of their long life, they’re also endlessly recyclable. They are thermally hardened, enhancing their already natural scratch resistance and durability<br/><br/></p>",
+                    "text": "<p>Every OTIS lens is made from non-toxic natural materials like sand and soda ash. At the end of their long life, they’re also endlessly recyclable.<br/><br/></p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -1071,7 +1071,7 @@
                 "text_pjdGTA": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>OTIS sunglasses have a lifetime warranty against defects in materials and workmanship. Beyond using the finest frame materials available, the OTIS brand has been built around the unparalleled properties of Mineral Glass lenses.<br/><br/></p>",
+                    "text": "<p>OTIS sunglasses have a lifetime warranty against defects in materials and workmanship. We use only the finest frame materials and lenses available.<br/></p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -1221,7 +1221,7 @@
                 "text_6TFqQz": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>OTIS Eyewear is a certified B Corporation, required us to use our business and brand as a force of good. It's the gold standard in making sure businesses use their influence as a force for good in the world. </p>",
+                    "text": "<p>OTIS Eyewear is a certified B Corporation. It's the gold standard in making sure businesses use their influence as a force for good in the world. </p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
