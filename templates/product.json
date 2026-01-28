@@ -293,6 +293,43 @@
                 "padding-inline-end": 0
               },
               "blocks": {
+                "icon_3VXQa9": {
+                  "type": "icon",
+                  "name": "t:names.icon",
+                  "settings": {
+                    "icon": "australia_map",
+                    "width": 24,
+                    "link": "",
+                    "open_in_new_tab": false
+                  },
+                  "blocks": {}
+                },
+                "text_KKWxDa": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>Designed in Australia</p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
                 "group_KN4NzA": {
                   "type": "group",
                   "name": "t:names.group",
@@ -431,7 +468,7 @@
                       "type": "text",
                       "name": "t:names.text",
                       "settings": {
-                        "text": "<p>Free Shipping in USA</p>",
+                        "text": "<p>Free US Shipping</p>",
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
@@ -544,6 +581,8 @@
                 }
               },
               "block_order": [
+                "icon_3VXQa9",
+                "text_KKWxDa",
                 "group_KN4NzA",
                 "group_cBJ7yU",
                 "group_teNzwR"
