@@ -18,11 +18,11 @@
           "type": "_announcement",
           "name": "t:names.announcement",
           "settings": {
-            "text": "<strong>SCRATCH RESISTANT LENSES + LIFETIME WARRANTY</strong>",
+            "text": "SCRATCH RESISTANT LENSES + LIFETIME WARRANTY",
             "link": "",
-            "font": "var(--font-subheading--family)",
+            "font": "var(--font-body--family)",
             "font_size": "0.75rem",
-            "weight": "700",
+            "weight": "600",
             "letter_spacing": "loose",
             "case": "uppercase"
           },
