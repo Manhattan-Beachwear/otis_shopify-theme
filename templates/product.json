@@ -1767,10 +1767,10 @@
                 "link": "shopify://pages/frame-dimension-selection-guide",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
-                "width": "custom",
-                "custom_width": 50,
+                "width": "fit-content",
+                "custom_width": 100,
                 "width_mobile": "custom",
-                "custom_width_mobile": 50
+                "custom_width_mobile": 100
               },
               "blocks": {}
             }
@@ -2002,7 +2002,7 @@
                 "border_opacity": 100,
                 "border_radius": 0,
                 "padding-block-start": 0,
-                "padding-block-end": 0,
+                "padding-block-end": 30,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -2235,7 +2235,7 @@
                 "border_opacity": 100,
                 "border_radius": 0,
                 "padding-block-start": 0,
-                "padding-block-end": 20,
+                "padding-block-end": 30,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -2467,7 +2467,7 @@
                 "border_opacity": 100,
                 "border_radius": 0,
                 "padding-block-start": 0,
-                "padding-block-end": 0,
+                "padding-block-end": 30,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -2699,7 +2699,7 @@
                 "border_opacity": 100,
                 "border_radius": 0,
                 "padding-block-start": 0,
-                "padding-block-end": 0,
+                "padding-block-end": 30,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
