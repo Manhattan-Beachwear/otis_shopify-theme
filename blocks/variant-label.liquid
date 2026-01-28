@@ -1,0 +1,188 @@
+{% liquid
+  assign product_resource = closest.product
+  if request.visual_preview_mode and product_resource == blank
+    assign product_resource = collections.all.products.first
+  endif
+  
+  assign variant_name = ''
+  assign current_variant = product_resource.selected_or_first_available_variant
+  
+  if current_variant != blank
+    if current_variant.option1 != blank
+      assign variant_name = current_variant.option1
+    endif
+    if current_variant.option2 != blank
+      if variant_name == ''
+        assign variant_name = current_variant.option2
+      else
+        assign variant_name = variant_name | append: ' / ' | append: current_variant.option2
+      endif
+    endif
+    if current_variant.option3 != blank
+      if variant_name == ''
+        assign variant_name = current_variant.option3
+      else
+        assign variant_name = variant_name | append: ' / ' | append: current_variant.option3
+      endif
+    endif
+  endif
+%}
+
+<div
+  class="variant-label spacing-style{% if block.settings.inherit_color_scheme == false %} color-{{ block.settings.color_scheme }}{% endif %}"
+  style="
+    --variant-label-font-family: var(--font-{{ block.settings.type_preset }}--family);
+    --variant-label-font-size: var(--font-{{ block.settings.type_preset }}--size);
+    --variant-label-font-weight: var(--font-{{ block.settings.type_preset }}--weight);
+    --variant-label-line-height: var(--font-{{ block.settings.type_preset }}--line-height);
+    --variant-label-text-align: {{ block.settings.alignment }};
+    {% render 'spacing-style', settings: block.settings %}
+  "
+  data-variant-label
+  data-product-id="{{ product_resource.id }}"
+  {{ block.shopify_attributes }}
+>
+  {{ variant_name | escape }}
+</div>
+
+{% stylesheet %}
+  .variant-label {
+    font-family: var(--variant-label-font-family);
+    font-size: var(--variant-label-font-size);
+    font-weight: var(--variant-label-font-weight);
+    line-height: var(--variant-label-line-height);
+    text-align: var(--variant-label-text-align);
+    color: var(--color-foreground);
+    min-height: 1.4em;
+    transition: opacity 0.15s ease-in-out;
+  }
+  
+  .variant-label:empty {
+    opacity: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Variant Label",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Displays the currently selected variant name. Updates dynamically when variants are selected or hovered."
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:settings.type_preset",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "paragraph",
+          "label": "t:options.paragraph"
+        },
+        {
+          "value": "h6",
+          "label": "t:options.h6"
+        },
+        {
+          "value": "h5",
+          "label": "t:options.h5"
+        },
+        {
+          "value": "h4",
+          "label": "t:options.h4"
+        }
+      ],
+      "default": "paragraph",
+      "info": "t:info.edit_presets_in_theme_settings"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "right",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_color_scheme",
+      "label": "t:settings.inherit_color_scheme",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Variant Label",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
