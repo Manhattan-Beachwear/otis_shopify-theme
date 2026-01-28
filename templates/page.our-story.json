@@ -51,67 +51,6 @@
         "padding-block-end": 80
       }
     },
-    "hero_slideshow_hkAyax": {
-      "type": "hero-slideshow",
-      "blocks": {
-        "hero_slide_8eRRrc": {
-          "type": "_hero-slide",
-          "settings": {
-            "media_type_1": "image",
-            "image_1": "shopify://shop_images/OUR_STORY_3e5e6f69-7ef0-4896-bb9a-4f875b27cff7.jpg",
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "hero_slide_8eRRrc"
-      ],
-      "disabled": true,
-      "name": "t:names.hero_slideshow",
-      "settings": {
-        "color_scheme": "",
-        "icons_style": "arrows_large",
-        "slideshow_controls_style": "dots",
-        "autoplay": false,
-        "autoplay_speed": 4,
-        "section_height": "large",
-        "section_height_custom": 50,
-        "section_width": "full-width",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 0,
-        "border_opacity": 100,
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
     "section_RFGmwn": {
       "type": "section",
       "blocks": {
@@ -172,180 +111,360 @@
         "padding-block-end": 32
       }
     },
-    "rich_text_GqEAK7": {
-      "type": "rich-text",
+    "section_6qLgqJ": {
+      "type": "section",
       "blocks": {
-        "text_QpdYQ8": {
+        "text_UDKKpM": {
           "type": "text",
+          "name": "t:names.heading",
           "settings": {
-            "enlarge_text": true,
-            "text": "<h2>THE OTIS JOURNEY</h2><p>OTIS was founded over twenty years ago, on the rugged, surf-rich coast of Yallingup, Western Australia. </p><p>Salt and sunshine have always been part of our West Australian DNA, but over the years OTIS has taken inspiration from adventures around the globe.</p><p>Our styles have morphed with the waves of time, but we have always let our mission guide us.</p><p><strong>Our Mission</strong></p><p>To create the highest quality eyewear that is both functional and stylish whilst implementing solutions and materials that reduce our impact on the planet.</p><p></p>"
-          }
-        }
-      },
-      "block_order": [
-        "text_QpdYQ8"
-      ],
-      "name": "Rich text",
-      "settings": {
-        "align_text": "center",
-        "narrow_column": true,
-        "divider": false
-      }
-    },
-    "promo_grid_BWqPTD": {
-      "type": "promo-grid",
-      "blocks": {
-        "advanced_dRE666": {
-          "type": "advanced",
-          "settings": {
-            "subheading": "",
-            "heading": "",
-            "textarea": "",
-            "cta_text1": "",
-            "cta_link1": "",
-            "cta_text2": "",
-            "cta_link2": "",
-            "image": "shopify://shop_images/our_story.png",
-            "video_url": "",
-            "width": "50",
-            "height": 500,
-            "text_size": 100,
-            "text_align": "vertical-center horizontal-center",
-            "focal_point": "center",
-            "color_accent": "rgba(0,0,0,0)",
-            "boxed": false,
-            "framed": false
-          }
+            "text": "<h2>THE OTIS JOURNEY</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         },
-        "advanced_9Kqrk7": {
-          "type": "advanced",
-          "settings": {
-            "subheading": "",
-            "heading": "",
-            "textarea": "",
-            "cta_text1": "",
-            "cta_link1": "",
-            "cta_text2": "",
-            "cta_link2": "",
-            "image": "shopify://shop_images/our_story_50a7e6c9-b590-44e3-9194-92d2a3632bda.png",
-            "video_url": "",
-            "width": "50",
-            "height": 500,
-            "text_size": 100,
-            "text_align": "vertical-center horizontal-center",
-            "focal_point": "center",
-            "color_accent": "rgba(0,0,0,0)",
-            "boxed": false,
-            "framed": false
-          }
-        }
-      },
-      "block_order": [
-        "advanced_dRE666",
-        "advanced_9Kqrk7"
-      ],
-      "name": "Promotional grid",
-      "settings": {
-        "full_width": false,
-        "gutter_size": 20,
-        "space_above": true,
-        "space_below": true
-      }
-    },
-    "rich_text_6zzxde": {
-      "type": "rich-text",
-      "blocks": {
-        "text_R3WRah": {
+        "text_WjqpAp": {
           "type": "text",
+          "name": "t:names.text",
           "settings": {
-            "enlarge_text": true,
-            "text": "<h2>THE ARCHIVES</h2><p>From our very first collection release in 2000, OTIS has found ways to create eyewear that transcends the boundaries between style, durability, sustainability & technical excellence. </p><p><strong>It’s style, with substance.</strong></p>"
-          }
+            "text": "<p>OTIS was founded over twenty years ago, on the rugged, surf-rich coast of Yallingup, Western Australia. </p><p>Salt and sunshine have always been part of our West Australian DNA, but over the years OTIS has taken inspiration from adventures around the globe.</p><p>Our styles have morphed with the waves of time, but we have always let our mission guide us.</p><p><strong>Our Mission</strong></p><p>To create the highest quality eyewear that is both functional and stylish whilst implementing solutions and materials that reduce our impact on the planet.</p><p></p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "text_R3WRah"
+        "text_UDKKpM",
+        "text_WjqpAp"
       ],
-      "name": "Rich text",
+      "name": "t:names.rich_text_section",
       "settings": {
-        "align_text": "center",
-        "narrow_column": true,
-        "divider": false
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 100,
+        "padding-block-end": 100
       }
     },
-    "slideshow_aXTqmz": {
-      "type": "slideshow",
+    "section_bn8mwT": {
+      "type": "section",
       "blocks": {
-        "image_6dEb3E": {
-          "type": "image",
+        "group_MQn63z": {
+          "type": "group",
+          "name": "t:names.column",
           "settings": {
-            "top_subheading": "",
-            "title": "",
-            "title_size": 80,
-            "subheading": "",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
             "link": "",
-            "link_text": "",
-            "link_2": "",
-            "link_text_2": "",
-            "color_accent": "rgba(0,0,0,0)",
-            "text_align": "vertical-center horizontal-center",
-            "image": "shopify://shop_images/OTIS_HISTORY.jpg",
-            "overlay_opacity": 0,
-            "focal_point": "center center"
-          }
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_GxmpQB": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/our_story.png",
+                "link": "",
+                "hover_scale": true,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_GxmpQB"
+          ]
         },
-        "image_Vmi8RX": {
-          "type": "image",
+        "group_3XJhBC": {
+          "type": "group",
+          "name": "t:names.column",
           "settings": {
-            "top_subheading": "",
-            "title": "",
-            "title_size": 80,
-            "subheading": "",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
             "link": "",
-            "link_text": "",
-            "link_2": "",
-            "link_text_2": "",
-            "color_accent": "rgba(0,0,0,0)",
-            "text_align": "vertical-center horizontal-center",
-            "image": "shopify://shop_images/OTIS_HISTORY2.jpg",
-            "overlay_opacity": 0,
-            "focal_point": "center center"
-          }
-        },
-        "image_tV4kdk": {
-          "type": "image",
-          "settings": {
-            "top_subheading": "",
-            "title": "",
-            "title_size": 80,
-            "subheading": "",
-            "link": "",
-            "link_text": "",
-            "link_2": "",
-            "link_text_2": "",
-            "color_accent": "rgba(0,0,0,0)",
-            "text_align": "vertical-center horizontal-center",
-            "image": "shopify://shop_images/OTIS_HISTORY3.jpg",
-            "overlay_opacity": 0,
-            "focal_point": "center center"
-          }
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_mHW3Eq": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/our_story_50a7e6c9-b590-44e3-9194-92d2a3632bda.png",
+                "link": "",
+                "hover_scale": true,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_mHW3Eq"
+          ]
         }
       },
       "block_order": [
-        "image_6dEb3E",
-        "image_Vmi8RX",
-        "image_tV4kdk"
+        "group_MQn63z",
+        "group_3XJhBC"
       ],
-      "disabled": true,
-      "name": "Hero (optional slideshow)",
+      "name": "t:names.multicolumn",
       "settings": {
-        "section_height": "650px",
-        "mobile_height": "auto",
-        "parallax": true,
-        "style": "bars",
-        "autoplay": true,
-        "autoplay_speed": 5
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-start",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 100,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "section_BChqNQ": {
+      "type": "section",
+      "blocks": {
+        "text_ezdAEa": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>THE ARCHIVES</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_4Tx8FK": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>From our very first collection release in 2000, OTIS has found ways to create eyewear that transcends the boundaries between style, durability, sustainability & technical excellence. </p><p><strong>It’s style, with substance.</strong></p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_ezdAEa",
+        "text_4Tx8FK"
+      ],
+      "name": "t:names.rich_text_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 100,
+        "padding-block-end": 100
       }
     },
     "hero_slideshow_LzWCUN": {
@@ -462,37 +581,104 @@
         "padding-block-end": 0
       }
     },
-    "rich_text_Da7a7F": {
-      "type": "rich-text",
+    "section_x6zi8q": {
+      "type": "section",
       "blocks": {
-        "text_HkiqTX": {
+        "text_dxmqER": {
           "type": "text",
+          "name": "t:names.heading",
           "settings": {
-            "enlarge_text": true,
-            "text": "<h2>WHAT MAKES US UNIQUE </h2><p>We've always used mineral glass lenses in all of our sunglasses, and we plan to keep doing so. To us it simply beats all alternatives, as it is more scratch resistant, optically correct and better for the environment than the plastic alternatives that go in most other eyewear.</p><p>Because mineral glass is sourced from natural elements like sand and soda ash, it's non-toxic, endlessly recyclable and far more environmentally friendly than plastic.</p><p>We hope to keep pushing boundaries in the eyewear world, creating sunglasses that look good, last the distance, and don't harm the natural playground we love exploring.</p>"
-          }
+            "text": "<h2>WHAT MAKES US UNIQUE </h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_qYiFxd": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>We've always used mineral glass lenses in all of our sunglasses, and we plan to keep doing so. To us it simply beats all alternatives, as it is more scratch resistant, optically correct and better for the environment than the plastic alternatives that go in most other eyewear.</p><p>Because mineral glass is sourced from natural elements like sand and soda ash, it's non-toxic, endlessly recyclable and far more environmentally friendly than plastic.</p><p>We hope to keep pushing boundaries in the eyewear world, creating sunglasses that look good, last the distance, and don't harm the natural playground we love exploring.</p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "text_HkiqTX"
+        "text_dxmqER",
+        "text_qYiFxd"
       ],
-      "name": "Rich text",
+      "name": "t:names.rich_text_section",
       "settings": {
-        "align_text": "center",
-        "narrow_column": true,
-        "divider": false
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 100,
+        "padding-block-end": 100
       }
     }
   },
   "order": [
     "main",
-    "hero_slideshow_hkAyax",
     "section_RFGmwn",
-    "rich_text_GqEAK7",
-    "promo_grid_BWqPTD",
-    "rich_text_6zzxde",
-    "slideshow_aXTqmz",
+    "section_6qLgqJ",
+    "section_bn8mwT",
+    "section_BChqNQ",
     "hero_slideshow_LzWCUN",
-    "rich_text_Da7a7F"
+    "section_x6zi8q"
   ]
 }
