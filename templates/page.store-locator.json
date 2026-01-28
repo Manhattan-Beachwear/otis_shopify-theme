@@ -185,6 +185,7 @@
       "block_order": [
         "liquid_gU3BWG"
       ],
+      "disabled": true,
       "name": "Custom content",
       "settings": {
         "full_width": false,
