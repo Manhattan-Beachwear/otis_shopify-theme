@@ -297,17 +297,17 @@
                   "type": "group",
                   "name": "t:names.group",
                   "settings": {
-                    "content_direction": "column",
-                    "vertical_on_mobile": true,
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
                     "horizontal_alignment": "flex-start",
                     "vertical_alignment": "center",
                     "align_baseline": false,
                     "horizontal_alignment_flex_direction_column": "flex-start",
                     "vertical_alignment_flex_direction_column": "center",
                     "gap": 12,
-                    "width": "fill",
+                    "width": "fit-content",
                     "custom_width": 100,
-                    "width_mobile": "fill",
+                    "width_mobile": "fit-content",
                     "custom_width_mobile": 100,
                     "height": "fit",
                     "custom_height": 100,
@@ -337,16 +337,43 @@
                       "type": "icon",
                       "name": "t:names.icon",
                       "settings": {
-                        "icon": "price_tag",
+                        "icon": "leaf",
                         "width": 24,
                         "link": "",
                         "open_in_new_tab": false
                       },
                       "blocks": {}
+                    },
+                    "text_wXMRGA": {
+                      "type": "text",
+                      "name": "t:names.text",
+                      "settings": {
+                        "text": "<p>B Corp Certified</p>",
+                        "width": "fit-content",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "custom",
+                        "font": "var(--font-body--family)",
+                        "font_size": "0.875rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "var(--color-foreground)",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
-                    "icon_Ggn9Da"
+                    "icon_Ggn9Da",
+                    "text_wXMRGA"
                   ]
                 },
                 "group_KN4NzA": {
@@ -393,7 +420,7 @@
                       "type": "icon",
                       "name": "t:names.icon",
                       "settings": {
-                        "icon": "sheild",
+                        "icon": "eye",
                         "width": 24,
                         "link": "",
                         "open_in_new_tab": false
@@ -408,9 +435,9 @@
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
-                        "type_preset": "rte",
+                        "type_preset": "custom",
                         "font": "var(--font-body--family)",
-                        "font_size": "1rem",
+                        "font_size": "0.875rem",
                         "line_height": "normal",
                         "letter_spacing": "normal",
                         "case": "none",
@@ -491,9 +518,9 @@
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
-                        "type_preset": "rte",
+                        "type_preset": "custom",
                         "font": "var(--font-body--family)",
-                        "font_size": "1rem",
+                        "font_size": "0.875rem",
                         "line_height": "normal",
                         "letter_spacing": "normal",
                         "case": "none",
@@ -574,9 +601,9 @@
                         "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
-                        "type_preset": "rte",
+                        "type_preset": "custom",
                         "font": "var(--font-body--family)",
-                        "font_size": "1rem",
+                        "font_size": "0.875rem",
                         "line_height": "normal",
                         "letter_spacing": "normal",
                         "case": "none",
@@ -614,9 +641,9 @@
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "paragraph",
+                "type_preset": "custom",
                 "font": "var(--font-primary--family)",
-                "font_size": "",
+                "font_size": "0.875rem",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
@@ -657,8 +684,8 @@
                   "settings": {
                     "heading": "{{ closest.product.title }} Features",
                     "open_by_default": false,
-                    "icon": "none",
-                    "width": 20
+                    "icon": "arrow",
+                    "width": 12
                   },
                   "blocks": {
                     "page_XQjyVY": {
@@ -688,7 +715,7 @@
                   "settings": {
                     "heading": "Warranty",
                     "open_by_default": false,
-                    "icon": "none",
+                    "icon": "lock",
                     "width": 20
                   },
                   "blocks": {
