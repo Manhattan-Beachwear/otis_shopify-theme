@@ -111,57 +111,134 @@
         "padding-block-end": 32
       }
     },
-    "text_and_image_XP4WYy": {
-      "type": "text-and-image",
-      "settings": {
-        "image": "shopify://shop_images/Corina_Rose_Image.jpg",
-        "image_width": 510,
-        "subtitle": "What makes more sustainable sunglasses?",
-        "title": "",
-        "text": "<p><br/>OTIS is committed to creating more sustainable sunglasses than regular plastic alternatives. Our range is a testament to our dedication to environmental responsibility and our commitment to providing the best sustainable sunglasses in Australia.</p><p>Since OTIS was founded in 2000, we've always used mineral glass lenses that are scratch resistant, optically correct and endlessly recyclable. As part of our sustainability mission, we also had a vision to offer EcoAceate frame options that biodegrade at their end of life in landfill. There’s also our EcoGrilamid materials, which are made from 50% renewable resources, using castor oil instead of petrochemicals for a long-lasting, lightweight material.</p>",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "primary",
-        "align_text": "left",
-        "layout": "left",
-        "divider": false
-      }
-    },
-    "slideshow_zqg3FF": {
-      "type": "slideshow",
+    "section_RjykFJ": {
+      "type": "section",
       "blocks": {
-        "image_7dUG8P": {
+        "image_B73dpz": {
           "type": "image",
           "settings": {
-            "top_subheading": "",
-            "title": "",
-            "title_size": 86,
-            "subheading": "",
+            "image": "shopify://shop_images/Corina_Rose_Image.jpg",
             "link": "",
-            "link_text": "",
-            "link_2": "",
-            "link_text_2": "",
-            "color_accent": "rgba(0,0,0,0)",
-            "text_align": "vertical-center horizontal-center",
-            "image": "shopify://shop_images/OTIS_BANNER_JACK_MEDLAND_desktop_c91cb6d8-4350-4930-ac49-354dbae714df.jpg",
-            "image_mobile": "shopify://shop_images/OTIS_BANNER_JACK_MEDLAND_desktop.jpg",
-            "overlay_opacity": 0,
-            "focal_point": "center center"
-          }
+            "hover_scale": false,
+            "image_ratio": "square",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "group_wfzhYm": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "custom",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_cL46Yr": {
+              "type": "text",
+              "settings": {
+                "text": "<p><br/>OTIS is committed to creating more sustainable sunglasses than regular plastic alternatives. Our range is a testament to our dedication to environmental responsibility and our commitment to providing the best sustainable sunglasses in Australia.</p><p>Since OTIS was founded in 2000, we've always used mineral glass lenses that are scratch resistant, optically correct and endlessly recyclable. As part of our sustainability mission, we also had a vision to offer EcoAceate frame options that biodegrade at their end of life in landfill. There’s also our EcoGrilamid materials, which are made from 50% renewable resources, using castor oil instead of petrochemicals for a long-lasting, lightweight material.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_cL46Yr"
+          ]
         }
       },
       "block_order": [
-        "image_7dUG8P"
+        "image_B73dpz",
+        "group_wfzhYm"
       ],
-      "disabled": true,
-      "name": "Hero (optional slideshow)",
+      "name": "t:names.image_with_text",
       "settings": {
-        "section_height": "650px",
-        "mobile_height": "auto",
-        "parallax": true,
-        "style": "bars",
-        "autoplay": true,
-        "autoplay_speed": 5
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 32,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 40,
+        "padding-block-end": 40
       }
     },
     "hero_slideshow_xLQm6n": {
@@ -225,198 +302,925 @@
         "padding-block-end": 0
       }
     },
-    "text_columns_brFbzD": {
-      "type": "text-columns",
+    "section_axYtkH": {
+      "type": "section",
       "blocks": {
-        "text_block_wRjfdB": {
-          "type": "text_block",
+        "group_c8a8wU": {
+          "type": "group",
           "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/PACKAGING4_1512x_698aeb17-e0b1-420d-b2ea-8e37f47e6560.webp",
-            "image_width": 650,
-            "title": "",
-            "text": "",
-            "button_label": "",
-            "button_link": ""
-          }
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "custom",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_UjdK6R": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>B CORP Certified</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_3pTXBc": {
+              "type": "text",
+              "settings": {
+                "text": "<p>It can be hard to tell the difference between regular options from more ethical sunglasses. One badge that makes a difference, is being Corp certified. As a B Corp OTIS is part of a global community of businesses that meet high standards of social and environmental impact. We proudly accept the responsibility this gold-standard expects from companies to genuinely use their business as a force for good.</p><p>Being a certified B Corp since 2022 reflects the core of our journey towards responsibility, it signifies our commitment to acknowledging issues and actively working to address them. We understand that every pair of frames we produce, sell, and ship has an environmental impact. Our aim is to be transparent about our current standing, highlighting achievements but also identifying opportunities for improvement. We believe in creating products that not only serve our customers but also contribute positively to society and the environment. Sustainability isn't just a buzzword for us; it's an integral part of who we are. Read more in our responsibility report:</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_UjdK6R",
+            "text_3pTXBc"
+          ]
         },
-        "text_block_9AqpBM": {
-          "type": "text_block",
+        "image_aGUeCE": {
+          "type": "image",
           "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/PACKAGING_1512x_637891e6-d414-43ea-8700-5aa019f3bbab.webp",
-            "image_width": 650,
-            "title": "",
-            "text": "",
-            "button_label": "",
-            "button_link": ""
-          }
+            "image": "shopify://shop_images/B_CORP_CERTIFIED_2d4628bc-ca52-4d8d-933b-0c0b9b902889.jpg",
+            "link": "",
+            "hover_scale": false,
+            "image_ratio": "square",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "text_block_wRjfdB",
-        "text_block_9AqpBM"
+        "group_c8a8wU",
+        "image_aGUeCE"
       ],
+      "name": "t:names.image_with_text",
       "settings": {
-        "title": "",
-        "align_text": "center",
-        "divider": false,
-        "color_bg": ""
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 32,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 40,
+        "padding-block-end": 40
       }
     },
-    "rich_text_HcWfkQ": {
-      "type": "rich-text",
+    "section_cXfjUt": {
+      "type": "section",
       "blocks": {
-        "text_gMjtfx": {
+        "text_cTEhgL": {
           "type": "text",
+          "name": "t:names.heading",
           "settings": {
-            "enlarge_text": true,
-            "text": "<h2>Materials for more sustainable sunglasses<br/></h2><p>Products that are used and loved for a long time means less virgin materials are used long-term, resulting in reduced environmental impact. Our eyewear utilises low impact, high-quality materials, ensuring the the product will withstand years of adventures.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "text_gMjtfx"
-      ],
-      "settings": {
-        "align_text": "center",
-        "narrow_column": true,
-        "divider": false
-      }
-    },
-    "text_and_image_qFykxR": {
-      "type": "text-and-image",
-      "settings": {
-        "image": "shopify://shop_images/B_CORP_CERTIFIED.jpg",
-        "image_width": 500,
-        "subtitle": "",
-        "title": "B CORP Certified",
-        "text": "<p>It can be hard to tell the difference between regular options from more ethical sunglasses. One badge that makes a difference, is being Corp certified. As a B Corp OTIS is part of a global community of businesses that meet high standards of social and environmental impact. We proudly accept the responsibility this gold-standard expects from companies to genuinely use their business as a force for good.</p><p>Being a certified B Corp since 2022 reflects the core of our journey towards responsibility, it signifies our commitment to acknowledging issues and actively working to address them. We understand that every pair of frames we produce, sell, and ship has an environmental impact. Our aim is to be transparent about our current standing, highlighting achievements but also identifying opportunities for improvement. We believe in creating products that not only serve our customers but also contribute positively to society and the environment. Sustainability isn't just a buzzword for us; it's an integral part of who we are. Read more in our responsibility report:</p>",
-        "button_label": "Responsibility Report 23",
-        "button_link": "https://cdn.shopify.com/s/files/1/1364/6913/files/OTIS_RESPONSIBILITY_REPORT.pdf?v=1712910243",
-        "button_style": "primary",
-        "align_text": "left",
-        "layout": "right",
-        "divider": false
-      }
-    },
-    "text_columns_HmrFGT": {
-      "type": "text-columns",
-      "blocks": {
-        "text_block_QMWnWt": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/Screenshot_2024-04-15_at_1.11.48_PM.png",
-            "image_width": 650,
-            "title": "Eco Acetate",
-            "text": "<p>Our Eco-Acetate frames are made from renewable resources present in nature. Derived from cotton seeds & plant matter, Eco-Acetate is <strong>recyclable, biodegradable and eco-friendly.</strong> It helps close a circular economy, and feeds the earth at the end of life for more natural materials to grow.</p>",
-            "button_label": "",
-            "button_link": "https://us.otiseyewear.com/blogs/explore-otis/eco-acetate-by-otis?_pos=1&_psq=eco&_ss=e&_v=1.0"
-          }
+            "text": "<h2>Materials for more sustainable sunglasses</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         },
-        "text_block_BgRKaQ": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/Screenshot_2024-04-15_at_12.40.06_PM.png",
-            "image_width": 650,
-            "title": "Eco Grilamid",
-            "text": "<p>Our Eco-Grilamid frames are made from a bio-based material that is <strong>better for the environment</strong> than normal plastics you see everyday. Its main ingredient, castor oil, comes from plants grown in semi-arid areas that don’t compete for land used in food production.</p><p></p>",
-            "button_label": "",
-            "button_link": "https://us.otiseyewear.com/collections/eco-grilamid?_pos=1&_psq=eco-grilamid&_ss=e&_v=1.0"
-          }
-        },
-        "text_block_KTt4L6": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/Screenshot_2024-04-15_at_12.40.14_PM.png",
-            "image_width": 650,
-            "title": "Mineral Glass",
-            "text": "<p>OTIS uses mineral glass lenses across the range. Mineral glass is created from natural elements like sand & soda ash. It’s <strong>recyclable & harmless</strong> to humans and animals alike. Its optical clarity, resistance to scratch, and lack of distortion make it a super durable lens material.</p>",
-            "button_label": "",
-            "button_link": "https://us.otiseyewear.com/blogs/explore-otis/mineral-glass-vs-plastic?_pos=1&_psq=mineral-glass&_ss=e&_v=1.0"
-          }
-        }
-      },
-      "block_order": [
-        "text_block_QMWnWt",
-        "text_block_BgRKaQ",
-        "text_block_KTt4L6"
-      ],
-      "name": "Text columns with images",
-      "settings": {
-        "title": "",
-        "align_text": "center",
-        "divider": false,
-        "color_bg": ""
-      }
-    },
-    "text_columns_8VrNPr": {
-      "type": "text-columns",
-      "blocks": {
-        "text_block_qbLVLt": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/PACKAGING4_1512x_698aeb17-e0b1-420d-b2ea-8e37f47e6560.webp",
-            "image_width": 650,
-            "title": "",
-            "text": "",
-            "button_label": "",
-            "button_link": ""
-          }
-        },
-        "text_block_cJ3caz": {
-          "type": "text_block",
-          "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/PACKAGING_1512x_637891e6-d414-43ea-8700-5aa019f3bbab.webp",
-            "image_width": 650,
-            "title": "",
-            "text": "",
-            "button_label": "",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "text_block_qbLVLt",
-        "text_block_cJ3caz"
-      ],
-      "settings": {
-        "title": "",
-        "align_text": "center",
-        "divider": false,
-        "color_bg": ""
-      }
-    },
-    "rich_text_mWVhxJ": {
-      "type": "rich-text",
-      "blocks": {
-        "heading_VUBRw9": {
-          "type": "heading",
-          "settings": {
-            "title": "More Sustainable Sunglasses Need Better Packaging"
-          }
-        },
-        "text_68eHAN": {
+        "text_tLkmYU": {
           "type": "text",
+          "name": "t:names.text",
           "settings": {
-            "enlarge_text": false,
-            "text": "<p>Our commitment to creating ethical eyewear extends beyond our products to our operations and business practices.</p><p>We've eliminated plastic in our primary packaging, using recyclable card instead. Every OTIS style also comes wrapped in an cloth made from recycled PET. A way to keep your eyewear (and the planet) that little more cleaner. </p>"
-          }
+            "text": "<p>Products that are used and loved for a long time means less virgin materials are used long-term, resulting in reduced environmental impact. Our eyewear utilises low impact, high-quality materials, ensuring the the product will withstand years of adventures.Materials for more sustainable sunglasses<br/></p><p>Products that are used and loved for a long time means less virgin materials are used long-term, resulting in reduced environmental impact. Our eyewear utilises low impact, high-quality materials, ensuring the the product will withstand years of adventures.</p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "heading_VUBRw9",
-        "text_68eHAN"
+        "text_cTEhgL",
+        "text_tLkmYU"
       ],
+      "name": "t:names.rich_text_section",
       "settings": {
-        "align_text": "center",
-        "narrow_column": true,
-        "divider": false
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "section_pAxKYQ": {
+      "type": "section",
+      "blocks": {
+        "group_CGQrTK": {
+          "type": "group",
+          "name": "t:names.column",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "https://us.otiseyewear.com/blogs/explore-otis/eco-acetate-by-otis?_pos=1&_psq=eco&_ss=e&_v=1.0",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_8DhTgy": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/Screenshot_2024-04-15_at_1.11.48_PM.png",
+                "link": "",
+                "hover_scale": false,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_MTNbqg": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Eco Acetate</h2>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_yxwPAr": {
+              "type": "text",
+              "name": "t:names.description",
+              "settings": {
+                "text": "<p>Our Eco-Acetate frames are made from renewable resources present in nature. Derived from cotton seeds & plant matter, Eco-Acetate is <strong>recyclable, biodegradable and eco-friendly.</strong> It helps close a circular economy, and feeds the earth at the end of life for more natural materials to grow.</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_8DhTgy",
+            "text_MTNbqg",
+            "text_yxwPAr"
+          ]
+        },
+        "group_A4q6t6": {
+          "type": "group",
+          "name": "t:names.column",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "https://us.otiseyewear.com/collections/eco-grilamid?_pos=1&_psq=eco-grilamid&_ss=e&_v=1.0",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_e3N78B": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/Screenshot_2024-04-15_at_12.40.06_PM.png",
+                "link": "",
+                "hover_scale": false,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_Hbf9UY": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Eco Grilamid</h2>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_WFRzGm": {
+              "type": "text",
+              "name": "t:names.description",
+              "settings": {
+                "text": "<p>Our Eco-Acetate frames are made from renewable resources present in nature. Derived from cotton seeds & plant matter, Eco-Acetate is <strong>recyclable, biodegradable and eco-friendly.</strong> It helps close a circular economy, and feeds the earth at the end of life for more natural materials to grow.</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_e3N78B",
+            "text_Hbf9UY",
+            "text_WFRzGm"
+          ]
+        },
+        "group_4frENH": {
+          "type": "group",
+          "name": "t:names.column",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "https://us.otiseyewear.com/blogs/explore-otis/mineral-glass-vs-plastic?_pos=1&_psq=mineral-glass&_ss=e&_v=1.0",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_ATjMA6": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/Screenshot_2024-04-15_at_12.40.14_PM.png",
+                "link": "",
+                "hover_scale": false,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_Hj6cqc": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Mineral Glass</h2>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_fwAGBX": {
+              "type": "text",
+              "name": "t:names.description",
+              "settings": {
+                "text": "<p>OTIS uses mineral glass lenses across the range. Mineral glass is created from natural elements like sand & soda ash. It’s <strong>recyclable & harmless</strong> to humans and animals alike. Its optical clarity, resistance to scratch, and lack of distortion make it a super durable lens material.</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_ATjMA6",
+            "text_Hj6cqc",
+            "text_fwAGBX"
+          ]
+        }
+      },
+      "block_order": [
+        "group_CGQrTK",
+        "group_A4q6t6",
+        "group_4frENH"
+      ],
+      "name": "t:names.multicolumn",
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-start",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "section_AmLzmY": {
+      "type": "section",
+      "blocks": {
+        "group_43d64a": {
+          "type": "group",
+          "name": "t:names.column",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_Fq73mW": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/PACKAGING4_1512x_698aeb17-e0b1-420d-b2ea-8e37f47e6560.webp",
+                "link": "",
+                "hover_scale": false,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_Fq73mW"
+          ]
+        },
+        "group_kqf4mY": {
+          "type": "group",
+          "name": "t:names.column",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "https://us.otiseyewear.com/blogs/explore-otis/mineral-glass-vs-plastic?_pos=1&_psq=mineral-glass&_ss=e&_v=1.0",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_T7Dnxt": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/Packaging_16900f03-5dd9-48e2-9a85-5144db4959b6.png",
+                "link": "",
+                "hover_scale": false,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_T7Dnxt"
+          ]
+        }
+      },
+      "block_order": [
+        "group_43d64a",
+        "group_kqf4mY"
+      ],
+      "name": "t:names.multicolumn",
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-start",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "section_NF7JQK": {
+      "type": "section",
+      "blocks": {
+        "text_L3i66A": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>More Sustainable Sunglasses Need Better Packaging</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_RaJHUM": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Our commitment to creating ethical eyewear extends beyond our products to our operations and business practices.</p><p>We've eliminated plastic in our primary packaging, using recyclable card instead. Every OTIS style also comes wrapped in an cloth made from recycled PET. A way to keep your eyewear (and the planet) that little more cleaner. </p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_L3i66A",
+        "text_RaJHUM"
+      ],
+      "name": "t:names.rich_text_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     },
     "section_ghwBQW": {
@@ -479,100 +1283,355 @@
         "padding-block-end": 32
       }
     },
-    "text_columns_DQ3E3H": {
-      "type": "text-columns",
+    "section_rhQK7z": {
+      "type": "section",
       "blocks": {
-        "text_block_HwFEtU": {
-          "type": "text_block",
+        "group_WMCYrB": {
+          "type": "group",
+          "name": "t:names.column",
           "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/tile_1.webp",
-            "image_width": 650,
-            "title": "",
-            "text": "",
-            "button_label": "",
-            "button_link": ""
-          }
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_WaH3M8": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/tile_1.webp",
+                "link": "",
+                "hover_scale": false,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_WaH3M8"
+          ]
         },
-        "text_block_6zfbJq": {
-          "type": "text_block",
+        "group_hAVViA": {
+          "type": "group",
+          "name": "t:names.column",
           "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/tile_2.webp",
-            "image_width": 650,
-            "title": "",
-            "text": "",
-            "button_label": "",
-            "button_link": ""
-          }
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "https://us.otiseyewear.com/blogs/explore-otis/mineral-glass-vs-plastic?_pos=1&_psq=mineral-glass&_ss=e&_v=1.0",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_H7FeeT": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/tile_2.webp",
+                "link": "",
+                "hover_scale": false,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_H7FeeT"
+          ]
         },
-        "text_block_WqqKUA": {
-          "type": "text_block",
+        "group_mK3VpE": {
+          "type": "group",
+          "name": "t:names.column",
           "settings": {
-            "enable_image": true,
-            "image": "shopify://shop_images/tile_3.webp",
-            "image_width": 650,
-            "title": "",
-            "text": "",
-            "button_label": "",
-            "button_link": ""
-          }
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 10,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "image_LTFGmB": {
+              "type": "image",
+              "name": "t:names.image",
+              "settings": {
+                "image": "shopify://shop_images/tile_3.webp",
+                "link": "",
+                "hover_scale": false,
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "image_LTFGmB"
+          ]
         }
       },
       "block_order": [
-        "text_block_HwFEtU",
-        "text_block_6zfbJq",
-        "text_block_WqqKUA"
+        "group_WMCYrB",
+        "group_hAVViA",
+        "group_mK3VpE"
       ],
+      "name": "t:names.multicolumn",
       "settings": {
-        "title": "",
-        "align_text": "center",
-        "divider": false,
-        "color_bg": ""
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-start",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     },
-    "rich_text_z9GbhA": {
-      "type": "rich-text",
+    "section_R7qBj8": {
+      "type": "section",
       "blocks": {
-        "heading_h9prit": {
-          "type": "heading",
-          "settings": {
-            "title": "Join the Revolution Today"
-          }
-        },
-        "text_Rc86EY": {
+        "text_gwzPJK": {
           "type": "text",
+          "name": "t:names.heading",
           "settings": {
-            "enlarge_text": true,
-            "text": "<p>It's time to make a change and embrace more sustainable fashion. Choose from our wide range of more sustainable sunglasses, made with love for our planet. With <a href=\"https://au.otiseyewear.com/pages/our-story\"><span style=\"text-decoration:underline\">OTIS</span></a>, you're not just buying sunglasses; you're supporting a movement towards a more sustainable future.</p><p>Don't wait, take advantage of our Afterpay option and <a href=\"https://au.otiseyewear.com/pages/shipping\"><span style=\"text-decoration:underline\">enjoy free shipping on all orders</span></a> within the United States. <a href=\"https://au.otiseyewear.com/collections\"><span style=\"text-decoration:underline\">Shop for more sustainable sunglasses</span></a> today.</p><p><br/></p>"
-          }
+            "text": "<h2>Join the Revolution Today</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_bJjd6B": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>It's time to make a change and embrace more sustainable fashion. Choose from our wide range of more sustainable sunglasses, made with love for our planet. With <a href=\"https://au.otiseyewear.com/pages/our-story\"><span style=\"text-decoration:underline\">OTIS</span></a>, you're not just buying sunglasses; you're supporting a movement towards a more sustainable future.</p><p>Don't wait, take advantage of our Afterpay option and <a href=\"https://au.otiseyewear.com/pages/shipping\"><span style=\"text-decoration:underline\">enjoy free shipping on all orders</span></a> within the United States. <a href=\"https://au.otiseyewear.com/collections\"><span style=\"text-decoration:underline\">Shop for more sustainable sunglasses</span></a> today.</p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "heading_h9prit",
-        "text_Rc86EY"
+        "text_gwzPJK",
+        "text_bJjd6B"
       ],
+      "name": "t:names.rich_text_section",
       "settings": {
-        "align_text": "center",
-        "narrow_column": true,
-        "divider": false
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     }
   },
   "order": [
     "main",
     "section_F4biVj",
-    "text_and_image_XP4WYy",
-    "slideshow_zqg3FF",
+    "section_RjykFJ",
     "hero_slideshow_xLQm6n",
-    "text_columns_brFbzD",
-    "rich_text_HcWfkQ",
-    "text_and_image_qFykxR",
-    "text_columns_HmrFGT",
-    "text_columns_8VrNPr",
-    "rich_text_mWVhxJ",
+    "section_axYtkH",
+    "section_cXfjUt",
+    "section_pAxKYQ",
+    "section_AmLzmY",
+    "section_NF7JQK",
     "section_ghwBQW",
-    "text_columns_DQ3E3H",
-    "rich_text_z9GbhA"
+    "section_rhQK7z",
+    "section_R7qBj8"
   ]
 }
