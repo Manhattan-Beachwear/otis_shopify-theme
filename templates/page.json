@@ -42,6 +42,7 @@
       "block_order": [
         "heading"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -49,9 +50,57 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "17696386666b264246": {
+      "type": "_blocks",
+      "blocks": {
+        "revenuehunt_recommender_quiz_v2_inline_quiz_JXnWcP": {
+          "type": "shopify://apps/revenuehunt-recommender-quiz/blocks/v2-inline-quiz/672f3d48-fd3b-4227-8778-c6e58c4f8a98",
+          "settings": {
+            "quiz_height": 500,
+            "quiz_height_unit": "px",
+            "quiz_fixed_height": false,
+            "quiz_full_width": false,
+            "quiz_retake_autoscroll": "disabled",
+            "quiz_question_autoscroll": "disabled",
+            "quiz_id": ""
+          }
+        }
+      },
+      "block_order": [
+        "revenuehunt_recommender_quiz_v2_inline_quiz_JXnWcP"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "full-screen",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "17696386666b264246"
   ]
 }
