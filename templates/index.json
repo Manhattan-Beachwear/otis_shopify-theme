@@ -2568,7 +2568,7 @@
             "vertical_alignment": "center",
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "flex-end",
+            "vertical_alignment_flex_direction_column": "center",
             "gap": 8,
             "width": "fill",
             "custom_width": 100,
@@ -2603,7 +2603,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Shop Mens</h2>",
+                "text": "<h2>Mens</h2>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -2629,7 +2629,7 @@
               "type": "button",
               "name": "t:names.button",
               "settings": {
-                "label": "Explore",
+                "label": "sHOP",
                 "link": "shopify://collections/mens-eyewear",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
@@ -2656,7 +2656,7 @@
             "vertical_alignment": "center",
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "flex-end",
+            "vertical_alignment_flex_direction_column": "center",
             "gap": 0,
             "width": "fill",
             "custom_width": 100,
@@ -2691,7 +2691,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Shop Womens</h2>",
+                "text": "<h2>Womens</h2>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -2717,7 +2717,7 @@
               "type": "button",
               "name": "t:names.button",
               "settings": {
-                "label": "Explore",
+                "label": "sHOP",
                 "link": "shopify://collections/womens-eyewear",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
