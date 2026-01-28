@@ -93,7 +93,7 @@
       "
       {{ block.shopify_attributes }}
     >
-      {% render 'variant-swatches', product_resource: closest.product %}
+      {% render 'variant-swatches', product_resource: closest.product, block: block %}
     </product-swatches>
   {% endif %}
 {% endunless %}
@@ -270,6 +270,52 @@
       "unit": "px",
       "default": 0,
       "visible_if": "{{ block.settings.hide_padding == false }}"
+    },
+    {
+      "type": "header",
+      "content": "Product Image Swatches"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_image_swatches",
+      "label": "Show product images as swatches",
+      "default": false,
+      "info": "Display product featured images instead of color swatches for combined listings"
+    },
+    {
+      "type": "select",
+      "id": "product_image_swatch_style",
+      "label": "Product image swatch style",
+      "options": [
+        {
+          "value": "circle",
+          "label": "Circle"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        }
+      ],
+      "default": "circle",
+      "info": "Choose between circular or square layout for product image swatches"
+    },
+    {
+      "type": "range",
+      "id": "product_image_swatch_size",
+      "label": "Product image swatch size",
+      "min": 40,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48,
+      "info": "Size of product image swatches"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_horizontal_scroll",
+      "label": "Show horizontal scroll for image swatches",
+      "default": false,
+      "info": "Enable horizontal scrolling for product image swatches. When disabled, shows '+' button for overflow swatches"
     }
   ],
   "presets": [

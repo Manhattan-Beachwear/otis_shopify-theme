@@ -166,16 +166,12 @@ export class ProductCard extends Component {
             }
           }
 
-          // Restore variant name
-          if (selectedVariantName && this.variantPicker?.refs?.currentVariantName) {
-            const variantPicker = this.variantPicker;
-            if (variantPicker && variantPicker.refs?.currentVariantName) {
-              const variantNameDisplay = variantPicker.refs.currentVariantName;
-              const displayElement = Array.isArray(variantNameDisplay) ? variantNameDisplay[0] : variantNameDisplay;
-              if (displayElement instanceof HTMLElement) {
-                displayElement.textContent = selectedVariantName;
-              }
-            }
+          // Restore variant name (both inside swatches component and standalone variant-title blocks)
+          if (selectedVariantName) {
+            const displays = this.#getVariantNameDisplays();
+            displays.forEach((display) => {
+              display.textContent = selectedVariantName;
+            });
           }
         });
       }
@@ -636,6 +632,9 @@ export class ProductCard extends Component {
             }
           }
         }
+        // Update variant name and price display before returning (legacy swatch path)
+        this.#updateVariantNameOnHover(event);
+        this.#updatePriceOnHover(event);
         return;
       }
 
@@ -646,6 +645,9 @@ export class ProductCard extends Component {
       // #endregion
       // Fallback: try to find and select the slide by ID (original behavior)
       slideshow.select({ id: idStr }, undefined, { animate: false });
+      // Update variant name and price display before returning (legacy swatch fallback path)
+      this.#updateVariantNameOnHover(event);
+      this.#updatePriceOnHover(event);
       return;
     }
 
@@ -981,36 +983,86 @@ export class ProductCard extends Component {
   };
 
   /**
+   * Gets all variant name display elements (both inside swatches component and standalone variant-title blocks).
+   * @returns {HTMLElement[]} Array of variant name display elements.
+   */
+  #getVariantNameDisplays() {
+    const displays = [];
+    const foundElements = new Set();
+    
+    // Get variant name from inside swatches component (via refs)
+    const variantPicker = this.variantPicker;
+    if (variantPicker?.refs?.currentVariantName) {
+      const variantNameDisplay = variantPicker.refs.currentVariantName;
+      const displayElement = Array.isArray(variantNameDisplay) ? variantNameDisplay[0] : variantNameDisplay;
+      if (displayElement instanceof HTMLElement) {
+        displays.push(displayElement);
+        foundElements.add(displayElement);
+      }
+    }
+    
+    // Get standalone variant-title blocks in the product card
+    // Search for all elements with the variant name class, then check for ref attribute
+    const allVariantNameElements = this.querySelectorAll('.variant-option__current-variant-name');
+    allVariantNameElements.forEach((block) => {
+      if (block instanceof HTMLElement && block.getAttribute('ref') === 'currentVariantName') {
+        // Only add if not already found (avoid duplicates)
+        if (!foundElements.has(block)) {
+          displays.push(block);
+          foundElements.add(block);
+        }
+      }
+    });
+    
+    return displays;
+  }
+
+  /**
    * Updates the variant name display when hovering over a swatch.
    * @param {PointerEvent} event - The pointer event that triggered the preview.
    */
   #updateVariantNameOnHover(event) {
     if (!event?.target) return;
 
-    const variantPicker = this.variantPicker;
-    if (!variantPicker || !variantPicker.refs?.currentVariantName) return;
+    const displays = this.#getVariantNameDisplays();
+    if (displays.length === 0) return;
 
-    const variantNameDisplay = variantPicker.refs.currentVariantName;
-    // Handle case where refs might be an array
-    const displayElement = Array.isArray(variantNameDisplay) ? variantNameDisplay[0] : variantNameDisplay;
-    if (!(displayElement instanceof HTMLElement)) return;
-
-    // Store original variant name if not already stored
-    if (this.#originalVariantName === null) {
-      this.#originalVariantName = displayElement.textContent || '';
+    // Store original variant name if not already stored (use first display)
+    if (this.#originalVariantName === null && displays[0]) {
+      this.#originalVariantName = displays[0].textContent || '';
     }
 
-    // Find the swatch input element from the event target (same logic as image)
+    // Find the swatch input element from the event target (same logic as previewVariant for images)
     const target = event.target instanceof Element ? event.target : null;
     if (!target) return;
 
-    // Get the swatch input (same pattern as image - get from label or input directly)
-    const swatchInput =
-      target.closest('input[data-variant-name]') || target.closest('label')?.querySelector('input[data-variant-name]');
+    // Try multiple strategies to find the swatch input with variant name
+    let swatchInput = null;
+    
+    // Strategy 1: Direct input element
+    if (target instanceof HTMLInputElement && target.dataset.variantName) {
+      swatchInput = target;
+    }
+    // Strategy 2: Find input within closest label
+    else {
+      const label = target.closest('label');
+      if (label) {
+        swatchInput = label.querySelector('input[data-variant-name]');
+      }
+    }
+    // Strategy 3: Find closest input with data-variant-name
+    if (!swatchInput) {
+      swatchInput = target.closest('input[data-variant-name]');
+    }
 
     if (swatchInput instanceof HTMLInputElement && swatchInput.dataset.variantName) {
-      // Get variant name directly from data attribute (same pattern as image)
-      displayElement.textContent = swatchInput.dataset.variantName;
+      // Get variant name directly from data attribute and update all displays
+      const variantName = swatchInput.dataset.variantName;
+      displays.forEach((display) => {
+        if (display instanceof HTMLElement) {
+          display.textContent = variantName;
+        }
+      });
     }
   }
 
@@ -1019,19 +1071,16 @@ export class ProductCard extends Component {
    * Follows the same logic as price restoration.
    */
   #restoreVariantName() {
-    const variantPicker = this.variantPicker;
-    if (!variantPicker || !variantPicker.refs?.currentVariantName) return;
-
-    const variantNameDisplay = variantPicker.refs.currentVariantName;
-    // Handle case where refs might be an array
-    const displayElement = Array.isArray(variantNameDisplay) ? variantNameDisplay[0] : variantNameDisplay;
-    if (!(displayElement instanceof HTMLElement)) return;
+    const displays = this.#getVariantNameDisplays();
+    if (displays.length === 0) return;
 
     // First, check if we have a selected swatch variant name (from a click) - same pattern as price
     // @ts-ignore - selectedSwatchVariantName is a custom property
     const selectedVariantName = this.#selectedSwatchVariantName || this.dataset.selectedSwatchVariantName;
     if (selectedVariantName) {
-      displayElement.textContent = selectedVariantName;
+      displays.forEach((display) => {
+        display.textContent = selectedVariantName;
+      });
       // Clear the hover state
       this.#originalVariantName = null;
       return;
@@ -1039,48 +1088,88 @@ export class ProductCard extends Component {
 
     // If no selected swatch, restore to original (from before hover)
     if (this.#originalVariantName !== null) {
-      displayElement.textContent = this.#originalVariantName;
+      displays.forEach((display) => {
+        display.textContent = this.#originalVariantName;
+      });
       this.#originalVariantName = null;
     } else {
       // Otherwise, find the checked swatch and use its name
       const checkedInput = this.querySelector('input[type="radio"]:checked[data-variant-name]');
       if (checkedInput instanceof HTMLInputElement && checkedInput.dataset.variantName) {
-        displayElement.textContent = checkedInput.dataset.variantName;
+        const variantName = checkedInput.dataset.variantName;
+        displays.forEach((display) => {
+          display.textContent = variantName;
+        });
       }
     }
   }
 
   /**
+   * Updates the price display when hovering over or clicking a swatch.
+   * Public method that can be called from SwatchesVariantPickerComponent.
+   * @param {PointerEvent|Event} event - The pointer or click event that triggered the update.
+   */
+  updatePriceOnSwatchChange(event) {
+    this.#updatePriceOnHover(event);
+  }
+
+  /**
    * Updates the price display when hovering over a swatch.
-   * @param {PointerEvent} event - The pointer event that triggered the preview.
+   * @param {PointerEvent|Event} event - The pointer event that triggered the preview.
    */
   #updatePriceOnHover(event) {
     if (!event?.target) return;
 
-    // Find the swatch element from the event target
+    // Find the swatch element from the event target (same robust logic as #updateVariantNameOnHover)
     const target = event.target instanceof Element ? event.target : null;
     if (!target) return;
 
-    // Get the variant ID from the swatch
-    const swatchInput =
-      target.closest('input[data-variant-id]') || target.closest('label')?.querySelector('input[data-variant-id]');
+    // Try multiple strategies to find the swatch input with variant ID (same as variant name logic)
+    let swatchInput = null;
+
+    // Strategy 1: Direct input element
+    if (target instanceof HTMLInputElement && target.dataset.variantId) {
+      swatchInput = target;
+    }
+    // Strategy 2: Find input within closest label
+    else {
+      const label = target.closest('label');
+      if (label) {
+        swatchInput = label.querySelector('input[data-variant-id]');
+      }
+    }
+    // Strategy 3: Find closest input with data-variant-id
+    if (!swatchInput) {
+      swatchInput = target.closest('input[data-variant-id]');
+    }
+
     if (!(swatchInput instanceof HTMLInputElement)) return;
 
     const variantId = swatchInput.dataset.variantId || swatchInput.dataset.firstAvailableOrFirstVariantId;
     if (!variantId) return;
 
-    // Get the product URL from the swatch
-    const productUrl =
+    // Get the product URL from the swatch, or fall back to the product card's URL
+    let productUrl =
       swatchInput.dataset.connectedProductUrl ||
       swatchInput.dataset.productUrl ||
       swatchInput.closest('label')?.dataset.connectedProductUrl ||
       swatchInput.closest('label')?.dataset.productUrl;
 
+    // Fallback: use the product card link URL if swatch doesn't have a product URL
+    if (!productUrl && this.refs.productCardLink instanceof HTMLAnchorElement) {
+      // Get the base URL without variant parameters
+      const baseUrl = new URL(this.refs.productCardLink.href, window.location.origin);
+      baseUrl.searchParams.delete('variant'); // Remove any existing variant parameter
+      productUrl = baseUrl.href;
+    }
+
     if (!productUrl) return;
 
     // Store original price HTML if not already stored
     const priceContainer = this.querySelector(`product-price [ref='priceContainer']`);
-    if (priceContainer && this.#originalPriceHtml === null) {
+    if (!priceContainer) return; // Early return if price container not found
+    
+    if (this.#originalPriceHtml === null) {
       this.#originalPriceHtml = priceContainer.innerHTML;
     }
 
@@ -1097,11 +1186,13 @@ export class ProductCard extends Component {
       .then((responseText) => {
         const html = new DOMParser().parseFromString(responseText, 'text/html');
         const newPriceElement = html.querySelector(`product-price [ref='priceContainer']`);
-        const newVariantNameElement = html.querySelector(`.variant-option__current-variant-name`);
+        
+        // Re-query price container in case DOM changed
+        const currentPriceContainer = this.querySelector(`product-price [ref='priceContainer']`);
 
         // Update price
-        if (newPriceElement && priceContainer) {
-          priceContainer.innerHTML = newPriceElement.innerHTML;
+        if (newPriceElement && currentPriceContainer) {
+          currentPriceContainer.innerHTML = newPriceElement.innerHTML;
         }
 
         // Update variant name (if we have it in the fetched HTML)
@@ -1123,9 +1214,68 @@ export class ProductCard extends Component {
    */
   #restorePrice() {
     const priceContainer = this.querySelector(`product-price [ref='priceContainer']`);
-    if (priceContainer && this.#originalPriceHtml !== null) {
+    if (!priceContainer) return;
+
+    // First, check if we have a selected swatch price (from a click) - same pattern as variant name
+    // @ts-ignore - selectedSwatchPriceHtml is a custom property
+    const selectedPriceHtml = this.dataset.selectedSwatchPriceHtml;
+    if (selectedPriceHtml) {
+      priceContainer.innerHTML = selectedPriceHtml;
+      // Clear the hover state
+      this.#originalPriceHtml = null;
+      return;
+    }
+
+    // If no selected swatch, restore to original (from before hover)
+    if (this.#originalPriceHtml !== null) {
       priceContainer.innerHTML = this.#originalPriceHtml;
       this.#originalPriceHtml = null;
+    } else {
+      // Otherwise, find the checked swatch and fetch its price (same pattern as variant name)
+      const checkedInput = this.querySelector('input[type="radio"]:checked[data-variant-id]');
+      if (checkedInput instanceof HTMLInputElement) {
+        const variantId = checkedInput.dataset.variantId || checkedInput.dataset.firstAvailableOrFirstVariantId;
+        if (variantId) {
+          // Get the product URL from the checked swatch
+          let productUrl =
+            checkedInput.dataset.connectedProductUrl ||
+            checkedInput.dataset.productUrl ||
+            checkedInput.closest('label')?.dataset.connectedProductUrl ||
+            checkedInput.closest('label')?.dataset.productUrl;
+
+          // Fallback: use the product card link URL if swatch doesn't have a product URL
+          if (!productUrl && this.refs.productCardLink instanceof HTMLAnchorElement) {
+            const baseUrl = new URL(this.refs.productCardLink.href, window.location.origin);
+            baseUrl.searchParams.delete('variant');
+            productUrl = baseUrl.href;
+          }
+
+          if (productUrl) {
+            // Build the request URL to fetch the product card section with this variant
+            const url = new URL(productUrl, window.location.origin);
+            if (!url.searchParams.has('variant')) {
+              url.searchParams.set('variant', variantId);
+            }
+            url.searchParams.set('section_id', 'section-rendering-product-card');
+
+            // Fetch the product card section and update price
+            fetch(url.href)
+              .then((response) => response.text())
+              .then((responseText) => {
+                const html = new DOMParser().parseFromString(responseText, 'text/html');
+                const newPriceElement = html.querySelector(`product-price [ref='priceContainer']`);
+                const currentPriceContainer = this.querySelector(`product-price [ref='priceContainer']`);
+
+                if (newPriceElement && currentPriceContainer) {
+                  currentPriceContainer.innerHTML = newPriceElement.innerHTML;
+                }
+              })
+              .catch(() => {
+                // Silently handle errors
+              });
+          }
+        }
+      }
     }
   }
 
@@ -1153,8 +1303,54 @@ export class ProductCard extends Component {
    * This ensures the first swatch (alphabetically) is set as the selected swatch.
    */
   #initializeSelectedSwatch() {
-    // Find the checked swatch input
-    const checkedInput = this.querySelector('input[type="radio"]:checked[data-featured-image-url]');
+    // Find the checked swatch input (prefer one with featured image, but also check for any checked swatch with variant name)
+    let checkedInput = this.querySelector('input[type="radio"]:checked[data-featured-image-url]');
+    if (!(checkedInput instanceof HTMLInputElement)) {
+      // Fallback: find any checked swatch with variant name
+      checkedInput = this.querySelector('input[type="radio"]:checked[data-variant-name]');
+    }
+
+    // Check if the checked swatch is available
+    // If not available, find the first available swatch instead
+    if (checkedInput instanceof HTMLInputElement) {
+      const isAvailable = checkedInput.dataset.optionAvailable === 'true' || 
+                         parseInt(checkedInput.dataset.availableCount || '0') > 0;
+      
+      if (!isAvailable) {
+        // Find the first available swatch (prefer one with featured image)
+        let firstAvailableInput = this.querySelector('input[type="radio"][data-featured-image-url][data-option-available="true"]');
+        if (!(firstAvailableInput instanceof HTMLInputElement)) {
+          // Fallback: find any available swatch
+          const allSwatches = this.querySelectorAll('input[type="radio"][data-variant-name]');
+          for (const swatch of allSwatches) {
+            if (swatch instanceof HTMLInputElement) {
+              const swatchAvailable = swatch.dataset.optionAvailable === 'true' || 
+                                     parseInt(swatch.dataset.availableCount || '0') > 0;
+              if (swatchAvailable) {
+                firstAvailableInput = swatch;
+                // Check this swatch so it becomes the active one
+                swatch.checked = true;
+                break;
+              }
+            }
+          }
+        } else {
+          // Check the first available swatch so it becomes the active one
+          firstAvailableInput.checked = true;
+        }
+        
+        // Use the first available swatch instead
+        if (firstAvailableInput instanceof HTMLInputElement) {
+          checkedInput = firstAvailableInput;
+          // Update the variant picker's selected option state
+          const variantPicker = this.variantPicker;
+          if (variantPicker && typeof variantPicker.updateSelectedOption === 'function') {
+            variantPicker.updateSelectedOption(checkedInput);
+          }
+        }
+      }
+    }
+
     if (checkedInput instanceof HTMLInputElement) {
       const featuredImageUrl = checkedInput.dataset.featuredImageUrl;
       const mediaId = checkedInput.dataset.optionMediaId;
@@ -1163,9 +1359,10 @@ export class ProductCard extends Component {
         (checkedInput.dataset.productUrl && checkedInput.dataset.variantId
           ? `${checkedInput.dataset.productUrl}?variant=${checkedInput.dataset.variantId}`
           : checkedInput.dataset.productUrl);
+      const variantName = checkedInput.dataset.variantName || null;
 
       if (featuredImageUrl || connectedProductUrl) {
-        this.setSelectedSwatch(featuredImageUrl || null, connectedProductUrl || null);
+        this.setSelectedSwatch(featuredImageUrl || null, connectedProductUrl || null, variantName);
 
         // Update the image immediately if we have a featured image URL
         const slideshow = this.refs.slideshow;
@@ -1240,6 +1437,19 @@ export class ProductCard extends Component {
             productTitleLink.href = connectedProductUrl;
           }
         }
+      }
+
+      // Initialize variant-title blocks with the checked swatch's variant name (even if no featured image or connected URL)
+      if (variantName) {
+        const displays = this.#getVariantNameDisplays();
+        displays.forEach((display) => {
+          if (display instanceof HTMLElement) {
+            display.textContent = variantName;
+          }
+        });
+        // Store it so it persists
+        // @ts-ignore - selectedSwatchVariantName is a custom property
+        this.dataset.selectedSwatchVariantName = variantName;
       }
     }
   }
@@ -1772,6 +1982,12 @@ class SwatchesVariantPickerComponent extends VariantPicker {
         // This ensures the variant name follows the same logic as the image
         this.#updateVariantNameDisplay(clickedSwatch);
 
+        // Update the price display immediately
+        // This ensures the price updates immediately on click, not just on hover
+        if (event && this.parentProductCard instanceof ProductCard) {
+          this.parentProductCard.updatePriceOnSwatchChange(event);
+        }
+
         // Also store it immediately on the product card so it persists after morph
         // The setSelectedSwatch method already stores it, but we also store in dataset for immediate access
         if (variantName && this.parentProductCard instanceof ProductCard) {
@@ -1817,6 +2033,28 @@ class SwatchesVariantPickerComponent extends VariantPicker {
       // If it's not a different product or original product, fall through to default behavior
     }
 
+    // For regular swatches (same product), still update variant-title display and store selection
+    if (isSwatchInput && clickedSwatch instanceof HTMLInputElement && this.parentProductCard instanceof ProductCard) {
+      const variantName = clickedSwatch.dataset.variantName || null;
+      const featuredImageUrl = clickedSwatch.dataset.featuredImageUrl || null;
+      const connectedProductUrl =
+        clickedSwatch.dataset.connectedProductUrl ||
+        (clickedSwatch.dataset.productUrl && clickedSwatch.dataset.variantId
+          ? `${clickedSwatch.dataset.productUrl}?variant=${clickedSwatch.dataset.variantId}`
+          : clickedSwatch.dataset.productUrl || null);
+      
+      // Store the selected swatch so it persists (same as combined listing swatches)
+      this.parentProductCard.setSelectedSwatch(featuredImageUrl, connectedProductUrl, variantName);
+      
+      // Update variant-title display
+      this.#updateVariantNameDisplay(clickedSwatch);
+      
+      // Also update price for regular swatches
+      if (event) {
+        this.parentProductCard.updatePriceOnSwatchChange(event);
+      }
+    }
+
     // For all other cases, use the default behavior
     super.variantChanged(event);
   }
@@ -1840,13 +2078,31 @@ class SwatchesVariantPickerComponent extends VariantPicker {
    * @param {HTMLElement} clickedSwatch - The clicked swatch input element.
    */
   #updateVariantNameDisplay(clickedSwatch) {
-    // Find the variant name display element
-    const variantNameDisplay = this.refs.currentVariantName;
-    if (!variantNameDisplay) return;
-
     // Get the variant name directly from the swatch input's data attribute (same pattern as image)
-    if (clickedSwatch instanceof HTMLInputElement && clickedSwatch.dataset.variantName) {
-      variantNameDisplay.textContent = clickedSwatch.dataset.variantName;
+    if (!(clickedSwatch instanceof HTMLInputElement) || !clickedSwatch.dataset.variantName) return;
+    
+    const variantName = clickedSwatch.dataset.variantName;
+    
+    // Update variant name inside swatches component
+    const variantNameDisplay = this.refs.currentVariantName;
+    if (variantNameDisplay instanceof HTMLElement) {
+      variantNameDisplay.textContent = variantName;
+    }
+    
+    // Also update standalone variant-title blocks in the parent product card
+    // Use the same logic as ProductCard.#getVariantNameDisplays() to find all displays
+    if (this.parentProductCard instanceof ProductCard) {
+      // Find all variant-title blocks (standalone blocks with ref="currentVariantName")
+      const allVariantNameElements = this.parentProductCard.querySelectorAll('.variant-option__current-variant-name');
+      allVariantNameElements.forEach((block) => {
+        if (block instanceof HTMLElement && block.getAttribute('ref') === 'currentVariantName') {
+          block.textContent = variantName;
+        }
+      });
+
+      // Store the variant name so it persists after morphs and hover-out (same pattern as price)
+      // @ts-ignore - selectedSwatchVariantName is a custom property
+      this.parentProductCard.dataset.selectedSwatchVariantName = variantName;
     }
   }
 }

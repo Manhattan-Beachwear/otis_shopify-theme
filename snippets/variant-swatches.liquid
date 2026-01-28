@@ -2,42 +2,47 @@
   Renders a swatches variant picker, used within the product-swatches block.
 
   @param {object} product_resource - The product object, which contains variants and options.
+  @param {object} [block] - The block object with settings (optional).
   @param {boolean} [has_option_selected] - Whether an option is already selected.
 
   @example
   {% render 'variant-swatches', product_resource: product %}
+  {% render 'variant-swatches', product_resource: product, block: block %}
 {%- enddoc -%}
 
 {%- liquid
+  # Resolve all product image swatch settings with priority: block → section → global
   assign show_product_image_swatches = false
-  if section != blank and section.settings != blank and section.settings.show_product_image_swatches
+  if block != blank and block.settings != blank and block.settings.show_product_image_swatches
+    assign show_product_image_swatches = true
+  elsif section != blank and section.settings != blank and section.settings.show_product_image_swatches
     assign show_product_image_swatches = true
   elsif settings.show_product_image_swatches
     assign show_product_image_swatches = true
   endif
   
   assign product_image_swatch_style = 'circle'
-  if section != blank and section.settings != blank and section.settings.product_image_swatch_style != blank
+  if block != blank and block.settings != blank and block.settings.product_image_swatch_style != blank
+    assign product_image_swatch_style = block.settings.product_image_swatch_style
+  elsif section != blank and section.settings != blank and section.settings.product_image_swatch_style != blank
     assign product_image_swatch_style = section.settings.product_image_swatch_style
   elsif settings.product_image_swatch_style != blank
     assign product_image_swatch_style = settings.product_image_swatch_style
   endif
   
-  if section != blank and section.settings != blank and section.settings.product_image_swatch_size != blank
+  assign product_image_swatch_size = blank
+  if block != blank and block.settings != blank and block.settings.product_image_swatch_size != blank
+    assign product_image_swatch_size = block.settings.product_image_swatch_size
+  elsif section != blank and section.settings != blank and section.settings.product_image_swatch_size != blank
     assign product_image_swatch_size = section.settings.product_image_swatch_size
   elsif settings.product_image_swatch_size != blank
     assign product_image_swatch_size = settings.product_image_swatch_size
   endif
   
-  assign show_product_image_swatch_variant_name = false
-  if section != blank and section.settings != blank and section.settings.show_product_image_swatch_variant_name
-    assign show_product_image_swatch_variant_name = true
-  elsif settings.show_product_image_swatch_variant_name
-    assign show_product_image_swatch_variant_name = true
-  endif
-  
   assign show_horizontal_scroll = false
-  if section != blank and section.settings != blank and section.settings.show_horizontal_scroll
+  if block != blank and block.settings != blank and block.settings.show_horizontal_scroll
+    assign show_horizontal_scroll = true
+  elsif section != blank and section.settings != blank and section.settings.show_horizontal_scroll
     assign show_horizontal_scroll = true
   elsif settings.show_horizontal_scroll
     assign show_horizontal_scroll = true
@@ -201,6 +206,7 @@
                   data-option-value-id="{{ product_option_value.id }}"
                   data-option-available="{{ product_option_value.available }}"
                   data-connected-product-url="{{ product_option_value.product_url }}"
+                  data-variant-name="{{ product_option_value.name | escape }}"
                   {% if featured_media != blank and featured_media.preview_image != blank %}
                     data-featured-image-url="{{ featured_media.preview_image | image_url: width: 1200 }}"
                   {% endif %}
@@ -230,9 +236,6 @@
                 {%- endif -%}
                 {% render 'strikethrough-variant', product_option: product_option_value %}
               </label>
-              {%- if show_product_image_swatches and show_product_image_swatch_variant_name -%}
-                <span class="variant-option__swatch-name">{{ product_option_value.name | escape }}</span>
-              {%- endif -%}
             </li>
             {%- endunless -%}
           {%- endfor -%}
@@ -287,17 +290,15 @@
     object-fit: contain;
   }
 
-  .variant-option__swatch .variant-option__swatch-name {
+  .variant-option__current-variant-name {
     display: block;
-    margin-top: 4px;
-    font-size: var(--font-size--2xs);
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
     text-align: center;
-    color: var(--color-foreground);
+    color: rgb(var(--color-foreground));
     line-height: 1.2;
-    width: var(--product-image-swatch-size, 60px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    min-height: 1.2em;
   }
 
   .variant-option__button-label--product-image-circle {
@@ -318,7 +319,7 @@
 
   /* Selected state */
   .variant-option__button-label--product-image:has(:checked) {
-    border: 2px solid var(--color-foreground);
+    border: var(--variant-picker-border-width, var(--style-border-swatch-width, 1px)) var(--variant-picker-border-style, var(--style-border-swatch-style, solid)) var(--color-foreground);
     border-radius: 0;
     outline: none !important;
     box-shadow: none !important;
@@ -366,8 +367,14 @@
     overflow-y: hidden !important;
     -webkit-overflow-scrolling: touch;
     gap: 8px;
-    padding-bottom: 8px;
+    /* Bottom padding for scrollbar */
+    padding-bottom: calc(2px + var(--variant-picker-border-width, 1px) + 4px);
     scrollbar-color: auto !important;
+  }
+
+  /* Ensure swatch labels account for top border space */
+  .variant-option--horizontal-scroll .variant-option__button-label--product-image {
+    margin-top: calc(var(--variant-picker-border-width, 1px) + 1px);
   }
 
   .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar {

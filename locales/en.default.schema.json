@@ -225,6 +225,7 @@
   "names": {
     "column": "Column",
     "product_title": "Product title",
+    "variant_title": "Variant title",
     "custom_liquid": "Custom Liquid",
     "404": "404",
     "accelerated_checkout": "Accelerated checkout",
