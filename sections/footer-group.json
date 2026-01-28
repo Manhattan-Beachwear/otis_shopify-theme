@@ -1510,7 +1510,7 @@
       ],
       "name": "t:names.footer",
       "settings": {
-        "section_width": "full-width",
+        "section_width": "page-width",
         "gap": 35,
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
