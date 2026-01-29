@@ -2766,15 +2766,6 @@
         "padding-block-end": 100
       }
     },
-    "rich_text_djTzcM": {
-      "type": "rich-text",
-      "name": "Rich text",
-      "settings": {
-        "align_text": "center",
-        "narrow_column": true,
-        "divider": false
-      }
-    },
     "section_mmTVYw": {
       "type": "section",
       "blocks": {
@@ -3128,7 +3119,6 @@
     "section_AtiTmC",
     "product_list_pk3ngR",
     "section_RxxVae",
-    "rich_text_djTzcM",
     "section_mmTVYw",
     "featured_blog_posts_ztcaHh"
   ]
