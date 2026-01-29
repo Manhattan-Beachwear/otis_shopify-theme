@@ -943,7 +943,7 @@
           "name": "t:names.product_card",
           "static": true,
           "settings": {
-            "product_card_gap": 4,
+            "product_card_gap": 0,
             "inherit_color_scheme": true,
             "color_scheme": "",
             "border": "none",
@@ -2465,7 +2465,7 @@
                 "max_width": "normal",
                 "alignment": "left",
                 "type_preset": "custom",
-                "font": "var(--font-body--family)",
+                "font": "var(--font-heading--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
                 "letter_spacing": "normal",
@@ -2482,6 +2482,33 @@
               },
               "blocks": {}
             },
+            "variant_title_9ag48U": {
+              "type": "variant-title",
+              "name": "t:names.variant_title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-subheading--family)",
+                "font_size": "0.75rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "custom_color": "#423e3ecf",
+                "font_style": "italic",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "price_WzEzeb": {
               "type": "price",
               "name": "t:names.product_price",
@@ -2489,13 +2516,13 @@
                 "show_sale_price_first": true,
                 "show_installments": false,
                 "show_tax_info": false,
-                "type_preset": "h6",
+                "type_preset": "custom",
                 "width": "100%",
                 "alignment": "left",
                 "font": "var(--font-body--family)",
-                "font_size": "1rem",
+                "font_size": "0.875rem",
                 "line_height": "normal",
-                "letter_spacing": "normal",
+                "letter_spacing": "loose",
                 "case": "none",
                 "color": "var(--color-foreground)",
                 "padding-block-start": 0,
@@ -2527,6 +2554,7 @@
           "block_order": [
             "product_card_gallery_rYBCHn",
             "product_title_eaEL7k",
+            "variant_title_9ag48U",
             "price_WzEzeb",
             "swatches_eiCtNx"
           ]
