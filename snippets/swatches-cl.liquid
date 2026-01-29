@@ -36,10 +36,41 @@
 {%- endcomment -%}
 {% if product_has_swatches %}
   {%- liquid
-    if section.settings.product_image_swatch_size != blank
-      assign swatch_size = section.settings.product_image_swatch_size
-    elsif block.settings.product_image_swatch_size != blank
+    # Resolve all product image swatch settings with priority: block → section → global
+    assign show_product_image_swatches = false
+    if block != blank and block.settings != blank and block.settings.show_product_image_swatches
+      assign show_product_image_swatches = true
+    elsif section != blank and section.settings != blank and section.settings.show_product_image_swatches
+      assign show_product_image_swatches = true
+    elsif settings.show_product_image_swatches
+      assign show_product_image_swatches = true
+    endif
+    
+    assign product_image_swatch_style = 'circle'
+    if block != blank and block.settings != blank and block.settings.product_image_swatch_style != blank
+      assign product_image_swatch_style = block.settings.product_image_swatch_style
+    elsif section != blank and section.settings != blank and section.settings.product_image_swatch_style != blank
+      assign product_image_swatch_style = section.settings.product_image_swatch_style
+    elsif settings.product_image_swatch_style != blank
+      assign product_image_swatch_style = settings.product_image_swatch_style
+    endif
+    
+    assign swatch_size = blank
+    if block != blank and block.settings != blank and block.settings.product_image_swatch_size != blank
       assign swatch_size = block.settings.product_image_swatch_size
+    elsif section != blank and section.settings != blank and section.settings.product_image_swatch_size != blank
+      assign swatch_size = section.settings.product_image_swatch_size
+    elsif settings.product_image_swatch_size != blank
+      assign swatch_size = settings.product_image_swatch_size
+    endif
+    
+    assign show_horizontal_scroll = false
+    if block != blank and block.settings != blank and block.settings.show_horizontal_scroll
+      assign show_horizontal_scroll = true
+    elsif section != blank and section.settings != blank and section.settings.show_horizontal_scroll
+      assign show_horizontal_scroll = true
+    elsif settings.show_horizontal_scroll
+      assign show_horizontal_scroll = true
     endif
   -%}
   <product-swatches

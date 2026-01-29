@@ -86,15 +86,6 @@
     assign product_image_swatch_size = settings.product_image_swatch_size
   endif
   
-  assign show_product_image_swatch_variant_name = false
-  if block != blank and block_settings != blank and block_settings.show_product_image_swatch_variant_name
-    assign show_product_image_swatch_variant_name = true
-  elsif section != blank and section.settings != blank and section.settings.show_product_image_swatch_variant_name
-    assign show_product_image_swatch_variant_name = true
-  elsif settings.show_product_image_swatch_variant_name
-    assign show_product_image_swatch_variant_name = true
-  endif
-
   # Check for combined listings metafield on current product
   assign combined_listings_metafield = product_resource.metafields.custom.combined_listing
   
@@ -656,35 +647,6 @@
         </legend>
       {%- endif %}
       {%- comment -%} Display current variant name above swatches {%- endcomment -%}
-      {%- liquid
-        # Build full variant name from selected variant's all option values
-        assign current_variant_name = ''
-        assign current_variant = product_resource.selected_or_first_available_variant
-        if current_variant != blank
-          if current_variant.option1 != blank
-            assign current_variant_name = current_variant.option1
-          endif
-          if current_variant.option2 != blank
-            if current_variant_name == ''
-              assign current_variant_name = current_variant.option2
-            else
-              assign current_variant_name = current_variant_name | append: ' / ' | append: current_variant.option2
-            endif
-          endif
-          if current_variant.option3 != blank
-            if current_variant_name == ''
-              assign current_variant_name = current_variant.option3
-            else
-              assign current_variant_name = current_variant_name | append: ' / ' | append: current_variant.option3
-            endif
-          endif
-        endif
-      -%}
-      <div class="variant-option__current-variant-name" ref="currentVariantName">
-        {%- if current_variant_name != blank and current_variant_name != '' -%}
-          {{ current_variant_name | escape }}
-        {%- endif %}
-      </div>
       {% capture children %}
         {% assign final_products = sorted_products | split: '|||' %}
         
@@ -1185,9 +1147,6 @@
                     {% endunless %}
                   {% endif %}
                 </label>
-                {%- if show_product_image_swatches and show_product_image_swatch_variant_name and option_value_name_for_swatch != blank -%}
-                  <span class="variant-option__swatch-name">{{ option_value_name_for_swatch | escape }}</span>
-                {%- endif -%}
               </li>
             {% endif %}
           {% endif %}
@@ -1242,19 +1201,6 @@
     object-fit: contain;
   }
 
-  .variant-option__swatch .variant-option__swatch-name {
-    display: block;
-    margin-top: 4px;
-    font-size: var(--font-size--2xs);
-    text-align: center;
-    color: var(--color-foreground);
-    line-height: 1.2;
-    width: var(--product-image-swatch-size, 60px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   .variant-option__button-label--product-image-circle {
     border-radius: 0;
   }
@@ -1273,7 +1219,7 @@
 
   /* Selected state */
   .variant-option__button-label--product-image:has(:checked) {
-    border: 2px solid var(--color-foreground);
+    border: var(--variant-picker-border-width, var(--style-border-swatch-width, 1px)) var(--variant-picker-border-style, var(--style-border-swatch-style, solid)) var(--color-foreground);
     border-radius: 0;
     outline: none !important;
     box-shadow: none !important;
@@ -1321,8 +1267,14 @@
     overflow-y: hidden !important;
     -webkit-overflow-scrolling: touch;
     gap: 8px;
-    padding-bottom: 8px;
+    /* Bottom padding for scrollbar */
+    padding-bottom: calc(2px + var(--variant-picker-border-width, 1px) + 4px);
     scrollbar-color: auto !important;
+  }
+
+  /* Ensure swatch labels account for top border space */
+  .variant-option--horizontal-scroll .variant-option__button-label--product-image {
+    margin-top: calc(var(--variant-picker-border-width, 1px) + 1px);
   }
 
   .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar {
