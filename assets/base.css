@@ -69,10 +69,6 @@ select {
   color: currentcolor;
 }
 
-.screen-reader-only {
-  display: none;
-}
-
 .product-card,
 .collection-card,
 .resource-card,
