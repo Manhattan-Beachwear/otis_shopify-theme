@@ -78,7 +78,7 @@
             "menu": "main-menu",
             "split_after_item": 2,
             "color_scheme": "",
-            "type_font_primary_size": "1rem",
+            "type_font_primary_size": "0.875rem",
             "menu_font_style": "inverse",
             "type_font_primary_link": "body",
             "type_case_primary_link": "uppercase",
