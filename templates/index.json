@@ -788,7 +788,7 @@
         "color_scheme": "",
         "icons_style": "arrows_large",
         "slideshow_controls_style": "dots",
-        "autoplay": false,
+        "autoplay": true,
         "autoplay_speed": 4,
         "section_height": "custom",
         "section_height_custom": 80,
