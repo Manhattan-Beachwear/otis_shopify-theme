@@ -618,7 +618,7 @@
               "type": "contact-form-submit-button",
               "static": true,
               "settings": {
-                "label": "SEND",
+                "label": "Send Message",
                 "style_class": "button-secondary",
                 "width": "custom",
                 "custom_width": 100,
