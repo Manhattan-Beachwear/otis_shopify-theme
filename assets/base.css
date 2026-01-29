@@ -69,10 +69,6 @@ select {
   color: currentcolor;
 }
 
-.screen-reader-only {
-  display: none;
-}
-
 .product-card,
 .collection-card,
 .resource-card,
@@ -513,6 +509,20 @@ p:empty {
 }
 
 .visually-hidden:not(:focus, :active) {
+  /* stylelint-disable-next-line declaration-no-important */
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  /* stylelint-disable-next-line declaration-no-important */
+  word-wrap: normal !important;
+}
+
+.screen-reader-only:not(:focus, :active) {
   /* stylelint-disable-next-line declaration-no-important */
   position: absolute !important;
   overflow: hidden;

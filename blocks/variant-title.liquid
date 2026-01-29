@@ -46,12 +46,12 @@
     endif
     if block_settings.type_preset == 'custom'
       echo ' custom-typography '
-      if block_settings.font_size != ''
-        echo ' custom-font-size '
-      endif
-      if block_settings.color != ''
-        echo ' custom-color '
-      endif
+    endif
+    if block_settings.font_size != ''
+      echo ' custom-font-size '
+    endif
+    if block_settings.custom_color != blank or block_settings.color != ''
+      echo ' custom-color '
     endif
     if block_settings.background
       echo ' text-block--background '
@@ -79,6 +79,33 @@
       --text-background-color: {{ block_settings.background_color | default: 'rgb(255 255 255 / 1.0)' }};
       --text-corner-radius: {{ block_settings.corner_radius }}px;
       --text-padding: max(var(--padding-2xs), calc((var(--text-corner-radius) + var(--padding-xs)) * (1 - cos(45deg))));
+    {% endif %}
+    {% if block_settings.font_size != blank and block_settings.font_size != '' %}
+      {%- liquid
+        assign font_size_rem = block_settings.font_size | split: 'rem' | first | times: 1.0
+        assign fluid_size_cutoff_rem = 3.0
+
+        if font_size_rem >= fluid_size_cutoff_rem
+          assign target_viewport = 1400
+          assign vw_value = font_size_rem | times: 16 | divided_by: target_viewport | times: 100
+
+          assign scale_factor = font_size_rem | divided_by: fluid_size_cutoff_rem
+          assign base_min_rem = 3.0
+          assign scaling_bonus_rem = scale_factor | minus: 1 | times: 0.25
+          assign dynamic_min_rem = base_min_rem | plus: scaling_bonus_rem
+        endif
+      -%}
+      {%- if font_size_rem >= fluid_size_cutoff_rem -%}
+        font-size: clamp({{ dynamic_min_rem }}rem, {{ vw_value }}vw, {{ block_settings.font_size }});
+      {%- else -%}
+        font-size: {{ block_settings.font_size }};
+      {%- endif -%}
+    {% endif %}
+    {% if block_settings.font_style == 'bold' or block_settings.font_style == 'bold italic' %}
+      font-weight: 700;
+    {% endif %}
+    {% if block_settings.font_style == 'italic' or block_settings.font_style == 'bold italic' %}
+      font-style: italic;
     {% endif %}
   "
   {{ block.shopify_attributes }}
@@ -231,6 +258,8 @@
   .variant-option__current-variant-name.custom-color {
     color: var(--color);
   }
+
+  /* Font weight and style are applied directly via inline styles */
 
   /* Ensure variant name has minimum height for consistent layout */
   /* Prevent text wrapping and show ellipsis for long text */
@@ -443,8 +472,7 @@
           "label": "184px"
         }
       ],
-      "default": "1rem",
-      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+      "default": "1rem"
     },
     {
       "type": "select",
@@ -543,8 +571,38 @@
           "label": "t:options.link"
         }
       ],
-      "default": "var(--color-foreground)",
-      "visible_if": "{{ block.settings.type_preset != 'rte' }}"
+      "default": "var(--color-foreground)"
+    },
+    {
+      "type": "color",
+      "id": "custom_color",
+      "label": "Custom color",
+      "alpha": true,
+      "info": "Override the color setting above with a custom color"
+    },
+    {
+      "type": "select",
+      "id": "font_style",
+      "label": "Font style",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "bold",
+          "label": "Bold"
+        },
+        {
+          "value": "italic",
+          "label": "Italic"
+        },
+        {
+          "value": "bold italic",
+          "label": "Bold Italic"
+        }
+      ],
+      "default": "normal"
     },
     {
       "type": "header",
