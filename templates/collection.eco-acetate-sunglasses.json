@@ -207,6 +207,31 @@
               },
               "blocks": {}
             },
+            "variant_title_VCqYYU": {
+              "type": "variant-title",
+              "name": "t:names.variant_title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "swatches": {
               "type": "swatches",
               "name": "t:names.swatches",
@@ -217,7 +242,11 @@
                 "product_swatches_padding_top": 4,
                 "product_swatches_padding_bottom": 0,
                 "product_swatches_padding_left": 0,
-                "product_swatches_padding_right": 0
+                "product_swatches_padding_right": 0,
+                "show_product_image_swatches": true,
+                "product_image_swatch_style": "square",
+                "product_image_swatch_size": 48,
+                "show_horizontal_scroll": true
               },
               "blocks": {}
             }
@@ -226,6 +255,7 @@
             "card-gallery",
             "product_title_4nY4eT",
             "price_EzJzMm",
+            "variant_title_VCqYYU",
             "swatches"
           ]
         }
@@ -245,12 +275,7 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
         "padding-block-end": 32,
-        "enable_combined_listings": true,
-        "show_product_image_swatches": true,
-        "product_image_swatch_style": "square",
-        "product_image_swatch_size": 40,
-        "show_product_image_swatch_variant_name": true,
-        "show_horizontal_scroll": true
+        "enable_combined_listings": true
       }
     },
     "section_xYTcYN": {
