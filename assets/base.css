@@ -75,10 +75,18 @@ select {
 .predictive-search-results__card--product,
 .predictive-search-results__card {
   position: relative;
+  z-index: var(--layer-flat);
+}
+
+/* Only apply transitions when hover effects are enabled */
+body:not(.card-hover-effect-none) .product-card,
+body:not(.card-hover-effect-none) .collection-card,
+body:not(.card-hover-effect-none) .resource-card,
+body:not(.card-hover-effect-none) .predictive-search-results__card--product,
+body:not(.card-hover-effect-none) .predictive-search-results__card {
   transition: transform var(--hover-transition-duration) var(--hover-transition-timing),
     box-shadow var(--hover-transition-duration) var(--hover-transition-timing);
   will-change: transform, box-shadow;
-  z-index: var(--layer-flat);
 }
 
 .product-card__link {
@@ -4434,23 +4442,23 @@ text-component {
   }
 }
 
-.product-card:hover,
-.collection-card:hover,
-.resource-card:hover,
-.predictive-search-results__card--product:hover,
-.predictive-search-results__card:hover {
+body:not(.card-hover-effect-none) .product-card:hover,
+body:not(.card-hover-effect-none) .collection-card:hover,
+body:not(.card-hover-effect-none) .resource-card:hover,
+body:not(.card-hover-effect-none) .predictive-search-results__card--product:hover,
+body:not(.card-hover-effect-none) .predictive-search-results__card:hover {
   position: relative;
   z-index: var(--layer-raised);
   transition: transform var(--hover-transition-duration) var(--hover-transition-timing),
     box-shadow var(--hover-transition-duration) var(--hover-transition-timing);
 }
 
-.header .product-card:hover,
-.header .collection-card:hover,
-.header .resource-card:hover,
-.header-drawer .product-card:hover,
-.header-drawer .collection-card:hover,
-.header-drawer .resource-card:hover {
+body:not(.card-hover-effect-none) .header .product-card:hover,
+body:not(.card-hover-effect-none) .header .collection-card:hover,
+body:not(.card-hover-effect-none) .header .resource-card:hover,
+body:not(.card-hover-effect-none) .header-drawer .product-card:hover,
+body:not(.card-hover-effect-none) .header-drawer .collection-card:hover,
+body:not(.card-hover-effect-none) .header-drawer .resource-card:hover {
   z-index: auto;
   transform: none;
   box-shadow: none;
