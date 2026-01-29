@@ -80,7 +80,7 @@
             "color_scheme": "",
             "type_font_primary_size": "1rem",
             "menu_font_style": "regular",
-            "type_font_primary_link": "subheading",
+            "type_font_primary_link": "body",
             "type_case_primary_link": "uppercase",
             "menu_style": "collection_images",
             "featured_products_aspect_ratio": "4 / 5",
