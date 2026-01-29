@@ -6,9 +6,6 @@
   @param {object} [block] - The block object with settings (optional)
 {%- enddoc -%}
 
-{%- comment -%} Render centralized swatch styles {%- endcomment -%}
-{% render 'swatch-styles' %}
-
 {% liquid
   # Handle blank block (for sections that don't use blocks)
   if block != blank
@@ -17,61 +14,78 @@
     assign block_settings = blank
   endif
   
-  # Read from global settings
-  assign swatch_enable_assets_backup = settings.enable_swatch_assets_backup | default: true
+  # Get swatch-related settings to pass to swatch component (priority: block settings > global settings)
+  assign swatch_enable_assets_backup = blank
   if block != blank and block_settings != blank and block_settings.enable_swatch_assets_backup != blank
     assign swatch_enable_assets_backup = block_settings.enable_swatch_assets_backup
+  elsif settings.enable_swatch_assets_backup != blank
+    assign swatch_enable_assets_backup = settings.enable_swatch_assets_backup
   endif
   
-  assign swatch_file_extension_setting = settings.swatch_file_extension | default: 'png'
+  assign swatch_file_extension_setting = blank
   if block != blank and block_settings != blank and block_settings.swatch_file_extension != blank
     assign swatch_file_extension_setting = block_settings.swatch_file_extension
+  elsif settings.swatch_file_extension != blank
+    assign swatch_file_extension_setting = settings.swatch_file_extension
   endif
   
-  assign swatch_show_variant_image = settings.show_variant_image | default: false
+  assign swatch_show_variant_image = blank
   if block != blank and block_settings != blank and block_settings.show_variant_image != blank
     assign swatch_show_variant_image = block_settings.show_variant_image
+  elsif settings.show_variant_image != blank
+    assign swatch_show_variant_image = settings.show_variant_image
   endif
   
-  assign swatch_variant_width = settings.variant_swatch_width | default: 30
+  assign swatch_variant_width = blank
   if block != blank and block_settings != blank and block_settings.variant_swatch_width != blank
     assign swatch_variant_width = block_settings.variant_swatch_width
+  elsif settings.variant_swatch_width != blank
+    assign swatch_variant_width = settings.variant_swatch_width
   endif
 
-  
+  # Get show_swatch_text_labels setting (priority: block settings > global settings)
   assign show_swatch_text_labels_setting = false
   if block != blank and block_settings != blank and block_settings.show_swatch_text_labels
     assign show_swatch_text_labels_setting = true
+  elsif settings.show_swatch_text_labels
+    assign show_swatch_text_labels_setting = true
   endif
   
-  assign show_product_image_swatches = settings.show_product_image_swatches | default: false
-  if block != blank and block_settings != blank and block_settings.show_product_image_swatches != blank
-    assign show_product_image_swatches = block_settings.show_product_image_swatches
-  elsif section != blank and section.settings != blank and section.settings.show_product_image_swatches != blank
-    assign show_product_image_swatches = section.settings.show_product_image_swatches
+  assign show_product_image_swatches = false
+  if block != blank and block_settings != blank and block_settings.show_product_image_swatches
+    assign show_product_image_swatches = true
+  elsif section != blank and section.settings != blank and section.settings.show_product_image_swatches
+    assign show_product_image_swatches = true
+  elsif settings.show_product_image_swatches
+    assign show_product_image_swatches = true
   endif
   
-  assign product_image_swatch_style = settings.product_image_swatch_style | default: 'circle'
+  assign product_image_swatch_style = 'circle'
   if block != blank and block_settings != blank and block_settings.product_image_swatch_style != blank
     assign product_image_swatch_style = block_settings.product_image_swatch_style
   elsif section != blank and section.settings != blank and section.settings.product_image_swatch_style != blank
     assign product_image_swatch_style = section.settings.product_image_swatch_style
+  elsif settings.product_image_swatch_style != blank
+    assign product_image_swatch_style = settings.product_image_swatch_style
   endif
   
-  assign show_horizontal_scroll = settings.show_horizontal_scroll | default: false
+  assign show_horizontal_scroll = false
   if block != blank and block_settings != blank and block_settings.show_horizontal_scroll
     assign show_horizontal_scroll = true
   elsif section != blank and section.settings != blank and section.settings.show_horizontal_scroll
     assign show_horizontal_scroll = true
+  elsif settings.show_horizontal_scroll
+    assign show_horizontal_scroll = true
   endif
   
-  assign product_image_swatch_size = settings.product_image_swatch_size | default: 60
   if block != blank and block_settings != blank and block_settings.product_image_swatch_size != blank
     assign product_image_swatch_size = block_settings.product_image_swatch_size
   elsif section != blank and section.settings != blank and section.settings.product_image_swatch_size != blank
     assign product_image_swatch_size = section.settings.product_image_swatch_size
+  elsif settings.product_image_swatch_size != blank
+    assign product_image_swatch_size = settings.product_image_swatch_size
   endif
-
+  
   # Check for combined listings metafield on current product
   assign combined_listings_metafield = product_resource.metafields.custom.combined_listing
   
@@ -633,35 +647,6 @@
         </legend>
       {%- endif %}
       {%- comment -%} Display current variant name above swatches {%- endcomment -%}
-      {%- liquid
-        # Build full variant name from selected variant's all option values
-        assign current_variant_name = ''
-        assign current_variant = product_resource.selected_or_first_available_variant
-        if current_variant != blank
-          if current_variant.option1 != blank
-            assign current_variant_name = current_variant.option1
-          endif
-          if current_variant.option2 != blank
-            if current_variant_name == ''
-              assign current_variant_name = current_variant.option2
-            else
-              assign current_variant_name = current_variant_name | append: ' / ' | append: current_variant.option2
-            endif
-          endif
-          if current_variant.option3 != blank
-            if current_variant_name == ''
-              assign current_variant_name = current_variant.option3
-            else
-              assign current_variant_name = current_variant_name | append: ' / ' | append: current_variant.option3
-            endif
-          endif
-        endif
-      -%}
-      <div class="variant-option__current-variant-name" ref="currentVariantName">
-        {%- if current_variant_name != blank and current_variant_name != '' -%}
-          {{ current_variant_name | escape }}
-        {%- endif %}
-      </div>
       {% capture children %}
         {% assign final_products = sorted_products | split: '|||' %}
         
@@ -1094,13 +1079,12 @@
                     data-featured-image-url="{{ featured_image_url }}"
                   {% endif %}
                 >
-                <input
-                  type="radio"
-                  name="{{ variant_option_name | escape }}-{{ product_resource.id }}-swatch"
-                  value="{{ first_available_variant_id_for_color }}"
-                  aria-label="{{ product_title | escape }}"
-                  data-variant-name="{{ product_title | escape }}"
-                  data-input-id="1-{{ forloop.index0 }}"
+                  <input
+                    type="radio"
+                    name="{{ variant_option_name | escape }}-{{ product_resource.id }}-swatch"
+                    value="{{ first_available_variant_id_for_color }}"
+                    aria-label="{{ product_title | escape }}"
+                    data-input-id="1-{{ forloop.index0 }}"
                     {% if hover_media != blank %}
                       data-option-media-id="{{ hover_media.id }}"
                     {% endif %}
@@ -1191,4 +1175,131 @@
 </swatches-variant-picker-component>
 
 {% stylesheet %}
+  .variant-option__button-label--product-image {
+    width: var(--product-image-swatch-size, 60px);
+    height: var(--product-image-swatch-size, 60px);
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  .variant-option__button-label--product-image .swatch {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    background-color: transparent;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+  }
+
+  .variant-option__button-label--product-image .swatch__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .variant-option__button-label--product-image-circle {
+    border-radius: 0;
+  }
+
+  .variant-option__button-label--product-image-circle .swatch {
+    border-radius: 0;
+  }
+
+  .variant-option__button-label--product-image-square {
+    border-radius: 0;
+  }
+
+  .variant-option__button-label--product-image-square .swatch {
+    border-radius: 0;
+  }
+
+  /* Selected state */
+  .variant-option__button-label--product-image:has(:checked) {
+    border: var(--variant-picker-border-width, var(--style-border-swatch-width, 1px)) var(--variant-picker-border-style, var(--style-border-swatch-style, solid)) var(--color-foreground);
+    border-radius: 0;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove all outlines on focus, hover, active */
+  .variant-option__button-label--product-image:hover,
+  .variant-option__button-label--product-image:focus,
+  .variant-option__button-label--product-image:focus-visible,
+  .variant-option__button-label--product-image:active {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .variant-option__button-label--product-image input:focus,
+  .variant-option__button-label--product-image input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .variant-option__button-label--product-image-circle:has(:checked) {
+    border-radius: 0;
+  }
+
+  .variant-option__button-label--product-image-square:has(:checked) {
+    border-radius: 0;
+  }
+
+  /* Reduce spacing */
+  swatches-variant-picker-component:has(.variant-option__button-label--product-image) .variant-option--swatches {
+    gap: 8px;
+    overflow: visible !important;
+  }
+
+  /* Horizontal scroll enabled */
+  .variant-option--horizontal-scroll overflow-list {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .variant-option--horizontal-scroll overflow-list::part(list) {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    /* Bottom padding for scrollbar */
+    padding-bottom: calc(2px + var(--variant-picker-border-width, 1px) + 4px);
+    scrollbar-color: auto !important;
+  }
+
+  /* Ensure swatch labels account for top border space */
+  .variant-option--horizontal-scroll .variant-option__button-label--product-image {
+    margin-top: calc(var(--variant-picker-border-width, 1px) + 1px);
+  }
+
+  .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar {
+    height: 2px !important;
+  }
+
+  .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar-button {
+    display: none !important;
+  }
+
+  .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar-track {
+    background-color: transparent !important;
+  }
+
+  .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-70)) !important;
+    border-radius: 9999px !important;
+  }
+
+  .variant-option--horizontal-scroll overflow-list::part(list)::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-90)) !important;
+  }
+
+  /* Hide +more button when horizontal scroll is enabled */
+  .variant-option--horizontal-scroll .hidden-swatches__count {
+    display: none !important;
+  }
 {% endstylesheet %}

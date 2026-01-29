@@ -68,33 +68,39 @@
     assign show_swatch_text_labels_setting = true
   endif
   
-  # Read from global settings
-  assign show_product_image_swatches = settings.show_product_image_swatches | default: false
-  if block != blank and block_settings != blank and block_settings.show_product_image_swatches != blank
-    assign show_product_image_swatches = block_settings.show_product_image_swatches
-  elsif section != blank and section.settings != blank and section.settings.show_product_image_swatches != blank
-    assign show_product_image_swatches = section.settings.show_product_image_swatches
+  assign show_product_image_swatches = false
+  if block != blank and block_settings != blank and block_settings.show_product_image_swatches
+    assign show_product_image_swatches = true
+  elsif section != blank and section.settings != blank and section.settings.show_product_image_swatches
+    assign show_product_image_swatches = true
+  elsif settings.show_product_image_swatches
+    assign show_product_image_swatches = true
   endif
   
-  assign product_image_swatch_style = settings.product_image_swatch_style | default: 'circle'
+  assign product_image_swatch_style = 'circle'
   if block != blank and block_settings != blank and block_settings.product_image_swatch_style != blank
     assign product_image_swatch_style = block_settings.product_image_swatch_style
   elsif section != blank and section.settings != blank and section.settings.product_image_swatch_style != blank
     assign product_image_swatch_style = section.settings.product_image_swatch_style
+  elsif settings.product_image_swatch_style != blank
+    assign product_image_swatch_style = settings.product_image_swatch_style
   endif
   
-  assign show_horizontal_scroll = settings.show_horizontal_scroll | default: false
+  assign show_horizontal_scroll = false
   if block != blank and block_settings != blank and block_settings.show_horizontal_scroll
     assign show_horizontal_scroll = true
   elsif section != blank and section.settings != blank and section.settings.show_horizontal_scroll
     assign show_horizontal_scroll = true
+  elsif settings.show_horizontal_scroll
+    assign show_horizontal_scroll = true
   endif
   
-  assign product_image_swatch_size = settings.product_image_swatch_size | default: 60
   if block != blank and block_settings != blank and block_settings.product_image_swatch_size != blank
     assign product_image_swatch_size = block_settings.product_image_swatch_size
   elsif section != blank and section.settings != blank and section.settings.product_image_swatch_size != blank
     assign product_image_swatch_size = section.settings.product_image_swatch_size
+  elsif settings.product_image_swatch_size != blank
+    assign product_image_swatch_size = settings.product_image_swatch_size
   endif
   
   # Get swatch-related settings to pass to swatch component (priority: block settings > global settings)
@@ -1638,7 +1644,6 @@
                     id="cl-dual-color-{{ section.id }}-{{ block.id }}-{{ color_value_item | handleize }}"
                     name="color_selection-{{ block.id }}"
                     value="{{ color_value_item | escape }}"
-                    data-variant-name="{{ color_value_item | escape }}"
                     data-option-type="color"
                     data-fieldset-index="0"
                     data-input-index="{{ forloop.index0 }}"
@@ -1722,11 +1727,7 @@
             ></button>
           </li>
         {% endcapture %}
-        {% if show_horizontal_scroll %}
-          {% render 'overflow-list', children: children, ref: 'overflowList', defer: true, class: 'variant-option--horizontal-scroll' %}
-        {% else %}
-          {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
-        {% endif %}
+        {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
       </fieldset>
       {%- else -%}
         {%- comment -%} Render colors as dropdowns or buttons based on variant_style {%- endcomment -%}
@@ -1785,7 +1786,6 @@
                     -%}
                     <option
                       value="{{ color_value_item | escape }}"
-                      data-variant-name="{{ color_value_item | escape }}"
                       data-input-id="1-{{ forloop.index0 }}"
                       data-variant-id="{{ first_available_variant_id }}"
                       {% if first_available_variant_url != blank %}
@@ -1888,7 +1888,6 @@
                     name="{{ color_option_name | escape }}-{{ product_resource.id }}-button"
                     value="{{ color_value_item | escape }}"
                     aria-label="{{ color_value_item | escape }}"
-                    data-variant-name="{{ color_value_item | escape }}"
                     data-input-id="1-{{ forloop.index0 }}"
                     data-option-available="{{ color_is_available }}"
                     {% if first_available_variant_url != blank and first_available_variant_id != blank %}
@@ -2273,11 +2272,7 @@
               ></button>
             </li>
           {% endcapture %}
-          {% if show_horizontal_scroll %}
-            {% render 'overflow-list', children: children, ref: 'overflowList', defer: true, class: 'variant-option--horizontal-scroll' %}
-          {% else %}
-            {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
-          {% endif %}
+          {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
           </fieldset>
         {%- elsif variant_style_setting == 'dropdowns' -%}
           {%- comment -%} Render sizes as dropdown {%- endcomment -%}
@@ -2808,11 +2803,7 @@
               ></button>
             </li>
           {% endcapture %}
-          {% if show_horizontal_scroll %}
-            {% render 'overflow-list', children: children, ref: 'overflowList', defer: true, class: 'variant-option--horizontal-scroll' %}
-          {% else %}
-            {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
-          {% endif %}
+          {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
           </fieldset>
         {%- elsif variant_style_setting == 'dropdowns' -%}
           {%- comment -%} Render option3 as dropdown {%- endcomment -%}
@@ -3372,7 +3363,6 @@
                   name="{{ variant_option_name | escape }}-{{ product_resource.id }}-swatch"
                   value="{{ variant_id }}"
                   aria-label="{{ product_title | escape }}"
-                  data-variant-name="{{ product_title | escape }}"
                   data-input-id="1-{{ forloop.index0 }}"
                   {% if hover_media != blank %}
                     data-option-media-id="{{ hover_media.id }}"
@@ -3438,11 +3428,7 @@
           </li>
         {% endcapture %}
 
-        {% if show_horizontal_scroll %}
-          {% render 'overflow-list', children: children, ref: 'overflowList', defer: true, class: 'variant-option--horizontal-scroll' %}
-        {% else %}
-          {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
-        {% endif %}
+        {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
       </fieldset>
       <script type="application/json">
         {{ product_resource.selected_or_first_available_variant | json }}
@@ -3488,8 +3474,6 @@
                   {% assign variant_id = item_parts[idx] | strip %}
                   {% assign idx = base_index | plus: 6 %}
                   {% assign color_option_value = item_parts[idx] | strip %}
-                  {% assign idx = base_index | plus: 4 %}
-                  {% assign product_title = item_parts[idx] | strip %}
                   {% assign idx = base_index | plus: 8 %}
                   {% assign is_current = item_parts[idx] | strip %}
                   {% assign idx = base_index | plus: 9 %}
@@ -3504,7 +3488,6 @@
                   -%}
                   <option
                     value="{{ variant_id }}"
-                    data-variant-name="{{ product_title | escape }}"
                     data-input-id="1-{{ forloop.index0 }}"
                     data-variant-id="{{ variant_id }}"
                     {% if is_current == 'true' %}
@@ -3599,7 +3582,6 @@
                   name="{{ variant_option_name | escape }}-{{ product_resource.id }}-button"
                   value="{{ variant_id }}"
                   aria-label="{{ product_title | escape }}"
-                  data-variant-name="{{ product_title | escape }}"
                   data-input-id="1-{{ forloop.index0 }}"
                   data-option-available="{{ variant_available_bool }}"
                   {% if is_current_product %}
@@ -4362,7 +4344,49 @@
     border-radius: 0;
   }
 
-  /* Horizontal scroll styling inherited from swatch-styles.liquid */
-  /* No need to duplicate - uses .variant-option--horizontal-scroll from global styles */
+  /* Reduce spacing */
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches {
+    gap: 8px;
+  }
+
+  /* Enable scrolling only when horizontal scroll is enabled */
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list) {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding-bottom: 10px;
+  }
+
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar {
+    height: 2px;
+  }
+
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar-track {
+    background: rgb(var(--color-border-rgb) / var(--opacity-30));
+    border-radius: 0;
+  }
+
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar-thumb {
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-50));
+    border-radius: 0;
+  }
+
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-60));
+  }
+
+  /* Hide the +more button when horizontal scroll is enabled */
+  .variant-picker-cl-dual--horizontal-scroll .hidden-swatches__count {
+    display: none !important;
+  }
 {% endstylesheet %}
 

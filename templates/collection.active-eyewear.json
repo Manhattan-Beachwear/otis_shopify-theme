@@ -9,25 +9,24 @@
  */
 {
   "sections": {
-    "section": {
-      "type": "section",
+    "hero_cx33YG": {
+      "type": "hero",
       "blocks": {
-        "text_tqQTNE": {
+        "text_7txfNa": {
           "type": "text",
-          "name": "Title",
           "settings": {
-            "text": "<h1>{{ closest.collection.title }}</h1>",
+            "text": "<h1>{{ collection.title }}</h1>",
             "width": "fit-content",
-            "max_width": "normal",
+            "max_width": "narrow",
             "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
+            "type_preset": "h1",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "color": "",
+            "color": "var(--color-foreground)",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -38,22 +37,22 @@
           },
           "blocks": {}
         },
-        "text_twGGkJ": {
+        "text_n6hghY": {
           "type": "text",
-          "name": "Description",
+          "name": "t:names.text",
           "settings": {
-            "text": "{{ closest.collection.description }}",
+            "text": "<p></p>{{ collection.description }}",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "paragraph",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "color": "",
+            "color": "var(--color-foreground)",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -66,11 +65,20 @@
         }
       },
       "block_order": [
-        "text_tqQTNE",
-        "text_twGGkJ"
+        "text_7txfNa",
+        "text_n6hghY"
       ],
-      "name": "Collection heading",
+      "name": "t:names.hero",
       "settings": {
+        "media_type_1": "image",
+        "image_1": "{{ collection.image }}",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "flex-start",
@@ -78,26 +86,20 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
+        "gap": 16,
         "section_width": "page-width",
         "section_height": "small",
         "section_height_custom": 50,
         "color_scheme": "scheme-5",
-        "background_media": "image",
-        "video_position": "cover",
-        "background_image": "{{ collection.image }}",
-        "background_image_position": "cover",
-        "image_zoom_fade_animation": false,
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
         "toggle_overlay": true,
-        "overlay_color": "#00000040",
-        "overlay_style": "solid",
+        "overlay_color": "#00000026",
+        "overlay_style": "gradient",
         "gradient_direction": "to top",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "image_zoom_fade_animation": true,
+        "padding-block-start": 40,
+        "padding-block-end": 40
       }
     },
     "main": {
@@ -207,6 +209,31 @@
               },
               "blocks": {}
             },
+            "variant_title_HLXiVC": {
+              "type": "variant-title",
+              "name": "t:names.variant_title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 8,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "swatches": {
               "type": "swatches",
               "name": "t:names.swatches",
@@ -214,10 +241,14 @@
                 "product_swatches_alignment": "flex-start",
                 "product_swatches_alignment_mobile": "flex-start",
                 "hide_padding": false,
-                "product_swatches_padding_top": 4,
+                "product_swatches_padding_top": 0,
                 "product_swatches_padding_bottom": 0,
                 "product_swatches_padding_left": 0,
-                "product_swatches_padding_right": 0
+                "product_swatches_padding_right": 0,
+                "show_product_image_swatches": true,
+                "product_image_swatch_style": "square",
+                "product_image_swatch_size": 48,
+                "show_horizontal_scroll": true
               },
               "blocks": {}
             }
@@ -226,6 +257,7 @@
             "card-gallery",
             "product_title_4nY4eT",
             "price_EzJzMm",
+            "variant_title_HLXiVC",
             "swatches"
           ]
         }
@@ -245,12 +277,7 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
         "padding-block-end": 32,
-        "enable_combined_listings": true,
-        "show_product_image_swatches": true,
-        "product_image_swatch_style": "square",
-        "product_image_swatch_size": 40,
-        "show_product_image_swatch_variant_name": true,
-        "show_horizontal_scroll": true
+        "enable_combined_listings": true
       }
     },
     "section_LedU3V": {
@@ -977,7 +1004,7 @@
     }
   },
   "order": [
-    "section",
+    "hero_cx33YG",
     "main",
     "section_LedU3V",
     "section_dNe8XU",

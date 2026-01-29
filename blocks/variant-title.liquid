@@ -1,0 +1,629 @@
+{%- liquid
+  # Build full variant name from selected variant's all option values
+  assign current_variant_name = ''
+  assign current_variant = closest.product.selected_or_first_available_variant
+  if current_variant != blank
+    if current_variant.option1 != blank
+      assign current_variant_name = current_variant.option1
+    endif
+    if current_variant.option2 != blank
+      if current_variant_name == ''
+        assign current_variant_name = current_variant.option2
+      else
+        assign current_variant_name = current_variant_name | append: ' / ' | append: current_variant.option2
+      endif
+    endif
+    if current_variant.option3 != blank
+      if current_variant_name == ''
+        assign current_variant_name = current_variant.option3
+      else
+        assign current_variant_name = current_variant_name | append: ' / ' | append: current_variant.option3
+      endif
+    endif
+  endif
+
+  # Apply same logic as text snippet for styling
+  assign block_settings = block.settings
+  assign text_width = block_settings.width | default: 'fit-content'
+
+  if block_settings.font_size contains 'heading-lg' or block_settings.font_size contains 'heading-xl'
+    assign type = 'display'
+  elsif block_settings.font_size contains 'heading'
+    assign type = 'heading'
+  else
+    assign type = 'body'
+  endif
+  if block_settings.type_preset == 'rte' or block_settings.type_preset == 'paragraph'
+    assign is_rte = true
+  endif
+
+  capture text_block_classes
+    if text_width == '100%'
+      echo 'text-block--align-' | append: block_settings.alignment
+      if block_settings.max_width == 'none'
+        echo ' text-block--full-width '
+      endif
+    endif
+    if block_settings.type_preset == 'custom'
+      echo ' custom-typography '
+      if block_settings.font_size != ''
+        echo ' custom-font-size '
+      endif
+      if block_settings.color != ''
+        echo ' custom-color '
+      endif
+    endif
+    if block_settings.background
+      echo ' text-block--background '
+    endif
+    if is_rte
+      echo ' rte '
+    endif
+  endcapture
+-%}
+
+{% capture attributes %}
+  class="variant-option__current-variant-name spacing-style text-block text-block--{{ block.id }} {{ block_settings.type_preset }}
+    {{ text_block_classes }}
+  "
+  ref="currentVariantName"
+  style="
+    {% render 'spacing-padding', settings: block_settings %}
+    {% render 'typography-style', settings: block_settings, preset: block_settings.type_preset, type: type %}
+    --width: {{ text_width }};
+    --max-width: var(--max-width--{{ type }}-{{ block_settings.max_width }});
+    {% if text_width == "100%" %}
+      --text-align: {{ block_settings.alignment }};
+    {% endif %}
+    {% if block_settings.background %}
+      --text-background-color: {{ block_settings.background_color | default: 'rgb(255 255 255 / 1.0)' }};
+      --text-corner-radius: {{ block_settings.corner_radius }}px;
+      --text-padding: max(var(--padding-2xs), calc((var(--text-corner-radius) + var(--padding-xs)) * (1 - cos(45deg))));
+    {% endif %}
+  "
+  {{ block.shopify_attributes }}
+{% endcapture %}
+
+<div {{ attributes }}>
+  {%- if current_variant_name != blank and current_variant_name != '' -%}
+    {{ current_variant_name | escape }}
+  {%- endif %}
+</div>
+
+{% stylesheet %}
+  :root {
+    --text-align-default: left;
+  }
+
+  [style*='--horizontal-alignment: center'] .text-block {
+    --text-align-default: center;
+  }
+
+  [style*='--horizontal-alignment: flex-end'] .text-block {
+    --text-align-default: right;
+  }
+
+  [style*='--horizontal-alignment: flex-start'] > .text-block {
+    --text-align-default: left;
+  }
+
+  [style*='--horizontal-alignment: center'] > .text-block {
+    --text-align-default: center;
+  }
+
+  [style*='--horizontal-alignment: flex-end'] > .text-block {
+    --text-align-default: right;
+  }
+
+  .text-block {
+    width: var(--width);
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: var(--horizontal-alignment);
+  }
+
+  .text-block > * {
+    width: var(--width);
+    max-width: var(--max-width, 100%);
+    text-align: var(--text-align, var(--text-align-default));
+    text-wrap: var(--text-wrap);
+  }
+
+  /* Apply text styling directly to variant-title when it's a text-block itself */
+  /* Override text-wrap to prevent wrapping */
+  .variant-option__current-variant-name.text-block {
+    width: var(--width);
+    max-width: var(--max-width, 100%);
+    text-align: var(--text-align, var(--text-align-default));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap !important;
+  }
+
+  .text-block:not(.text-block--full-width).rte,
+  .text-block:not(.text-block--full-width).paragraph {
+    /* Safari doesn't support pretty, so fallback to balance */
+    text-wrap: balance;
+    text-wrap: pretty;
+  }
+
+  .text-block:not(.text-block--full-width):is(.h1, .h2, .h3, .h4, .h5, .h6) {
+    text-wrap: balance;
+  }
+
+  /* Hide underline unless text is using paragraph styles. */
+  .text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) a {
+    text-decoration-color: transparent;
+  }
+
+  .text-block h1,
+  .text-block.h1 > * {
+    margin-block: var(--font-h1--spacing);
+  }
+
+  .text-block h2,
+  .text-block.h2 > * {
+    margin-block: var(--font-h2--spacing);
+  }
+
+  .text-block h3,
+  .text-block.h3 > * {
+    margin-block: var(--font-h3--spacing);
+  }
+
+  .text-block h4,
+  .text-block.h4 > * {
+    margin-block: var(--font-h4--spacing);
+  }
+
+  .text-block h5,
+  .text-block.h5 > * {
+    margin-block: var(--font-h5--spacing);
+  }
+
+  .text-block h6,
+  .text-block.h6 > * {
+    margin-block: var(--font-h6--spacing);
+  }
+
+  .text-block p,
+  .text-block.p > * {
+    margin-block: var(--font-paragraph--spacing);
+  }
+
+  .text-block > *:first-child {
+    margin-block-start: 0;
+  }
+
+  .text-block > *:last-child {
+    margin-block-end: 0;
+  }
+
+  .text-block--align-center,
+  .text-block--align-center > * {
+    margin-inline: auto;
+  }
+
+  .text-block--align-right,
+  .text-block--align-right > * {
+    margin-inline-start: auto;
+  }
+
+  .text-block--background {
+    background-color: var(--text-background-color);
+    border-radius: var(--text-corner-radius);
+
+    /* To avoid text being cropped when using a border radius we add a minimum padding. */
+    padding-block-start: max(var(--text-padding), var(--padding-block-start, 0));
+    padding-block-end: max(var(--text-padding), var(--padding-block-end, 0));
+    padding-inline-start: max(var(--text-padding), var(--padding-inline-start, 0));
+    padding-inline-end: max(var(--text-padding), var(--padding-inline-end, 0));
+  }
+
+  .custom-color,
+  .custom-color > :is(h1, h2, h3, h4, h5, h6, p, *) {
+    color: var(--color);
+  }
+
+  /* Ensure variant name text is directly styled when it's direct content */
+  .variant-option__current-variant-name.custom-color {
+    color: var(--color);
+  }
+
+  /* Ensure variant name has minimum height for consistent layout */
+  /* Prevent text wrapping and show ellipsis for long text */
+  .variant-option__current-variant-name {
+    min-height: 1.2em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap !important;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.variant_title",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "t:options.fit"
+        },
+        {
+          "value": "100%",
+          "label": "t:options.fill"
+        }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "t:settings.max_width",
+      "options": [
+        {
+          "value": "narrow",
+          "label": "t:options.narrow"
+        },
+        {
+          "value": "normal",
+          "label": "t:options.normal"
+        },
+        {
+          "value": "none",
+          "label": "t:options.none"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "default": "left",
+      "visible_if": "{{ block.settings.width == '100%' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.typography"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:settings.preset",
+      "options": [
+        {
+          "value": "rte",
+          "label": "t:options.default"
+        },
+        {
+          "value": "paragraph",
+          "label": "t:options.paragraph"
+        },
+        {
+          "value": "h1",
+          "label": "t:options.h1"
+        },
+        {
+          "value": "h2",
+          "label": "t:options.h2"
+        },
+        {
+          "value": "h3",
+          "label": "t:options.h3"
+        },
+        {
+          "value": "h4",
+          "label": "t:options.h4"
+        },
+        {
+          "value": "h5",
+          "label": "t:options.h5"
+        },
+        {
+          "value": "h6",
+          "label": "t:options.h6"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "rte",
+      "info": "t:info.edit_presets_in_theme_settings"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "t:settings.font",
+      "options": [
+        {
+          "value": "var(--font-body--family)",
+          "label": "t:options.body"
+        },
+        {
+          "value": "var(--font-subheading--family)",
+          "label": "t:options.subheading"
+        },
+        {
+          "value": "var(--font-heading--family)",
+          "label": "t:options.heading"
+        },
+        {
+          "value": "var(--font-accent--family)",
+          "label": "t:options.accent"
+        }
+      ],
+      "default": "var(--font-body--family)",
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "font_size",
+      "label": "t:settings.size",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "0.625rem",
+          "label": "10px"
+        },
+        {
+          "value": "0.75rem",
+          "label": "12px"
+        },
+        {
+          "value": "0.875rem",
+          "label": "14px"
+        },
+        {
+          "value": "1rem",
+          "label": "16px"
+        },
+        {
+          "value": "1.125rem",
+          "label": "18px"
+        },
+        {
+          "value": "1.25rem",
+          "label": "20px"
+        },
+        {
+          "value": "1.5rem",
+          "label": "24px"
+        },
+        {
+          "value": "2rem",
+          "label": "32px"
+        },
+        {
+          "value": "2.5rem",
+          "label": "40px"
+        },
+        {
+          "value": "3rem",
+          "label": "48px"
+        },
+        {
+          "value": "3.5rem",
+          "label": "56px"
+        },
+        {
+          "value": "4.5rem",
+          "label": "72px"
+        },
+        {
+          "value": "5.5rem",
+          "label": "88px"
+        },
+        {
+          "value": "7.5rem",
+          "label": "120px"
+        },
+        {
+          "value": "9.5rem",
+          "label": "152px"
+        },
+        {
+          "value": "11.5rem",
+          "label": "184px"
+        }
+      ],
+      "default": "1rem",
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "line_height",
+      "label": "t:settings.line_height",
+      "options": [
+        {
+          "value": "tight",
+          "label": "t:options.tight"
+        },
+        {
+          "value": "normal",
+          "label": "t:options.normal"
+        },
+        {
+          "value": "loose",
+          "label": "t:options.loose"
+        }
+      ],
+      "default": "normal",
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "letter_spacing",
+      "label": "t:settings.letter_spacing",
+      "options": [
+        {
+          "value": "tight",
+          "label": "t:options.tight"
+        },
+        {
+          "value": "normal",
+          "label": "t:options.normal"
+        },
+        {
+          "value": "loose",
+          "label": "t:options.loose"
+        }
+      ],
+      "default": "normal",
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "case",
+      "label": "t:settings.case",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.default"
+        },
+        {
+          "value": "uppercase",
+          "label": "t:options.uppercase"
+        }
+      ],
+      "default": "none",
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "wrap",
+      "label": "t:settings.wrap",
+      "options": [
+        {
+          "value": "pretty",
+          "label": "t:options.pretty"
+        },
+        {
+          "value": "balance",
+          "label": "t:options.balance"
+        },
+        {
+          "value": "nowrap",
+          "label": "t:options.none"
+        }
+      ],
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "color",
+      "label": "t:settings.color",
+      "options": [
+        {
+          "value": "var(--color-foreground)",
+          "label": "t:options.text"
+        },
+        {
+          "value": "var(--color-foreground-heading)",
+          "label": "t:options.heading"
+        },
+        {
+          "value": "var(--color-primary)",
+          "label": "t:options.link"
+        }
+      ],
+      "default": "var(--color-foreground)",
+      "visible_if": "{{ block.settings.type_preset != 'rte' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.appearance"
+    },
+    {
+      "type": "checkbox",
+      "id": "background",
+      "label": "t:settings.background",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "alpha": true,
+      "default": "#00000026",
+      "visible_if": "{{ block.settings.background }}"
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "t:settings.corner_radius",
+      "default": 0,
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "visible_if": "{{ block.settings.background }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.variant_title",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
