@@ -78,7 +78,7 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 20,
+        "gap": 30,
         "section_width": "page-width",
         "section_height": "custom",
         "section_height_custom": 20,
@@ -96,7 +96,7 @@
         "overlay_style": "solid",
         "gradient_direction": "to top",
         "padding-block-start": 20,
-        "padding-block-end": 0
+        "padding-block-end": 20
       }
     },
     "main": {
