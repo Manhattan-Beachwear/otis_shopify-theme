@@ -16,7 +16,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Mens 2026 Collection</h2>",
+            "text": "<h2>Mens Sunglasses</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -42,7 +42,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Mens sunglasses built for durability and adventure. Explore our collection of premium eyewear for men, made with mineral glass lenses. </p>",
+            "text": "<p>Mens sunglasses built for durability and adventure. From checking the waves to fishing, hiking and everything in between, mens sunglasses from OTIS are designed with 12x more scratch resistant mineral glass lenses. Explore the collection below.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
