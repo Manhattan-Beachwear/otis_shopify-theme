@@ -170,28 +170,6 @@
         "padding-block-end": 48
       }
     },
-    "advanced_content_wyVPh9": {
-      "type": "advanced-content",
-      "blocks": {
-        "liquid_gU3BWG": {
-          "type": "liquid",
-          "settings": {
-            "code": "<div id='storemapper' style='width:100%;'>\n  <p>Store Locator is loading from <a href='https://www.storemapper.co'>Storemapper plugin</a>...</p>\n</div>\n<script data-storemapper-start='2016,08,15'\n  data-storemapper-id='3254'>\n  (function() {var script = document.createElement('script');\n    script.type  = 'text/javascript';script.async = true;\n    script.src = 'https://www.storemapper.co/js/widget.js';\n    var entry = document.getElementsByTagName('script')[0];\n    entry.parentNode.insertBefore(script, entry);}\n  ());\n</script>\n<!-- Storemapper code ends here -->",
-            "width": "100%",
-            "alignment": "center"
-          }
-        }
-      },
-      "block_order": [
-        "liquid_gU3BWG"
-      ],
-      "disabled": true,
-      "name": "Custom content",
-      "settings": {
-        "full_width": false,
-        "space_around": true
-      }
-    },
     "custom_liquid_6A4Nwk": {
       "type": "custom-liquid",
       "name": "t:names.custom_liquid",
@@ -208,7 +186,6 @@
     "main",
     "hero_slideshow_QGHxwT",
     "section_binCXY",
-    "advanced_content_wyVPh9",
     "custom_liquid_6A4Nwk"
   ]
 }
