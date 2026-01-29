@@ -9,10 +9,10 @@
  */
 {
   "current": {
-    "logo": "shopify://shop_images/OTIS_25_YEAR_BLK_130x_2x_749c4923-9332-4a6c-b34a-5adabf8e21eb.avif",
-    "logo_inverse": "shopify://shop_images/OTIS_25_YEAR_130x_2x_95dbd38b-8913-4b70-a1c9-8b810a11c2dc.avif",
+    "logo": "shopify://shop_images/OTIS-PRIMARY-LOGO-MESSAGE_11.jpg",
+    "logo_inverse": "shopify://shop_images/2022_OTIS_LOGO_WHT.png",
     "logo_height": 40,
-    "logo_height_mobile": 50,
+    "logo_height_mobile": 30,
     "favicon": "shopify://shop_images/CREATURES_LOGO_CSTAR_cf05f522-54ec-48e2-bcdb-0d1ca0c9aafe.jpg",
     "type_body_font": "work_sans_n4",
     "type_subheading_font": "montserrat_n4",
