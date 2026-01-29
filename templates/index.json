@@ -2514,10 +2514,10 @@
                 "product_swatches_padding_bottom": 0,
                 "product_swatches_padding_left": 0,
                 "product_swatches_padding_right": 0,
-                "show_product_image_swatches": false,
-                "product_image_swatch_style": "circle",
+                "show_product_image_swatches": true,
+                "product_image_swatch_style": "square",
                 "product_image_swatch_size": 48,
-                "show_horizontal_scroll": false
+                "show_horizontal_scroll": true
               },
               "blocks": {}
             }
