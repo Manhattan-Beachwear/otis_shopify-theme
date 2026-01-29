@@ -2802,7 +2802,8 @@
         "image_PACQgV": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Screenshot_2026-01-26_161021.png",
+            "image": "shopify://shop_images/2K2A6180_2.jpg",
+            "image_mobile": "shopify://shop_images/2K2A6180_2.jpg",
             "link": "",
             "hover_scale": false,
             "image_ratio": "square",
