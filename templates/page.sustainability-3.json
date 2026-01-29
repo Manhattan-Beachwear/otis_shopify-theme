@@ -119,7 +119,7 @@
           "settings": {
             "image": "shopify://shop_images/Corina_Rose_Image.jpg",
             "link": "",
-            "hover_scale": false,
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -406,7 +406,7 @@
           "settings": {
             "image": "shopify://shop_images/B_CORP_CERTIFIED_2d4628bc-ca52-4d8d-933b-0c0b9b902889.jpg",
             "link": "",
-            "hover_scale": false,
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -598,7 +598,7 @@
               "settings": {
                 "image": "shopify://shop_images/Screenshot_2024-04-15_at_1.11.48_PM.png",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -721,7 +721,7 @@
               "settings": {
                 "image": "shopify://shop_images/Screenshot_2024-04-15_at_12.40.06_PM.png",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -844,7 +844,7 @@
               "settings": {
                 "image": "shopify://shop_images/Screenshot_2024-04-15_at_12.40.14_PM.png",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -1006,7 +1006,7 @@
               "settings": {
                 "image": "shopify://shop_images/PACKAGING4_1512x_698aeb17-e0b1-420d-b2ea-8e37f47e6560.webp",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -1075,7 +1075,7 @@
               "settings": {
                 "image": "shopify://shop_images/Packaging_16900f03-5dd9-48e2-9a85-5144db4959b6.png",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -1332,7 +1332,7 @@
               "settings": {
                 "image": "shopify://shop_images/tile_1.webp",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -1401,7 +1401,7 @@
               "settings": {
                 "image": "shopify://shop_images/tile_2.webp",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
@@ -1470,7 +1470,7 @@
               "settings": {
                 "image": "shopify://shop_images/tile_3.webp",
                 "link": "",
-                "hover_scale": false,
+                "hover_scale": true,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,
