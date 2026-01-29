@@ -639,7 +639,7 @@
           "settings": {
             "media_type_1": "image",
             "image_1": "shopify://shop_images/Homepage_banner.jpg",
-            "image_1_mobile": "shopify://shop_images/2K2A6054.jpg",
+            "image_1_mobile": "shopify://shop_images/DSC_3930.jpg",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -790,7 +790,7 @@
         "slideshow_controls_style": "dots",
         "autoplay": true,
         "autoplay_speed": 4,
-        "section_height": "medium",
+        "section_height": "large",
         "section_height_custom": 80,
         "section_width": "full-width",
         "toggle_overlay": false,
