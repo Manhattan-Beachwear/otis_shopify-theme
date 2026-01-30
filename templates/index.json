@@ -273,7 +273,7 @@
                 "text_LcwN8e": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Break out of the mundane with unique style and performance. <br/></p>",
+                    "text": "<p>Break out of the mundane with unique style and performance<br/></p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
