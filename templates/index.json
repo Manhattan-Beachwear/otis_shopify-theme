@@ -1930,7 +1930,7 @@
               "type": "button",
               "settings": {
                 "label": "Shop now",
-                "link": "shopify://products/divide-retail-exclusive",
+                "link": "https://us.otiseyewear.com/products/divide-retail-exclusive?variant=45376994574587",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
