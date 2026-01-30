@@ -789,7 +789,7 @@
         "icons_style": "arrows_large",
         "slideshow_controls_style": "dots",
         "autoplay": true,
-        "autoplay_speed": 4,
+        "autoplay_speed": 5,
         "section_height": "large",
         "section_height_custom": 80,
         "section_width": "full-width",
