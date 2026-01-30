@@ -2745,7 +2745,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "sHOP",
-                "link": "shopify://collections/womens-eyewear",
+                "link": "shopify://collections/womens-eyewear-1",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
