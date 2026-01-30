@@ -16,7 +16,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Womens Sunglasses</h2>",
+            "text": "<h2>Sunglasses for Activity & Adventure</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -42,7 +42,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Explore our latest selection of premium eyewear for women. Our 2026 collection of mineral glass sunglasses features a great variety of sunglasses for women. Transcending style, substance and sustainability.</p>",
+            "text": "<p>Explore our latest selection of active-wear sunglasses. Built for adventure; hiking, surf checks, fishing, kayaking and more. Explore our collection of mineral glass eyewear made for life on the move.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
