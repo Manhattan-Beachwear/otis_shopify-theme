@@ -120,10 +120,10 @@
         "revenuehunt_recommender_quiz_v2_inline_quiz_JXnWcP": {
           "type": "shopify://apps/revenuehunt-recommender-quiz/blocks/v2-inline-quiz/672f3d48-fd3b-4227-8778-c6e58c4f8a98",
           "settings": {
-            "quiz_height": 500,
+            "quiz_height": 700,
             "quiz_height_unit": "px",
             "quiz_fixed_height": false,
-            "quiz_full_width": false,
+            "quiz_full_width": true,
             "quiz_retake_autoscroll": "disabled",
             "quiz_question_autoscroll": "disabled",
             "quiz_id": ""

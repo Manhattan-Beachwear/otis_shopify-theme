@@ -9,15 +9,15 @@
  */
 {
   "current": {
-    "logo": "shopify://shop_images/OTIS_25_YEAR_BLK_130x_2x_749c4923-9332-4a6c-b34a-5adabf8e21eb.avif",
-    "logo_inverse": "shopify://shop_images/OTIS_25_YEAR_130x_2x_95dbd38b-8913-4b70-a1c9-8b810a11c2dc.avif",
-    "logo_height": 50,
-    "logo_height_mobile": 50,
+    "logo": "shopify://shop_images/OTIS_25_YEAR_BLK_4.png",
+    "logo_inverse": "shopify://shop_images/OTIS_25_YEAR_2.png",
+    "logo_height": 35,
+    "logo_height_mobile": 29,
     "favicon": "shopify://shop_images/CREATURES_LOGO_CSTAR_cf05f522-54ec-48e2-bcdb-0d1ca0c9aafe.jpg",
     "type_body_font": "work_sans_n4",
     "type_subheading_font": "montserrat_n4",
     "type_heading_font": "montserrat_n5",
-    "type_accent_font": "montserrat_n4",
+    "type_accent_font": "kaisei_tokumin_n4",
     "type_size_paragraph": "14",
     "type_line_height_paragraph": "body-loose",
     "type_letter_spacing_paragraph": 0.3,
@@ -60,7 +60,7 @@
     "page_width": "narrow",
     "page_transition_enabled": true,
     "transition_to_main_product": true,
-    "card_hover_effect": "scale",
+    "card_hover_effect": "none",
     "badge_position": "top-right",
     "badge_corner_radius": 100,
     "badge_sale_color_scheme": "scheme-4",
@@ -84,7 +84,7 @@
     "show_add_discount_code": true,
     "drawer_drop_shadow": true,
     "icon_stroke": "default",
-    "input_border_width": 0,
+    "input_border_width": 1,
     "inputs_border_radius": 0,
     "popover_border_radius": 10,
     "popover_border": "solid",
@@ -107,9 +107,19 @@
     "variant_button_width": "equal-width-buttons",
     "content_for_index": [],
     "blocks": {
+      "17368511000352060744": {
+        "type": "shopify://apps/goaffpro-affiliate-marketing/blocks/goaffpro-embedded-pixel/2f4d802b-86c2-47e4-8096-ae1aa3efbab2",
+        "disabled": false,
+        "settings": {}
+      },
       "855628211100114053": {
         "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
-        "disabled": true,
+        "disabled": false,
+        "settings": {}
+      },
+      "7570552984445421165": {
+        "type": "shopify://apps/yotpo-product-reviews/blocks/settings/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+        "disabled": false,
         "settings": {}
       }
     },
@@ -329,7 +339,7 @@
           "secondary_button_border": "#ffffff",
           "secondary_button_hover_background": "#ffffff",
           "secondary_button_hover_text": "#000000",
-          "secondary_button_hover_border": "#000000",
+          "secondary_button_hover_border": "#ffffff",
           "input_background": "#ffffff",
           "input_text_color": "#00000087",
           "input_border_color": "#00000021",
@@ -363,12 +373,12 @@
           "primary_button_hover_background": "#000000",
           "primary_button_hover_text": "#ffffff",
           "primary_button_hover_border": "#333333",
-          "secondary_button_background": "rgba(0,0,0,0)",
+          "secondary_button_background": "#ffffff",
           "secondary_button_text": "#000000",
           "secondary_button_border": "#000000",
-          "secondary_button_hover_background": "#ffffff",
-          "secondary_button_hover_text": "#333333",
-          "secondary_button_hover_border": "#333333",
+          "secondary_button_hover_background": "#000000",
+          "secondary_button_hover_text": "#ffffff",
+          "secondary_button_hover_border": "#ffffff",
           "input_background": "#ffffff",
           "input_text_color": "#00000087",
           "input_border_color": "#00000021",

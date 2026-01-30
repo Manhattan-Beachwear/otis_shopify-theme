@@ -20,7 +20,7 @@
           "settings": {
             "text": "<strong>SCRATCH RESISTANT LENSES + LIFETIME WARRANTY</strong>",
             "link": "",
-            "font": "var(--font-heading--family)",
+            "font": "var(--font-body--family)",
             "font_size": "0.75rem",
             "weight": "700",
             "letter_spacing": "loose",
@@ -33,7 +33,7 @@
           "settings": {
             "text": "<strong>FREE SHIPPING  On all orders over $100</strong>",
             "link": "",
-            "font": "var(--font-subheading--family)",
+            "font": "var(--font-body--family)",
             "font_size": "0.75rem",
             "weight": "700",
             "letter_spacing": "loose",
@@ -80,7 +80,7 @@
             "color_scheme": "",
             "type_font_primary_size": "0.875rem",
             "menu_font_style": "inverse",
-            "type_font_primary_link": "heading",
+            "type_font_primary_link": "body",
             "type_case_primary_link": "uppercase",
             "menu_style": "collection_images",
             "featured_products_aspect_ratio": "4 / 5",

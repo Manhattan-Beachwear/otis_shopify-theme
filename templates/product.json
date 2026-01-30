@@ -117,16 +117,16 @@
                   "type": "text",
                   "name": "t:names.title",
                   "settings": {
-                    "text": "<h1>{{ closest.product.title }}</h1>",
+                    "text": "<h1><strong>{{ closest.product.title }}</strong></h1>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
-                    "type_preset": "h3",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "font_size": "1rem",
+                    "font_size": "2rem",
                     "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
+                    "letter_spacing": "loose",
+                    "case": "uppercase",
                     "wrap": "pretty",
                     "color": "var(--color-foreground)",
                     "background": false,
@@ -194,8 +194,8 @@
                 "show_swatches": true,
                 "show_product_image_swatches": true,
                 "product_image_swatch_style": "square",
-                "product_image_swatch_size": 60,
-                "show_product_image_swatch_variant_name": true,
+                "product_image_swatch_size": 84,
+                "show_product_image_swatch_variant_name": false,
                 "show_horizontal_scroll": false,
                 "alignment": "left",
                 "padding-block-start": 0,
@@ -685,44 +685,13 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "accordion_row_cpBBwz": {
-                  "type": "_accordion-row",
-                  "name": "Features",
-                  "settings": {
-                    "heading": "{{ closest.product.title }} Features",
-                    "open_by_default": false,
-                    "icon": "arrow",
-                    "width": 12
-                  },
-                  "blocks": {
-                    "page_XQjyVY": {
-                      "type": "page",
-                      "name": "t:names.page",
-                      "settings": {
-                        "page": "{{ closest.product.metafields.my_fields.features_page.value }}",
-                        "inherit_color_scheme": true,
-                        "color_scheme": "",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
-                    }
-                  },
-                  "block_order": [
-                    "page_XQjyVY"
-                  ]
-                },
                 "accordion_row_LFTGdJ": {
                   "type": "_accordion-row",
                   "name": "Warranty",
                   "settings": {
                     "heading": "Warranty",
                     "open_by_default": false,
-                    "icon": "lock",
+                    "icon": "check_box",
                     "width": 20
                   },
                   "blocks": {
@@ -749,31 +718,8 @@
                 }
               },
               "block_order": [
-                "accordion_row_cpBBwz",
                 "accordion_row_LFTGdJ"
               ]
-            },
-            "product_upsell_i8kgRF": {
-              "type": "product-upsell",
-              "name": "Product Upsell",
-              "disabled": true,
-              "settings": {
-                "heading": "Looking for something extra?",
-                "product_list": [
-                  "rx-100-club",
-                  "a-day-late",
-                  "addison-rx",
-                  "after-dark",
-                  "after-dark-x"
-                ],
-                "products_to_show": 2,
-                "show_size_selector": true,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
             }
           },
           "block_order": [
@@ -783,8 +729,7 @@
             "buy_buttons_eYQEYi",
             "group_3mG9LE",
             "text_aEtTtq",
-            "accordion_kbwdWn",
-            "product_upsell_i8kgRF"
+            "accordion_kbwdWn"
           ]
         }
       },
@@ -1676,7 +1621,7 @@
             "horizontal_alignment": "flex-start",
             "vertical_alignment": "center",
             "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
+            "horizontal_alignment_flex_direction_column": "center",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 12,
             "width": "fill",
@@ -1704,7 +1649,7 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 20
           },
           "blocks": {
             "text_pMrcUp": {

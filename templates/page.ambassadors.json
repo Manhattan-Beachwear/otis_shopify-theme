@@ -122,7 +122,7 @@
           "settings": {
             "image": "shopify://shop_images/1_08cd5b25-42e5-4848-b070-f28cbc59f006_1080x_1.png",
             "link": "",
-            "hover_scale": false,
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -405,7 +405,7 @@
           "settings": {
             "image": "shopify://shop_images/Jay_Square.jpg",
             "link": "",
-            "hover_scale": false,
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -577,7 +577,7 @@
           "settings": {
             "image": "shopify://shop_images/Screenshot_2025-10-14_161223.png",
             "link": "",
-            "hover_scale": false,
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,
@@ -638,7 +638,7 @@
           "settings": {
             "image": "shopify://shop_images/BIRDIE112.jpg",
             "link": "",
-            "hover_scale": false,
+            "hover_scale": true,
             "image_ratio": "square",
             "width": "fill",
             "custom_width": 100,

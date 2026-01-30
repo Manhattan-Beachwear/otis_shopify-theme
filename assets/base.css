@@ -522,6 +522,20 @@ p:empty {
   word-wrap: normal !important;
 }
 
+.screen-reader-only:not(:focus, :active) {
+  /* stylelint-disable-next-line declaration-no-important */
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  /* stylelint-disable-next-line declaration-no-important */
+  word-wrap: normal !important;
+}
+
 @media screen and (max-width: 749px) {
   .is-visually-hidden-mobile:not(:focus, :active) {
     /* stylelint-disable-next-line declaration-no-important */
