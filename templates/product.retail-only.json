@@ -223,25 +223,6 @@
                   "static": true,
                   "settings": {},
                   "blocks": {}
-                },
-                "notify-me-when-available": {
-                  "type": "notify-me-when-available",
-                  "static": true,
-                  "settings": {
-                    "button_text": "Notify me when available",
-                    "modal_title": "Notify me",
-                    "modal_description": "Don't miss out! Register your email address below to receive an alert when this product is back in stock.",
-                    "color_scheme": "",
-                    "email_label": "Email address",
-                    "email_placeholder": "Email address",
-                    "submit_button_text": "Notify me when available!",
-                    "show_disclaimer": true,
-                    "disclaimer_text": "Promise we won't spam. You'll only receive notifications for this product.",
-                    "success_message": "Thank you! We'll notify you when this product is back in stock.",
-                    "show_powered_by": true,
-                    "powered_by_text": "Powered by STOQ"
-                  },
-                  "blocks": {}
                 }
               },
               "block_order": []

@@ -142,11 +142,6 @@
             form_obj: form
           %}
 
-          {% content_for 'block',
-            type: 'notify-me-when-available',
-            id: 'notify-me-when-available',
-            can_add_to_cart: can_add_to_cart
-          %}
         </div>
       {%- endform -%}
     </product-form-component>
@@ -584,9 +579,6 @@
     },
     {
       "type": "accelerated-checkout"
-    },
-    {
-      "type": "notify-me-when-available"
     }
   ],
   "presets": [
@@ -607,10 +599,6 @@
         },
         "accelerated-checkout": {
           "type": "accelerated-checkout",
-          "static": true
-        },
-        "notify-me-when-available": {
-          "type": "notify-me-when-available",
           "static": true
         }
       }
