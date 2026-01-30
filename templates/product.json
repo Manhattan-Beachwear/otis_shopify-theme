@@ -240,6 +240,7 @@
                 },
                 "notify-me-when-available": {
                   "type": "notify-me-when-available",
+                  "disabled": true,
                   "static": true,
                   "settings": {
                     "button_text": "Notify me when available",
