@@ -1671,7 +1671,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Shop our Polarized Lenses",
-                "link": "shopify://collections/polarized-sunglasses",
+                "link": "shopify://collections/polarized-sunglasses-1",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
