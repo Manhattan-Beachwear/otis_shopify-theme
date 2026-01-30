@@ -299,7 +299,7 @@
                   "type": "button",
                   "settings": {
                     "label": "Shop Now",
-                    "link": "shopify://collections/all",
+                    "link": "shopify://products/interlude",
                     "open_in_new_tab": false,
                     "style_class": "button-secondary",
                     "width": "fit-content",
