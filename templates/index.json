@@ -273,7 +273,7 @@
                 "text_LcwN8e": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Break out of the mundane with unique style and performance. <br/></p>",
+                    "text": "<p>Break out of the mundane with unique style and performance<br/></p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -299,7 +299,7 @@
                   "type": "button",
                   "settings": {
                     "label": "Shop Now",
-                    "link": "shopify://collections/all",
+                    "link": "shopify://products/interlude",
                     "open_in_new_tab": false,
                     "style_class": "button-secondary",
                     "width": "fit-content",

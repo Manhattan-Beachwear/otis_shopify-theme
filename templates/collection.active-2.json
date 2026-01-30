@@ -16,7 +16,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Best Selling Sunglasses</h2>",
+            "text": "<h2>Sunglasses for Activity & Adventure</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -42,7 +42,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Shop this seasons best selling sunglasses. Instant classics that will become you're favorite sunglass accessory. Shop our collection of top mens and womens sunglasses below.</p>",
+            "text": "<p>Explore our latest selection of active-wear sunglasses. Built for adventure; hiking, surf checks, fishing, kayaking and more. Explore our collection of mineral glass eyewear made for life on the move.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
