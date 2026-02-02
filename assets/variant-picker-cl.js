@@ -476,36 +476,39 @@ export class VariantPickerCLDual extends Component {
     // Check if input has data-connected-product-url - if so, navigate directly (similar to base VariantPicker)
     // This handles cases where a swatch has a direct product URL even if no matching combination exists
     if (connectedProductUrl && variantId) {
+      // Don't navigate if inside product-card or quick-add-dialog (those handle their own navigation)
+      if (event.target.closest('product-card') || event.target.closest('quick-add-dialog')) {
+        // Let the parent component handle navigation
+        return;
+      }
 
       // Check if we're on a product page
-      const isOnProductPage =
-        this.dataset.templateProductMatch === 'true' &&
-        !event.target.closest('product-card') &&
-        !event.target.closest('quick-add-dialog');
+      const isOnProductPage = this.dataset.templateProductMatch === 'true';
 
-      if (isOnProductPage) {
-        // Build the product URL with variant
-        const productUrl = connectedProductUrl.includes('?variant=') 
-          ? connectedProductUrl 
-          : `${connectedProductUrl}?variant=${variantId}`;
-        const productUrlBase = connectedProductUrl.split('?')[0];
-        const currentUrlBase = this.#currentProductUrl || window.location.pathname;
-        const isDifferentProduct = productUrlBase !== currentUrlBase;
+      // For combined listings, if we have a connectedProductUrl, we should navigate
+      // Build the product URL with variant
+      const productUrl = connectedProductUrl.includes('?variant=') 
+        ? connectedProductUrl 
+        : `${connectedProductUrl}?variant=${variantId}`;
+      const productUrlBase = connectedProductUrl.split('?')[0];
+      const currentUrlBase = this.#currentProductUrl || window.location.pathname;
+      const isDifferentProduct = productUrlBase !== currentUrlBase;
 
-        // Dispatch VariantSelectedEvent to disable buttons
-        this.dispatchEvent(
-          new VariantSelectedEvent({
-            id: variantId,
-          })
-        );
+      // Dispatch VariantSelectedEvent to disable buttons
+      this.dispatchEvent(
+        new VariantSelectedEvent({
+          id: variantId,
+        })
+      );
 
-        // Update UI
-        requestAnimationFrame(() => {
-          if (!(event.target instanceof HTMLInputElement)) return;
-          this.#updateSelectedOption(event.target);
-          this.#updateFiltering();
+      // Update UI
+      requestAnimationFrame(() => {
+        if (!(event.target instanceof HTMLInputElement)) return;
+        this.#updateSelectedOption(event.target);
+        this.#updateFiltering();
 
-          // Navigate using morphing
+        // Navigate using morphing if on product page, otherwise use full page navigation
+        if (isOnProductPage) {
           this.#fetchAndMorphProduct(productUrl, isDifferentProduct, variantId);
 
           // Update browser history
@@ -515,9 +518,12 @@ export class VariantPickerCLDual extends Component {
               history.replaceState({}, '', url.toString());
             });
           }
-        });
-        return; // Exit early to prevent duplicate execution
-      }
+        } else {
+          // Not on product page, use full page navigation
+          window.location.href = productUrl;
+        }
+      });
+      return; // Exit early to prevent duplicate execution
     }
 
     // If both are selected, dispatch VariantSelectedEvent FIRST to disable buttons
