@@ -222,7 +222,7 @@
                 "show_swatches": true,
                 "show_product_image_swatches": true,
                 "product_image_swatch_style": "square",
-                "product_image_swatch_size": 84,
+                "product_image_swatch_size": 60,
                 "show_product_image_swatch_variant_name": false,
                 "show_horizontal_scroll": true,
                 "alignment": "left",
