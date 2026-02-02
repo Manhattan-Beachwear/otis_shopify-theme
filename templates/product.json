@@ -224,7 +224,7 @@
                 "product_image_swatch_style": "square",
                 "product_image_swatch_size": 84,
                 "show_product_image_swatch_variant_name": false,
-                "show_horizontal_scroll": false,
+                "show_horizontal_scroll": true,
                 "alignment": "left",
                 "padding-block-start": 0,
                 "padding-block-end": 8,
