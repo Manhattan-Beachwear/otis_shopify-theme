@@ -21,6 +21,9 @@
   {% if defer %}
     defer
   {% endif %}
+  {% if disabled %}
+    disabled="true"
+  {% endif %}
 >
   <template shadowrootmode="open">
     {{ 'overflow-list.css' | asset_url | stylesheet_tag }}

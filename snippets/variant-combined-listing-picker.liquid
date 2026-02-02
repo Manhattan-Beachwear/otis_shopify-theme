@@ -1239,7 +1239,7 @@
         endif
       -%}
       {%- if use_swatches -%}
-        <fieldset class="variant-option variant-option--buttons variant-option--swatches">
+        <fieldset class="variant-option variant-option--buttons variant-option--swatches{% if show_product_image_swatches and show_horizontal_scroll %} variant-option--swatches-horizontal-scroll{% endif %}">
         {%- liquid
           # Always show labels on product pages, otherwise respect the setting
           assign is_product_page = false
@@ -1717,17 +1717,21 @@
             {% endif %}
             {%- endunless -%}
           {% endfor %}
-          <li
-            slot="more"
-          >
-            <button
-              class="hidden-swatches__count"
-              aria-label="{{ 'actions.show_all_options' | t }}"
-              on:click="/showAllSwatches"
-            ></button>
-          </li>
         {% endcapture %}
-        {% render 'overflow-list', children: children, ref: 'overflowList', defer: true %}
+        
+       
+        
+        {% if show_product_image_swatches and show_horizontal_scroll %}
+          <div class="swatches-scroll-wrapper swatches-scroll-wrapper--horizontal">
+            <ul class="variant-option__swatches-list variant-option__swatches-list--horizontal-scroll" role="list" data-debug="horizontal-scroll-enabled">
+              {{ children }}
+            </ul>
+          </div>
+        {% else %}
+          <ul class="variant-option__swatches-list" role="list" data-debug="horizontal-scroll-disabled">
+            {{ children }}
+          </ul>
+        {% endif %}
       </fieldset>
       {%- else -%}
         {%- comment -%} Render colors as dropdowns or buttons based on variant_style {%- endcomment -%}
@@ -3836,6 +3840,34 @@
       calc(var(--product-swatches-padding-inline-end) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px));
   }
 
+  /* Override overflow and padding for horizontal scroll mode - using more specific selector */
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches,
+  .variant-option--swatches-horizontal-scroll {
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding-block: calc(
+        var(--product-swatches-padding-block-start) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px)
+      )
+      calc(var(--product-swatches-padding-block-end) + var(--focus-outline-offset) + var(--focus-outline-width) + var(--style-border-swatch-width, 1px));
+    padding-inline: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+  }
+
+  /* Ensure parent containers don't allow overflow */
+  .variant-picker-cl-dual--horizontal-scroll,
+  .variant-picker-cl-dual--horizontal-scroll .variant-picker-cl-dual__form {
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+
   .variant-picker-cl-dual .variant-option__swatch {
     display: inline-block;
   }
@@ -4268,9 +4300,9 @@
     height: 100%;
     border-radius: 0;
     background-color: transparent;
-    background-size: contain !important;
-    background-repeat: no-repeat !important;
-    background-position: center !important;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   .variant-option__button-label--product-image .swatch__image,
@@ -4307,8 +4339,8 @@
   .variant-picker-cl-dual__label--product-image:has(:checked) {
     border: 2px solid var(--color-foreground);
     border-radius: 0;
-    outline: none !important;
-    box-shadow: none !important;
+    outline: none;
+    box-shadow: none;
   }
 
   /* Remove all outlines on focus, hover, active */
@@ -4320,16 +4352,16 @@
   .variant-picker-cl-dual__label--product-image:focus,
   .variant-picker-cl-dual__label--product-image:focus-visible,
   .variant-picker-cl-dual__label--product-image:active {
-    outline: none !important;
-    box-shadow: none !important;
+    outline: none;
+    box-shadow: none;
   }
 
   .variant-option__button-label--product-image input:focus,
   .variant-option__button-label--product-image input:focus-visible,
   .variant-picker-cl-dual__label--product-image input:focus,
   .variant-picker-cl-dual__label--product-image input:focus-visible {
-    outline: none !important;
-    box-shadow: none !important;
+    outline: none;
+    box-shadow: none;
   }
 
   /* Ensure circle stays round when selected */
@@ -4344,49 +4376,151 @@
     border-radius: 0;
   }
 
-  /* Reduce spacing */
+
   .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches {
     gap: 8px;
-  }
-
-  /* Enable scrolling only when horizontal scroll is enabled */
-  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list {
+    overflow: hidden;
     width: 100%;
     max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-left: 0;
+    padding-right: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    padding-inline: 0;
   }
 
-  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list) {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    scrollbar-width: auto;
+  /* Wrapper div for horizontal scrolling - using specific class selector */
+  .swatches-scroll-wrapper--horizontal {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    flex-shrink: 1;
+    flex-basis: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px;
+    padding-left: calc(var(--product-swatches-padding-inline-start, 0px) + var(--focus-outline-offset, 0px) + 1.5 * var(--focus-outline-width, 0px) + var(--style-border-swatch-width, 0px));
+    padding-right: calc(var(--product-swatches-padding-inline-end, 0px) + var(--focus-outline-offset, 0px) + var(--focus-outline-width, 0px) + var(--style-border-swatch-width, 0px));
+    box-sizing: border-box;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-foreground-rgb) / 0.7) rgb(var(--color-border-rgb) / 0.5);
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Ensure parent flex containers constrain properly */
+  .layout-panel-flex .variant-picker-cl-dual--horizontal-scroll,
+  .layout-panel-flex .variant-picker-cl-dual--horizontal-scroll .variant-picker-cl-dual__form,
+  .layout-panel-flex .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* UL inside scroll wrapper - using more specific selector to override base rule */
+  .swatches-scroll-wrapper--horizontal .variant-option__swatches-list--horizontal-scroll,
+  .variant-option__swatches-list--horizontal-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+    width: max-content;
+    min-width: 100%;
+    box-sizing: border-box;
     gap: 8px;
-    padding-bottom: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar {
-    height: 2px;
+  /* Ensure list items don't shrink and maintain their natural width */
+  .swatches-scroll-wrapper--horizontal .variant-option__swatches-list--horizontal-scroll > li {
+    flex-shrink: 0;
+    flex-grow: 0;
+    width: auto;
+    min-width: fit-content;
   }
 
-  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar-track {
+  /* Ensure swatch labels maintain their width */
+  .swatches-scroll-wrapper--horizontal .variant-option__button-label--product-image {
+    flex-shrink: 0;
+    width: var(--product-image-swatch-size, 60px);
+    min-width: var(--product-image-swatch-size, 60px);
+    max-width: var(--product-image-swatch-size, 60px);
+  }
+
+  /* Scrollbar styling - using specific class selector */
+  .swatches-scroll-wrapper--horizontal {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-foreground-rgb) / 0.8) rgb(var(--color-border-rgb) / 0.5);
+  }
+
+  .swatches-scroll-wrapper--horizontal::-webkit-scrollbar {
+    height: 12px;
+    -webkit-appearance: none;
+    display: block;
     background: rgb(var(--color-border-rgb) / var(--opacity-30));
-    border-radius: 0;
   }
 
-  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar-thumb {
-    background: rgb(var(--color-foreground-rgb) / var(--opacity-50));
-    border-radius: 0;
+  .swatches-scroll-wrapper--horizontal::-webkit-scrollbar-track {
+    background: rgb(var(--color-border-rgb) / var(--opacity-50));
+    border-radius: 9999px;
+    -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+    display: block;
   }
 
-  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches overflow-list::part(list)::-webkit-scrollbar-thumb:hover {
-    background: rgb(var(--color-foreground-rgb) / var(--opacity-60));
+  .swatches-scroll-wrapper--horizontal::-webkit-scrollbar-thumb {
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-80));
+    border-radius: 9999px;
+    -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+    min-width: 30px;
+    display: block;
   }
 
-  /* Hide the +more button when horizontal scroll is enabled */
-  .variant-picker-cl-dual--horizontal-scroll .hidden-swatches__count {
-    display: none !important;
+  .swatches-scroll-wrapper--horizontal::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-95));
+  }
+
+  /* Simple list wrapper for swatches - default: allows wrapping */
+  .variant-option__swatches-list:not(.variant-option__swatches-list--horizontal-scroll) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+  }
+
+  .variant-option__swatches-list > li {
+    display: inline-block;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  /* Prevent items from shrinking when horizontal scroll is enabled */
+  .swatches-scroll-wrapper--horizontal .variant-option__swatches-list--horizontal-scroll > li,
+  .variant-picker-cl-dual--horizontal-scroll .variant-option__swatches-list > li {
+    flex-shrink: 0;
+    flex-grow: 0;
+    min-width: fit-content;
+  }
+
+  /* Ensure fieldset padding is removed for horizontal scroll - more specific selector */
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches-horizontal-scroll,
+  .variant-picker-cl-dual--horizontal-scroll .variant-option--swatches {
+    padding-left: 0;
+    padding-right: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    padding-inline: 0;
   }
 {% endstylesheet %}
 
