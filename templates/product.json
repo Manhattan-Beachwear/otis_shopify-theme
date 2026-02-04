@@ -698,7 +698,7 @@
                   "type": "_accordion-row",
                   "name": "Warranty",
                   "settings": {
-                    "heading": "Warranty",
+                    "heading": "WARRANTY",
                     "open_by_default": false,
                     "icon": "check_box",
                     "width": 20
