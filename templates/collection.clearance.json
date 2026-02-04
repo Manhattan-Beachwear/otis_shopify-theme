@@ -42,7 +42,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Discount codes cannot be applied to sale sunglasses. Shop our collection of sunglasses at 50% off below. <strong>All products below are final sale</strong>.</p>",
+            "text": "<p>Discount codes cannot be applied to sale sunglasses. Shop our collection of sunglasses at 50% off below. </p><p></p><p><strong>All products below are final sale</strong>.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
