@@ -273,7 +273,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<h4><strong>All sales are final - no returns or exchanges on sale sunglasses.</strong></h4>",
+                "text": "<h4><strong>Discount codes cannot be applied to sale sunglasses. All sales are final - no returns or exchanges on sale sunglasses. </strong></h4>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
