@@ -2579,7 +2579,7 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
         "padding-block-end": 48,
-        "enable_combined_listings": false
+        "enable_combined_listings": true
       }
     },
     "section_RxxVae": {
