@@ -1,4 +1,7 @@
-<quick-add-dialog id="quick-add-dialog">
+<quick-add-dialog
+  id="quick-add-dialog-cl"
+  data-quick-add-modal="combined-listing"
+>
   <dialog
     class="quick-add-modal dialog-modal color-{{ settings.popover_color_scheme }}"
     ref="dialog"
@@ -13,8 +16,9 @@
       {{- 'icon-close.svg' | inline_asset_content -}}
     </button>
     <div
-      id="quick-add-modal-content"
+      id="quick-add-modal-content-cl"
       class="quick-add-modal__content"
+      data-quick-add-modal="combined-listing"
     ></div>
   </dialog>
 </quick-add-dialog>

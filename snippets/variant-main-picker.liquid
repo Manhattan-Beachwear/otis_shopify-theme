@@ -100,6 +100,15 @@
             endif
           endif
 
+          # When "Show product images as swatches" is on, use swatch UI so product images display as swatches
+          if show_product_image_swatches
+            if block_settings.variant_style == 'dropdown'
+              assign variant_style = 'swatch_dropdown'
+            else
+              assign variant_style = 'swatch'
+            endif
+          endif
+
           if variant_style == 'buttons' and settings.variant_button_width == 'equal-width-buttons'
             assign fieldset_id = section.id | append: '-' | append: product_resource.id | append: '-' | append: product_option.name | handleize
             assign option_id_attribute = 'data-option-id="' | append: fieldset_id | append: '"'
@@ -179,27 +188,56 @@
                       endif
                     endif
                     
-                    # Priority 2 & 3: Get variant image as fallback (only if no swatch color/image)
+                    # Priority 2 & 3: Get variant image. When show_product_image_swatches is on, always use variant image; otherwise use only when option has no metaobject swatch color/image.
                     assign variant_image_for_swatch = ''
-                    unless swatch_has_color_or_image
-                      # Try variant's featured media first
-                      assign featured_media = product_option_value.variant.featured_media
-                      
-                      # If the variant has no featured media, and we have a combined listing product, then fall back to
-                      # using the featured media of the child product that is linked to this option value.
-                      if featured_media == blank and product_option_value.product_url
-                        assign featured_media = product_option_value.variant.product.featured_media
+                    if show_product_image_swatches or swatch_has_color_or_image == false
+                      assign variant_for_swatch = product_option_value.variant
+                      assign featured_media = variant_for_swatch.featured_media
+                      if featured_media == blank and variant_for_swatch.featured_image != blank
+                        assign featured_media = variant_for_swatch.featured_image
                       endif
-                      
+                      if featured_media == blank and variant_for_swatch.image != blank
+                        assign featured_media = variant_for_swatch.image
+                      endif
+                      if featured_media == blank and product_option_value.product_url != blank
+                        assign featured_media = variant_for_swatch.product.featured_media
+                      endif
+                      if featured_media == blank and variant_for_swatch.id != blank
+                        for v in product_resource.variants
+                          if v.id == variant_for_swatch.id
+                            if v.featured_media != blank
+                              assign featured_media = v.featured_media
+                            elsif v.featured_image != blank
+                              assign featured_media = v.featured_image
+                            elsif v.image != blank
+                              assign featured_media = v.image
+                            endif
+                            break
+                          endif
+                        endfor
+                      endif
                       if featured_media != blank
-                        assign variant_image_for_swatch = featured_media
-                      else
-                        # Fall back to product's first image
-                        if product_option_value.variant.product.featured_media != blank
-                          assign variant_image_for_swatch = product_option_value.variant.product.featured_media
+                        assign test_img = featured_media.preview_image | default: featured_media
+                        assign test_url = test_img | image_url: width: 120
+                        if test_url != blank
+                          assign variant_image_for_swatch = featured_media
                         endif
                       endif
-                    endunless
+                      if variant_image_for_swatch == blank
+                        assign fallback_product = variant_for_swatch.product
+                        assign fallback_media = fallback_product.featured_media
+                        if fallback_media == blank
+                          assign fallback_media = fallback_product.media.first
+                        endif
+                        if fallback_media != blank
+                          assign test_img = fallback_media.preview_image | default: fallback_media
+                          assign test_url = test_img | image_url: width: 120
+                          if test_url != blank
+                            assign variant_image_for_swatch = fallback_media
+                          endif
+                        endif
+                      endif
+                    endif
                   %}
 
                   {% if show_product_image_swatches %}

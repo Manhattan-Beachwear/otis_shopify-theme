@@ -23,6 +23,9 @@
   if parent_color_scheme.settings.background.rgb == current_color_scheme.settings.background.rgb
     assign color_scheme_classes = color_scheme_classes | append: ' color-scheme-matches-parent'
   endif
+
+  assign dropdown_alignment = block_settings.dropdown_alignment | default: 'left'
+  assign menu_content_type = block_settings.menu_style | default: 'text'
 %}
 
 {% case variant %}
@@ -88,6 +91,7 @@
           >
             {% capture left_children %}
               {% for link in menu_links limit: split_point %}
+                {% capture submenu_alignment_class %}{% render 'menu-submenu-alignment-class', link: link, dropdown_alignment: dropdown_alignment, menu_content_type: menu_content_type %}{% endcapture %}
                 <li
                   role="presentation"
                   class="menu-list__list-item"
@@ -116,7 +120,7 @@
                     {%- endif -%}
                   </a>
                   {%- if link.links != blank -%}
-                    <div class="menu-list__submenu{{ color_scheme_classes }}" ref="submenu[]">
+                    <div class="menu-list__submenu{{ color_scheme_classes }}{{ submenu_alignment_class }}" ref="submenu[]">
                       <div
                         id="split-submenu-left-{{ forloop.index }}"
                         class="menu-list__submenu-inner"
@@ -165,6 +169,7 @@
           >
             {% capture right_children %}
               {% for link in menu_links offset: split_point %}
+                {% capture submenu_alignment_class %}{% render 'menu-submenu-alignment-class', link: link, dropdown_alignment: dropdown_alignment, menu_content_type: menu_content_type %}{% endcapture %}
                 <li
                   role="presentation"
                   class="menu-list__list-item"
@@ -193,7 +198,7 @@
                     {%- endif -%}
                   </a>
                   {%- if link.links != blank -%}
-                    <div class="menu-list__submenu{{ color_scheme_classes }}" ref="submenu[]">
+                    <div class="menu-list__submenu{{ color_scheme_classes }}{{ submenu_alignment_class }}" ref="submenu[]">
                       <div
                         id="split-submenu-right-{{ forloop.index }}"
                         class="menu-list__submenu-inner"
@@ -443,6 +448,39 @@
     }
   }
 
+  /* Aligned dropdown: under parent */
+  .split-header-menu .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__submenu--aligned {
+    width: auto;
+    left: auto;
+    right: auto;
+    min-width: 200px;
+  }
+
+  .split-header-menu .menu-list__submenu--aligned .mega-menu.section {
+    display: block !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .split-header-menu .menu-list__submenu--aligned .mega-menu__grid,
+  .split-header-menu .menu-list__submenu--aligned .mega-menu__list {
+    display: block !important;
+    width: auto !important;
+  }
+
+  .split-header-menu .menu-list__submenu--aligned .mega-menu__column {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .split-header-menu .menu-list__submenu--aligned .mega-menu__link {
+    display: block !important;
+    padding: var(--padding-2xs) var(--padding-sm);
+    white-space: nowrap;
+  }
+
 {% endstylesheet %}
 
 {% schema %}
@@ -567,6 +605,23 @@
     {
       "type": "header",
       "content": "t:content.submenu_feature"
+    },
+    {
+      "type": "select",
+      "id": "dropdown_alignment",
+      "label": "Dropdown alignment",
+      "info": "Choose how text-only dropdown menus are aligned. This setting only affects text menus, not mega menus with images.",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "aligned",
+          "label": "Aligned (vertically aligned under parent)"
+        }
+      ],
+      "default": "left"
     },
     {
       "type": "select",

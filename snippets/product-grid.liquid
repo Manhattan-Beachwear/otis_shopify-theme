@@ -18,6 +18,7 @@
   @media (min-width: 750px) {
     {% case section.settings.layout_type %}
       {% when 'grid' %}
+        {% comment %} Card size controls min column width: small = more columns, large = fewer {% endcomment %}
         .product-grid--{{ section.id }}:is(.product-grid--grid) {
           --product-grid-columns-desktop: repeat(4, 1fr);
         }
@@ -34,6 +35,12 @@
           }
         }
 
+        {% comment %} Ensure at least 2 columns when container is narrow (large/extra-large already handled below) {% endcomment %}
+        @container product-grid (max-width: calc({{ product_card_size }} * 2 + {{ section.settings.columns_gap_horizontal }}px)) {
+          .product-grid--{{ section.id }}:is(.product-grid--grid) {
+            --product-grid-columns-desktop: repeat(2, 1fr);
+          }
+        }
 
       {% when 'organic' %}
         {% assign large_span = 2 %}
@@ -200,6 +207,10 @@
     overflow: visible;
   }
 
+  .product-grid__item {
+    overflow: visible;
+  }
+
   /* This triggers iOS < 16.4 */
   @supports not (background-color: rgb(from red 150 g b / alpha)) {
     /* Force aspect ratio to auto for iOS < 16.4 since it's not compatible with the infinite pagination */
@@ -214,6 +225,11 @@
 
     @media screen and (min-width: 750px) {
       padding: var(--padding-block-start) var(--padding-inline-end) var(--padding-block-end) var(--padding-inline-start);
+    }
+
+    @media screen and (min-width: 1600px) {
+      max-width: 1500px;
+      margin: auto;
     }
 
     @media screen and (min-width: 1600px) {

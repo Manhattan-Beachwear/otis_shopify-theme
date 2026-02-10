@@ -1,5 +1,12 @@
+{% liquid
+  assign icon_size = block.settings.icon_size
+  if icon_size == blank
+    assign icon_size = '1.5rem'
+  endif
+%}
 <div
   class="social-icons__wrapper"
+  style="--social-icon-size: {{ icon_size }};"
   {{ block.shopify_attributes }}
 >
   {% content_for 'blocks' %}
@@ -17,6 +24,20 @@
       justify-content: flex-start;
     }
   }
+
+  /* Ensure icon size variable is available to child blocks */
+  .social-icons__wrapper .social-icons__icon-wrapper {
+    height: var(--social-icon-size, var(--icon-size-lg));
+  }
+
+  .social-icons__wrapper .social-icons__icon-wrapper:has(.social-icons__icon path) {
+    width: var(--social-icon-size, var(--icon-size-lg));
+  }
+
+  .social-icons__wrapper .social-icons__icon {
+    width: var(--social-icon-size, var(--icon-size-lg));
+    height: var(--social-icon-size, var(--icon-size-lg));
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -26,6 +47,48 @@
   "blocks": [
     {
       "type": "_social-link"
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.appearance"
+    },
+    {
+      "type": "select",
+      "id": "icon_size",
+      "label": "t:settings.size",
+      "options": [
+        {
+          "value": "0.6rem",
+          "label": "Extra Small"
+        },
+        {
+          "value": "0.85rem",
+          "label": "Small"
+        },
+        {
+          "value": "1.25rem",
+          "label": "Medium"
+        },
+        {
+          "value": "1.375rem",
+          "label": "Large"
+        },
+        {
+          "value": "1.5rem",
+          "label": "Extra Large"
+        },
+        {
+          "value": "2rem",
+          "label": "2x Large"
+        },
+        {
+          "value": "2.5rem",
+          "label": "3x Large"
+        }
+      ],
+      "default": "1.5rem"
     }
   ]
 }

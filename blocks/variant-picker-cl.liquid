@@ -56,7 +56,8 @@
         }
       ],
       "default": "circle",
-      "info": "Choose between circular or square layout for product image swatches"
+      "info": "Choose between circular or square layout for product image swatches",
+      "visible_if": "{{ block.settings.show_product_image_swatches }}"
     },
     {
       "type": "range",
@@ -67,21 +68,24 @@
       "step": 4,
       "unit": "px",
       "default": 60,
-      "info": "Size of product image swatches"
+      "info": "Size of product image swatches",
+      "visible_if": "{{ block.settings.show_product_image_swatches }}"
     },
     {
       "type": "checkbox",
       "id": "show_product_image_swatch_variant_name",
       "label": "Show variant name below image swatches",
       "default": true,
-      "info": "Display combined option values (e.g., \"Black / Purple\") below each product image swatch"
+      "info": "Display combined option values (e.g., \"Black / Purple\") below each product image swatch",
+      "visible_if": "{{ block.settings.show_product_image_swatches }}"
     },
     {
       "type": "checkbox",
       "id": "show_horizontal_scroll",
       "label": "Show horizontal scroll for image swatches",
       "default": false,
-      "info": "Enable horizontal scrolling for product image swatches. When disabled, shows '+' button for overflow swatches"
+      "info": "Enable horizontal scrolling for product image swatches. When disabled, shows '+' button for overflow swatches",
+      "visible_if": "{{ block.settings.show_product_image_swatches }}"
     },
     {
       "type": "text_alignment",

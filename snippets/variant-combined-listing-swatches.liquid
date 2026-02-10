@@ -1060,6 +1060,10 @@
                   endif
                 endif
               -%}
+              {%- comment -%} When using product image as swatch, don't show the swatch if the variant has no image. {%- endcomment -%}
+              {% if show_product_image_swatches and hover_media == blank %}
+                {% continue %}
+              {% endif %}
               <li class="variant-option__swatch">
                 <label
                   {% if hover_media != blank %}
