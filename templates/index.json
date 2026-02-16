@@ -1788,6 +1788,7 @@
           "settings": {
             "media_type": "image",
             "image": "shopify://shop_images/2K2A6178_1.jpg",
+            "image_mobile": "shopify://shop_images/2K2A6178_1.jpg",
             "link": "",
             "video_loop": true,
             "video_autoplay": false,
@@ -1958,7 +1959,7 @@
         "extend_media": true,
         "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 50
       }
     },
     "marquee_TEVrVc": {
