@@ -1810,7 +1810,7 @@
               "type": "text",
               "name": "t:names.caption",
               "settings": {
-                "text": "<p><em>NEW! Selling fast</em></p>",
+                "text": "<p><em>NEW! </em></p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
