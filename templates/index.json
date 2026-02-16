@@ -1787,7 +1787,7 @@
           "static": true,
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/2K2A6054.jpg",
+            "image": "shopify://shop_images/2K2A6178_1.jpg",
             "link": "",
             "video_loop": true,
             "video_autoplay": false,
@@ -1809,7 +1809,7 @@
               "type": "text",
               "name": "t:names.caption",
               "settings": {
-                "text": "<p><em>Bestseller</em></p>",
+                "text": "<p><em>NEW! Selling fast</em></p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1874,7 +1874,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2><strong>Divide / Eco Crystal Foliage</strong></h2>",
+                    "text": "<h2><strong>Untitled / Eco Black Grey Polar</strong></h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -1899,7 +1899,7 @@
                 "text_6An3rc": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Rise up to refinement in a streamlined frame. Divide combines classic aesthetics with current techniques to create a stylish look that’s ultra comfortable to wear. Made in biodegradable Eco-Acetate, it’s ideal for those who want a timeless design with the future at heart.</p>",
+                    "text": "<p>Strike a power chord of style in a frame inspired by the 90s. Untitled's edgy silhouette is pared-back to keep things sharp, while rectangular pin detailing completes the riff. Made from biodegradable eco-acetate, The Untitled speaks volumes of modern impact while paying homage to the one of the loudest eras of the past.</p>",
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "left",
