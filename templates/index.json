@@ -2659,7 +2659,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "sHOP",
-                "link": "shopify://collections/mens-eyewear-1",
+                "link": "shopify://collections/mens-eyewear",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
