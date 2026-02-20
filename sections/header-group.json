@@ -17,6 +17,7 @@
         "announcement_L7dhBW": {
           "type": "_announcement",
           "name": "t:names.announcement",
+          "disabled": true,
           "settings": {
             "text": "Shopify Is Currently Experiencing Outages in Checkout. Please Contact Our Customer Service for Assistance.",
             "link": "",
