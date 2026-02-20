@@ -14,6 +14,20 @@
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
       "blocks": {
+        "announcement_L7dhBW": {
+          "type": "_announcement",
+          "name": "t:names.announcement",
+          "settings": {
+            "text": "Shopify Is Currently Experiencing Outages in Checkout. Please Contact Our Customer Service for Assistance.",
+            "link": "",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "none"
+          },
+          "blocks": {}
+        },
         "announcement_y4xynq": {
           "type": "_announcement",
           "name": "t:names.announcement",
@@ -43,6 +57,7 @@
         }
       },
       "block_order": [
+        "announcement_L7dhBW",
         "announcement_y4xynq",
         "announcement_BxgCk9"
       ],
