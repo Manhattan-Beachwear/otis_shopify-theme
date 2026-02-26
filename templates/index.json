@@ -327,8 +327,8 @@
           "name": "Hero Slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/Screenshot_2026-01-27_152623.png",
-            "image_1_mobile": "shopify://shop_images/Screenshot_2026-01-27_153011.png",
+            "image_1": "shopify://shop_images/Screenshot_2026-02-26_123400.png",
+            "image_1_mobile": "shopify://shop_images/Screenshot_2026-02-26_123259.png",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -367,7 +367,7 @@
                 "height": "fill",
                 "custom_height": 100,
                 "inherit_color_scheme": false,
-                "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
+                "color_scheme": "scheme-3",
                 "background_media": "none",
                 "video_position": "cover",
                 "background_image_position": "cover",
@@ -417,13 +417,13 @@
                 "text_TNLdja": {
                   "type": "text",
                   "settings": {
-                    "text": "<h2><strong>Interlude</strong></h2>",
+                    "text": "<h2><strong>VANTA SPORT</strong></h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
                     "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "font_size": "3.5rem",
+                    "font_size": "2.5rem",
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
@@ -442,7 +442,7 @@
                 "text_LcwN8e": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Break out of the mundane with unique style and performance<br/></p>",
+                    "text": "<p>Sometimes you need sunglasses built to take on anything<br/></p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -468,7 +468,7 @@
                   "type": "button",
                   "settings": {
                     "label": "Shop Now",
-                    "link": "shopify://products/interlude",
+                    "link": "shopify://products/vanta-sport-matte-black",
                     "open_in_new_tab": false,
                     "style_class": "button-secondary",
                     "width": "fit-content",
@@ -791,7 +791,7 @@
         "slideshow_controls_style": "dots",
         "autoplay": true,
         "autoplay_speed": 5,
-        "section_height": "custom",
+        "section_height": "large",
         "section_height_custom": 70,
         "section_width": "full-width",
         "toggle_overlay": true,
