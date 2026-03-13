@@ -2670,7 +2670,7 @@
                 "image": "shopify://shop_images/Hinge-detail-sqr.jpg",
                 "link": "",
                 "hover_scale": true,
-                "image_ratio": "adapt",
+                "image_ratio": "landscape",
                 "width": "fill",
                 "custom_width": 100,
                 "width_mobile": "fill",
