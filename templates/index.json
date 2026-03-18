@@ -1116,6 +1116,21 @@
     "product_list_cXeMxc": {
       "type": "product-list",
       "blocks": {
+        "button_hqMnDb": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Shop now",
+            "link": "shopify://products/chorus-eco-crystal-birch-1",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        },
         "static-header": {
           "type": "_product-list-content",
           "name": "t:names.header",
@@ -1288,6 +1303,9 @@
           ]
         }
       },
+      "block_order": [
+        "button_hqMnDb"
+      ],
       "name": "t:names.products_grid",
       "settings": {
         "collection": "chorus",
@@ -1308,6 +1326,66 @@
         "padding-block-start": 0,
         "padding-block-end": 48,
         "enable_combined_listings": false
+      }
+    },
+    "section_ygXKAy": {
+      "type": "section",
+      "blocks": {
+        "video_MGBcfj": {
+          "type": "video",
+          "name": "t:names.video",
+          "settings": {
+            "source": "uploaded",
+            "video": "shopify://files/videos/GOLF EDIT CUT UP_0 (1).mp4",
+            "video_autoplay": true,
+            "video_loop": true,
+            "alt": "",
+            "custom_width": 100,
+            "custom_width_mobile": 100,
+            "aspect_ratio": "16/9",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "video_MGBcfj"
+      ],
+      "name": "t:names.video_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 32,
+        "padding-block-end": 32
       }
     },
     "testimonials_ycTxe9": {
@@ -3648,6 +3726,7 @@
     "featured_product_FfcNcK",
     "hero_slideshow_qHUGTK",
     "product_list_cXeMxc",
+    "section_ygXKAy",
     "testimonials_ycTxe9",
     "section_RxxVae",
     "product_list_fa6P9H",
