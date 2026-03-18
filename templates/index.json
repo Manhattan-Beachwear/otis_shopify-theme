@@ -1116,21 +1116,6 @@
     "product_list_cXeMxc": {
       "type": "product-list",
       "blocks": {
-        "button_hqMnDb": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "Shop now",
-            "link": "shopify://products/chorus-eco-crystal-birch-1",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
-        },
         "static-header": {
           "type": "_product-list-content",
           "name": "t:names.header",
@@ -1303,9 +1288,6 @@
           ]
         }
       },
-      "block_order": [
-        "button_hqMnDb"
-      ],
       "name": "t:names.products_grid",
       "settings": {
         "collection": "chorus",
@@ -2578,8 +2560,8 @@
           "static": true,
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/2K2A6178_1.jpg",
-            "image_mobile": "shopify://shop_images/2K2A6178_1.jpg",
+            "image": "shopify://shop_images/VANTA7.jpg",
+            "image_mobile": "shopify://shop_images/VANTA7.jpg",
             "link": "",
             "video_loop": true,
             "video_autoplay": false,
@@ -2666,7 +2648,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2><strong>Untitled / Eco Black Grey Polar</strong></h2>",
+                    "text": "<h2><strong>VANTA SPORT</strong></h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -2691,7 +2673,7 @@
                 "text_6An3rc": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Strike a power chord of style in a frame inspired by the 90s. Untitled's edgy silhouette is pared-back to keep things sharp, while rectangular pin detailing completes the riff. Made from biodegradable eco-acetate, The Untitled speaks volumes of modern impact while paying homage to the one of the loudest eras of the past.</p>",
+                    "text": "<p>Designed to go all-in on every adventure, the Vanta Sport wraps you in performance. With a snug, secure fit that contours to your face, it stays put when you’re casting off, chasing waves or pushing your limits. The sharp, futuristic lines carry the minimalist DNA of OTIS, clean, purposeful and confident. Featuring spring hinges for flexible movement, a rubber nose piece for grip and rubber temple tips for comfort, this frame delivers at every turn.</p>",
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "left",
@@ -3725,8 +3707,8 @@
     "section_aAXXFY",
     "featured_product_FfcNcK",
     "hero_slideshow_qHUGTK",
-    "product_list_cXeMxc",
     "section_ygXKAy",
+    "product_list_cXeMxc",
     "testimonials_ycTxe9",
     "section_RxxVae",
     "product_list_fa6P9H",
