@@ -132,7 +132,7 @@
                 "text_48rf7f": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>OTIS' version of the timeless wayfarer style, built with Eco-Acetate frames and Mineral Glass Lenses.</p>",
+                    "text": "<p>A crowd favorite on and off the green. Chorus is a timeless silhouette that suits all face shapes.</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -822,7 +822,7 @@
             "text": "<h2><strong>Explore Chorus</strong></h2>",
             "width": "100%",
             "max_width": "normal",
-            "alignment": "left",
+            "alignment": "center",
             "type_preset": "custom",
             "font": "var(--font-body--family)",
             "font_size": "1.25rem",
@@ -848,7 +848,7 @@
             "text": "<p>Look clean, crisp, and quietly confident. Chorus reworks the iconic wayfarer shape into a slimmer silhouette. Crystal acetate shows off an elevated wire core on the temples, while pin detailing at the front adds extra class.<br/><br/></p>",
             "width": "100%",
             "max_width": "normal",
-            "alignment": "left",
+            "alignment": "center",
             "type_preset": "custom",
             "font": "var(--font-body--family)",
             "font_size": "0.875rem",
