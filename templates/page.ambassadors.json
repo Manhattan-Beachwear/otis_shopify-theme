@@ -405,9 +405,10 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/GH6_2791_1.jpg",
+            "image_mobile": "shopify://shop_images/GH6_2791_1.jpg",
             "link": "",
             "hover_scale": true,
-            "image_ratio": "square",
+            "image_ratio": "adapt",
             "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
@@ -831,6 +832,7 @@
         },
         "group_36dQHQ": {
           "type": "group",
+          "disabled": true,
           "settings": {
             "content_direction": "column",
             "vertical_on_mobile": true,
@@ -945,6 +947,7 @@
         "image_GQWPT3",
         "group_36dQHQ"
       ],
+      "disabled": true,
       "name": "t:names.image_with_text",
       "settings": {
         "content_direction": "row",
@@ -978,6 +981,29 @@
     "section_MCDhiN": {
       "type": "section",
       "blocks": {
+        "image_kik47i": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/BIRDIE112.jpg",
+            "link": "",
+            "hover_scale": true,
+            "image_ratio": "square",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "group_TV8mWd": {
           "type": "group",
           "settings": {
@@ -1088,34 +1114,11 @@
             "text_7FPKT6",
             "button_ig6XqW"
           ]
-        },
-        "image_kik47i": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/BIRDIE112.jpg",
-            "link": "",
-            "hover_scale": true,
-            "image_ratio": "square",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "group_TV8mWd",
-        "image_kik47i"
+        "image_kik47i",
+        "group_TV8mWd"
       ],
       "name": "t:names.image_with_text",
       "settings": {
