@@ -783,6 +783,7 @@ body,
   font-weight: var(--font-paragraph--weight);
   font-size: var(--font-paragraph--size);
   line-height: var(--font-paragraph--line-height);
+  letter-spacing: var(--font-paragraph--letter-spacing);
   text-transform: var(--font-paragraph--case);
   -webkit-font-smoothing: antialiased;
   color: var(--color, var(--color-foreground));
@@ -2524,10 +2525,55 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   align-items: var(--vertical-alignment);
 }
 
+/* Make menu items display horizontally when parent group is row */
+.layout-panel-flex--row .menu .list-unstyled {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing--size, 12px);
+  justify-content: var(--horizontal-alignment, flex-start);
+}
+
+.layout-panel-flex--row .menu .menu__item {
+  margin-block-start: 0;
+}
+
+/* Apply alignment to menu items when parent group is row (using classes) */
+.layout-panel-flex--row.layout-panel-flex--align-center .menu .list-unstyled {
+  justify-content: center;
+}
+
+.layout-panel-flex--row.layout-panel-flex--align-end .menu .list-unstyled {
+  justify-content: flex-end;
+}
+
+.layout-panel-flex--row.layout-panel-flex--align-start .menu .list-unstyled {
+  justify-content: flex-start;
+}
+
 .layout-panel-flex--column {
   flex-flow: column var(--flex-wrap);
   align-items: var(--horizontal-alignment);
   justify-content: var(--vertical-alignment);
+}
+
+/* Make menu text respect parent alignment when in column layout */
+.layout-panel-flex--column.layout-panel-flex--align-center .menu,
+.layout-panel-flex--column.layout-panel-flex--align-center .menu .details-content,
+.layout-panel-flex--column.layout-panel-flex--align-center .menu .list-unstyled {
+  text-align: center;
+}
+
+.layout-panel-flex--column.layout-panel-flex--align-end .menu,
+.layout-panel-flex--column.layout-panel-flex--align-end .menu .details-content,
+.layout-panel-flex--column.layout-panel-flex--align-end .menu .list-unstyled {
+  text-align: right;
+}
+
+.layout-panel-flex--column.layout-panel-flex--align-start .menu,
+.layout-panel-flex--column.layout-panel-flex--align-start .menu .details-content,
+.layout-panel-flex--column.layout-panel-flex--align-start .menu .list-unstyled {
+  text-align: left;
 }
 
 @media screen and (max-width: 749px) {

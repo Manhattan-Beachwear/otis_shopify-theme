@@ -85,7 +85,8 @@
         assign total_swatch_count = swatch_count | plus: assets_swatch_count
       -%}
 
-      {% if total_swatch_count == 0 %}
+      {%- comment -%} Skip only when no swatch data AND single value (nothing to choose). When multiple values but no swatch data, render using variant image fallback. {% endcomment -%}
+      {% if total_swatch_count == 0 and product_option.values.size <= 1 %}
         {% continue %}
       {% endif %}
 
@@ -184,7 +185,12 @@
                 endif
               endif
             %}
-
+            {%- comment -%} When using product image as swatch, don't show the swatch if the variant has no image. {%- endcomment -%}
+            {% if show_product_image_swatches or total_swatch_count == 0 %}
+              {% if featured_media == blank %}
+                {% continue %}
+              {% endif %}
+            {% endif %}
             <li class="variant-option__swatch">
               <label
                 data-media-id="{{ featured_media.id }}"
@@ -192,7 +198,7 @@
                 {% if featured_media != blank and featured_media.preview_image != blank %}
                   data-featured-image-url="{{ featured_media.preview_image | image_url: width: 1200 }}"
                 {% endif %}
-                class="variant-option__button-label variant-option__button-label--has-swatch {% if show_product_image_swatches %}variant-option__button-label--product-image variant-option__button-label--product-image-{{ product_image_swatch_style }}{% else %}swatch-rounded{% endif %}"
+                class="variant-option__button-label variant-option__button-label--has-swatch {% if show_product_image_swatches or total_swatch_count == 0 %}variant-option__button-label--product-image variant-option__button-label--product-image-{{ product_image_swatch_style }}{% else %}swatch-rounded{% endif %}"
                 on:pointerenter="product-card/previewVariant/{{ featured_media.id }}"
                 on:pointerleave="product-card/resetVariant"
               >
@@ -219,8 +225,8 @@
                   data-variant-id="{{ first_available_variant.id | default: product_option_value.variant.id }}"
                   data-first-available-or-first-variant-id="{{ first_available_variant.id | default: product_option_value.variant.id }}"
                 >
-                {%- if show_product_image_swatches -%}
-                  {%- comment -%} Force use variant image as swatch {%- endcomment -%}
+                {%- if show_product_image_swatches or total_swatch_count == 0 -%}
+                  {%- comment -%} Force use variant image as swatch (product image swatches setting, or fallback when no swatch data but multiple values) {%- endcomment -%}
                   {% render 'swatch',
                     swatch: blank,
                     variant_image: featured_media,

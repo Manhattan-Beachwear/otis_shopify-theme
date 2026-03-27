@@ -695,6 +695,42 @@
       "label": "Enable Combined Listings",
       "default": false,
       "info": "When enabled, products linked via combined listing metafield will appear as a single product with color variant swatches"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_image_swatches",
+      "label": "Show product images as swatches",
+      "default": false,
+      "info": "Display product featured images instead of color swatches for combined listings"
+    },
+    {
+      "type": "select",
+      "id": "product_image_swatch_style",
+      "label": "Product image swatch style",
+      "options": [
+        { "value": "circle", "label": "Circle" },
+        { "value": "square", "label": "Square" }
+      ],
+      "default": "circle",
+      "info": "Choose between circular or square layout for product image swatches"
+    },
+    {
+      "type": "range",
+      "id": "product_image_swatch_size",
+      "label": "Product image swatch size",
+      "min": 40,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48,
+      "info": "Size of product image swatches"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_horizontal_scroll",
+      "label": "Show horizontal scroll for image swatches",
+      "default": false,
+      "info": "Enable horizontal scrolling for product image swatches. When disabled, shows '+' button for overflow swatches"
     }
   ],
   "presets": [
@@ -823,6 +859,18 @@
                 "padding-inline-end": 0
               }
             },
+            "swatches": {
+              "type": "swatches",
+              "name": "t:names.swatches",
+              "settings": {
+                "product_swatches_alignment": "flex-start",
+                "product_swatches_alignment_mobile": "flex-start",
+                "product_swatches_padding_top": 4,
+                "product_swatches_padding_bottom": 0,
+                "product_swatches_padding_left": 0,
+                "product_swatches_padding_right": 0
+              }
+            },
             "product_title": {
               "type": "product-title",
               "name": "t:names.product_title",
@@ -870,7 +918,7 @@
               }
             }
           },
-          "block_order": ["product-card-gallery", "product_title", "price"]
+          "block_order": ["product-card-gallery", "swatches", "product_title", "price"]
         }
       },
       "block_order": []
@@ -1000,6 +1048,18 @@
                 "padding-inline-end": 0
               }
             },
+            "swatches": {
+              "type": "swatches",
+              "name": "t:names.swatches",
+              "settings": {
+                "product_swatches_alignment": "flex-start",
+                "product_swatches_alignment_mobile": "flex-start",
+                "product_swatches_padding_top": 4,
+                "product_swatches_padding_bottom": 0,
+                "product_swatches_padding_left": 0,
+                "product_swatches_padding_right": 0
+              }
+            },
             "product_title": {
               "type": "product-title",
               "name": "t:names.product_title",
@@ -1047,7 +1107,7 @@
               }
             }
           },
-          "block_order": ["product-card-gallery", "product_title", "price"]
+          "block_order": ["product-card-gallery", "swatches", "product_title", "price"]
         }
       },
       "block_order": []
@@ -1182,6 +1242,18 @@
                 "padding-inline-end": 0
               }
             },
+            "swatches": {
+              "type": "swatches",
+              "name": "t:names.swatches",
+              "settings": {
+                "product_swatches_alignment": "flex-start",
+                "product_swatches_alignment_mobile": "flex-start",
+                "product_swatches_padding_top": 4,
+                "product_swatches_padding_bottom": 0,
+                "product_swatches_padding_left": 0,
+                "product_swatches_padding_right": 0
+              }
+            },
             "product_title": {
               "type": "product-title",
               "name": "t:names.product_title",
@@ -1229,7 +1301,7 @@
               }
             }
           },
-          "block_order": ["product-card-gallery", "product_title", "price"]
+          "block_order": ["product-card-gallery", "swatches", "product_title", "price"]
         }
       },
       "block_order": []

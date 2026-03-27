@@ -1,0 +1,139 @@
+{% assign trigger_settings = block.settings %}
+<button
+  type="button"
+  class="expandable__trigger size-style {{ trigger_settings.style_class | default: 'link' }}{% if trigger_settings.style_class %} {{ trigger_settings.style_class }}--{{ block.id }}{% endif %}"
+  style="{% render 'size-style', settings: trigger_settings %} margin-block-start: {{ trigger_settings.margin_top | default: 0 }}px; margin-block-end: {{ trigger_settings.margin_bottom | default: 0 }}px;"
+  data-expandable-trigger
+  aria-expanded="{{ section.settings.expanded_by_default }}"
+  aria-controls="expandable-content-{{ section.id }}"
+  {{ block.shopify_attributes }}
+>
+  <span class="expandable__label--more" data-expandable-label-more>{% if trigger_settings.read_more_text != blank %}{{ trigger_settings.read_more_text }}{% else %}{{ 'content.read_more' | t }}{% endif %}</span>
+  <span class="expandable__label--less" data-expandable-label-less>{% if trigger_settings.read_less_text != blank %}{{ trigger_settings.read_less_text }}{% else %}{{ 'content.read_less' | t }}{% endif %}</span>
+</button>
+
+{% schema %}
+{
+  "name": "t:names.expandable_trigger",
+  "tag": null,
+  "class": "button",
+  "settings": [
+    {
+      "type": "select",
+      "id": "style_class",
+      "label": "t:settings.style",
+      "options": [
+        {
+          "value": "button",
+          "label": "t:options.primary"
+        },
+        {
+          "value": "button-secondary",
+          "label": "t:options.secondary"
+        },
+        {
+          "value": "link",
+          "label": "t:options.link"
+        }
+      ],
+      "default": "link"
+    },
+    {
+      "type": "header",
+      "content": "t:content.size"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:settings.width_desktop",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "t:settings.custom_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width == \"custom\" }}"
+    },
+    {
+      "type": "select",
+      "id": "width_mobile",
+      "label": "t:settings.width_mobile",
+      "options": [
+        {
+          "value": "fit-content",
+          "label": "t:options.fit_content"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "range",
+      "id": "custom_width_mobile",
+      "label": "t:settings.custom_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width_mobile == \"custom\" }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "t:settings.margin_top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "t:settings.margin_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:content.content"
+    },
+    {
+      "type": "text",
+      "id": "read_more_text",
+      "label": "t:settings.read_more_button"
+    },
+    {
+      "type": "text",
+      "id": "read_less_text",
+      "label": "t:settings.read_less_button"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,25 @@
+{%- comment -%}
+  Outputs " menu-list__submenu--aligned" when this dropdown should use aligned layout.
+  Only for text-only dropdowns when dropdown_alignment is 'aligned'.
+  Params: link, dropdown_alignment, menu_content_type
+{%- endcomment -%}
+{% liquid
+  assign out = ''
+  if link.links != blank and dropdown_alignment == 'aligned'
+    assign is_text_only = false
+    if menu_content_type == 'text'
+      assign is_text_only = true
+    elsif menu_content_type == 'collection_images'
+      assign cl = link.links | where: 'type', 'collection_link'
+      assign cat = link.links | where: 'type', 'catalog_link'
+      assign collist = link.links | where: 'type', 'collections_link'
+      if cl.size == 0 and cat.size == 0 and collist.size == 0
+        assign is_text_only = true
+      endif
+    endif
+    if is_text_only
+      assign out = ' menu-list__submenu--aligned'
+    endif
+  endif
+  echo out
+%}

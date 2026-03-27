@@ -3,6 +3,7 @@
 
   @param {object} product - The product object
   @param {string} section_id - The section ID
+  @param {object} [section] - The section object (optional; used for enable_combined_listings when combined listing is active)
   @param {object} [block] - The block object
 {%- enddoc -%}
 
@@ -10,11 +11,39 @@
   assign product_form_id = 'QuickAdd-ProductForm-' | append: product.id | append: '-' | append: block.id
   assign add_to_cart_text = 'actions.add' | t
 
+  # Combined listing: check section setting and get data so we treat linked products as variants
+  assign enable_combined = false
+  if section != blank and section.settings.enable_combined_listings
+    assign enable_combined = true
+  endif
+  assign combined_listings_metafield = product.metafields.custom.combined_listing
+  assign combined_listing_product_count = 0
+  if combined_listings_metafield != blank and combined_listings_metafield.value != blank
+    for _p in combined_listings_metafield.value
+      assign combined_listing_product_count = combined_listing_product_count | plus: 1
+    endfor
+  endif
+-%}
+{%- if enable_combined -%}
+  {%- render 'util-combined-listing-data', product_resource: product, combined_listings_metafield: combined_listings_metafield, enable_combined: enable_combined -%}
+{%- endif -%}
+{% liquid
   # Logic to determine which variant to use (matching swatch selection logic from product-card)
-  assign variant_to_use = product.selected_or_first_available_variant
+  if has_combined_listing and enable_combined and first_variant != blank
+    assign variant_to_use = first_variant
+  else
+    assign variant_to_use = product.selected_or_first_available_variant
+  endif
   assign combined_listing_count = product.options_with_values | map: 'values' | map: 'product_url' | compact | size
 
-  unless combined_listing_count > 0
+  assign skip_swatch_logic = false
+  if combined_listing_count > 0
+    assign skip_swatch_logic = true
+  elsif has_combined_listing and enable_combined
+    assign skip_swatch_logic = true
+  endif
+
+  unless skip_swatch_logic
     assign first_image = product.media.first
     assign variant_images = product.images | where: 'attached_to_variant?', true
     # Get swatchable options (options that have swatch values)
@@ -56,12 +85,21 @@
   else
     assign can_add_to_cart = false
   endif
+
+  # Effective single vs multi variant: combined listing with multiple linked products counts as multi
+  assign effective_single_variant = true
+  if product.variants.size > 1 or product.options.size > 1
+    assign effective_single_variant = false
+  elsif has_combined_listing and enable_combined and combined_listing_product_count > 1
+    assign effective_single_variant = false
+  endif
 %}
 
 <quick-add-component
   class="quick-add color-{{ settings.quick_add_color_scheme }} "
   ref="quickAdd"
   data-product-title="{{ product.title }}"
+  {% if has_combined_listing and enable_combined and combined_listing_product_count > 1 %}data-combined-listing="true"{% endif %}
 >
   <product-form-component
     data-section-id="{{ section_id }}"
@@ -69,8 +107,7 @@
     on:submit="/handleSubmit"
     class="
       quick-add__product-form-component
-      {% if product.options.size == 1 %} quick-add__product-form-component--single-option {% else %} quick-add__product-form-component--multi-option {% endif %}
-      {% if product.variants.size == 1 %} quick-add__product-form-component--single-variant {% else %} quick-add__product-form-component--multi-variant {% endif %}
+      {% if effective_single_variant %} quick-add__product-form-component--single-option quick-add__product-form-component--single-variant {% else %} quick-add__product-form-component--multi-option quick-add__product-form-component--multi-variant {% endif %}
     "
   >
     <div
@@ -95,8 +132,8 @@
         name="quantity"
         value="{% if variant_to_use.quantity_rule.min %}{{ variant_to_use.quantity_rule.min }}{% else %}1{% endif %}"
       >
-      {% comment %} If there is one variant option but it's swatches or if it's a single variant product, then use add to cart button {% endcomment %}
-      {%- if product.variants.size == 1 or product.options.size == 1 -%}
+      {% comment %} Single effective variant (including combined listing with one product): add to cart. Multiple: show Choose to open modal (standard variants or combined listing with multiple linked products). {% endcomment %}
+      {%- if effective_single_variant -%}
         {% render 'add-to-cart-button',
           add_to_cart_text: add_to_cart_text,
           class: 'button quick-add__button quick-add__button--add',
@@ -104,8 +141,7 @@
           icon_only_on_mobile: true,
           product: product
         %}
-      {%- endif -%}
-      {%- if product.variants.size > 1 -%}
+      {%- else -%}
         <button
           class="button quick-add__button quick-add__button--choose"
           {% comment %} type="submit" is the default, so we explicitly set it to "button" to prevent the ProductFormComponent.handleSubmit from being triggered {% endcomment %}

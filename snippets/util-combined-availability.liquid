@@ -1,0 +1,64 @@
+{%- comment -%}
+  Finds first matching combination from dual_variant_data and outputs: variant_id|url|available
+  (pipe-delimited). Caller captures and splits to get first_available_variant_id, first_available_variant_url, is_available.
+
+  @param dual_variant_data {string} - Pipe-delimited combinations (product_id|variant_id|color|size|...|url|available)
+  @param option_value {string} - Value to match (color, combined "Frame / Lens", or size)
+  @param match_type {string} - 'color' | 'combined_color' | 'size'
+  @param filter_color {string} - Optional. When match_type is 'size', only consider rows where color equals this.
+  Output: variant_id|url|available (e.g. "12345|/products/x|true") or "||false" when no match.
+{%- endcomment -%}
+{% liquid
+  assign out_id = ''
+  assign out_url = ''
+  assign out_available = 'false'
+
+  if dual_variant_data != blank and dual_variant_data != ''
+    assign combinations_check = dual_variant_data | split: '|||'
+    for combination_entry in combinations_check
+      if combination_entry != blank and combination_entry != ''
+        assign combo_parts = combination_entry | split: '|'
+        if combo_parts.size >= 7
+          assign combo_color = combo_parts[2] | strip
+          assign combo_size = combo_parts[3] | strip
+          assign combo_available = combo_parts[6] | strip
+          assign option_normalized = option_value | strip
+
+          assign is_match = false
+          if match_type == 'color'
+            if combo_color == option_normalized and combo_available == 'true'
+              assign is_match = true
+            endif
+          elsif match_type == 'combined_color'
+            assign combo_combined = combo_color
+            if combo_size != blank and combo_size != ''
+              assign combo_combined = combo_color | append: ' / ' | append: combo_size
+            endif
+            if combo_combined == option_normalized and combo_available == 'true'
+              assign is_match = true
+            endif
+          elsif match_type == 'size'
+            assign size_match = false
+            if combo_size == option_normalized
+              if filter_color == blank or filter_color == ''
+                assign size_match = true
+              elsif combo_color == filter_color
+                assign size_match = true
+              endif
+            endif
+            if size_match and combo_available == 'true'
+              assign is_match = true
+            endif
+          endif
+
+          if is_match
+            assign out_id = combo_parts[1] | strip
+            assign out_url = combo_parts[5] | strip
+            assign out_available = combo_available
+            break
+          endif
+        endif
+      endif
+    endfor
+  endif
+-%}{{ out_id }}|{{ out_url }}|{{ out_available }}

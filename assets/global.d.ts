@@ -41,6 +41,9 @@ declare global {
 
   interface Window {
     Shopify: Shopify;
+    klaviyo?: { push: (arg: unknown) => void; [key: string]: unknown };
+    _klOnsite?: unknown;
+    KlaviyoSubscriptions?: { init?: () => void; [key: string]: unknown };
     inventories?: Record<string, Record<string, {
       quantity: number;
       policy: string;
