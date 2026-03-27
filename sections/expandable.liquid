@@ -1,0 +1,287 @@
+{% assign preview_blocks = section.settings.preview_blocks | default: 2 %}
+{% assign expanded_by_default = section.settings.expanded_by_default | default: false %}
+{% assign content_block_count = 0 %}
+{% for block in section.blocks %}
+  {% if block.type != 'expandable-trigger' %}
+    {% assign content_block_count = content_block_count | plus: 1 %}
+  {% endif %}
+{% endfor %}
+{% if content_block_count > preview_blocks %}
+  {% assign has_more = true %}
+{% else %}
+  {% assign has_more = false %}
+{% endif %}
+{% assign hide_after_index = preview_blocks | plus: 1 %}
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="section section--{{ section.settings.section_width }} spacing-style {% if section.settings.color_scheme != blank %}color-{{ section.settings.color_scheme }}{% endif %}"
+  style="{% render 'spacing-padding', settings: section.settings %}"
+>
+  <div
+    class="expandable{% if has_more %} expandable--has-more{% endif %}"
+    id="expandable-{{ section.id }}"
+    data-preview-blocks="{{ preview_blocks }}"
+    data-expanded="{{ expanded_by_default }}"
+  >
+    <div
+      class="expandable__content rte {% unless expanded_by_default %}expandable__content--collapsed{% endunless %}"
+      id="expandable-content-{{ section.id }}"
+      data-expandable-content
+    >
+      <div class="expandable__blocks">
+        {% content_for 'blocks' %}
+      </div>
+    </div>
+    {% content_for 'block', type: 'expandable-trigger', id: 'read-more-button' %}
+  </div>
+</div>
+
+<style>
+  #expandable-{{ section.id }} {
+    --expandable-blocks-gap: {{ section.settings.blocks_gap | default: 24 }}px;
+  }
+  #expandable-{{ section.id }} .expandable__blocks {
+    gap: var(--expandable-blocks-gap);
+  }
+  /* Fallback: hide extra blocks before JS wraps them (avoids flash of full content) */
+  #expandable-{{ section.id }} .expandable__content--collapsed .expandable__blocks:not(:has(.expandable__more)) > *:nth-child(n + {{ hide_after_index }}) {
+    display: none;
+  }
+</style>
+
+{% stylesheet %}
+  .expandable__blocks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-md, 24px);
+  }
+
+  .expandable__content {
+    position: relative;
+  }
+
+  /* Expand/collapse animation (accordion-style) */
+  @media (prefers-reduced-motion: no-preference) {
+    .expandable__more {
+      display: grid;
+      interpolate-size: allow-keywords;
+      transition: grid-template-rows var(--animation-speed-slow) var(--animation-easing);
+    }
+
+    .expandable__content--collapsed .expandable__more {
+      grid-template-rows: 0fr;
+    }
+
+    .expandable__content:not(.expandable__content--collapsed) .expandable__more {
+      grid-template-rows: 1fr;
+    }
+
+    .expandable__more-inner {
+      min-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity var(--animation-speed-slow) var(--animation-easing);
+    }
+
+    .expandable__content:not(.expandable__content--collapsed) .expandable__more-inner {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .expandable__content--collapsed .expandable__more {
+      display: none;
+    }
+  }
+
+  .expandable[data-expanded='true'] .expandable__label--more,
+  .expandable[data-expanded='false'] .expandable__label--less {
+    display: none;
+  }
+
+  .expandable__trigger {
+    cursor: pointer;
+  }
+
+  .expandable__trigger.link {
+    border: none;
+    background: none;
+    padding: 0;
+    font: inherit;
+    color: var(--color-primary);
+  }
+
+  .expandable__trigger.link:hover {
+    color: var(--color-primary-hover);
+  }
+
+  .expandable__trigger .expandable__label--more,
+  .expandable__trigger .expandable__label--less {
+    display: inline;
+  }
+
+  .expandable:not(.expandable--has-more) .expandable__trigger {
+    display: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.expandable",
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "_divider"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "expanded_by_default",
+      "label": "t:settings.expanded_by_default",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "preview_blocks",
+      "label": "t:settings.preview_blocks",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "range",
+      "id": "blocks_gap",
+      "label": "t:settings.gap",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.expandable",
+      "category": "t:categories.layout",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>Expandable Heading</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "background": false,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "text": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Expandable Text</p><p>Add more blocks to expand this content. Use the Read more / Read less button to reveal or hide the full content.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "background": false,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "read-more-button": {
+          "type": "expandable-trigger",
+          "id": "read-more-button",
+          "static": true,
+          "name": "t:names.expandable_trigger",
+          "settings": {
+            "style_class": "link",
+            "read_more_text": "",
+            "read_less_text": ""
+          }
+        }
+      },
+      "block_order": ["heading", "text"]
+    }
+  ]
+}
+{% endschema %}

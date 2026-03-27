@@ -55,6 +55,21 @@
     {% endif %}
   </div>
 
+  {%- liquid
+    assign horizontal_alignment = settings.horizontal_alignment
+    unless settings.content_direction == 'row'
+      assign horizontal_alignment = settings.horizontal_alignment_flex_direction_column
+    endunless
+    
+    assign alignment_class = ''
+    if horizontal_alignment == 'center'
+      assign alignment_class = 'layout-panel-flex--align-center'
+    elsif horizontal_alignment == 'flex-end'
+      assign alignment_class = 'layout-panel-flex--align-end'
+    elsif horizontal_alignment == 'flex-start'
+      assign alignment_class = 'layout-panel-flex--align-start'
+    endif
+  -%}
   <div
     class="
       group-block-content
@@ -62,6 +77,7 @@
       layout-panel-flex
       layout-panel-flex--{{ settings.content_direction | default: 'column' }}
       {% if settings.vertical_on_mobile %} mobile-column{% endif %}
+      {{ alignment_class }}
     "
     style="{% render 'layout-panel-style', settings: settings %}"
   >

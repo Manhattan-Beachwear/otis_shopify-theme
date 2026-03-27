@@ -62,7 +62,7 @@
       style="--submenu-animation-speed: {{ animation_speed }}ms;"
     >
       <div class="header-menu__inner">
-        {%- render 'header-menu' %}
+        {%- render 'header-menu', block_settings: block_settings %}
       </div>
 
       <script
@@ -296,6 +296,39 @@
     padding-inline: var(--padding-inline);
     clip-path: rect(0 100% var(--submenu-height) 0); /* stylelint-disable-line */
     transition: clip-path var(--submenu-animation-speed) var(--ease-out-cubic);
+  }
+
+  /* Aligned dropdown: under parent*/
+  .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__submenu--aligned {
+    width: auto;
+    left: auto;
+    right: auto;
+    min-width: 200px;
+  }
+
+  .menu-list__submenu--aligned .mega-menu.section {
+    display: block !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .menu-list__submenu--aligned .mega-menu__grid,
+  .menu-list__submenu--aligned .mega-menu__list {
+    display: block !important;
+    width: auto !important;
+  }
+
+  .menu-list__submenu--aligned .mega-menu__column {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .menu-list__submenu--aligned .mega-menu__link {
+    display: block !important;
+    padding: var(--padding-2xs) var(--padding-sm);
+    white-space: nowrap;
   }
 
   /* Show the submenus on hover */
@@ -724,6 +757,23 @@
     {
       "type": "header",
       "content": "t:content.submenu_feature"
+    },
+    {
+      "type": "select",
+      "id": "dropdown_alignment",
+      "label": "Dropdown alignment",
+      "info": "Choose how text-only dropdown menus are aligned. This setting only affects text menus, not mega menus with images.",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "aligned",
+          "label": "Aligned"
+        }
+      ],
+      "default": "left"
     },
     {
       "type": "select",
