@@ -1005,7 +1005,11 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
         "padding-block-end": 0,
-        "enable_combined_listings": false
+        "enable_combined_listings": false,
+        "show_product_image_swatches": false,
+        "product_image_swatch_style": "circle",
+        "product_image_swatch_size": 48,
+        "show_horizontal_scroll": false
       }
     },
     "hero_slideshow_qHUGTK": {
@@ -1122,6 +1126,7 @@
           "settings": {
             "source": "uploaded",
             "video": "shopify://files/videos/GOLF EDIT CUT UP_0 (1).mp4",
+            "video_url": "",
             "video_autoplay": true,
             "video_loop": true,
             "alt": "",
@@ -1251,7 +1256,8 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
-                "image_ratio": "adapt",
+                "show_second_image_on_hover": true,
+                "image_ratio": "square",
                 "media_fit": "cover",
                 "border": "none",
                 "border_width": 1,
@@ -1367,7 +1373,11 @@
         "color_scheme": "scheme-4",
         "padding-block-start": 0,
         "padding-block-end": 48,
-        "enable_combined_listings": false
+        "enable_combined_listings": false,
+        "show_product_image_swatches": false,
+        "product_image_swatch_style": "circle",
+        "product_image_swatch_size": 48,
+        "show_horizontal_scroll": false
       }
     },
     "testimonials_ycTxe9": {
@@ -2411,6 +2421,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
+                "show_second_image_on_hover": true,
                 "image_ratio": "adapt",
                 "media_fit": "contain",
                 "border": "none",
@@ -2549,7 +2560,11 @@
         "color_scheme": "scheme-4",
         "padding-block-start": 48,
         "padding-block-end": 48,
-        "enable_combined_listings": true
+        "enable_combined_listings": true,
+        "show_product_image_swatches": false,
+        "product_image_swatch_style": "circle",
+        "product_image_swatch_size": 48,
+        "show_horizontal_scroll": false
       }
     },
     "media_with_content_QWCiR4": {
@@ -3219,6 +3234,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
+                "show_second_image_on_hover": true,
                 "image_ratio": "adapt",
                 "media_fit": "cover",
                 "border": "none",
@@ -3354,7 +3370,11 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
         "padding-block-end": 48,
-        "enable_combined_listings": true
+        "enable_combined_listings": true,
+        "show_product_image_swatches": false,
+        "product_image_swatch_style": "circle",
+        "product_image_swatch_size": 48,
+        "show_horizontal_scroll": false
       }
     },
     "section_mmTVYw": {
