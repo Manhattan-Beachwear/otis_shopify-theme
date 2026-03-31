@@ -184,6 +184,10 @@
   fetchpriority="low"
 ></script>
 <script
+  src="{{ 'expandable.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+<script
   src="{{ 'slideshow.js' | asset_url }}"
   type="module"
   fetchpriority="low"
@@ -232,11 +236,16 @@
   ></script>
 {% endif %}
 
-{% if template == 'product' %}
+{% if template.name == 'product' %}
   <script type="module">
     import { RecentlyViewed } from '@theme/recently-viewed-products';
     RecentlyViewed.addProduct('{{ product.id }}');
   </script>
+
+  <script
+    src="{{ 'yotpo-morph-refresh.js' | asset_url }}"
+    defer
+  ></script>
 {% endif %}
 
 {% if settings.transition_to_main_product %}

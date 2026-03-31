@@ -1,5 +1,5 @@
 {% liquid
-  assign block_settings = block.settings
+  assign block_settings = block_settings | default: block.settings
   assign menu_content_type = block_settings.menu_style | default: 'text'
   assign image_border_radius = block_settings.image_border_radius
   assign color_scheme_classes = ''
@@ -21,10 +21,13 @@
   elsif block_settings.menu_style == 'featured_products'
     assign ratio = block_settings.featured_products_aspect_ratio
   endif
+
+  assign dropdown_alignment = block_settings.dropdown_alignment | default: 'left'
 %}
 
 {% capture children %}
   {% for link in block_settings.menu.links %}
+    {% capture submenu_alignment_class %}{% render 'menu-submenu-alignment-class', link: link, dropdown_alignment: dropdown_alignment, menu_content_type: menu_content_type %}{% endcapture %}
     <li
       role="presentation"
       class="menu-list__list-item"
@@ -53,7 +56,7 @@
         {%- endif -%}
       </a>
       {%- if link.links != blank -%}
-        <div class="menu-list__submenu{{ color_scheme_classes }}" ref="submenu[]">
+        <div class="menu-list__submenu{{ color_scheme_classes }}{{ submenu_alignment_class }}" ref="submenu[]">
           <div
             id="submenu-{{ forloop.index }}"
             class="menu-list__submenu-inner"

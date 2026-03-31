@@ -24,6 +24,7 @@
 
   # Always check for normal swatches (for fallback if combined listing swatches don't exist)
   # Check for both metaobject swatches and assets folder swatches (like variant-swatches.liquid does)
+  # Also show swatches when product has multiple option values but no swatch assets (variant image fallback)
   assign product_has_normal_swatches = false
   for product_option in closest.product.options_with_values
     assign swatch_count = product_option.values | map: 'swatch' | compact | size
@@ -53,6 +54,10 @@
     if total_swatch_count > 0
       assign product_has_normal_swatches = true
       assign product_has_swatches = true
+    endif
+    # Show swatches for multi-value options even with no swatch data (variant image fallback in variant-swatches)
+    if product_option.values.size > 1
+      assign product_has_normal_swatches = true
     endif
   endfor
 

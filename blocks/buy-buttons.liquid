@@ -142,6 +142,23 @@
             form_obj: form
           %}
 
+          {%- comment -%}
+            Klaviyo Back In Stock
+          {%- endcomment -%}
+          <klaviyo-bis-component
+            {% if can_add_to_cart %}hidden{% endif %}
+            data-product-id="{{ product.id }}"
+            data-variant-id="{{ variant.id }}"
+          >
+            <button
+              type="button"
+              class="button klaviyo-bis-trigger"
+              data-variant-id="{{ variant.id }}"
+            >
+              {{- 'products.product.notify_me' | t -}}
+            </button>
+          </klaviyo-bis-component>
+
         </div>
       {%- endform -%}
     </product-form-component>
@@ -158,6 +175,11 @@
     </div>
   {%- endif -%}
 </span>
+
+<script
+  src="{{ 'klaviyo-bis.js' | asset_url }}"
+  type="module"
+></script>
 
 {% if block_settings.show_pickup_availability %}
   <script
@@ -321,6 +343,50 @@
 
   .add-to-cart-button {
     height: var(--height-buy-buttons);
+    text-transform: var(--button-text-case-primary);
+  }
+
+  klaviyo-bis-component {
+    flex: 1 1 185px;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  klaviyo-bis-component[hidden] {
+    display: none;
+  }
+
+  klaviyo-bis-component > * {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  klaviyo-bis-component [id^='klaviyo-bis-button-container'] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    box-sizing: border-box;
+  }
+
+  klaviyo-bis-component [data-a11y-identifier^='bis-button-'],
+  klaviyo-bis-component [data-a11y-identifier^='bis-button-'] button {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+
+  .product-form-buttons button {
+    padding-block: 0 !important;
+  }
+
+  .klaviyo-bis-trigger {
+    height: var(--height-buy-buttons);
+    width: 100%;
     text-transform: var(--button-text-case-primary);
   }
 

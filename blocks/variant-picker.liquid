@@ -3,20 +3,47 @@
   if request.visual_preview_mode and product_resource == blank
     assign product_resource = collections.all.products.first
   endif
-  
+
   assign has_combined_listing = false
   assign combined_listings_metafield = product_resource.metafields.custom.combined_listing
+
   if combined_listings_metafield != blank and combined_listings_metafield.value != blank
     for test_product in combined_listings_metafield.value
       assign has_combined_listing = true
       break
     endfor
   endif
+
+  # If current product doesn't have metafield, check if it's referenced in another product's combined_listing (same as variant-combined-listing-picker)
+  unless has_combined_listing
+    for all_product in collections.all.products
+      if all_product.id != product_resource.id
+        assign check_metafield = all_product.metafields.custom.combined_listing
+        if check_metafield != blank and check_metafield.value != blank
+          for linked_product in check_metafield.value
+            assign linked_product_id = linked_product.id
+            assign current_product_id = product_resource.id
+            assign linked_product_id_str = linked_product_id | append: ''
+            assign current_product_id_str = current_product_id | append: ''
+            if linked_product_id == current_product_id or linked_product_id_str == current_product_id_str
+              assign has_combined_listing = true
+              break
+            endif
+          endfor
+          if has_combined_listing
+            break
+          endif
+        endif
+      endif
+    endfor
+  endunless
 -%}
 
-{% unless has_combined_listing %}
+{% if has_combined_listing %}
+  {% render 'variant-combined-listing-picker', product_resource: product_resource, block: block %}
+{% else %}
   {% render 'variant-main-picker', product_resource: product_resource, block: block %}
-{% endunless %}
+{% endif %}
 
 {% schema %}
 {

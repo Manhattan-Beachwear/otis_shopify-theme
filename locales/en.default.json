@@ -226,6 +226,7 @@
     "quantity": "Quantity",
     "recently_viewed_products": "Recently viewed",
     "reviews": "reviews",
+    "read_less": "Read less",
     "read_more": "Read more...",
     "search_input_label": "Search",
     "search_input_placeholder": "Search",
@@ -330,7 +331,8 @@
       "quantity_maximum": "Maximum of {{ maximum }}",
       "in_cart": "in cart",
       "will_be_in_stock_after": "Will be in stock after {{ date }}",
-      "waiting_for_stock": "Inventory on the way"
+      "waiting_for_stock": "Inventory on the way",
+      "notify_me": "Notify me when available"
     }
   }
 }
