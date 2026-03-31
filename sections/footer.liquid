@@ -110,8 +110,9 @@
     grid-template-columns: 1fr;
   }
 
-  /* Row direction - switch to flexbox for better control */
-  .footer-content--direction-row {
+  /* Row direction - switch to flexbox for better control (footer selector ensures it wins over base grid) */
+  footer .footer-content.footer-content--direction-row,
+  .footer-content.footer-content--direction-row {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -120,8 +121,40 @@
     align-items: var(--vertical-alignment, flex-start);
   }
 
+  footer .footer-content.footer-content--direction-row > *,
   .footer-content--direction-row > * {
     flex: 0 1 auto;
+  }
+
+  /* When direction is row, fill-width blocks must share the row (same as .layout-panel-flex--row in base.css) */
+  footer .footer-content.footer-content--direction-row > .group-block--width-fill,
+  .footer-content.footer-content--direction-row > .group-block--width-fill {
+    flex: 1 1 0%;
+    min-width: 0;
+  }
+
+  footer .footer-content.footer-content--direction-row > .group-block--width-fit,
+  .footer-content.footer-content--direction-row > .group-block--width-fit {
+    flex: 0 0 auto;
+  }
+
+  footer .footer-content.footer-content--direction-row > .group-block--width-custom,
+  .footer-content.footer-content--direction-row > .group-block--width-custom {
+    flex: 0 1 var(--size-style-width);
+    min-width: 0;
+  }
+
+  /* Vertical on mobile: stack only below 750px (selector must match or beat row rule specificity) */
+  @media screen and (max-width: 749px) {
+    footer .footer-content.footer-content--vertical-on-mobile.footer-content--direction-row,
+    .footer-content.footer-content--vertical-on-mobile.footer-content--direction-row {
+      flex-direction: column;
+    }
+    /* Undo row-sharing so blocks stack full-width when vertical */
+    footer .footer-content.footer-content--vertical-on-mobile.footer-content--direction-row > .group-block--width-fill,
+    .footer-content.footer-content--vertical-on-mobile.footer-content--direction-row > .group-block--width-fill {
+      flex: 0 1 auto;
+    }
   }
 
   @media screen and (min-width: 750px) and (max-width: 989px) {

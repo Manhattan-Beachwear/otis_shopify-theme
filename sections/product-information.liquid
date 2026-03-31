@@ -40,6 +40,29 @@
   {{ closest.product | structured_data }}
 </script>
 
+{%- liquid
+  assign yotpo_primary_product_id = closest.product.id
+
+  if closest.product.metafields.custom.is_reviews_primary == true
+    # This product IS the primary – own ID already set above.
+  else
+    # Scan the combined listing group to find the product with the checkbox.
+    assign combined_listing_products = closest.product.metafields.custom.combined_listing.value
+    if combined_listing_products != blank
+      for linked_product in combined_listing_products
+        if linked_product.metafields.custom.is_reviews_primary == true
+          assign yotpo_primary_product_id = linked_product.id
+          break
+        endif
+      endfor
+    endif
+  endif
+-%}
+
+<script id="yotpo-primary-data" type="application/json">
+  {"primaryProductId":"{{ yotpo_primary_product_id }}"}
+</script>
+
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
   class="product-information section section--{{ content_width }} spacing-style color-{{ section.settings.color_scheme }} relative"
