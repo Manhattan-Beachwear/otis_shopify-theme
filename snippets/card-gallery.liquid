@@ -255,7 +255,10 @@
           endcomment
           assign slide_media_fit = media_fit
           if show_second_image_on_hover_effective and forloop.index == 2
-            assign slide_media_fit = settings.product_card_second_image_fit | default: 'contain'
+            assign slide_media_fit = settings.product_card_second_image_fit | default: block_settings.media_fit | default: 'contain'
+            if block_settings.media_fit == 'cover'
+              assign slide_media_fit = 'cover'
+            endif
           endif
 
           render 'slideshow-slide', slide_id: media.id, index: forloop.index, hidden: hidden, class: class, attributes: attributes, children: slideshow_children, media_fit: slide_media_fit
