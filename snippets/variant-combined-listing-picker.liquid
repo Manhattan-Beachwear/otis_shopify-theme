@@ -1315,18 +1315,19 @@
     assign dual_swatch_size = product_image_swatch_size
   %}
   <variant-picker-cl-dual
-    class="variant-picker-cl-dual spacing-style variant-picker-cl-dual--{{ alignment_value }}{% if show_product_image_swatches and show_horizontal_scroll %} variant-picker-cl-dual--horizontal-scroll{% endif %}\"\n    style="--color-strikethrough-mix: {{ strikethrough_color_mix }}; --product-image-swatch-size: {{ dual_swatch_size }}px; {% render 'spacing-style', settings: block_settings %}"\n    data-section-id="{{ section.id }}"\n    data-product-id="{{ product_resource.id }}"\n    data-product-url="{{ product_resource.url }}"\n    data-horizontal-scroll="{{ show_horizontal_scroll }}"\n    {% if product.id == product_resource.id %}\n      data-template-product-match="true"\n    {% endif %}\n    data-block-id="{{ block.id }}"\n    data-combinations="{{ dual_variant_data_for_js | escape }}"\n    data-current-color="{{ current_color_value | escape }}"\n    data-current-size="{{ current_size_value | escape }}"\n    {{ block.shopify_attributes }}\n  >
+    class="variant-picker-cl-dual spacing-style variant-picker-cl-dual--{{ alignment_value }}{% if show_product_image_swatches and show_horizontal_scroll %} variant-picker-cl-dual--horizontal-scroll{% endif %}\"\n    style="--color-strikethrough-mix: {{ strikethrough_color_mix }}; --product-image-swatch-size: {{ dual_swatch_size }}px; {% render 'spacing-style', settings: block_settings %}"\n    data-section-id="{{ section.id }}"\n    data-product-id="{{ product_resource.id }}"\n    data-product-url="{{ product_resource.url }}"\n    data-horizontal-scroll="{{ show_horizontal_scroll }}"\n    data-debug-picker="cl"\n    data-debug-spi="{{ show_product_image_swatches }}"\n    {% if product.id == product_resource.id %}\n      data-template-product-match="true"\n    {% endif %}\n    data-block-id="{{ block.id }}"\n    data-combinations="{{ dual_variant_data_for_js | escape }}"\n    data-current-color="{{ current_color_value | escape }}"\n    data-current-size="{{ current_size_value | escape }}"\n    {{ block.shopify_attributes }}\n  >
     <form class="variant-picker-cl-dual__form">
       {% comment %} Color Picker {% endcomment %}
       {%- liquid
-        # Use block_settings.show_swatches directly like variant-main-picker.liquid does
-        # Priority: block settings > global settings
+        # Use swatch UI when show_swatches OR show_product_image_swatches (so "product images as swatches" shows image swatches)
         assign use_swatches = true
         if block != blank and block_settings != blank
-          # Use block_settings.show_swatches directly (same pattern as variant-main-picker.liquid line 48, 63)
           assign use_swatches = block_settings.show_swatches
         elsif settings.show_swatches != blank
           assign use_swatches = settings.show_swatches
+        endif
+        if show_product_image_swatches
+          assign use_swatches = true
         endif
       -%}
       {%- if use_swatches -%}
@@ -1882,15 +1883,7 @@
                       %}
                     {% endif %}
                     {% unless color_is_available %}
-                      <svg
-                        viewBox="0 0 100 46"
-                        preserveAspectRatio="xMidYMid slice"
-                      >
-                        {% # 25deg %}
-                        <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                        {% # duplicate line for motion overlay %}
-                        <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                      </svg>
+                      {% render 'variant-option-unavailable-line' %}
                     {% endunless %}
                   {% else %}
                     {% if color_is_available == true %}
@@ -2405,15 +2398,7 @@
                             %}
                           {% endif %}
                           {% unless color_is_available %}
-                            <svg
-                              viewBox="0 0 100 46"
-                              preserveAspectRatio="xMidYMid slice"
-                            >
-                              {% # 25deg %}
-                              <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                              {% # duplicate line for motion overlay %}
-                              <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                            </svg>
+                            {% render 'variant-option-unavailable-line' %}
                           {% endunless %}
                         {% else %}
                           {% if color_is_available == true %}
@@ -2475,40 +2460,14 @@
                     endif
                   -%}
                   {%- unless should_skip_color -%}
-                    {%- liquid
-                      assign color_is_available = false
-                      assign first_available_variant_id = ''
-                      assign first_available_variant_url = ''
-                      if dual_variant_data != ''
-                        assign combinations_check = dual_variant_data | split: '|||'
-                        for combination_entry in combinations_check
-                          if combination_entry != blank and combination_entry != ''
-                            assign combo_parts = combination_entry | split: '|'
-                            if combo_parts.size >= 7
-                              assign combo_color = combo_parts[2] | strip
-                              assign combo_size = combo_parts[3] | strip
-                              assign combo_available = combo_parts[6] | strip
-                              
-                              # Reconstruct combined color value from stored frame + lens
-                              assign combo_combined_color = combo_color
-                              if combo_size != blank and combo_size != ''
-                                assign combo_combined_color = combo_color | append: ' / ' | append: combo_size
-                              endif
-                              
-                              assign color_value_normalized = color_value_item | strip
-                              
-                              # Match against combined color value
-                              if combo_combined_color == color_value_normalized and combo_available == 'true'
-                                assign color_is_available = true
-                                assign first_available_variant_id = combo_parts[1] | strip
-                                assign first_available_variant_url = combo_parts[5] | strip
-                                break
-                              endif
-                            endif
-                          endif
-                        endfor
-                      endif
-                    -%}
+                    {% capture combined_color_availability_result %}{% render 'util-combined-availability', dual_variant_data: dual_variant_data, option_value: color_value_item, match_type: 'combined_color' %}{% endcapture %}
+                    {% assign combined_color_parts = combined_color_availability_result | strip | split: '|' %}
+                    {% assign first_available_variant_id = combined_color_parts[0] %}
+                    {% assign first_available_variant_url = combined_color_parts[1] %}
+                    {% assign color_is_available = false %}
+                    {% if combined_color_parts[2] == 'true' %}
+                      {% assign color_is_available = true %}
+                    {% endif %}
                     <option
                       value="{{ color_value_item | escape }}"
                       data-input-id="1-{{ forloop.index0 }}"
@@ -2575,31 +2534,15 @@
                   if color_value_item == current_color_value
                     assign is_current_color = true
                   endif
-                  
-                  assign color_is_available = false
-                  assign first_available_variant_id = ''
-                  assign first_available_variant_url = ''
-                  if dual_variant_data != ''
-                    assign combinations_check = dual_variant_data | split: '|||'
-                    for combination_entry in combinations_check
-                      if combination_entry != blank and combination_entry != ''
-                        assign combo_parts = combination_entry | split: '|'
-                        if combo_parts.size >= 7
-                          assign combo_color = combo_parts[2] | strip
-                          assign combo_available = combo_parts[6] | strip
-                          assign color_value_normalized = color_value_item | strip
-                          
-                          if combo_color == color_value_normalized and combo_available == 'true'
-                            assign color_is_available = true
-                            assign first_available_variant_id = combo_parts[1] | strip
-                            assign first_available_variant_url = combo_parts[5] | strip
-                            break
-                          endif
-                        endif
-                      endif
-                    endfor
-                  endif
                 -%}
+                {% capture color_availability_result %}{% render 'util-combined-availability', dual_variant_data: dual_variant_data, option_value: color_value_item, match_type: 'color' %}{% endcapture %}
+                {% assign color_availability_parts = color_availability_result | strip | split: '|' %}
+                {% assign first_available_variant_id = color_availability_parts[0] %}
+                {% assign first_available_variant_url = color_availability_parts[1] %}
+                {% assign color_is_available = false %}
+                {% if color_availability_parts[2] == 'true' %}
+                  {% assign color_is_available = true %}
+                {% endif %}
                 <label
                   data-option-available="{{ color_is_available }}"
                   class="variant-option__button-label"
@@ -2861,31 +2804,12 @@
                       assign size_is_available = false
                     endif
                   endif
-                  
-                  assign first_available_variant_id = ''
-                  assign first_available_variant_url = ''
-                  if dual_variant_data != ''
-                    assign combinations_check = dual_variant_data | split: '|||'
-                    for combination_entry in combinations_check
-                      if combination_entry != blank and combination_entry != ''
-                        assign combo_parts = combination_entry | split: '|'
-                        if combo_parts.size >= 7
-                          assign combo_size = combo_parts[3] | strip
-                          assign combo_variant_id = combo_parts[1] | strip
-                          assign combo_url = combo_parts[5] | strip
-                          assign combo_available = combo_parts[6] | strip
-                          assign size_value_normalized = size_value_item | strip
-                          
-                          if combo_size == size_value_normalized and combo_available == 'true'
-                            assign first_available_variant_id = combo_variant_id
-                            assign first_available_variant_url = combo_url
-                            break
-                          endif
-                        endif
-                      endif
-                    endfor
-                  endif
-                  
+                %}
+                  {% capture size_availability_result %}{% render 'util-combined-availability', dual_variant_data: dual_variant_data, option_value: size_value_item, match_type: 'size' %}{% endcapture %}
+                  {% assign size_availability_parts = size_availability_result | strip | split: '|' %}
+                  {% assign first_available_variant_id = size_availability_parts[0] %}
+                  {% assign first_available_variant_url = size_availability_parts[1] %}
+                {% liquid
                   # OVERRIDE: If no specific color is selected, determine size availability based on whether
                   # we found ANY available variant for this size (first_available_variant_id)
                   if current_color_value == blank or current_color_value == ''
@@ -2967,14 +2891,7 @@
                         %}
                       {% endif %}
                       {% unless size_is_available %}
-                        <svg
-                          viewBox="0 0 100 46"
-                          preserveAspectRatio="xMidYMid slice"
-                        >
-                          {% # 25deg %}
-                          <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                          <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                        </svg>
+                        {% render 'variant-option-unavailable-line' %}
                       {% endunless %}
                     {% else %}
                       {% if size_is_available == true %}
@@ -3204,15 +3121,7 @@
                 {% endif %}
                 <span class="variant-picker-cl-dual__text">{{ size_value_item | escape }}</span>
                 {% unless size_is_available %}
-                  <svg
-                    viewBox="0 0 100 46"
-                    preserveAspectRatio="xMidYMid slice"
-                  >
-                    {% # 25deg %}
-                    <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                    {% # duplicate line for motion overlay %}
-                    <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                  </svg>
+                  {% render 'variant-option-unavailable-line' %}
                 {% endunless %}
               </label>
             {% endif %}
@@ -3498,14 +3407,7 @@
                         %}
                       {% endif %}
                       {% unless option3_is_available %}
-                        <svg
-                          viewBox="0 0 100 46"
-                          preserveAspectRatio="xMidYMid slice"
-                        >
-                          {% # 25deg %}
-                          <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                          <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                        </svg>
+                        {% render 'variant-option-unavailable-line' %}
                       {% endunless %}
                     {% else %}
                       {% if option3_is_available == true %}
@@ -3749,14 +3651,7 @@
                     {% endif %}
                     <span class="variant-picker-cl-dual__text">{{ option3_value_item | escape }}</span>
                     {% unless option3_is_available %}
-                      <svg
-                        viewBox="0 0 100 46"
-                        preserveAspectRatio="xMidYMid slice"
-                      >
-                        {% # 25deg %}
-                        <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                        <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                      </svg>
+                      {% render 'variant-option-unavailable-line' %}
                     {% endunless %}
                   </label>
                 {% endif %}
@@ -3771,14 +3666,15 @@
 {% elsif sorted_products != '' %}
   {% comment %} SINGLE PICKER MODE: Render color swatches or buttons/dropdowns {% endcomment %}
   {%- liquid
-    # Use block_settings.show_swatches directly like variant-main-picker.liquid does
-    # Priority: block settings > global settings
+    # Use swatch UI when show_swatches OR show_product_image_swatches (so "product images as swatches" shows image swatches)
     assign use_swatches = true
     if block != blank and block_settings != blank
-      # Use block_settings.show_swatches directly (same pattern as variant-main-picker.liquid line 48, 63)
       assign use_swatches = block_settings.show_swatches
     elsif settings.show_swatches != blank
       assign use_swatches = settings.show_swatches
+    endif
+    if show_product_image_swatches
+      assign use_swatches = true
     endif
   -%}
   {%- if use_swatches -%}
@@ -3792,6 +3688,8 @@
     <swatches-variant-picker-component
       data-product-id="{{ product_resource.id }}"
       data-product-url="{{ product_resource.url }}"
+      data-debug-picker="cl"
+      data-debug-spi="{{ show_product_image_swatches }}"
       {% if product.id == product_resource.id %}
         data-template-product-match="true"
       {% endif %}
@@ -3799,7 +3697,7 @@
       ref="swatchesVariantPicker"
     >
       <form>
-        <fieldset class="variant-option variant-option--buttons variant-option--swatches">
+        <fieldset class="variant-option variant-option--buttons variant-option--swatches{% if show_product_image_swatches and show_horizontal_scroll %} variant-option--swatches-horizontal-scroll{% endif %}">
         {%- liquid
           # Always show labels on product pages, otherwise respect the setting
           assign is_product_page = false
@@ -4071,13 +3969,17 @@
                 assign hover_media = variant_image_for_swatch
               endif
             -%}
+            {%- comment -%} Don't show the swatch if the variant has no image. {%- endcomment -%}
+            {% if hover_media == blank %}
+              {% continue %}
+            {% endif %}
             <li class="variant-option__swatch">
               <label
                 {% if hover_media != blank %}
                   data-media-id="{{ hover_media.id }}"
                 {% endif %}
                 data-option-available="{{ variant_actually_available }}"
-                class="variant-option__button-label variant-option__button-label--has-swatch swatch-rounded"
+                class="variant-option__button-label variant-option__button-label--has-swatch {% if show_product_image_swatches %}variant-option__button-label--product-image variant-option__button-label--product-image-{{ product_image_swatch_style }}{% else %}swatch-rounded{% endif %}"
                 {% if hover_media != blank %}
                   on:pointerenter="product-card/previewVariant/{{ hover_media.id }}"
                   on:pointerleave="product-card/resetVariant"
@@ -4104,7 +4006,7 @@
                   data-first-available-or-first-variant-id="{{ variant_id }}"
                 >
                 {% if has_swatch_to_render %}
-                  {% if swatch_to_render != blank %}
+                  {% if swatch_to_render != blank and show_product_image_swatches == false %}
                     {% render 'swatch',
                       swatch: swatch_to_render,
                       variant_image: hover_media,
@@ -4121,21 +4023,14 @@
                       option_value_name: option_value_name_for_swatch,
                       enable_swatch_assets_backup: swatch_enable_assets_backup,
                       swatch_file_extension: swatch_file_extension_setting,
-                      show_variant_image: swatch_show_variant_image,
-                      variant_swatch_width: swatch_variant_width
+                      show_variant_image: true,
+                      variant_swatch_width: swatch_variant_width,
+                      force_image_swatch: show_product_image_swatches
                     %}
                   {% endif %}
                 {% endif %}
                 {% unless variant_actually_available %}
-                  <svg
-                    viewBox="0 0 100 46"
-                    preserveAspectRatio="xMidYMid slice"
-                  >
-                    {% # 25deg %}
-                    <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                    {% # duplicate line for motion overlay %}
-                    <line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />
-                  </svg>
+                  {% render 'variant-option-unavailable-line' %}
                 {% endunless %}
               </label>
             </li>
@@ -4326,6 +4221,16 @@
   {%- endif -%}
 {% endif %}
 {% endif %}
+
+{% comment %} #region agent log {% endcomment %}
+<script>
+(function(){
+  var el = document.querySelector('variant-picker-cl-dual[data-debug-picker="cl"], swatches-variant-picker-component[data-debug-picker="cl"]');
+  if (!el) return;
+  fetch('http://127.0.0.1:7247/ingest/cd9e77b3-1faf-48a3-82be-694fad5c3e6d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'variant-combined-listing-picker.liquid',message:'cl picker rendered',data:{show_product_image_swatches:el.dataset.debugSpi==='true'},timestamp:Date.now(),hypothesisId:'verify'})}).catch(function(){});
+})();
+</script>
+{% comment %} #endregion agent log {% endcomment %}
 
 {% stylesheet %}
   .variant-picker-cl {

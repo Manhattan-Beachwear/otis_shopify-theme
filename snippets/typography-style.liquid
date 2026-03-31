@@ -43,8 +43,8 @@
         endif
       endunless
     %}
-    {%- liquid
-      assign font_size_rem = settings.font_size | split: 'rem' | first | times: 1.0
+{%- liquid
+  assign font_size_rem = settings.font_size | split: 'rem' | first | times: 1.0
       assign fluid_size_cutoff_rem = 3.0
 
       if font_size_rem >= fluid_size_cutoff_rem
@@ -67,8 +67,23 @@
     {%- if settings.font_style == blank or settings.font_style == 'normal' -%}
       {%- if settings.weight != blank -%}
         --font-weight: {{ settings.weight }};
-      {% else %}
-        --font-weight: {{ settings.font | replace: 'family', 'weight' }};
+      {%- else -%}
+        {%- liquid
+          comment
+            When using body font with custom preset and no explicit weight,
+            use the paragraph weight from theme settings instead of generic body weight
+          endcomment
+          if settings.font == 'var(--font-body--family)' and type == 'body'
+            assign use_paragraph_weight = true
+          else
+            assign use_paragraph_weight = false
+          endif
+        -%}
+        {%- if use_paragraph_weight -%}
+          --font-weight: var(--font-paragraph--weight);
+        {%- else -%}
+          --font-weight: {{ settings.font | replace: 'family', 'weight' }};
+        {%- endif -%}
       {%- endif -%}
     {%- endif -%}
     --font-family: {{ settings.font }};
@@ -81,7 +96,22 @@
     {% else %}
       --line-height: var(--line-height--{{ type }}-{{ settings.line_height }});
     {% endif %}
-    --letter-spacing: var(--letter-spacing--{{ type }}-{{ settings.letter_spacing }});
+    {%- liquid
+      comment
+        When using body font with custom preset, use the paragraph letter spacing
+        from theme settings instead of generic body letter spacing variables
+      endcomment
+      if settings.font == 'var(--font-body--family)' and type == 'body' and settings.letter_spacing == 'normal'
+        assign use_paragraph_letter_spacing = true
+      else
+        assign use_paragraph_letter_spacing = false
+      endif
+    -%}
+    {%- if use_paragraph_letter_spacing -%}
+      --letter-spacing: var(--font-paragraph--letter-spacing);
+    {%- else -%}
+      --letter-spacing: var(--letter-spacing--{{ type }}-{{ settings.letter_spacing }});
+    {%- endif -%}
   {%- endif -%}
 {%- endcapture -%}
 {{- variables | strip | strip_newlines -}}

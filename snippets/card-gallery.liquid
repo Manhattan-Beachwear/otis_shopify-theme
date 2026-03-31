@@ -7,6 +7,7 @@
   @param [section] - The section object the snippet is rendered in
   @param [block] - The block object the snippet is rendered in
   @param [has_applied_colour_filter] - Whether there's an applied colour filter
+  @param [show_second_image_on_hover] - Whether to show the second image on hover (block override; when not passed, defaults to true)
 {%- enddoc -%}
 
 {% liquid
@@ -15,6 +16,17 @@
   assign product = closest.product
   assign block_settings = block.settings
   assign image_sizes = '(min-width: 750px) 50vw, 100vw'
+
+  # Second image on hover: require both global setting and block setting (when passed).
+  # Only default block value when param is not passed (nil); Liquid's default filter would turn explicit false into true.
+  assign show_second_image_on_hover_block = show_second_image_on_hover
+  if show_second_image_on_hover_block == nil
+    assign show_second_image_on_hover_block = true
+  endif
+  assign show_second_image_on_hover_effective = false
+  if settings.show_second_image_on_hover and show_second_image_on_hover_block
+    assign show_second_image_on_hover_effective = true
+  endif
 
   # if the card-gallery has a section.settings.product_card_size:
   # assume grid-template autofill(card-size, 1fr) and calculate the sizes attribute based on the minimum card size
@@ -112,7 +124,8 @@
     --gallery-aspect-ratio: {{ ratio }};
   "
   data-product-id="{{ product.id }}"
-  {% if settings.show_second_image_on_hover %}
+  data-show-second-image-on-hover="{{ show_second_image_on_hover_effective }}"
+  {% if show_second_image_on_hover_effective %}
     on:pointerenter="/previewImage"
     on:pointerleave="/resetImage"
   {% endif %}
@@ -160,7 +173,7 @@
       assign max_visible_slide_count = 1
       if settings.product_card_carousel
         assign max_visible_slide_count = 5
-      elsif settings.show_second_image_on_hover
+      elsif show_second_image_on_hover_effective
         assign max_visible_slide_count = 2
       endif
 
@@ -237,7 +250,15 @@
             render 'product-media', media: media, sizes: sizes, loading: loading, preview_image_only: true
           endcapture
 
-          render 'slideshow-slide', slide_id: media.id, index: forloop.index, hidden: hidden, class: class, attributes: attributes, children: slideshow_children, media_fit: media_fit
+          comment
+            Second slide (hover image) uses global second-image fit when hover is enabled; first image uses block media_fit.
+          endcomment
+          assign slide_media_fit = media_fit
+          if show_second_image_on_hover_effective and forloop.index == 2
+            assign slide_media_fit = settings.product_card_second_image_fit | default: 'contain'
+          endif
+
+          render 'slideshow-slide', slide_id: media.id, index: forloop.index, hidden: hidden, class: class, attributes: attributes, children: slideshow_children, media_fit: slide_media_fit
         endfor
       endcapture
 
@@ -324,7 +345,7 @@
   }
 
   .card-gallery .product-media-container img {
-    object-fit: contain;
+    object-fit: var(--product-media-fit, contain);
     mix-blend-mode: multiply;
     max-width: 100%;
     max-height: 100%;

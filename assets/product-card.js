@@ -266,7 +266,7 @@ export class ProductCard extends Component {
         new CustomEvent('reflow', {
           bubbles: true,
           detail: {},
-        })
+        }),
       );
     });
   }
@@ -494,11 +494,6 @@ export class ProductCard extends Component {
    * @param {PointerEvent} [event] - The pointer event that triggered the preview.
    */
   previewVariant(id, event) {
-    // #region agent log
-    const logDataA = {location:'product-card.js:507',message:'previewVariant called',data:{hasEvent:!!event,id:id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'};
-    console.log('[DEBUG]', logDataA);
-    fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataA)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
-    // #endregion
     const { slideshow } = this.refs;
 
     if (!slideshow) return;
@@ -560,11 +555,6 @@ export class ProductCard extends Component {
 
     // Quick check: if no swatchElement found or no combined listing indicators, use legacy behavior
     if (!swatchElement || (!swatchElement.dataset.productId && !swatchElement.dataset.productUrl)) {
-      // #region agent log
-      const logDataB = {location:'product-card.js:561',message:'Legacy swatch path detected',data:{hasSwatchElement:!!swatchElement,hasProductId:!!swatchElement?.dataset.productId,hasProductUrl:!!swatchElement?.dataset.productUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'};
-      console.log('[DEBUG]', logDataB);
-      fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataB)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
-      // #endregion
       // Legacy swatch - use featured image URL to update current slide (like combined listings)
       // Get the featured image URL from the swatch element
       let featuredImageUrl = null;
@@ -587,11 +577,6 @@ export class ProductCard extends Component {
         }
       }
 
-      // #region agent log
-      const logDataC = {location:'product-card.js:585',message:'Featured image URL check',data:{hasFeaturedImageUrl:!!featuredImageUrl,featuredImageUrl:featuredImageUrl?.substring(0,50)||null,hasSlideshow:!!slideshow,hasSlides:!!slideshow?.slides,slidesLength:slideshow?.slides?.length||0},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'};
-      console.log('[DEBUG]', logDataC);
-      fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataC)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
-      // #endregion
       // If we have a featured image URL, update the current slide's image directly
       if (featuredImageUrl && slideshow.slides && slideshow.slides.length > 0) {
         const currentSlide = slideshow.slides[slideshow.current || 0];
@@ -638,11 +623,6 @@ export class ProductCard extends Component {
         return;
       }
 
-      // #region agent log
-      const logDataE = {location:'product-card.js:628',message:'Fallback to slideshow.select for legacy swatch',data:{idStr:idStr,reason:'no featuredImageUrl or no slides'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'};
-      console.log('[DEBUG]', logDataE);
-      fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataE)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
-      // #endregion
       // Fallback: try to find and select the slide by ID (original behavior)
       slideshow.select({ id: idStr }, undefined, { animate: false });
       // Update variant name and price display before returning (legacy swatch fallback path)
@@ -691,23 +671,18 @@ export class ProductCard extends Component {
 
     // Check if this swatch is for the original product (before any morphing)
     const isOriginalProduct = Boolean(
-      originalProductUrlBase && swatchProductUrlBase && swatchProductUrlBase === originalProductUrlBase
+      originalProductUrlBase && swatchProductUrlBase && swatchProductUrlBase === originalProductUrlBase,
     );
 
-    // #region agent log
-    const logDataF = {location:'product-card.js:675',message:'Checking combined listing swatch',data:{hasSwatchElement:!!swatchElement,swatchProductId:swatchElement?.dataset.productId||null,thisProductId:this.dataset.productId||null,swatchProductUrl:swatchElement?.dataset.productUrl?.substring(0,50)||null,thisProductUrl:this.dataset.productUrl?.substring(0,50)||null,isOriginalProduct},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'};
-    console.log('[DEBUG]', logDataF);
-    fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataF)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
-    // #endregion
     // Check if this is a combined listing swatch (different product)
     // Legacy swatches don't have data-product-id or data-product-url on the input/label
     // Only combined listing swatches have these attributes
     const isCombinedListingSwatch = Boolean(
       !isOriginalProduct &&
-        ((swatchElement.dataset.productId && swatchElement.dataset.productId !== this.dataset.productId) ||
-          (swatchElement.dataset.productUrl &&
-            this.dataset.productUrl &&
-            swatchElement.dataset.productUrl.split('?')[0] !== this.dataset.productUrl.split('?')[0]))
+      ((swatchElement.dataset.productId && swatchElement.dataset.productId !== this.dataset.productId) ||
+        (swatchElement.dataset.productUrl &&
+          this.dataset.productUrl &&
+          swatchElement.dataset.productUrl.split('?')[0] !== this.dataset.productUrl.split('?')[0])),
     );
 
     // For original product or combined listings, always update the image even if a slide exists
@@ -750,11 +725,6 @@ export class ProductCard extends Component {
               this.#originalImageSrc = img.src || '';
             }
 
-            // #region agent log
-            const logDataH = {location:'product-card.js:727',message:'Updating image for combined listing swatch',data:{featuredImageUrl:featuredImageUrl?.substring(0,50)||null,currentImgSrc:img.src?.substring(0,50)||null,isOriginalProduct,isCombinedListingSwatch},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'};
-            console.log('[DEBUG]', logDataH);
-            fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataH)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
-            // #endregion
             // Update the image source
             img.src = featuredImageUrl;
             img.srcset = featuredImageUrl;
@@ -772,11 +742,6 @@ export class ProductCard extends Component {
         }
       }
     } else {
-      // #region agent log
-      const logDataG = {location:'product-card.js:744',message:'Regular legacy swatch fallback',data:{idStr:idStr,hasFeaturedImageUrl:!!featuredImageUrl,isOriginalProduct,isCombinedListingSwatch},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'G'};
-      console.log('[DEBUG]', logDataG);
-      fetch('http://127.0.0.1:7243/ingest/7f5775e1-416d-4199-b334-e4993c849a7f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataG)}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
-      // #endregion
       // Regular legacy swatch - original simple behavior
       slideshow.select({ id: idStr }, undefined, { animate: false });
     }
@@ -799,6 +764,7 @@ export class ProductCard extends Component {
    */
   previewImage(event) {
     if (event.pointerType !== 'mouse') return;
+    if (this.refs.cardGallery?.dataset.showSecondImageOnHover === 'false') return;
 
     const { slideshow } = this.refs;
 
@@ -989,7 +955,7 @@ export class ProductCard extends Component {
   #getVariantNameDisplays() {
     const displays = [];
     const foundElements = new Set();
-    
+
     // Get variant name from inside swatches component (via refs)
     const variantPicker = this.variantPicker;
     if (variantPicker?.refs?.currentVariantName) {
@@ -1000,7 +966,7 @@ export class ProductCard extends Component {
         foundElements.add(displayElement);
       }
     }
-    
+
     // Get standalone variant-title blocks in the product card
     // Search for all elements with the variant name class, then check for ref attribute
     const allVariantNameElements = this.querySelectorAll('.variant-option__current-variant-name');
@@ -1013,7 +979,7 @@ export class ProductCard extends Component {
         }
       }
     });
-    
+
     return displays;
   }
 
@@ -1038,7 +1004,7 @@ export class ProductCard extends Component {
 
     // Try multiple strategies to find the swatch input with variant name
     let swatchInput = null;
-    
+
     // Strategy 1: Direct input element
     if (target instanceof HTMLInputElement && target.dataset.variantName) {
       swatchInput = target;
@@ -1168,7 +1134,7 @@ export class ProductCard extends Component {
     // Store original price HTML if not already stored
     const priceContainer = this.querySelector(`product-price [ref='priceContainer']`);
     if (!priceContainer) return; // Early return if price container not found
-    
+
     if (this.#originalPriceHtml === null) {
       this.#originalPriceHtml = priceContainer.innerHTML;
     }
@@ -1186,22 +1152,13 @@ export class ProductCard extends Component {
       .then((responseText) => {
         const html = new DOMParser().parseFromString(responseText, 'text/html');
         const newPriceElement = html.querySelector(`product-price [ref='priceContainer']`);
-        
+
         // Re-query price container in case DOM changed
         const currentPriceContainer = this.querySelector(`product-price [ref='priceContainer']`);
 
         // Update price
         if (newPriceElement && currentPriceContainer) {
           currentPriceContainer.innerHTML = newPriceElement.innerHTML;
-        }
-
-        // Update variant name (if we have it in the fetched HTML)
-        if (newVariantNameElement && this.variantPicker?.refs?.currentVariantName) {
-          const variantNameDisplay = this.variantPicker.refs.currentVariantName;
-          const displayElement = Array.isArray(variantNameDisplay) ? variantNameDisplay[0] : variantNameDisplay;
-          if (displayElement instanceof HTMLElement) {
-            displayElement.textContent = newVariantNameElement.textContent || '';
-          }
         }
       })
       .catch(() => {
@@ -1313,19 +1270,21 @@ export class ProductCard extends Component {
     // Check if the checked swatch is available
     // If not available, find the first available swatch instead
     if (checkedInput instanceof HTMLInputElement) {
-      const isAvailable = checkedInput.dataset.optionAvailable === 'true' || 
-                         parseInt(checkedInput.dataset.availableCount || '0') > 0;
-      
+      const isAvailable =
+        checkedInput.dataset.optionAvailable === 'true' || parseInt(checkedInput.dataset.availableCount || '0') > 0;
+
       if (!isAvailable) {
         // Find the first available swatch (prefer one with featured image)
-        let firstAvailableInput = this.querySelector('input[type="radio"][data-featured-image-url][data-option-available="true"]');
+        let firstAvailableInput = this.querySelector(
+          'input[type="radio"][data-featured-image-url][data-option-available="true"]',
+        );
         if (!(firstAvailableInput instanceof HTMLInputElement)) {
           // Fallback: find any available swatch
           const allSwatches = this.querySelectorAll('input[type="radio"][data-variant-name]');
           for (const swatch of allSwatches) {
             if (swatch instanceof HTMLInputElement) {
-              const swatchAvailable = swatch.dataset.optionAvailable === 'true' || 
-                                     parseInt(swatch.dataset.availableCount || '0') > 0;
+              const swatchAvailable =
+                swatch.dataset.optionAvailable === 'true' || parseInt(swatch.dataset.availableCount || '0') > 0;
               if (swatchAvailable) {
                 firstAvailableInput = swatch;
                 // Check this swatch so it becomes the active one
@@ -1338,7 +1297,7 @@ export class ProductCard extends Component {
           // Check the first available swatch so it becomes the active one
           firstAvailableInput.checked = true;
         }
-        
+
         // Use the first available swatch instead
         if (firstAvailableInput instanceof HTMLInputElement) {
           checkedInput = firstAvailableInput;
@@ -1506,7 +1465,7 @@ export class ProductCard extends Component {
 
       // Hide other badges if they exist
       const otherBadges = badgeContainer.querySelectorAll(
-        '.product-badges__badge:not(.product-badges__badge--sold-out-preview)'
+        '.product-badges__badge:not(.product-badges__badge--sold-out-preview)',
       );
       otherBadges.forEach((badge) => {
         if (badge instanceof HTMLElement) {
@@ -1545,7 +1504,7 @@ export class ProductCard extends Component {
 
     // Show other badges (restore original state)
     const otherBadges = badgeContainer.querySelectorAll(
-      '.product-badges__badge:not(.product-badges__badge--sold-out-preview)'
+      '.product-badges__badge:not(.product-badges__badge--sold-out-preview)',
     );
     otherBadges.forEach((badge) => {
       if (badge instanceof HTMLElement) {
@@ -1807,7 +1766,7 @@ class SwatchesVariantPickerComponent extends VariantPicker {
 
         // Dispatch variant update event
         const variantScript = newProductCard.querySelector(
-          'swatches-variant-picker-component script[type="application/json"]'
+          'swatches-variant-picker-component script[type="application/json"]',
         );
         if (variantScript?.textContent) {
           const variantData = JSON.parse(variantScript.textContent);
@@ -1824,7 +1783,7 @@ class SwatchesVariantPickerComponent extends VariantPicker {
                   id: newProductCard.dataset.productId || '',
                   url: newProductCard.dataset.productUrl || '',
                 },
-              })
+              }),
             );
           }
         }
@@ -1864,15 +1823,15 @@ class SwatchesVariantPickerComponent extends VariantPicker {
 
     // Check if this swatch is for the original product (before any morphing)
     const isOriginalProduct = Boolean(
-      originalProductUrl && swatchProductUrlBase && swatchProductUrlBase === originalProductUrl
+      originalProductUrl && swatchProductUrlBase && swatchProductUrlBase === originalProductUrl,
     );
 
     // Check if this swatch points to a different product than the CURRENT product card
     // But if it's the original product, we want to restore, not treat as different
     const isDifferentProduct = Boolean(
       !isOriginalProduct &&
-        ((swatchProductId && swatchProductId !== this.dataset.productId) ||
-          (swatchProductUrlBase && swatchProductUrlBase !== currentProductUrl))
+      ((swatchProductId && swatchProductId !== this.dataset.productId) ||
+        (swatchProductUrlBase && swatchProductUrlBase !== currentProductUrl)),
     );
 
     // For combined listing swatch inputs, check if we need special handling
@@ -2042,13 +2001,13 @@ class SwatchesVariantPickerComponent extends VariantPicker {
         (clickedSwatch.dataset.productUrl && clickedSwatch.dataset.variantId
           ? `${clickedSwatch.dataset.productUrl}?variant=${clickedSwatch.dataset.variantId}`
           : clickedSwatch.dataset.productUrl || null);
-      
+
       // Store the selected swatch so it persists (same as combined listing swatches)
       this.parentProductCard.setSelectedSwatch(featuredImageUrl, connectedProductUrl, variantName);
-      
+
       // Update variant-title display
       this.#updateVariantNameDisplay(clickedSwatch);
-      
+
       // Also update price for regular swatches
       if (event) {
         this.parentProductCard.updatePriceOnSwatchChange(event);
@@ -2080,15 +2039,15 @@ class SwatchesVariantPickerComponent extends VariantPicker {
   #updateVariantNameDisplay(clickedSwatch) {
     // Get the variant name directly from the swatch input's data attribute (same pattern as image)
     if (!(clickedSwatch instanceof HTMLInputElement) || !clickedSwatch.dataset.variantName) return;
-    
+
     const variantName = clickedSwatch.dataset.variantName;
-    
+
     // Update variant name inside swatches component
     const variantNameDisplay = this.refs.currentVariantName;
     if (variantNameDisplay instanceof HTMLElement) {
       variantNameDisplay.textContent = variantName;
     }
-    
+
     // Also update standalone variant-title blocks in the parent product card
     // Use the same logic as ProductCard.#getVariantNameDisplays() to find all displays
     if (this.parentProductCard instanceof ProductCard) {

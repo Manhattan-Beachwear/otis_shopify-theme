@@ -10,6 +10,7 @@
   @param {boolean} [show_variant_image] - Show variant image fallback (defaults to settings.show_variant_image)
   @param {number} [variant_swatch_width] - Variant swatch width (defaults to settings.variant_swatch_width)
   @param {boolean} [force_image_swatch] - Force using variant_image as swatch, skip all other priorities
+  @param {boolean} [force_image_swatch] - Force using variant_image as swatch, skip all other priorities
 
   @example
   {% render 'swatch', swatch: swatch, variant_image: variant_image, mode: 'unscaled' %}
@@ -52,8 +53,25 @@
     assign swatch_value = 'url(' | append: swatch_image_url | append: ')'
   endif
   
-  # Priority 1: Look for matching image with the same name (handleized) as the swatch name
-  if swatch_value == null and option_value_name != blank
+  if force_image_swatch and variant_image
+    assign swatch_image_width = 120
+    assign swatch_image_url = variant_image | image_url: width: swatch_image_width
+    assign swatch_value = 'url(' | append: swatch_image_url | append: ')'
+  endif
+  
+  assign force_image_swatch_url = ''
+  if force_image_swatch and variant_image
+    assign swatch_image_width = 120
+    assign image_for_swatch_url = variant_image.preview_image | default: variant_image
+    assign swatch_image_url = image_for_swatch_url | image_url: width: swatch_image_width
+    if swatch_image_url != blank
+      assign swatch_value = 'url(' | append: swatch_image_url | append: ')'
+      assign force_image_swatch_url = swatch_image_url
+    endif
+  endif
+  
+  # Priority 1: Look for matching image with the same name (handleized) as the swatch name (skip when forcing variant image)
+  if swatch_value == null and option_value_name != blank and force_image_swatch != true
     if enable_backup
       assign color_file_name = option_value_name | handle | append: '.' | append: swatch_file_ext
       assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
@@ -74,8 +92,8 @@
     endif
   endif
   
-  # Priority 3: Try to match the swatch color with the color name
-  if swatch_value == null and option_value_name != blank
+  # Priority 3: Try to match the swatch color with the color name (skip when forcing variant image so we show image or unavailable only)
+  if swatch_value == null and option_value_name != blank and force_image_swatch != true
     # Extract color name from option value and try to use it as CSS color
     assign color_name = option_value_name | split: ' ' | last | handle
     assign swatch_value = color_name
@@ -84,8 +102,11 @@
   # Priority 4: Variant image fallback (if setting enabled)
   if swatch_value == null and show_variant_img and variant_image
     assign swatch_image_width = variant_swatch_w | times: 2
-    assign swatch_image_url = variant_image | image_url: width: swatch_image_width
-    assign swatch_value = 'url(' | append: swatch_image_url | append: ')'
+    assign image_for_swatch_url = variant_image.preview_image | default: variant_image
+    assign swatch_image_url = image_for_swatch_url | image_url: width: swatch_image_width
+    if swatch_image_url != blank
+      assign swatch_value = 'url(' | append: swatch_image_url | append: ')'
+    endif
   endif
   
   # Button fallback (Priority 5): swatch_value remains null, will show as unavailable
@@ -106,4 +127,14 @@
   class="swatch{{ extra_classes }}{% if swatch_value == null %} swatch--unavailable{% endif %}"
   style="--swatch-background: {{ swatch_value }};{% if swatch.image and show_variant_img == false %} --swatch-focal-point: {{ swatch.image.presentation.focal_point }};{% endif %}"
 >
+  {% if force_image_swatch and force_image_swatch_url != blank %}
+    <img
+      class="swatch__image"
+      src="{{ force_image_swatch_url }}"
+      alt=""
+      width="120"
+      height="120"
+      loading="lazy"
+    >
+  {% endif %}
 </span>
