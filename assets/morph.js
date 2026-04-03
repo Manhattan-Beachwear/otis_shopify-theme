@@ -7,6 +7,7 @@ import { Component } from '@theme/component';
  * @property {(oldNode: Node, newNode: Node) => void} [onBeforeUpdate] - Pre-update hook
  * @property {(node: Node) => void} [onAfterUpdate] - Post-update hook
  * @property {(oldNode: Node, newNode: Node) => boolean} [reject] - Reject a node from being morphed
+ * @property {(root: Node) => void} [onComplete] - Runs once after this morph finishes (e.g. notify third-party scripts); do not import app-specific code here.
  */
 
 /**
@@ -86,10 +87,12 @@ const MORPH_OPTIONS = {
  * Morphs one DOM tree into another by comparing nodes and applying minimal changes
  * @param {Node} oldTree - The existing DOM tree
  * @param {Node | string} newTree - The new DOM tree to morph to
- * @param {Options} [options] - Configuration options
+ * @param {Options} [partialOptions] - Merged with defaults; use `{ onComplete }` without losing built-in reject/onBeforeUpdate.
  * @returns {Node} The morphed DOM tree
  */
-export function morph(oldTree, newTree, options = MORPH_OPTIONS) {
+export function morph(oldTree, newTree, partialOptions) {
+  const options = { ...MORPH_OPTIONS, ...(partialOptions ?? {}) };
+
   if (!oldTree || !newTree) {
     throw new Error('Both oldTree and newTree must be provided');
   }
@@ -102,16 +105,25 @@ export function morph(oldTree, newTree, options = MORPH_OPTIONS) {
     newTree = parsedNewTree;
   }
 
+  /** @type {Node} */
+  let result;
+
   if (options.childrenOnly) {
     updateChildren(newTree, oldTree, options);
-    return oldTree;
-  }
-
-  if (newTree.nodeType === 11) {
+    result = oldTree;
+  } else if (newTree.nodeType === 11) {
     throw new Error('newTree should have one root node (not a DocumentFragment)');
+  } else {
+    result = walk(newTree, oldTree, options);
   }
 
-  return walk(newTree, oldTree, options);
+  try {
+    options.onComplete?.(result);
+  } catch (error) {
+    console.error(error);
+  }
+
+  return result;
 }
 
 /**

@@ -1,5 +1,5 @@
 import { Component } from '@theme/component';
-import { VariantSelectedEvent, VariantUpdateEvent } from '@theme/events';
+import { ThemeEvents, VariantSelectedEvent, VariantUpdateEvent } from '@theme/events';
 import { morph } from '@theme/morph';
 import { requestYieldCallback, getViewParameterValue } from '@theme/utilities';
 
@@ -386,7 +386,13 @@ export default class VariantPicker extends Component {
       throw new Error('No new main source found');
     }
 
-    morph(main, newMain);
+    morph(main, newMain, {
+      onComplete() {
+        document.dispatchEvent(
+          new CustomEvent(ThemeEvents.mainContentMorph, { bubbles: true, detail: { scope: 'main' } }),
+        );
+      },
+    });
   }
 
   /**

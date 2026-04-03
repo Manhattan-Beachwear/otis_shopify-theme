@@ -26,6 +26,8 @@ export class ThemeEvents {
   static discountUpdate = 'discount:update';
   /** @static @constant {string} Event triggered when changing collection filters */
   static FilterUpdate = 'filter:update';
+  /** @static @constant {string} Fired after a full-document <main> morph (combined listings); third-party onsite scripts may need to re-scan */
+  static mainContentMorph = 'theme:main-content-morph';
 }
 
 /**

@@ -128,7 +128,13 @@ export default class VariantPickerCL extends Component {
             : undefined;
 
         // Morph the entire main content
-        morph(main, newMain);
+        morph(main, newMain, {
+          onComplete() {
+            document.dispatchEvent(
+              new CustomEvent(ThemeEvents.mainContentMorph, { bubbles: true, detail: { scope: 'main' } }),
+            );
+          },
+        });
 
         // Update current product URL
         this.#currentProductUrl = productUrl.split('?')[0];
@@ -889,7 +895,13 @@ export class VariantPickerCLDual extends Component {
             : undefined;
 
         // Morph the entire main content
-        morph(main, newMain);
+        morph(main, newMain, {
+          onComplete() {
+            document.dispatchEvent(
+              new CustomEvent(ThemeEvents.mainContentMorph, { bubbles: true, detail: { scope: 'main' } }),
+            );
+          },
+        });
 
         // Update current product URL
         this.#currentProductUrl = productUrl.split('?')[0];

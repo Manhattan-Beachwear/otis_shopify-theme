@@ -1,3 +1,48 @@
+import { ThemeEvents } from '@theme/events';
+
+/**
+ * Queue Klaviyo Subscriptions (Back in Stock) to scan the DOM again.
+ * @param {() => void} [onAfterInit]
+ */
+function enqueueKlaviyoSubscriptionsInit(onAfterInit) {
+  if (typeof window === 'undefined') return;
+  if (!window.klaviyo || typeof window.klaviyo.push !== 'function') return;
+
+  window.klaviyo.push(() => {
+    if (window.KlaviyoSubscriptions && typeof window.KlaviyoSubscriptions.init === 'function') {
+      window.KlaviyoSubscriptions.init();
+    }
+    onAfterInit?.();
+  });
+}
+
+/**
+ * After morph(main), Klaviyo onsite does not re-run; init again with a short stagger for slow embeds.
+ */
+function onMainContentMorphedForKlaviyo() {
+  enqueueKlaviyoSubscriptionsInit(() => {
+    queueMicrotask(() => {
+      document.querySelectorAll('klaviyo-bis-component').forEach((el) => {
+        if (el instanceof KlaviyoBisComponent) {
+          el.refreshKlaviyoUi();
+        }
+      });
+    });
+  });
+  setTimeout(() => enqueueKlaviyoSubscriptionsInit(), 150);
+  setTimeout(() => enqueueKlaviyoSubscriptionsInit(), 500);
+}
+
+if (typeof document !== 'undefined') {
+  document.addEventListener(ThemeEvents.mainContentMorph, () => {
+    queueMicrotask(() => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(onMainContentMorphedForKlaviyo);
+      });
+    });
+  });
+}
+
 /**
  * Klaviyo Back In Stock component
  */
@@ -215,14 +260,14 @@ class KlaviyoBisComponent extends HTMLElement {
   };
 
   #tryKlaviyoRescan() {
-    if (!window.klaviyo || typeof window.klaviyo.push !== 'function') return;
-
-    window.klaviyo.push(() => {
-      if (window.KlaviyoSubscriptions && typeof window.KlaviyoSubscriptions.init === 'function') {
-        window.KlaviyoSubscriptions.init();
-      }
+    enqueueKlaviyoSubscriptionsInit(() => {
       queueMicrotask(() => this.#syncFallbackButtonVisibility());
     });
+  }
+
+  /** Call after global `KlaviyoSubscriptions.init()` so fallback vs injected button stays correct. */
+  refreshKlaviyoUi() {
+    this.#syncFallbackButtonVisibility();
   }
 }
 
