@@ -332,7 +332,7 @@
       "in_cart": "in cart",
       "will_be_in_stock_after": "Will be in stock after {{ date }}",
       "waiting_for_stock": "Inventory on the way",
-      "notify_me": "Notify me when available"
+      // "notify_me": "Notify me when available"
     }
   }
 }
