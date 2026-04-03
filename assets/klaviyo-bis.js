@@ -2,9 +2,13 @@
  * Klaviyo Back In Stock component
  */
 class KlaviyoBisComponent extends HTMLElement {
+  static observedAttributes = ['hidden'];
+
   #abortController = new AbortController();
   /** @type {MutationObserver | null} */
   #childObserver = null;
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
+  #domSettledRescanTimer;
 
   connectedCallback() {
     const { signal } = this.#abortController;
@@ -15,12 +19,53 @@ class KlaviyoBisComponent extends HTMLElement {
 
     this.#ensureChildObserver();
     queueMicrotask(() => this.#syncFallbackButtonVisibility());
+
+    // Morph does not reload the page; Klaviyo onsite only scans on load unless we re-init.
+    if (!this.hidden) {
+      this.#scheduleKlaviyoRescanAfterDomSettled();
+    }
   }
 
   disconnectedCallback() {
     this.#abortController.abort();
     this.#childObserver?.disconnect();
     this.#childObserver = null;
+    if (this.#domSettledRescanTimer !== undefined) {
+      clearTimeout(this.#domSettledRescanTimer);
+      this.#domSettledRescanTimer = undefined;
+    }
+  }
+
+  /**
+   * @param {string} name
+   * @param {string | null} _old
+   * @param {string | null} _new
+   */
+  attributeChangedCallback(name, _old, _new) {
+    if (name !== 'hidden') return;
+    if (!this.hidden) {
+      this.#scheduleKlaviyoRescanAfterDomSettled();
+    }
+  }
+
+  /**
+   * Run after morph/layout so Klaviyo can find the BIS trigger / form in the live DOM.
+   */
+  #scheduleKlaviyoRescanAfterDomSettled() {
+    if (this.hidden) return;
+
+    if (this.#domSettledRescanTimer !== undefined) {
+      clearTimeout(this.#domSettledRescanTimer);
+    }
+
+    this.#domSettledRescanTimer = setTimeout(() => {
+      this.#domSettledRescanTimer = undefined;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          this.#tryKlaviyoRescan();
+        });
+      });
+    }, 0);
   }
 
   /**
@@ -162,6 +207,8 @@ class KlaviyoBisComponent extends HTMLElement {
 
     if (!isAvailable) {
       this.#tryKlaviyoRescan();
+      // Second pass after theme morph + product-form updates; Klaviyo script does not re-scan on soft navigation.
+      this.#scheduleKlaviyoRescanAfterDomSettled();
     }
 
     queueMicrotask(() => this.#syncFallbackButtonVisibility());
