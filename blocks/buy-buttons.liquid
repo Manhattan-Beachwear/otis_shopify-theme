@@ -145,7 +145,7 @@
           {%- comment -%}
             Klaviyo Back In Stock
           {%- endcomment -%}
-          <klaviyo-bis-component
+          {% comment %} <klaviyo-bis-component
             {% if can_add_to_cart %}hidden{% endif %}
             data-product-id="{{ product.id }}"
             data-variant-id="{{ variant.id }}"
@@ -157,7 +157,7 @@
             >
               {{- 'products.product.notify_me' | t -}}
             </button>
-          </klaviyo-bis-component>
+          </klaviyo-bis-component> {% endcomment %}
 
         </div>
       {%- endform -%}
