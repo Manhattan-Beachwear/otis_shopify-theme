@@ -746,7 +746,8 @@
         "yotpo_product_reviews_reviews_4pNwXd"
       ],
       "custom_css": [
-        ".shopify-block.shopify-app-block {min-height: 35px;}"
+        ".shopify-block.shopify-app-block {min-height: 35px;}",
+        "legend {min-height: 40px;}"
       ],
       "settings": {
         "content_width": "content-center-aligned",
