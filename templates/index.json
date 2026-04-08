@@ -17,8 +17,8 @@
           "name": "Hero Slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/0J4A9717.jpg",
-            "image_1_mobile": "shopify://shop_images/0J4A9763_2.jpg",
+            "image_1": "shopify://shop_images/CAM_RICHARDS_JOURNALc3.jpg",
+            "image_1_mobile": "shopify://shop_images/OTIS_Cam_JHook0076_3.jpg",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -82,13 +82,13 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p><em>Introducing</em></p>",
+                    "text": "<p><em>MEET</em></p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
                     "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "font_size": "1rem",
+                    "font_size": "1.5rem",
                     "line_height": "tight",
                     "letter_spacing": "loose",
                     "case": "uppercase",
@@ -107,13 +107,13 @@
                 "text_qwQXqw": {
                   "type": "text",
                   "settings": {
-                    "text": "<h2><strong>CHORUS</strong></h2>",
+                    "text": "<h2><strong>CAM RICHARDS</strong></h2>",
                     "width": "fit-content",
                     "max_width": "none",
                     "alignment": "right",
                     "type_preset": "custom",
                     "font": "var(--font-heading--family)",
-                    "font_size": "1.5rem",
+                    "font_size": "3rem",
                     "line_height": "loose",
                     "letter_spacing": "loose",
                     "case": "none",
@@ -129,16 +129,17 @@
                   },
                   "blocks": {}
                 },
-                "text_48rf7f": {
+                "text_QmK7zY": {
                   "type": "text",
+                  "name": "t:names.text",
                   "settings": {
-                    "text": "<p>A crowd favorite on and off the green. Chorus is a timeless silhouette that suits all face shapes.</p>",
+                    "text": "<p>Avid surfer and fisherman from South Carolina</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
-                    "type_preset": "custom",
+                    "type_preset": "rte",
                     "font": "var(--font-body--family)",
-                    "font_size": "1.125rem",
+                    "font_size": "1rem",
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
@@ -148,7 +149,7 @@
                     "background_color": "#00000026",
                     "corner_radius": 0,
                     "padding-block-start": 0,
-                    "padding-block-end": 20,
+                    "padding-block-end": 0,
                     "padding-inline-start": 0,
                     "padding-inline-end": 0
                   },
@@ -172,7 +173,7 @@
               "block_order": [
                 "text_bnyyeJ",
                 "text_qwQXqw",
-                "text_48rf7f",
+                "text_QmK7zY",
                 "button_48MnjG"
               ]
             }
@@ -819,7 +820,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2><strong>Explore Chorus</strong></h2>",
+            "text": "<h2><strong>Get to know Cam</strong></h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -845,7 +846,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Look clean, crisp, and quietly confident. Chorus reworks the iconic wayfarer shape into a slimmer silhouette. Crystal acetate shows off an elevated wire core on the temples, while pin detailing at the front adds extra class.<br/><br/></p>",
+            "text": "<p>Raised on East Coast beach breaks, now chasing all types of waves around the world...with travel, fishing and ments trips never far from the plan. Cam doesn't box himself into one lane, making him the perfect new member of the OTIS team.</p><p>Shop some of Cam's favorites below.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -1117,67 +1118,6 @@
         "padding-block-end": 0
       }
     },
-    "section_ygXKAy": {
-      "type": "section",
-      "blocks": {
-        "video_MGBcfj": {
-          "type": "video",
-          "name": "t:names.video",
-          "settings": {
-            "source": "uploaded",
-            "video": "shopify://files/videos/GOLF EDIT CUT UP_0 (1).mp4",
-            "video_url": "",
-            "video_autoplay": true,
-            "video_loop": true,
-            "alt": "",
-            "custom_width": 100,
-            "custom_width_mobile": 100,
-            "aspect_ratio": "16/9",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "video_MGBcfj"
-      ],
-      "name": "t:names.video_section",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 16,
-        "section_width": "full-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "color_scheme": "",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "image_zoom_fade_animation": false,
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 32,
-        "padding-block-end": 32
-      }
-    },
     "product_list_cXeMxc": {
       "type": "product-list",
       "blocks": {
@@ -1356,10 +1296,10 @@
       },
       "name": "t:names.products_grid",
       "settings": {
-        "collection": "chorus",
-        "layout_type": "carousel",
+        "collection": "cam-richards-favorites",
+        "layout_type": "grid",
         "carousel_on_mobile": false,
-        "max_products": 3,
+        "max_products": 6,
         "columns": 3,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
@@ -3727,7 +3667,6 @@
     "section_aAXXFY",
     "featured_product_FfcNcK",
     "hero_slideshow_qHUGTK",
-    "section_ygXKAy",
     "product_list_cXeMxc",
     "testimonials_ycTxe9",
     "section_RxxVae",
