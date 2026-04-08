@@ -842,6 +842,21 @@
           },
           "blocks": {}
         },
+        "button_YTWxPQ": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Read the interview",
+            "link": "shopify://blogs/news/meet-cam-richards",
+            "open_in_new_tab": false,
+            "style_class": "link",
+            "width": "custom",
+            "custom_width": 100,
+            "width_mobile": "custom",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        },
         "text_dk9zyP": {
           "type": "text",
           "name": "t:names.text",
@@ -867,27 +882,12 @@
             "padding-inline-end": 0
           },
           "blocks": {}
-        },
-        "button_YTWxPQ": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "Read the interview",
-            "link": "shopify://blogs/news/meet-cam-richards",
-            "open_in_new_tab": false,
-            "style_class": "link",
-            "width": "custom",
-            "custom_width": 100,
-            "width_mobile": "custom",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "text_hLHTdR",
-        "text_dk9zyP",
-        "button_YTWxPQ"
+        "button_YTWxPQ",
+        "text_dk9zyP"
       ],
       "name": "t:names.rich_text_section",
       "settings": {
