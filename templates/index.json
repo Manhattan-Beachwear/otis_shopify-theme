@@ -158,8 +158,8 @@
                 "button_48MnjG": {
                   "type": "button",
                   "settings": {
-                    "label": "Shop",
-                    "link": "shopify://collections/2026-collection",
+                    "label": "read more",
+                    "link": "shopify://blogs/news/meet-cam-richards",
                     "open_in_new_tab": false,
                     "style_class": "button-secondary",
                     "width": "fit-content",
