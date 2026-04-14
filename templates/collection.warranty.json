@@ -9,6 +9,96 @@
  */
 {
   "sections": {
+    "section_pWtNfY": {
+      "type": "section",
+      "blocks": {
+        "text_Qqgpfx": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>WARRANTY COLLECTION</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_a9JbRt": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Shop our full collection of eyewear below. Use the warranty code provided by OTIS customer service to redeem your pair of sunglasses. </p><p><strong>Warranty codes can only be used for one pair of sunglasses. Any orders that exceed our one unit limit will be cancelled.</strong></p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_Qqgpfx",
+        "text_a9JbRt"
+      ],
+      "name": "t:names.rich_text_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
     "main": {
       "type": "main-collection",
       "blocks": {
@@ -56,6 +146,7 @@
             "card-gallery": {
               "type": "_product-card-gallery",
               "settings": {
+                "show_second_image_on_hover": true,
                 "image_ratio": "adapt",
                 "media_fit": "cover",
                 "border": "none",
@@ -186,7 +277,11 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
         "padding-block-end": 100,
-        "enable_combined_listings": true
+        "enable_combined_listings": true,
+        "show_product_image_swatches": false,
+        "product_image_swatch_style": "circle",
+        "product_image_swatch_size": 48,
+        "show_horizontal_scroll": false
       }
     },
     "section_PTBF4n": {
@@ -1830,6 +1925,7 @@
     }
   },
   "order": [
+    "section_pWtNfY",
     "main",
     "section_PTBF4n",
     "section_LR7cQn",
