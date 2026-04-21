@@ -2038,7 +2038,7 @@
             "color_scheme": "",
             "background_media": "image",
             "video_position": "cover",
-            "background_image": "shopify://shop_images/OTIS_Cam_JHook0074.jpg",
+            "background_image": "shopify://shop_images/31A8602.jpg",
             "background_image_position": "cover",
             "border": "none",
             "border_width": 1,
@@ -2082,26 +2082,10 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
-            },
-            "button_JwQ4x9": {
-              "type": "button",
-              "name": "t:names.button",
-              "settings": {
-                "label": "sHOP",
-                "link": "shopify://collections/mens-eyewear",
-                "open_in_new_tab": false,
-                "style_class": "button-secondary",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
             }
           },
           "block_order": [
-            "text_MqfUpH",
-            "button_JwQ4x9"
+            "text_MqfUpH"
           ]
         },
         "group_CG3F4D": {
@@ -2170,26 +2154,10 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
-            },
-            "button_4kxgxL": {
-              "type": "button",
-              "name": "t:names.button",
-              "settings": {
-                "label": "sHOP",
-                "link": "shopify://collections/womens-eyewear",
-                "open_in_new_tab": false,
-                "style_class": "button-secondary",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
             }
           },
           "block_order": [
-            "text_D3fFGk",
-            "button_4kxgxL"
+            "text_D3fFGk"
           ]
         }
       },
