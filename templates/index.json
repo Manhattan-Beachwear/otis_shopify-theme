@@ -1336,6 +1336,137 @@
         "show_horizontal_scroll": false
       }
     },
+    "marquee_TEVrVc": {
+      "type": "marquee",
+      "blocks": {
+        "icon_zJ6m3c": {
+          "type": "icon",
+          "name": "t:names.icon",
+          "settings": {
+            "icon": "lock",
+            "width": 24,
+            "link": "",
+            "open_in_new_tab": false
+          },
+          "blocks": {}
+        },
+        "text_WrgFPh": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>LIFETIME WARRANTY</p>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "line_height": "loose",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "nowrap",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "icon_t3LMwm": {
+          "type": "icon",
+          "name": "t:names.icon",
+          "settings": {
+            "icon": "australia_map",
+            "width": 24,
+            "link": "",
+            "open_in_new_tab": false
+          },
+          "blocks": {}
+        },
+        "text_tmfRRa": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>DESIGNED IN AUSTRALIA</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "line_height": "loose",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "icon_ADyD7c": {
+          "type": "icon",
+          "name": "t:names.icon",
+          "settings": {
+            "icon": "truck",
+            "width": 24,
+            "link": "",
+            "open_in_new_tab": false
+          },
+          "blocks": {}
+        },
+        "text_LnJtbg": {
+          "type": "text",
+          "settings": {
+            "text": "<p>FREE SHIPPING</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "line_height": "loose",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "nowrap",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "icon_zJ6m3c",
+        "text_WrgFPh",
+        "icon_t3LMwm",
+        "text_tmfRRa",
+        "icon_ADyD7c",
+        "text_LnJtbg"
+      ],
+      "name": "t:names.marquee_section",
+      "settings": {
+        "movement_direction": "reverse",
+        "color_scheme": "scheme-5",
+        "padding-block-start": 15,
+        "padding-block-end": 15,
+        "gap_between_elements": 20
+      }
+    },
     "testimonials_ycTxe9": {
       "type": "testimonials",
       "blocks": {
@@ -2005,7 +2136,7 @@
         "heading_alignment": "center",
         "autoplay": true,
         "autoplay_speed": 3,
-        "navigation_style": "dots",
+        "navigation_style": "bar",
         "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
@@ -2672,137 +2803,6 @@
         "color_scheme": "scheme-58084d4c-a86e-4d0a-855e-a0966e5043f7",
         "padding-block-start": 0,
         "padding-block-end": 50
-      }
-    },
-    "marquee_TEVrVc": {
-      "type": "marquee",
-      "blocks": {
-        "icon_zJ6m3c": {
-          "type": "icon",
-          "name": "t:names.icon",
-          "settings": {
-            "icon": "lock",
-            "width": 24,
-            "link": "",
-            "open_in_new_tab": false
-          },
-          "blocks": {}
-        },
-        "text_WrgFPh": {
-          "type": "text",
-          "name": "t:names.text",
-          "settings": {
-            "text": "<p>LIFETIME WARRANTY</p>",
-            "width": "100%",
-            "max_width": "none",
-            "alignment": "left",
-            "type_preset": "custom",
-            "font": "var(--font-body--family)",
-            "font_size": "0.875rem",
-            "line_height": "loose",
-            "letter_spacing": "loose",
-            "case": "none",
-            "wrap": "nowrap",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "icon_t3LMwm": {
-          "type": "icon",
-          "name": "t:names.icon",
-          "settings": {
-            "icon": "australia_map",
-            "width": 24,
-            "link": "",
-            "open_in_new_tab": false
-          },
-          "blocks": {}
-        },
-        "text_tmfRRa": {
-          "type": "text",
-          "name": "t:names.text",
-          "settings": {
-            "text": "<p>DESIGNED IN AUSTRALIA</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "custom",
-            "font": "var(--font-body--family)",
-            "font_size": "0.875rem",
-            "line_height": "loose",
-            "letter_spacing": "loose",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "icon_ADyD7c": {
-          "type": "icon",
-          "name": "t:names.icon",
-          "settings": {
-            "icon": "truck",
-            "width": 24,
-            "link": "",
-            "open_in_new_tab": false
-          },
-          "blocks": {}
-        },
-        "text_LnJtbg": {
-          "type": "text",
-          "settings": {
-            "text": "<p>FREE SHIPPING</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "custom",
-            "font": "var(--font-body--family)",
-            "font_size": "0.875rem",
-            "line_height": "loose",
-            "letter_spacing": "loose",
-            "case": "none",
-            "wrap": "nowrap",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "icon_zJ6m3c",
-        "text_WrgFPh",
-        "icon_t3LMwm",
-        "text_tmfRRa",
-        "icon_ADyD7c",
-        "text_LnJtbg"
-      ],
-      "name": "t:names.marquee_section",
-      "settings": {
-        "movement_direction": "reverse",
-        "color_scheme": "scheme-5",
-        "padding-block-start": 15,
-        "padding-block-end": 15,
-        "gap_between_elements": 20
       }
     },
     "section_AtiTmC": {
@@ -3644,6 +3644,113 @@
         "padding-block-start": 100,
         "padding-block-end": 100
       }
+    },
+    "hero_4DqttQ": {
+      "type": "hero",
+      "blocks": {
+        "text_eVBYQ4": {
+          "type": "text",
+          "settings": {
+            "text": "<h1>New arrivals</h1>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "h1",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_G9TW6E": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Made with care and unconditionally loved by our customers.</p>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 32,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_NHBVr6": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Shop now",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_eVBYQ4",
+        "text_G9TW6E",
+        "button_NHBVr6"
+      ],
+      "name": "t:names.hero",
+      "settings": {
+        "media_type_1": "image",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "large",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-5",
+        "toggle_overlay": true,
+        "overlay_color": "#00000026",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "image_zoom_fade_animation": false,
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
     }
   },
   "order": [
@@ -3652,14 +3759,15 @@
     "featured_product_FfcNcK",
     "hero_slideshow_qHUGTK",
     "product_list_cXeMxc",
+    "marquee_TEVrVc",
     "testimonials_ycTxe9",
     "section_RxxVae",
     "product_list_fa6P9H",
     "media_with_content_QWCiR4",
-    "marquee_TEVrVc",
     "section_AtiTmC",
     "product_list_pk3ngR",
     "section_mmTVYw",
-    "featured_blog_posts_ztcaHh"
+    "featured_blog_posts_ztcaHh",
+    "hero_4DqttQ"
   ]
 }
