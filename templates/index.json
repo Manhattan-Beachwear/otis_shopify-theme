@@ -187,8 +187,8 @@
           "name": "Hero Slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/Screenshot_2026-02-26_123400.png",
-            "image_1_mobile": "shopify://shop_images/Screenshot_2026-02-26_123259.png",
+            "image_1": "shopify://shop_images/hero_banner_template_25715f09-7584-4746-a5b7-50aca14dd4c5.jpg",
+            "image_1_mobile": "shopify://shop_images/Screenshot_2026-03-19_at_12.18.33_pm_1.png",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -217,7 +217,7 @@
                 "horizontal_alignment": "flex-start",
                 "vertical_alignment": "center",
                 "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
+                "horizontal_alignment_flex_direction_column": "center",
                 "vertical_alignment_flex_direction_column": "flex-end",
                 "gap": 0,
                 "width": "fill",
@@ -227,7 +227,7 @@
                 "height": "fill",
                 "custom_height": 100,
                 "inherit_color_scheme": false,
-                "color_scheme": "scheme-3",
+                "color_scheme": "scheme-6",
                 "background_media": "none",
                 "video_position": "cover",
                 "background_image_position": "cover",
@@ -248,42 +248,16 @@
                 "padding-inline-end": 48
               },
               "blocks": {
-                "text_cwmVNY": {
-                  "type": "text",
-                  "name": "t:names.text",
-                  "settings": {
-                    "text": "<p><em>New Release</em></p>",
-                    "width": "fit-content",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "custom",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1.125rem",
-                    "line_height": "loose",
-                    "letter_spacing": "normal",
-                    "case": "uppercase",
-                    "wrap": "pretty",
-                    "color": "var(--color-foreground)",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
                 "text_TNLdja": {
                   "type": "text",
                   "settings": {
-                    "text": "<h2><strong>VANTA SPORT</strong></h2>",
+                    "text": "<h2><strong>CUT THE GLARE, CATCH MORE</strong></h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
                     "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "font_size": "2rem",
+                    "font_size": "1.5rem",
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
@@ -302,7 +276,7 @@
                 "text_LcwN8e": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Sometimes you need sunglasses built to take on anything<br/></p>",
+                    "text": "<p>Maximum glare reduction. Next-level clarity with LIT Lens.</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -327,7 +301,7 @@
                 "button_ePTwPp": {
                   "type": "button",
                   "settings": {
-                    "label": "Shop Now",
+                    "label": "Explore LIT Lens",
                     "link": "shopify://products/vanta-sport-matte-black",
                     "open_in_new_tab": false,
                     "style_class": "button-secondary",
@@ -340,7 +314,6 @@
                 }
               },
               "block_order": [
-                "text_cwmVNY",
                 "text_TNLdja",
                 "text_LcwN8e",
                 "button_ePTwPp"
@@ -353,6 +326,7 @@
         },
         "hero_slide_XNLtfJ": {
           "type": "_hero-slide",
+          "disabled": true,
           "settings": {
             "media_type_1": "image",
             "image_1": "shopify://shop_images/139-2101P_08_8b8e7805-ea7d-4dbb-8b1f-0ed7d89a1462.jpg",
