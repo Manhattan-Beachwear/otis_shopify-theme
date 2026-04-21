@@ -622,7 +622,7 @@
         "slideshow_controls_style": "dots",
         "autoplay": true,
         "autoplay_speed": 5,
-        "section_height": "large",
+        "section_height": "full-screen",
         "section_height_custom": 70,
         "section_width": "full-width",
         "toggle_overlay": true,
