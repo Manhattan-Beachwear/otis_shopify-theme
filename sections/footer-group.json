@@ -296,6 +296,7 @@
                   "type": "social-links",
                   "name": "t:names.social_media_links",
                   "settings": {
+                    "icon_size": "1.5rem",
                     "facebook_url": "https://www.facebook.com/OtisEyewear/",
                     "instagram_url": "https://www.instagram.com/otiseyewear/",
                     "youtube_url": "https://www.youtube.com/channel/UCkL-fiq0KiRBDEeQlD36JpQ",
@@ -333,6 +334,12 @@
       "name": "t:names.footer",
       "settings": {
         "section_width": "page-width",
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-start",
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "flex-start",
         "gap": 35,
         "color_scheme": "scheme-1",
         "padding-block-start": 50,
