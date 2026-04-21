@@ -324,8 +324,151 @@
             "group_XG8J8A"
           ]
         },
+        "hero_slide_rQ8Tm8": {
+          "type": "_hero-slide",
+          "name": "Hero Slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/OTISXIMOGEN.FINAL-29.jpg",
+            "image_1_mobile": "shopify://shop_images/OTISXIMOGEN.FINAL-4.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-end",
+            "vertical_alignment_flex_direction_column": "flex-end",
+            "gap": 0,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": true,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_bwWGkK": {
+              "type": "group",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "flex-end",
+                "gap": 0,
+                "width": "fill",
+                "custom_width": 50,
+                "width_mobile": "fill",
+                "custom_width_mobile": 85,
+                "height": "fill",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-6",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 48,
+                "padding-block-end": 48,
+                "padding-inline-start": 48,
+                "padding-inline-end": 48
+              },
+              "blocks": {
+                "text_HbcjRG": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p><strong>Inspired by our Western Australian Roots</strong></p>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1.25rem",
+                    "line_height": "loose",
+                    "letter_spacing": "loose",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_PMJ9wP": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<h2>Premium eyewear built for everything</h2>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1.125rem",
+                    "line_height": "tight",
+                    "letter_spacing": "loose",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 20,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "button_pEpiVX": {
+                  "type": "button",
+                  "settings": {
+                    "label": "Shop now",
+                    "link": "shopify://collections/2026-collection",
+                    "open_in_new_tab": false,
+                    "style_class": "button-secondary",
+                    "width": "fit-content",
+                    "custom_width": 100,
+                    "width_mobile": "fit-content",
+                    "custom_width_mobile": 100
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_HbcjRG",
+                "text_PMJ9wP",
+                "button_pEpiVX"
+              ]
+            }
+          },
+          "block_order": [
+            "group_bwWGkK"
+          ]
+        },
         "hero_slide_XNLtfJ": {
           "type": "_hero-slide",
+          "disabled": true,
           "settings": {
             "media_type_1": "image",
             "image_1": "shopify://shop_images/139-2101P_08_8b8e7805-ea7d-4dbb-8b1f-0ed7d89a1462.jpg",
@@ -464,155 +607,13 @@
           "block_order": [
             "group_Te84Bc"
           ]
-        },
-        "hero_slide_rQ8Tm8": {
-          "type": "_hero-slide",
-          "name": "Hero Slide",
-          "settings": {
-            "media_type_1": "image",
-            "image_1": "shopify://shop_images/OTISXIMOGEN.FINAL-1_1.jpg",
-            "image_1_mobile": "shopify://shop_images/OTISXIMOGEN.FINAL-6_1.jpg",
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-end",
-            "vertical_alignment_flex_direction_column": "flex-end",
-            "gap": 0,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "toggle_overlay": true,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "group_bwWGkK": {
-              "type": "group",
-              "settings": {
-                "content_direction": "column",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "flex-start",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
-                "vertical_alignment_flex_direction_column": "flex-end",
-                "gap": 0,
-                "width": "fill",
-                "custom_width": 50,
-                "width_mobile": "fill",
-                "custom_width_mobile": 85,
-                "height": "fill",
-                "custom_height": 100,
-                "inherit_color_scheme": false,
-                "color_scheme": "scheme-6",
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "link": "",
-                "open_in_new_tab": false,
-                "placeholder": "",
-                "padding-block-start": 48,
-                "padding-block-end": 48,
-                "padding-inline-start": 48,
-                "padding-inline-end": 48
-              },
-              "blocks": {
-                "text_HbcjRG": {
-                  "type": "text",
-                  "settings": {
-                    "text": "<p><strong>Inspired by our Western Australian Roots</strong></p>",
-                    "width": "fit-content",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "custom",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1.25rem",
-                    "line_height": "loose",
-                    "letter_spacing": "loose",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "color": "var(--color-foreground)",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "text_PMJ9wP": {
-                  "type": "text",
-                  "settings": {
-                    "text": "<h2>Premium eyewear built for everything</h2>",
-                    "width": "fit-content",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "custom",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1.125rem",
-                    "line_height": "tight",
-                    "letter_spacing": "loose",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "color": "var(--color-foreground)",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 20,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "button_pEpiVX": {
-                  "type": "button",
-                  "settings": {
-                    "label": "Shop now",
-                    "link": "shopify://collections/2026-collection",
-                    "open_in_new_tab": false,
-                    "style_class": "button-secondary",
-                    "width": "fit-content",
-                    "custom_width": 100,
-                    "width_mobile": "fit-content",
-                    "custom_width_mobile": 100
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "text_HbcjRG",
-                "text_PMJ9wP",
-                "button_pEpiVX"
-              ]
-            }
-          },
-          "block_order": [
-            "group_bwWGkK"
-          ]
         }
       },
       "block_order": [
         "hero_slide_7mp8hJ",
         "hero_slide_rCcGVa",
-        "hero_slide_XNLtfJ",
-        "hero_slide_rQ8Tm8"
+        "hero_slide_rQ8Tm8",
+        "hero_slide_XNLtfJ"
       ],
       "name": "t:names.hero_slideshow",
       "settings": {
