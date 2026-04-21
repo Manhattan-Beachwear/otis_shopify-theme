@@ -3032,30 +3032,6 @@
     "section_mmTVYw": {
       "type": "section",
       "blocks": {
-        "image_PACQgV": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/DSC00085_1.jpg",
-            "image_mobile": "shopify://shop_images/DSC00085_1.jpg",
-            "link": "",
-            "hover_scale": false,
-            "image_ratio": "square",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
         "group_fNLhjb": {
           "type": "group",
           "settings": {
@@ -3193,11 +3169,35 @@
             "text_9wgHk7",
             "button_daxHgx"
           ]
+        },
+        "image_PACQgV": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSC00085_1.jpg",
+            "image_mobile": "shopify://shop_images/DSC00085_1.jpg",
+            "link": "",
+            "hover_scale": false,
+            "image_ratio": "square",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "image_PACQgV",
-        "group_fNLhjb"
+        "group_fNLhjb",
+        "image_PACQgV"
       ],
       "name": "t:names.image_with_text",
       "settings": {
