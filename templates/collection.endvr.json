@@ -16,7 +16,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>WARRANTY COLLECTION</h2>",
+            "text": "<h2>ENDVR COLLECTION</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -42,7 +42,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Shop our full collection of eyewear below. Use the warranty code provided by OTIS customer service to redeem your pair of sunglasses. </p><p><strong>Warranty codes can only be used for one pair of sunglasses. Any orders that exceed our one unit limit will be cancelled.</strong></p>",
+            "text": "<p>Shop our full collection of eyewear below. Use the Endvr discount code provided to redeem your pair of sunglasses. </p><p><strong>Endvr codes can only be used for one pair of sunglasses. Any orders that exceed our one unit limit will be cancelled.</strong></p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
