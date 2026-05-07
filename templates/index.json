@@ -1230,7 +1230,7 @@
         "collection": "2026-collection",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
-        "max_products": 16,
+        "max_products": 6,
         "columns": 3,
         "mobile_columns": "2",
         "mobile_card_size": "44cqw",
