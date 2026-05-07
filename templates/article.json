@@ -57,6 +57,7 @@
         "blog-post-image": {
           "type": "_blog-post-featured-image",
           "name": "Featured image",
+          "disabled": true,
           "static": true,
           "settings": {
             "image_ratio": "landscape",
@@ -85,10 +86,10 @@
       },
       "settings": {
         "content_direction": "column",
-        "gap": 32,
+        "gap": 0,
         "color_scheme": "",
         "padding-block-start": 40,
-        "padding-block-end": 80
+        "padding-block-end": 47
       }
     },
     "section_mCaPWQ": {
