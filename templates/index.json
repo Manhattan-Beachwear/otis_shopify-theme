@@ -800,7 +800,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "View All",
-                "link": "shopify://collections/2026-collection",
+                "link": "shopify://collections/waggys-favorites",
                 "open_in_new_tab": false,
                 "style_class": "link",
                 "width": "fit-content",
