@@ -407,7 +407,7 @@
         "autoplay_speed": 4,
         "section_height": "large",
         "section_height_custom": 50,
-        "section_width": "full-width",
+        "section_width": "page-width",
         "toggle_overlay": false,
         "overlay_color": "#00000026",
         "overlay_style": "solid",
