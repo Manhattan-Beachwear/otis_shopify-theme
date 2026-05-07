@@ -49,7 +49,7 @@
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "center",
                 "vertical_alignment_flex_direction_column": "flex-end",
-                "gap": 5,
+                "gap": 10,
                 "width": "fit-content",
                 "custom_width": 50,
                 "width_mobile": "fit-content",
