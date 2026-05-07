@@ -284,6 +284,147 @@
         "show_horizontal_scroll": false
       }
     },
+    "hero_slideshow_qqdXzd": {
+      "type": "hero-slideshow",
+      "blocks": {
+        "hero_slide_jJiJVA": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/WAGGY_JOURNAL_d3.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "hero_slide_hrjfqc": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/WAGGY_JOURNAL_d4_1_64425d4a-e982-4115-b257-fe120958b148.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "hero_slide_zgqzUe": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/OTIS_X_WAGGY51.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "hero_slide_88Ch4k": {
+          "type": "_hero-slide",
+          "settings": {
+            "media_type_1": "image",
+            "image_1": "shopify://shop_images/WAGGY_JOURNAL.jpg",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "hero_slide_jJiJVA",
+        "hero_slide_hrjfqc",
+        "hero_slide_zgqzUe",
+        "hero_slide_88Ch4k"
+      ],
+      "name": "t:names.hero_slideshow",
+      "settings": {
+        "color_scheme": "",
+        "icons_style": "arrows_large",
+        "slideshow_controls_style": "dots",
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "section_height": "large",
+        "section_height_custom": 50,
+        "section_width": "full-width",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 0,
+        "border_opacity": 100,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
     "section_PTBF4n": {
       "type": "section",
       "blocks": {
@@ -1927,6 +2068,7 @@
   "order": [
     "section_ricrTT",
     "main",
+    "hero_slideshow_qqdXzd",
     "section_PTBF4n",
     "section_LR7cQn",
     "section_Hic7nD",
