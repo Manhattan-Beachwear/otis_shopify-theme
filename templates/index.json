@@ -2815,6 +2815,7 @@
           ]
         }
       },
+      "disabled": true,
       "name": "t:names.editorial",
       "settings": {
         "media_position": "left",
@@ -3177,11 +3178,11 @@
     "product_list_pk3ngR",
     "featured_product_FfcNcK",
     "product_list_fa6P9H",
-    "marquee_TEVrVc",
-    "hero_4DqttQ",
     "testimonials_ycTxe9",
     "section_RxxVae",
+    "marquee_TEVrVc",
     "section_AtiTmC",
+    "hero_4DqttQ",
     "media_with_content_QWCiR4",
     "section_mmTVYw",
     "featured_blog_posts_ztcaHh"
