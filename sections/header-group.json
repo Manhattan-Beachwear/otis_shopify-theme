@@ -32,6 +32,7 @@
         "announcement_y4xynq": {
           "type": "_announcement",
           "name": "t:names.announcement",
+          "disabled": true,
           "settings": {
             "text": "<strong>SCRATCH RESISTANT LENSES + LIFETIME WARRANTY</strong>",
             "link": "",
@@ -46,7 +47,7 @@
         "announcement_BxgCk9": {
           "type": "_announcement",
           "settings": {
-            "text": "<strong>FREE SHIPPING  On all orders over $100</strong>",
+            "text": "<strong>25% OFF SITEWIDE. USE CODE: MDW25 AT CHECKOUT.</strong>",
             "link": "",
             "font": "var(--font-body--family)",
             "font_size": "0.75rem",
@@ -98,6 +99,7 @@
             "menu_font_style": "regular",
             "type_font_primary_link": "body",
             "type_case_primary_link": "uppercase",
+            "dropdown_alignment": "left",
             "menu_style": "collection_images",
             "featured_products_aspect_ratio": "4 / 5",
             "featured_collections_aspect_ratio": "16 / 9",
@@ -134,6 +136,7 @@
             "menu_font_style": "regular",
             "type_font_primary_link": "subheading",
             "type_case_primary_link": "none",
+            "dropdown_alignment": "left",
             "menu_style": "collection_images",
             "featured_products_aspect_ratio": "4 / 5",
             "featured_collections_aspect_ratio": "16 / 9",
