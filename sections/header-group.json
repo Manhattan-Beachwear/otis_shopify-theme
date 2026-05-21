@@ -50,7 +50,7 @@
             "text": "<strong>25% OFF SITEWIDE. USE CODE: MDW25 AT CHECKOUT.</strong>",
             "link": "",
             "font": "var(--font-body--family)",
-            "font_size": "1.125rem",
+            "font_size": "0.875rem",
             "weight": "700",
             "letter_spacing": "loose",
             "case": "uppercase"
