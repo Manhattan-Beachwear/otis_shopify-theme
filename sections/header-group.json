@@ -14,25 +14,9 @@
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
       "blocks": {
-        "announcement_L7dhBW": {
-          "type": "_announcement",
-          "name": "t:names.announcement",
-          "disabled": true,
-          "settings": {
-            "text": "Shopify Is Currently Experiencing Outages in Checkout. Please Contact Our Customer Service for Assistance.",
-            "link": "",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "weight": "",
-            "letter_spacing": "normal",
-            "case": "none"
-          },
-          "blocks": {}
-        },
         "announcement_y4xynq": {
           "type": "_announcement",
           "name": "t:names.announcement",
-          "disabled": true,
           "settings": {
             "text": "<strong>SCRATCH RESISTANT LENSES + LIFETIME WARRANTY</strong>",
             "link": "",
@@ -46,6 +30,7 @@
         },
         "announcement_BxgCk9": {
           "type": "_announcement",
+          "disabled": true,
           "settings": {
             "text": "<strong>25% OFF SITEWIDE. USE CODE: MDW25 AT CHECKOUT.</strong>",
             "link": "",
@@ -59,7 +44,6 @@
         }
       },
       "block_order": [
-        "announcement_L7dhBW",
         "announcement_y4xynq",
         "announcement_BxgCk9"
       ],
