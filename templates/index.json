@@ -17,7 +17,8 @@
           "name": "Hero Slide",
           "settings": {
             "media_type_1": "image",
-            "image_1": "shopify://shop_images/Untitled_195-2301P_J.jpg",
+            "image_1": "shopify://shop_images/DSC07396.jpg",
+            "image_1_mobile": "shopify://shop_images/DSC07396.jpg",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
