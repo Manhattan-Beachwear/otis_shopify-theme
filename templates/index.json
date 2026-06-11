@@ -867,10 +867,10 @@
       "settings": {
         "collection": "2026-collection",
         "layout_type": "grid",
-        "carousel_on_mobile": true,
+        "carousel_on_mobile": false,
         "max_products": 16,
         "columns": 3,
-        "mobile_columns": "1",
+        "mobile_columns": "2",
         "mobile_card_size": "44cqw",
         "columns_gap": 8,
         "rows_gap": 24,
