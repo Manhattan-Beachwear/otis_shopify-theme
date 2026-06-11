@@ -622,7 +622,7 @@
         "autoplay": false,
         "autoplay_speed": 5,
         "section_height": "custom",
-        "section_height_custom": 80,
+        "section_height_custom": 100,
         "section_width": "full-width",
         "toggle_overlay": true,
         "overlay_color": "#00000026",
