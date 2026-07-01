@@ -21,6 +21,7 @@
   @param {string} [arrows_position] - The position of the arrows, defaults to 'bottom'
   @param {string} [attributes] - Additional attributes to add to the slideshow component
   @param {boolean} [header] - The title of the slideshow
+  @param {string} [scroller_label] - Accessible name for the scrollable slide region
 
   @example
   {% render 'slideshow', slides: slides, slide_count: collection.products.size, ref: 'mobileSlideshow' %}
@@ -38,7 +39,7 @@
   {% endif %}
   style="--slideshow-timeline: {% render 'timeline-scope', count: slide_count, prefix: 'slide' %};{{ style }}"
   {% if autoplay == true %}
-    autoplay="{{ autoplay_speed }}" aria-live="polite"
+    autoplay="{{ autoplay_speed }}" aria-live="off"
   {% endif %}
   initial-slide="{{ initial_slide | default: 0 }}"
   {% if auto_hide_controls %}
@@ -61,8 +62,9 @@
       {{ slideshow_arrows }}
     {% endif %}
     <slideshow-slides
-      tabindex="-1"
+      tabindex="0"
       ref="scroller"
+      aria-label="{{ scroller_label | default: 'accessibility.slideshow_scroller' | t }}"
       {% if slide_size %}
         size="{{ slide_size }}"
       {% endif %}

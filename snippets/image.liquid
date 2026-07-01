@@ -6,6 +6,7 @@
   @param {string} [class] - additional classes
   @param {string} [text_fallback] - text to display if image is blank
   @param {boolean} [unset_image_tag] - if true, ignores the image focal point
+  @param {boolean} [decorative] - if true, sets alt="" for images inside labelled links or decorative contexts
   @param {string} [style] - additional styles
 
   @example
@@ -26,7 +27,11 @@
     {% assign style_value = style_value | append: 'object-position: inherit;' %}
   {% endif %}
 
-  {{ image | image_url: height: image_height | image_tag: class: class, srcset: image_srcset, style: style_value }}
+  {% if decorative %}
+    {{ image | image_url: height: image_height | image_tag: class: class, srcset: image_srcset, style: style_value, alt: '' }}
+  {% else %}
+    {{ image | image_url: height: image_height | image_tag: class: class, srcset: image_srcset, style: style_value }}
+  {% endif %}
 {% elsif text_fallback %}
   {{ text_fallback }}
 {% endif %}

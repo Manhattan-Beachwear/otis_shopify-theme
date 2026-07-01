@@ -10,6 +10,8 @@
 {
   "accessibility": {
     "account": "Account",
+    "accessibility_statement": "Accessibility statement",
+    "add_product_to_cart": "Add {{ product_title }} to cart",
     "cart": "Cart",
     "cart_count": "Total items in cart",
     "close_dialog": "Close dialog",
@@ -35,6 +37,7 @@
     "play_model": "Play 3D model",
     "play_video": "Play video",
     "loading_product_recommendations": "Loading product recommendations",
+    "logo_home_page": "{{ shop_name }} logo, go to home page",
     "rating": "Rating of this product is {{ rating }} out of 5",
     "remove_item": "Remove {{ title}}",
     "reset_search": "Reset search",
@@ -49,6 +52,7 @@
     "slideshow_pause": "Pause slideshow",
     "slideshow_play": "Play slideshow",
     "slideshow_previous": "Previous slide",
+    "slideshow_scroller": "Slide carousel, scroll horizontally to browse slides",
     "unit_price": "Unit price",
     "find_country": "Find country",
     "footer_navigation": "Footer navigation",

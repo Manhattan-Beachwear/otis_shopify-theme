@@ -93,7 +93,7 @@ actions:
   - **aria-labelledby/aria-label:** Set on slide containers
   - **aria-label:** Set on rotation control (changes with state)
   - **aria-label:** Set on navigation controls
-  - **aria-live:** Set to 'off' during rotation, 'polite' when paused
+  - **aria-live:** Use `aria-live="off"` on autoplay carousels so slide changes are not announced until the user navigates to the carousel. Do not use `aria-live="polite"` on autoplay slideshows — it causes screen readers to read each slide as it auto-advances (e.g. homepage testimonials).
 
   **Optional ARIA Attributes:**
 
@@ -420,6 +420,9 @@ actions:
   - Ensure mouse hover behavior is consistent and predictable
   - Maintain clear distinction between temporary and permanent pause states
   - Ensure screen reader announcements are appropriate for current state
+  - **Scrollable slide region (axe `scrollable-region-focusable`):** [`snippets/slideshow.liquid`](snippets/slideshow.liquid) renders `slideshow-slides` with `overflow-x: scroll` ([`assets/base.css`](assets/base.css)). Use `tabindex="0"` and `aria-label` (via `accessibility.slideshow_scroller` or `scroller_label` param), not `tabindex="-1"`. [`assets/slideshow.js`](assets/slideshow.js) should set `tabIndex = -1` when `scrollWidth <= clientWidth` or the slideshow is disabled, and handle ArrowLeft/ArrowRight on the focused scroller.
+  - **Autoplay live region (VoiceOver unsolicited announcements):** When `autoplay` is enabled, [`snippets/slideshow.liquid`](snippets/slideshow.liquid) and [`sections/header-announcements.liquid`](sections/header-announcements.liquid) must set `aria-live="off"` on the carousel container. Previously `aria-live="polite"` caused screen readers to announce testimonial/announcement text on every auto-advance even when the user had not navigated to that section.
+  - **Hero slideshow text selection and screen reader access:** [`sections/hero-slideshow.liquid`](sections/hero-slideshow.liquid) places slide copy inside `hero__media-wrapper`, not `hero__content-wrapper`. Do not render an empty `hero__content-wrapper` sibling — on a `.section` grid it stacks above the slideshow (`z-index: var(--layer-flat)`) and blocks pointer events. Set `pointer-events: none` on `.hero-slideshow .hero__media-wrapper` and restore `pointer-events: auto` only on `.hero__slide-content`. **Do not** set `pointer-events: auto` on `slideshow-arrows` — it uses `position: absolute; inset: 0` and will block all hero clicks/text selection. Keep base.css `pointer-events: none` on `slideshow-arrows` (only `.slideshow-control` children should be auto). Set `pointer-events: none` on `.hero__image-container` so images cannot intercept clicks. In [`assets/slideshow.js`](assets/slideshow.js) `#handleMouseDown`, skip drag capture for interactive targets (`a`, `button`, `.hero__slide-content`, `.text-block`).
 
 metadata:
 priority: high

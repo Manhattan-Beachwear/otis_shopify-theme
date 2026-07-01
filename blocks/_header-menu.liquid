@@ -60,6 +60,7 @@
       data-animation-delay="{{ animation_speed }}"
       {{ block.shopify_attributes }}
       style="--submenu-animation-speed: {{ animation_speed }}ms;"
+      on:focusout="/handleFocusOut"
     >
       <div class="header-menu__inner">
         {%- render 'header-menu', block_settings: block_settings %}
@@ -333,8 +334,10 @@
 
   /* Show the submenus on hover */
   .menu-list__list-item:has([aria-expanded='true']) > .menu-list__submenu,
+  .menu-list__list-item:focus-within > .menu-list__submenu,
   /* Show the overflow menu when a menu item is hovered */
   .overflow-menu:has([slot="overflow"] [aria-expanded='true'])::part(overflow),
+  .overflow-menu:has([slot='overflow'] .menu-list__list-item:focus-within)::part(overflow),
   /* Keep the submenus open when they are hovered */
   .menu-list__submenu:is(:hover),
   .overflow-menu::part(overflow):hover {

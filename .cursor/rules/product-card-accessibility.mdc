@@ -325,6 +325,7 @@ actions:
   - Ensure sufficient color contrast for all text elements
   - Test with various screen reader and browser combinations
   - Consider implementing skip links for large product grids (10+ items)
+  - **Quick-add button labels:** The quick-add button uses shortened visible text (`actions.add` → "Add") with theme `text-transform: uppercase`, which VoiceOver may spell out as "A D D". Use `aria-label` with `accessibility.add_product_to_cart` (e.g. "Add {{ product_title }} to cart") on the button and `aria-hidden="true"` on the inner visible text/icon wrapper so screen readers get a full phrase, not an acronym.
 
   **Testing Requirements:**
 

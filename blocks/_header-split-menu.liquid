@@ -83,6 +83,7 @@
         class="split-header-menu__section split-header-menu__section--left mobile:hidden"
         data-animation-delay="{{ animation_speed }}"
         style="--submenu-animation-speed: {{ animation_speed }}ms;"
+        on:focusout="/handleFocusOut"
       >
         <nav aria-label="{{ 'accessibility.primary_navigation' | t }}" header-menu>
           <div
@@ -96,12 +97,10 @@
                   role="presentation"
                   class="menu-list__list-item"
                   on:focus="/activate"
-                  on:blur="/deactivate"
                   on:pointerenter="/activate"
                   on:pointerleave="/deactivate"
                 >
                   <a
-                    role="menuitem"
                     href="{{ link.url }}"
                     data-skip-node-update="true"
                     class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
@@ -142,7 +141,7 @@
               {% endfor %}
             {% endcapture %}
             {% assign class = 'overflow-menu' | append: color_scheme_classes %}
-            {% render 'overflow-list', role='menu', class: class, ref: 'overflowMenu', children: left_children, minimum-items: 999, defer: true %}
+            {% render 'overflow-list', class: class, ref: 'overflowMenu', children: left_children, minimum-items: 999, defer: true %}
           </div>
         </nav>
 
@@ -161,6 +160,7 @@
         class="split-header-menu__section split-header-menu__section--right mobile:hidden"
         data-animation-delay="{{ animation_speed }}"
         style="--submenu-animation-speed: {{ animation_speed }}ms;"
+        on:focusout="/handleFocusOut"
       >
         <nav aria-label="{{ 'accessibility.secondary_navigation' | t }}" header-menu>
           <div
@@ -174,12 +174,10 @@
                   role="presentation"
                   class="menu-list__list-item"
                   on:focus="/activate"
-                  on:blur="/deactivate"
                   on:pointerenter="/activate"
                   on:pointerleave="/deactivate"
                 >
                   <a
-                    role="menuitem"
                     href="{{ link.url }}"
                     data-skip-node-update="true"
                     class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
@@ -220,7 +218,7 @@
               {% endfor %}
             {% endcapture %}
             {% assign class = 'overflow-menu' | append: color_scheme_classes %}
-            {% render 'overflow-list', role='menu' class: class, ref: 'overflowMenu', children: right_children, minimum-items: 999, defer: true %}
+            {% render 'overflow-list', class: class, ref: 'overflowMenu', children: right_children, minimum-items: 999, defer: true %}
           </div>
         </nav>
 
@@ -446,6 +444,12 @@
       height: var(--header-logo-image-height);
       width: var(--header-logo-image-width);
     }
+  }
+
+  .split-header-menu .menu-list__list-item:has([aria-expanded='true']) > .menu-list__submenu,
+  .split-header-menu .menu-list__list-item:focus-within > .menu-list__submenu {
+    visibility: visible;
+    --submenu-content-opacity: 1;
   }
 
   /* Aligned dropdown: under parent */

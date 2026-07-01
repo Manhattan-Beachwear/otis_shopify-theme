@@ -425,6 +425,16 @@ actions:
   - Test hover interactions work as expected
   - Verify no auto-opening on keyboard focus
 
+  **Known Pitfalls (Horizon / overflow-list header menus):**
+
+  - **`aria-required-parent` with overflow-list:** Do not pass `role="menu"` to [`snippets/overflow-list.liquid`](snippets/overflow-list.liquid) while slotted nav links use `role="menuitem"` in light DOM. The menu role lives inside the shadow root; axe sees orphaned menuitems. Use default `role="list"` and plain links instead.
+  - **Blur closes submenus before Tab reaches mega-menu links:** Per-`<li>` `on:blur="/deactivate"` closes the panel when focus moves from the parent link into the submenu. Use `on:focusout="/handleFocusOut"` on `<header-menu>` and skip deactivation when `relatedTarget` is still inside the component ([`assets/header-menu.js`](assets/header-menu.js)).
+  - **Keyboard disclosure on `<a href>` items with submenus:** Enter/Space navigates by default. Handle in JS (`preventDefault` + toggle) to open the panel without changing markup or layout. Mouse click-to-navigate stays unchanged.
+  - **CSS `:focus-within`:** Mirror existing `[aria-expanded='true']` submenu visibility selectors so keyboard focus gets the same panel visibility as hover — no new visual styling.
+  - **Accessibility fixes must not alter layout:** Prefer removing incorrect ARIA roles and JS event handling over new visible markup.
+  - **Logo home link:** Set `aria-label` on the header logo `<a>` (e.g. "{{ shop_name }} logo, go to home page") and mark logo `<img>` as decorative (`alt=""`) so screen readers announce the label instead of the URL.
+  - **Page landmarks (axe `region`):** Render the global skip link (`skip-to-content-link`) and accessibility statement link inside [`sections/header.liquid`](sections/header.liquid) (section `"tag": "header"`), not at `<body>` root or between `</head>` and `<body>`. Orphan links fail axe `region` because they sit outside header/main/footer landmarks. `#MainContent` should have `tabindex="-1"` so the skip link can move focus into the main landmark.
+
 metadata:
 priority: high
 version: 1.0

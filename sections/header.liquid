@@ -212,6 +212,14 @@
   }
 </script>
 
+{% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
+<a
+  href="{{ pages['accessibility-statement'].url | default: '/pages/accessibility-statement' }}"
+  class="screen-reader-only"
+>
+  {{ 'accessibility.accessibility_statement' | t }}
+</a>
+
 <header-component
   id="header-component"
   class="{{ class }}"
