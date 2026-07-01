@@ -1315,7 +1315,23 @@
     assign dual_swatch_size = product_image_swatch_size
   %}
   <variant-picker-cl-dual
-    class="variant-picker-cl-dual spacing-style variant-picker-cl-dual--{{ alignment_value }}{% if show_product_image_swatches and show_horizontal_scroll %} variant-picker-cl-dual--horizontal-scroll{% endif %}\"\n    style="--color-strikethrough-mix: {{ strikethrough_color_mix }}; --product-image-swatch-size: {{ dual_swatch_size }}px; {% render 'spacing-style', settings: block_settings %}"\n    data-section-id="{{ section.id }}"\n    data-product-id="{{ product_resource.id }}"\n    data-product-url="{{ product_resource.url }}"\n    data-horizontal-scroll="{{ show_horizontal_scroll }}"\n    data-debug-picker="cl"\n    data-debug-spi="{{ show_product_image_swatches }}"\n    {% if product.id == product_resource.id %}\n      data-template-product-match="true"\n    {% endif %}\n    data-block-id="{{ block.id }}"\n    data-combinations="{{ dual_variant_data_for_js | escape }}"\n    data-current-color="{{ current_color_value | escape }}"\n    data-current-size="{{ current_size_value | escape }}"\n    {{ block.shopify_attributes }}\n  >
+    class="variant-picker-cl-dual spacing-style variant-picker-cl-dual--{{ alignment_value }}{% if show_product_image_swatches and show_horizontal_scroll %} variant-picker-cl-dual--horizontal-scroll{% endif %}"
+    style="--color-strikethrough-mix: {{ strikethrough_color_mix }}; --product-image-swatch-size: {{ dual_swatch_size }}px; {% render 'spacing-style', settings: block_settings %}"
+    data-section-id="{{ section.id }}"
+    data-product-id="{{ product_resource.id }}"
+    data-product-url="{{ product_resource.url }}"
+    data-horizontal-scroll="{{ show_horizontal_scroll }}"
+    data-debug-picker="cl"
+    data-debug-spi="{{ show_product_image_swatches }}"
+    {% if product.id == product_resource.id %}
+      data-template-product-match="true"
+    {% endif %}
+    data-block-id="{{ block.id }}"
+    data-combinations="{{ dual_variant_data_for_js | escape }}"
+    data-current-color="{{ current_color_value | escape }}"
+    data-current-size="{{ current_size_value | escape }}"
+    {{ block.shopify_attributes }}
+  >
     <form class="variant-picker-cl-dual__form">
       {% comment %} Color Picker {% endcomment %}
       {%- liquid

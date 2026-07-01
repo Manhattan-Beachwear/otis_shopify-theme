@@ -220,8 +220,9 @@ export class VariantPickerCLDual extends Component {
 
     // Arrow-key navigation for swatch fieldsets (each radio must be in its own label hit area)
     this.#boundHandleSwatchKeydown = this.#handleSwatchKeydown.bind(this);
-    this.addEventListener('keydown', this.#boundHandleSwatchKeydown);
-
+    if (this.#boundHandleSwatchKeydown) {
+      this.addEventListener('keydown', this.#boundHandleSwatchKeydown);
+    }
     // Listen for URL changes (browser back/forward, direct URL changes)
     this.#boundHandleUrlChange = this.#handleUrlChange.bind(this);
     if (this.#boundHandleUrlChange) {
@@ -512,6 +513,45 @@ export class VariantPickerCLDual extends Component {
   }
 
   /**
+   * Matches selected color against a combination row (frame-only or combined frame / lens).
+   * @param {string | undefined} comboColor - Frame color from combination data.
+   * @param {string | undefined} comboSize - Size from combination data.
+   * @returns {boolean}
+   */
+  #matchesSelectedColor(comboColor, comboSize) {
+    if (!this.#selectedColor) {
+      return true;
+    }
+
+    const selected = this.#selectedColor.trim();
+    const frame = comboColor?.trim() ?? '';
+
+    if (!frame) {
+      return false;
+    }
+
+    if (selected === frame) {
+      return true;
+    }
+
+    if (comboSize?.trim()) {
+      const combined = `${frame} / ${comboSize.trim()}`;
+      if (selected === combined) {
+        return true;
+      }
+    }
+
+    if (selected.includes(' / ')) {
+      const framePart = selected.split(' / ')[0]?.trim();
+      if (framePart === frame) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Handles selection change events.
    * @param {Event} event - The change event.
    */
@@ -526,7 +566,14 @@ export class VariantPickerCLDual extends Component {
     const optionType = event.target.dataset.optionType;
     const value = event.target.value;
     const connectedProductUrl = event.target.dataset.connectedProductUrl;
-    const variantId = event.target.dataset.variantId;
+    let variantId = event.target.dataset.variantId;
+
+    if (!variantId && connectedProductUrl) {
+      const variantMatch = connectedProductUrl.match(/[?&]variant=(\d+)/);
+      if (variantMatch) {
+        variantId = variantMatch[1];
+      }
+    }
 
     if (optionType === 'color') {
       this.#selectedColor = value;
@@ -591,12 +638,11 @@ export class VariantPickerCLDual extends Component {
     // Then update UI, then navigate (matching variant-main-picker order)
     if (this.#selectedColor && this.#selectedSize) {
       // Find matching combination to get variantId
-      const selectedColorTrimmed = this.#selectedColor?.trim().toLowerCase() || '';
       const selectedSizeTrimmed = this.#selectedSize?.trim().toLowerCase() || '';
 
       const matchingCombination = this.#combinations.find(
         (combo) =>
-          combo.color?.trim().toLowerCase() === selectedColorTrimmed &&
+          this.#matchesSelectedColor(combo.color, combo.size) &&
           combo.size?.trim().toLowerCase() === selectedSizeTrimmed
       );
 
@@ -710,8 +756,7 @@ export class VariantPickerCLDual extends Component {
         const selectedSizeTrimmed = this.#selectedSize.trim();
         hasSelectedSize = this.#combinations.some(
           (c) =>
-            c.color &&
-            c.color.trim() === colorValue &&
+            this.#matchesSelectedColor(c.color, c.size) &&
             c.size &&
             c.size.trim() === selectedSizeTrimmed
         );
@@ -753,7 +798,7 @@ export class VariantPickerCLDual extends Component {
           c.size &&
           c.size.trim() === sizeValue &&
           c.available === true &&
-          (!this.#selectedColor || (c.color && c.color.trim() === this.#selectedColor.trim()))
+          this.#matchesSelectedColor(c.color, c.size)
       );
 
       input.setAttribute('data-option-available', hasAvailableCombination.toString());
@@ -821,12 +866,10 @@ export class VariantPickerCLDual extends Component {
       ];
     }
 
-    // Return sizes that have a combination with the selected color
-    const selectedColorTrimmed = this.#selectedColor.trim();
     return [
       ...new Set(
         this.#combinations
-          .filter((c) => c.color && c.color.trim() === selectedColorTrimmed)
+          .filter((c) => this.#matchesSelectedColor(c.color, c.size))
           .map((c) => c.size)
           .filter(Boolean)
           .map((c) => c.trim())
@@ -843,11 +886,13 @@ export class VariantPickerCLDual extends Component {
     }
 
     // Find the matching combination (with trimmed comparison for robustness)
-    const selectedColorTrimmed = this.#selectedColor.trim();
     const selectedSizeTrimmed = this.#selectedSize.trim();
 
     const matchingCombination = this.#combinations.find(
-      (c) => c.color && c.color.trim() === selectedColorTrimmed && c.size && c.size.trim() === selectedSizeTrimmed
+      (c) =>
+        this.#matchesSelectedColor(c.color, c.size) &&
+        c.size &&
+        c.size.trim() === selectedSizeTrimmed
     );
 
     if (!matchingCombination) {
