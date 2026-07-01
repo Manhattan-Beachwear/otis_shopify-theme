@@ -800,7 +800,7 @@
                 "case": "none",
                 "wrap": "pretty",
                 "color": "var(--color-foreground)",
-                "custom_color": "#423e3ecf",
+                "custom_color": "#45484B",
                 "font_style": "italic",
                 "background": false,
                 "background_color": "#00000026",
