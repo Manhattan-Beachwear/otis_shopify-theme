@@ -36,15 +36,7 @@
     {%- render 'store-custom-head' -%}
   </head>
 
-    <a
-    href="https://us.otiseyewear.com/pages/accessibility-statement"
-    class="screen-reader-only"
-    aria-label="Accessibility Statement"
-    >Accessibility Statement</a
-  >
-
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}{% if template == 'page.contact' %} template-page page-contact{% elsif template == 'page.faq' %} template-page{% elsif template == 'page.store-locator' %} template-page{% endif %}" data-template="{{ template }}">
-    {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
     <div id="header-group">
       {% sections 'header-group' %}
     </div>
@@ -60,6 +52,7 @@
       id="MainContent"
       class="content-for-layout"
       role="main"
+      tabindex="-1"
       data-page-transition-enabled="{{ settings.page_transition_enabled }}"
       data-product-transition="{{ settings.transition_to_main_product }}"
       data-template="{{ template }}"

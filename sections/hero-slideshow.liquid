@@ -69,19 +69,6 @@
         slide_count: section.blocks.size
       %}
     </div>
-    <div
-      class="
-        hero__content-wrapper
-        layout-panel-flex
-        layout-panel-flex--{{ section.settings.content_direction }}
-        {% if section.settings.vertical_on_mobile %}mobile-column{% endif %}
-        section-content-wrapper
-        {{section.settings.section_width}}
-        {% if request.design_mode %}hero__content-wrapper--design-mode{% endif %}
-      "
-      style="{% render 'layout-panel-style', settings: section.settings %}"
-    >
-    </div>
   </div>
 </div>
 
@@ -120,21 +107,26 @@
     }
   }
 
-  .hero-slideshow .hero__content-wrapper {
-    position: relative;
-    inset: 0;
-    z-index: var(--layer-flat);
-  }
-
-  .hero-slideshow .hero__content-wrapper .group-block-content {
-    position: relative;
-  }
-
   .hero-slideshow .hero__media-wrapper {
     position: absolute;
     inset: 0;
     display: grid;
     grid-column: 1 / -1;
+    pointer-events: none;
+  }
+
+  .hero-slideshow .hero__slide-content {
+    pointer-events: auto;
+  }
+
+  .hero-slideshow slideshow-slide .hero__image-container,
+  .hero-slideshow slideshow-slide .hero__image-container :is(img, video) {
+    pointer-events: none;
+  }
+
+  .hero-slideshow .hero__slide-content .text-block,
+  .hero-slideshow .hero__slide-content :is(h1, h2, h3, h4, h5, h6, p, li) {
+    user-select: text;
   }
 
   .hero-slideshow slideshow-component {

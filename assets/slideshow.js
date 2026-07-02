@@ -81,6 +81,7 @@ export class Slideshow extends Component {
     if (this.#scroll) {
       const { scroller } = this.refs;
       scroller.removeEventListener('mousedown', this.#handleMouseDown);
+      scroller.removeEventListener('keydown', this.#handleScrollerKeydown);
       this.#scroll.destroy();
     }
 
@@ -447,6 +448,8 @@ export class Slideshow extends Component {
     if (this.refs.slides?.[0]) {
       this.refs.slides[0].setAttribute('aria-hidden', 'false');
     }
+
+    this.#updateScrollerFocusability();
   }
 
   /**
@@ -462,6 +465,7 @@ export class Slideshow extends Component {
     });
 
     scroller.addEventListener('mousedown', this.#handleMouseDown);
+    scroller.addEventListener('keydown', this.#handleScrollerKeydown);
 
     this.addEventListener('mouseenter', this.suspend);
     this.addEventListener('mouseleave', this.resume);
@@ -471,6 +475,8 @@ export class Slideshow extends Component {
     this.#updateControlsVisibility();
 
     this.disabled = this.isNested || this.disabled;
+
+    this.#updateScrollerFocusability();
 
     this.resume();
 
@@ -502,6 +508,8 @@ export class Slideshow extends Component {
         if (visibleSlidesAmount > 1) {
           this.#updateVisibleSlides();
         }
+
+        this.#updateScrollerFocusability();
 
         if (this.hasAttribute('auto-hide-controls')) {
           this.#updateControlsVisibility();
@@ -590,6 +598,10 @@ export class Slideshow extends Component {
     // Check if the event target is within a 3D model interactive element
     // This prevents the slideshow from capturing drag events when interacting with 3D models
     if (event.target.closest('model-viewer')) {
+      return;
+    }
+
+    if (event.target.closest('a, button, input, textarea, select, label, .hero__slide-content, .text-block')) {
       return;
     }
 
@@ -745,6 +757,37 @@ export class Slideshow extends Component {
    * Pause the slideshow when the page is hidden.
    */
   #handleVisibilityChange = () => (document.hidden ? this.pause() : this.resume());
+
+  /**
+   * Keeps the scroll container out of the tab order when it is not scrollable.
+   */
+  #updateScrollerFocusability() {
+    const { scroller } = this.refs;
+
+    if (!(scroller instanceof HTMLElement)) return;
+
+    const isScrollable = scroller.scrollWidth > scroller.clientWidth && !this.disabled;
+    scroller.tabIndex = isScrollable ? 0 : -1;
+  }
+
+  /**
+   * Moves between slides when the scroll container has keyboard focus.
+   * @param {KeyboardEvent} event
+   */
+  #handleScrollerKeydown = (event) => {
+    const { scroller } = this.refs;
+
+    if (!(scroller instanceof HTMLElement) || document.activeElement !== scroller) return;
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+
+    event.preventDefault();
+
+    if (event.key === 'ArrowLeft') {
+      this.previous(event);
+    } else {
+      this.next(event);
+    }
+  };
 
   #updateControlsVisibility() {
     if (!this.hasAttribute('auto-hide-controls')) return;
