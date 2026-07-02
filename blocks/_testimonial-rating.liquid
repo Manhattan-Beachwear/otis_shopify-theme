@@ -44,6 +44,7 @@
   <div
     class="testimonial-rating"
     style="--star-size: calc(var(--font-{{ block_settings.type_preset }}--size) * 1.1);"
+    role="img"
     aria-label="{{ 'accessibility.rating' | t: rating: rating }}"
   >
     {%- for star in (1..star_count_rating) -%}
