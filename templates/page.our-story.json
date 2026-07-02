@@ -118,11 +118,11 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h1>THE OTIS JOURNEY</h1>",
+            "text": "<h2>THE OTIS JOURNEY</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "h2",
+            "type_preset": "rte",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",

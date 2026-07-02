@@ -118,11 +118,11 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>What makes OTIS so unique?</h2>",
+            "text": "<h1>What makes OTIS so unique?</h1>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "rte",
+            "type_preset": "h2",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",
@@ -422,7 +422,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Mineral Glass</h2>",
+                "text": "<h3>Mineral Glass</h3>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -545,7 +545,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Scratch Resistant</h2>",
+                "text": "<h3>Scratch Resistant</h3>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -668,7 +668,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Distortion Free</h2>",
+                "text": "<h3>Distortion Free</h3>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -830,7 +830,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Eco Friendly</h2>",
+                "text": "<h3>Eco Friendly</h3>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -953,7 +953,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Thermal Hardened</h2>",
+                "text": "<h3>Thermal Hardened</h3>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -1076,7 +1076,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Permanent Tinting</h2>",
+                "text": "<h3>Permanent Tinting</h3>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -1428,7 +1428,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2>Standard Lenses</h2>",
+                    "text": "<h3>Standard Lenses</h3>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -1612,7 +1612,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2>Polarized Lenses</h2>",
+                    "text": "<h3>Polarized Lenses</h3>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -1834,7 +1834,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2>Reflect Lenses</h2>",
+                    "text": "<h3>Reflect Lenses</h3>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -2018,7 +2018,7 @@
                   "type": "text",
                   "name": "t:names.heading",
                   "settings": {
-                    "text": "<h2>LIT Lenses</h2>",
+                    "text": "<h3>LIT Lenses</h3>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
