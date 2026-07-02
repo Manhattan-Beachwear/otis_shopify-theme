@@ -682,7 +682,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h3><strong>Shop What's New</strong></h3>",
+                "text": "<h2><strong>Shop What's New</strong></h2>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -2540,7 +2540,7 @@
         "text_eVBYQ4": {
           "type": "text",
           "settings": {
-            "text": "<h1><strong>JUST LANDED : UNTITLED</strong></h1>",
+            "text": "<h2><strong>JUST LANDED : UNTITLED</strong></h2>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
