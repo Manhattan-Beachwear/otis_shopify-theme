@@ -124,7 +124,7 @@ export class Slideshow extends Component {
     for (const slide of this.refs.slides) {
       if (slide.hasAttribute('reveal')) {
         slide.removeAttribute('reveal');
-        slide.setAttribute('aria-hidden', 'true');
+        this.#setSlideHidden(slide, true);
       }
     }
 
@@ -140,7 +140,7 @@ export class Slideshow extends Component {
         // Force the slide to be revealed if it is hidden
         if (requestedSlide.hasAttribute('hidden')) {
           requestedSlide.setAttribute('reveal', '');
-          requestedSlide.setAttribute('aria-hidden', 'false');
+          this.#setSlideHidden(requestedSlide, false);
         }
 
         return this.slides.indexOf(requestedSlide);
@@ -212,7 +212,7 @@ export class Slideshow extends Component {
 
     const previousIndex = this.current;
 
-    slide.setAttribute('aria-hidden', 'false');
+    this.#setSlideHidden(slide, false);
 
     if (this.#scroll) {
       this.#scroll.to(slide, { instant });
@@ -446,7 +446,12 @@ export class Slideshow extends Component {
     }
 
     if (this.refs.slides?.[0]) {
-      this.refs.slides[0].setAttribute('aria-hidden', 'false');
+      this.#setSlideHidden(this.refs.slides[0], false);
+    }
+
+    for (const slide of this.refs.slides ?? []) {
+      if (slide === this.refs.slides[0]) continue;
+      this.#setSlideHidden(slide, true);
     }
 
     this.#updateScrollerFocusability();
@@ -822,6 +827,16 @@ export class Slideshow extends Component {
     });
   }
 
+  /**
+   * Updates aria-hidden and inert together so hidden slides cannot receive focus.
+   * @param {HTMLElement} slide
+   * @param {boolean} hidden
+   */
+  #setSlideHidden(slide, hidden) {
+    slide.setAttribute('aria-hidden', `${hidden}`);
+    slide.inert = hidden;
+  }
+
   #updateVisibleSlides() {
     const { slides } = this;
     if (!slides || !slides.length) return 0;
@@ -833,7 +848,7 @@ export class Slideshow extends Component {
       // Update aria-hidden based on visibility
       slides.forEach((slide) => {
         const isVisible = visibleSlides.includes(slide);
-        slide.setAttribute('aria-hidden', `${!isVisible}`);
+        this.#setSlideHidden(slide, !isVisible);
       });
     });
 

@@ -22,6 +22,9 @@
 <slideshow-slide
   ref="slides[]"
   aria-hidden="{% if index == 0 %}false{% else %}true{% endif %}"
+  {% if index != 0 %}
+    inert
+  {% endif %}
   style="view-timeline-name: --slide-{{ index }}; --product-media-fit: {{ media_fit | default: 'cover' }};"
   {% if class != blank %}
     class="{{ class }}"
