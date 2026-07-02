@@ -147,11 +147,11 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>The world like you've never seen it</h2>",
+            "text": "<h1>The world like you've never seen it</h1>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "rte",
+            "type_preset": "h2",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",
@@ -483,7 +483,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h4>Explore the L.I.T. Collection</h4>",
+                "text": "<h2>Explore the L.I.T. Collection</h2>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -547,6 +547,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
+                "show_second_image_on_hover": true,
                 "image_ratio": "adapt",
                 "media_fit": "cover",
                 "border": "none",
@@ -663,7 +664,11 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
         "padding-block-end": 48,
-        "enable_combined_listings": false
+        "enable_combined_listings": false,
+        "show_product_image_swatches": false,
+        "product_image_swatch_style": "circle",
+        "product_image_swatch_size": 48,
+        "show_horizontal_scroll": false
       }
     },
     "section_6iMtq6": {
