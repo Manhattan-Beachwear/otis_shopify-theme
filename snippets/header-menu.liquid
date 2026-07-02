@@ -29,7 +29,7 @@
   {% for link in block_settings.menu.links %}
     {% capture submenu_alignment_class %}{% render 'menu-submenu-alignment-class', link: link, dropdown_alignment: dropdown_alignment, menu_content_type: menu_content_type %}{% endcapture %}
     <li
-      role="presentation"
+      role="listitem"
       class="menu-list__list-item"
       on:focus="/activate"
       on:pointerenter="/activate"
@@ -76,7 +76,7 @@
   {% endfor %}
   <li
     class="menu-list__list-item"
-    role="presentation"
+    role="listitem"
     slot="more"
     on:focus="/activate"
     on:pointerenter="/activate"

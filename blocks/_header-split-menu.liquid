@@ -94,7 +94,7 @@
               {% for link in menu_links limit: split_point %}
                 {% capture submenu_alignment_class %}{% render 'menu-submenu-alignment-class', link: link, dropdown_alignment: dropdown_alignment, menu_content_type: menu_content_type %}{% endcapture %}
                 <li
-                  role="presentation"
+                  role="listitem"
                   class="menu-list__list-item"
                   on:focus="/activate"
                   on:pointerenter="/activate"
@@ -130,7 +130,7 @@
                           section: section,
                           parent_link: link,
                           id: list_id,
-                          menu_content_type: block_settings.menu_style | default: 'text',
+                          menu_content_type: menu_content_type,
                           content_aspect_ratio: block_settings.featured_collections_aspect_ratio,
                           image_border_radius: block_settings.image_border_radius
                         %}
@@ -139,6 +139,18 @@
                   {%- endif -%}
                 </li>
               {% endfor %}
+              <li
+                class="menu-list__list-item"
+                role="listitem"
+                slot="more"
+                on:focus="/activate"
+                on:pointerenter="/activate"
+                on:pointerleave="/deactivate"
+              >
+                <button class="button menu-list__link button-unstyled">
+                  <span class="menu-list__link-title">{{ 'actions.more' | t }}</span>
+                </button>
+              </li>
             {% endcapture %}
             {% assign class = 'overflow-menu' | append: color_scheme_classes %}
             {% render 'overflow-list', class: class, ref: 'overflowMenu', children: left_children, minimum-items: 999, defer: true %}
@@ -171,7 +183,7 @@
               {% for link in menu_links offset: split_point %}
                 {% capture submenu_alignment_class %}{% render 'menu-submenu-alignment-class', link: link, dropdown_alignment: dropdown_alignment, menu_content_type: menu_content_type %}{% endcapture %}
                 <li
-                  role="presentation"
+                  role="listitem"
                   class="menu-list__list-item"
                   on:focus="/activate"
                   on:pointerenter="/activate"
@@ -207,7 +219,7 @@
                           section: section,
                           parent_link: link,
                           id: list_id,
-                          menu_content_type: block_settings.menu_style | default: 'text',
+                          menu_content_type: menu_content_type,
                           content_aspect_ratio: block_settings.featured_collections_aspect_ratio,
                           image_border_radius: block_settings.image_border_radius
                         %}
@@ -216,6 +228,18 @@
                   {%- endif -%}
                 </li>
               {% endfor %}
+              <li
+                class="menu-list__list-item"
+                role="listitem"
+                slot="more"
+                on:focus="/activate"
+                on:pointerenter="/activate"
+                on:pointerleave="/deactivate"
+              >
+                <button class="button menu-list__link button-unstyled">
+                  <span class="menu-list__link-title">{{ 'actions.more' | t }}</span>
+                </button>
+              </li>
             {% endcapture %}
             {% assign class = 'overflow-menu' | append: color_scheme_classes %}
             {% render 'overflow-list', class: class, ref: 'overflowMenu', children: right_children, minimum-items: 999, defer: true %}
