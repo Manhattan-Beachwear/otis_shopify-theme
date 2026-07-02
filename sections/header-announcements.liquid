@@ -23,7 +23,7 @@
   <announcement-bar-component
     class="announcement-bar__slider"
     {% if autoplay == true %}
-      autoplay="{{ section.settings.speed }}" aria-live="polite"
+      autoplay="{{ section.settings.speed }}" aria-live="off"
     {% endif %}
   >
     {% if show_arrows %}

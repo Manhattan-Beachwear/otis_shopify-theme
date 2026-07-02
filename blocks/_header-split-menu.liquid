@@ -83,6 +83,7 @@
         class="split-header-menu__section split-header-menu__section--left mobile:hidden"
         data-animation-delay="{{ animation_speed }}"
         style="--submenu-animation-speed: {{ animation_speed }}ms;"
+        on:focusout="/handleFocusOut"
       >
         <nav aria-label="{{ 'accessibility.primary_navigation' | t }}" header-menu>
           <div
@@ -93,15 +94,13 @@
               {% for link in menu_links limit: split_point %}
                 {% capture submenu_alignment_class %}{% render 'menu-submenu-alignment-class', link: link, dropdown_alignment: dropdown_alignment, menu_content_type: menu_content_type %}{% endcapture %}
                 <li
-                  role="presentation"
+                  role="listitem"
                   class="menu-list__list-item"
                   on:focus="/activate"
-                  on:blur="/deactivate"
                   on:pointerenter="/activate"
                   on:pointerleave="/deactivate"
                 >
                   <a
-                    role="menuitem"
                     href="{{ link.url }}"
                     data-skip-node-update="true"
                     class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
@@ -131,7 +130,7 @@
                           section: section,
                           parent_link: link,
                           id: list_id,
-                          menu_content_type: block_settings.menu_style | default: 'text',
+                          menu_content_type: menu_content_type,
                           content_aspect_ratio: block_settings.featured_collections_aspect_ratio,
                           image_border_radius: block_settings.image_border_radius
                         %}
@@ -140,9 +139,21 @@
                   {%- endif -%}
                 </li>
               {% endfor %}
+              <li
+                class="menu-list__list-item"
+                role="listitem"
+                slot="more"
+                on:focus="/activate"
+                on:pointerenter="/activate"
+                on:pointerleave="/deactivate"
+              >
+                <button class="button menu-list__link button-unstyled">
+                  <span class="menu-list__link-title">{{ 'actions.more' | t }}</span>
+                </button>
+              </li>
             {% endcapture %}
             {% assign class = 'overflow-menu' | append: color_scheme_classes %}
-            {% render 'overflow-list', role='menu', class: class, ref: 'overflowMenu', children: left_children, minimum-items: 999, defer: true %}
+            {% render 'overflow-list', class: class, ref: 'overflowMenu', children: left_children, minimum-items: 999, defer: true %}
           </div>
         </nav>
 
@@ -161,6 +172,7 @@
         class="split-header-menu__section split-header-menu__section--right mobile:hidden"
         data-animation-delay="{{ animation_speed }}"
         style="--submenu-animation-speed: {{ animation_speed }}ms;"
+        on:focusout="/handleFocusOut"
       >
         <nav aria-label="{{ 'accessibility.secondary_navigation' | t }}" header-menu>
           <div
@@ -171,15 +183,13 @@
               {% for link in menu_links offset: split_point %}
                 {% capture submenu_alignment_class %}{% render 'menu-submenu-alignment-class', link: link, dropdown_alignment: dropdown_alignment, menu_content_type: menu_content_type %}{% endcapture %}
                 <li
-                  role="presentation"
+                  role="listitem"
                   class="menu-list__list-item"
                   on:focus="/activate"
-                  on:blur="/deactivate"
                   on:pointerenter="/activate"
                   on:pointerleave="/deactivate"
                 >
                   <a
-                    role="menuitem"
                     href="{{ link.url }}"
                     data-skip-node-update="true"
                     class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
@@ -209,7 +219,7 @@
                           section: section,
                           parent_link: link,
                           id: list_id,
-                          menu_content_type: block_settings.menu_style | default: 'text',
+                          menu_content_type: menu_content_type,
                           content_aspect_ratio: block_settings.featured_collections_aspect_ratio,
                           image_border_radius: block_settings.image_border_radius
                         %}
@@ -218,9 +228,21 @@
                   {%- endif -%}
                 </li>
               {% endfor %}
+              <li
+                class="menu-list__list-item"
+                role="listitem"
+                slot="more"
+                on:focus="/activate"
+                on:pointerenter="/activate"
+                on:pointerleave="/deactivate"
+              >
+                <button class="button menu-list__link button-unstyled">
+                  <span class="menu-list__link-title">{{ 'actions.more' | t }}</span>
+                </button>
+              </li>
             {% endcapture %}
             {% assign class = 'overflow-menu' | append: color_scheme_classes %}
-            {% render 'overflow-list', role='menu' class: class, ref: 'overflowMenu', children: right_children, minimum-items: 999, defer: true %}
+            {% render 'overflow-list', class: class, ref: 'overflowMenu', children: right_children, minimum-items: 999, defer: true %}
           </div>
         </nav>
 
@@ -446,6 +468,12 @@
       height: var(--header-logo-image-height);
       width: var(--header-logo-image-width);
     }
+  }
+
+  .split-header-menu .menu-list__list-item:has([aria-expanded='true']) > .menu-list__submenu,
+  .split-header-menu .menu-list__list-item:focus-within > .menu-list__submenu {
+    visibility: visible;
+    --submenu-content-opacity: 1;
   }
 
   /* Aligned dropdown: under parent */

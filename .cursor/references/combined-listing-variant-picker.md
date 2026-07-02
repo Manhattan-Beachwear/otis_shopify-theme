@@ -173,6 +173,19 @@ window.addEventListener(ThemeEvents.variantUpdate, this.#boundHandleVariantUpdat
 window.addEventListener('popstate', this.#boundHandleUrlChange);
 ```
 
+### Keyboard accessibility (swatch fieldsets)
+
+Combined listing product pages render swatches with `.variant-option__button-label`, **not** `.variant-picker-cl-dual__label`. The overlay styles from `variant-main-picker.liquid` are not loaded on CL-only pages, so `variant-combined-listing-picker.liquid` must include:
+
+- `position: relative` on each swatch label
+- `position: absolute; inset: 0; z-index: 1` on the hidden radio input (one hit area per swatch)
+
+Without this, all radios can stack in the same containing block and only the topmost swatch receives focus/clicks.
+
+**Tab vs arrow keys:** Native radio groups expose one tab stop per group. Tab focuses the checked swatch; use **ArrowLeft/ArrowRight** (handled in `VariantPickerCLDual.#handleSwatchKeydown`) to move between options. Restore focus after morph in `#fetchAndMorphProduct` so keyboard users stay in the picker when a swatch navigates to a linked product.
+
+**Pitfall:** `#updateFiltering()` must **not** target swatch fieldset inputs (`input[data-option-type="color"]` inside `.variant-option__button-label`). Swatch radio values use combined frame/lens strings (e.g. `Eco Crystal Fern / Brown Polar`) while `data-combinations` stores frame color and lens size separately — JS filtering will mark every swatch unavailable and set `input.disabled = true`. Swatch availability is set server-side in Liquid; only pill-style `.variant-picker-cl-dual__label` options should be filtered in JS.
+
 ## Usage
 
 ### Basic Usage

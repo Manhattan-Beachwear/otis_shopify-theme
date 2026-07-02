@@ -10,6 +10,7 @@
 {% liquid
   assign product_form_id = 'QuickAdd-ProductForm-' | append: product.id | append: '-' | append: block.id
   assign add_to_cart_text = 'actions.add' | t
+  assign add_to_cart_aria_label = 'accessibility.add_product_to_cart' | t: product_title: product.title
 
   # Combined listing: check section setting and get data so we treat linked products as variants
   assign enable_combined = false
@@ -136,6 +137,7 @@
       {%- if effective_single_variant -%}
         {% render 'add-to-cart-button',
           add_to_cart_text: add_to_cart_text,
+          aria_label: add_to_cart_aria_label,
           class: 'button quick-add__button quick-add__button--add',
           can_add_to_cart: can_add_to_cart,
           icon_only_on_mobile: true,
@@ -148,9 +150,11 @@
           type="button"
           name="add"
           on:click="quick-add-component/handleClick"
+          aria-label="{{ add_to_cart_aria_label }}"
         >
           <span
             class="add-to-cart-text"
+            aria-hidden="true"
           >
             <span
               class="svg-wrapper add-to-cart-icon"

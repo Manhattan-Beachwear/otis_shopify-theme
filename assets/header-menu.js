@@ -29,6 +29,10 @@ class HeaderMenu extends Component {
       signal: this.#abortController.signal,
     });
 
+    this.addEventListener('keydown', this.#handleKeydown, {
+      signal: this.#abortController.signal,
+    });
+
     onDocumentLoaded(this.#preloadImages);
   }
 
@@ -144,6 +148,24 @@ class HeaderMenu extends Component {
   }
 
   /**
+   * Close the active submenu when focus leaves the header menu entirely.
+   * @param {FocusEvent} event
+   */
+  handleFocusOut = (event) => {
+    if (!(event instanceof FocusEvent)) return;
+
+    const { relatedTarget } = event;
+
+    if (relatedTarget instanceof Node && this.contains(relatedTarget)) {
+      return;
+    }
+
+    this.#debouncedActivateHandler.cancel();
+    this.#debouncedDeactivate.cancel();
+    this.#debouncedDeactivate();
+  };
+
+  /**
    * Deactivate the active item immediately
    * @param {HTMLElement | null} [item]
    */
@@ -172,6 +194,45 @@ class HeaderMenu extends Component {
   #debouncedDeactivate = debounce(this.#deactivate, DEACTIVATE_DELAY);
 
   /**
+   * Handle keyboard interaction for submenu disclosure links.
+   * @param {KeyboardEvent} event
+   */
+  #handleKeydown = (event) => {
+    if (!(event.target instanceof Element)) return;
+
+    const menuitem = event.target.closest('[ref="menuitem"]');
+
+    if (!(menuitem instanceof HTMLElement) || !menuitem.hasAttribute('aria-haspopup')) return;
+
+    if (event.key === 'Escape') {
+      if (this.#state.activeItem === menuitem) {
+        event.preventDefault();
+        this.#debouncedDeactivate.cancel();
+        this.#debouncedActivateHandler.cancel();
+        this.#deactivate(menuitem);
+        menuitem.focus();
+      }
+      return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+
+      const isExpanded = menuitem.getAttribute('aria-expanded') === 'true';
+
+      if (isExpanded) {
+        this.#debouncedActivateHandler.cancel();
+        this.#debouncedDeactivate.cancel();
+        this.#deactivate(menuitem);
+      } else {
+        const listItem = menuitem.closest('.menu-list__list-item');
+        this.#debouncedDeactivate.cancel();
+        this.#activateHandler({ target: listItem ?? menuitem });
+      }
+    }
+  };
+
+  /**
    * Preload images that are set to load lazily.
    */
   #preloadImages = () => {
@@ -191,6 +252,10 @@ if (!customElements.get('header-menu')) {
  */
 function findMenuItem(element) {
   if (!(element instanceof Element)) return null;
+
+  if (element.matches('[ref="menuitem"]')) {
+    return /** @type {HTMLElement} */ (element);
+  }
 
   if (element?.matches('[slot="more"')) {
     // Select the first overflowing menu item when hovering over the "More" item
