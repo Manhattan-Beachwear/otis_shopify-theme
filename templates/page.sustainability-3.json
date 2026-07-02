@@ -176,6 +176,32 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "text_eyAwzH": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h1>OTIS Sustainability</h1>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h2",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "text_cL46Yr": {
               "type": "text",
               "settings": {
@@ -203,6 +229,7 @@
             }
           },
           "block_order": [
+            "text_eyAwzH",
             "text_cL46Yr"
           ]
         }
@@ -620,7 +647,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Eco Acetate</h2>",
+                "text": "<h3>Eco Acetate</h3>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -743,7 +770,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Eco Grilamid</h2>",
+                "text": "<h3>Eco Grilamid</h3>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -866,7 +893,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Mineral Glass</h2>",
+                "text": "<h3>Mineral Glass</h3>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
