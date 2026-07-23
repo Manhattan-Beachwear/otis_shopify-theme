@@ -3104,7 +3104,7 @@
             "horizontal_alignment": "flex-start",
             "vertical_alignment": "center",
             "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
+            "horizontal_alignment_flex_direction_column": "center",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 12,
             "width": "custom",
@@ -3191,7 +3191,7 @@
               "type": "text",
               "settings": {
                 "text": "<p>The key to choosing eyewear is finding a frame that compliments your face shape. Before you start shopping around, take our quick two minute quiz to get suggestions from our eyewear team.</p>",
-                "width": "100%",
+                "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
                 "type_preset": "rte",
