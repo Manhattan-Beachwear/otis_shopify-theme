@@ -2537,21 +2537,6 @@
     "product_list_4pfDAW": {
       "type": "product-list",
       "blocks": {
-        "button_qy4ycX": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "Shop All Best Sellers",
-            "link": "shopify://collections/best-sellers",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
-        },
         "static-header": {
           "type": "_product-list-content",
           "name": "t:names.header",
@@ -2771,15 +2756,12 @@
           ]
         }
       },
-      "block_order": [
-        "button_qy4ycX"
-      ],
       "name": "t:names.products_carousel",
       "settings": {
         "collection": "homepage-grid",
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "max_products": 15,
+        "max_products": 14,
         "columns": 4,
         "mobile_columns": "2",
         "mobile_card_size": "44cqw",
