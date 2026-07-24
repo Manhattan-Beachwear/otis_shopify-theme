@@ -111,4 +111,36 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
   }
 
   if (state.lensProduct?.color) scheduleApply();
+
+  // Cache warming: quietly pre-generate every lens color for this frame so
+  // swatch clicks resolve instantly. Results only land in the R2 cache.
+  function warmCache() {
+    if (!original) return;
+    const dataEl = document.querySelector('[data-rx-product-data]');
+    if (!dataEl) return;
+    let colors = [];
+    try {
+      const data = JSON.parse(dataEl.textContent);
+      colors = (data.lensCategories ?? [])
+        .flatMap((category) => category.products ?? [])
+        .map((product) => lensColorSlug(product.color))
+        .filter(Boolean);
+    } catch {
+      return;
+    }
+    const queue = [...new Set(colors)].filter((slug) => slug !== lensColorSlug(state.lensProduct?.color));
+
+    const next = async () => {
+      const slug = queue.shift();
+      if (!slug) return;
+      await recolorLensImage(original.src, slug).catch(() => {});
+      return next();
+    };
+    // Two lanes keep the service load modest.
+    next();
+    next();
+  }
+
+  const idle = window.requestIdleCallback ?? ((fn) => setTimeout(fn, 1));
+  setTimeout(() => idle(warmCache), 4000);
 })();
