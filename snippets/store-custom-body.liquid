@@ -14,3 +14,62 @@
   See README.md for deployment configuration details.
 {% endcomment %}
 
+{% comment %} RX: hide backend-only line-item properties in cart drawer and cart page. {% endcomment %}
+<script>
+  (function () {
+    // Backend-contract property names that must not be shown to shoppers.
+    // Human-readable props (RX Style, Lens Style, Pupillary Distance*) stay visible.
+    // Underscore-prefixed props are already filtered out by the theme's Liquid.
+    var HIDE = [
+      'rxOrder',
+      'uniqueId',
+      'Prescription RX UID',
+      'Provider number',
+      'Health Fund Item Numbers',
+      'Frame SKU',
+      'Lens SKU',
+      'expiredRX'
+    ];
+
+    // dt renders as "Name:" — strip the trailing colon before matching.
+    function labelOf(dt) {
+      return (dt.textContent || '').trim().replace(/:\s*$/, '').trim();
+    }
+
+    function hideRxProps(root) {
+      var scope = root && root.querySelectorAll ? root : document;
+      var rows = scope.querySelectorAll('.cart-items__properties');
+      for (var i = 0; i < rows.length; i++) {
+        var dt = rows[i].querySelector('dt');
+        if (dt && HIDE.indexOf(labelOf(dt)) !== -1) {
+          rows[i].style.display = 'none';
+        }
+      }
+    }
+
+    var scheduled = false;
+    function schedule() {
+      if (scheduled) return;
+      scheduled = true;
+      // Coalesce bursts of mutations (cart re-renders) into one pass.
+      requestAnimationFrame(function () {
+        scheduled = false;
+        hideRxProps(document);
+      });
+    }
+
+    hideRxProps(document);
+    document.addEventListener('DOMContentLoaded', function () {
+      hideRxProps(document);
+    });
+
+    // Cart drawer/page is re-rendered dynamically after add-to-cart, so watch the DOM.
+    if (document.body) {
+      new MutationObserver(schedule).observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
+  })();
+</script>
+
