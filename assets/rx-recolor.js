@@ -40,6 +40,13 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
   let debounceTimer = null;
   const urlCache = new Map(); // color slug → generated image url (per page view)
 
+  // Coatings are invisible on a photo: every Clear option shares one 'clear'
+  // render instead of paying for three identical generations.
+  const recolorSlug = (color) => {
+    const slug = lensColorSlug(color);
+    return slug.startsWith('clear') ? 'clear' : slug;
+  };
+
   const mainImg = () => document.querySelector(MAIN_IMAGE_SELECTOR);
 
   // The recolor service downloads image_url itself, so it must be publicly
@@ -83,7 +90,7 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
     const color = state.lensProduct?.color;
     if (!color) return void restore();
 
-    const slug = lensColorSlug(color);
+    const slug = recolorSlug(color);
     const known = urlCache.get(slug);
     if (known) {
       setUrl = known;
@@ -161,13 +168,13 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
       const data = JSON.parse(dataEl.textContent);
       colors = (data.lensCategories ?? [])
         .flatMap((category) => category.products ?? [])
-        .map((product) => lensColorSlug(product.color))
+        .map((product) => recolorSlug(product.color))
         .filter(Boolean);
     } catch {
       return;
     }
     const queue = [...new Set(colors)].filter(
-      (slug) => slug !== lensColorSlug(state.lensProduct?.color) && !urlCache.has(slug)
+      (slug) => slug !== recolorSlug(state.lensProduct?.color) && !urlCache.has(slug)
     );
 
     const next = async () => {
