@@ -9,7 +9,7 @@ function getRxState() {
 
 // Featured product image: the first gallery slide only — thumbnails, other
 // slides and variant media stay untouched.
-const MAIN_IMAGE_SELECTOR = 'product-information slideshow-slide img.product-media__image';
+const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.product-media__image';
 
 (function initRxRecolor() {
   if (window.__rxRecolorInit) return;
@@ -25,11 +25,24 @@ const MAIN_IMAGE_SELECTOR = 'product-information slideshow-slide img.product-med
 
   const mainImg = () => document.querySelector(MAIN_IMAGE_SELECTOR);
 
+  // The recolor service downloads image_url itself, so it must be publicly
+  // reachable — rewrite preview/localhost origins to the canonical shop domain.
+  function publicImageUrl(src) {
+    try {
+      const u = new URL(src, location.href);
+      const shop = window.Shopify?.shop;
+      if (shop && u.pathname.startsWith('/cdn/')) return `https://${shop}${u.pathname}${u.search}`;
+      return u.href;
+    } catch {
+      return src;
+    }
+  }
+
   function captureOriginal(el) {
     const src = el.currentSrc || el.src;
     if (!src || src === setUrl) return;
     original = {
-      src: stripImageSizeParams(src),
+      src: stripImageSizeParams(publicImageUrl(src)),
       srcset: el.getAttribute('srcset') || '',
       sizes: el.getAttribute('sizes') || '',
     };
