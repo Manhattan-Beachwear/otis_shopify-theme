@@ -38,6 +38,7 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
   let setUrl = null;
   let reqId = 0;
   let debounceTimer = null;
+  const urlCache = new Map(); // color slug → generated image url (per page view)
 
   const mainImg = () => document.querySelector(MAIN_IMAGE_SELECTOR);
 
@@ -82,12 +83,23 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
     const color = state.lensProduct?.color;
     if (!color) return void restore();
 
+    const slug = lensColorSlug(color);
+    const known = urlCache.get(slug);
+    if (known) {
+      setUrl = known;
+      el.srcset = '';
+      el.removeAttribute('sizes');
+      el.src = known;
+      return;
+    }
+
     const my = ++reqId;
     el.classList.add('rx-recolor-loading');
     try {
       // Always recolor from the original source, never from a recolored image.
-      const data = await recolorLensImage(original.src, lensColorSlug(color));
+      const data = await recolorLensImage(original.src, slug);
       if (my !== reqId) return;
+      urlCache.set(slug, data.url);
       setUrl = data.url;
       // Kill the responsive set or the browser keeps showing the original.
       el.srcset = '';
@@ -115,14 +127,24 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
   const el = mainImg();
   if (el) {
     captureOriginal(el);
+    const normalize = (src) => stripImageSizeParams(publicImageUrl(src));
     new MutationObserver(() => {
       const current = mainImg();
       if (!current) return;
       const src = current.currentSrc || current.src;
-      if (src && src !== setUrl && stripImageSizeParams(src) !== original?.src) {
-        captureOriginal(current);
-        if (state.lensProduct?.color) scheduleApply();
+      if (!src || src === setUrl) return;
+      if (normalize(src) === original?.src) {
+        // The theme restored the original (e.g. re-applied srcset). Reassert
+        // the recolored image from memory — no new request.
+        if (setUrl && state.lensProduct?.color) {
+          current.srcset = '';
+          current.removeAttribute('sizes');
+          current.src = setUrl;
+        }
+        return;
       }
+      captureOriginal(current);
+      if (state.lensProduct?.color) scheduleApply();
     }).observe(el.closest('slideshow-slide') ?? el, { attributes: true, subtree: true, attributeFilter: ['src', 'srcset'] });
   }
 
@@ -144,12 +166,16 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
     } catch {
       return;
     }
-    const queue = [...new Set(colors)].filter((slug) => slug !== lensColorSlug(state.lensProduct?.color));
+    const queue = [...new Set(colors)].filter(
+      (slug) => slug !== lensColorSlug(state.lensProduct?.color) && !urlCache.has(slug)
+    );
 
     const next = async () => {
       const slug = queue.shift();
       if (!slug) return;
-      await recolorLensImage(original.src, slug).catch(() => {});
+      await recolorLensImage(original.src, slug)
+        .then((data) => data?.url && urlCache.set(slug, data.url))
+        .catch(() => {});
       return next();
     };
     // Two lanes keep the service load modest.
