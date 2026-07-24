@@ -62,9 +62,22 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
     }
   }
 
+  const generated = new Set(); // every url we ever set — never a recolor input
+
+  // Only a Shopify-hosted product image counts as an original. Anything else
+  // (our R2 renders included) must never become the recolor source, or each
+  // result feeds the next request and the backend cache can never hit.
+  function isShopImage(src) {
+    try {
+      return new URL(src, location.href).pathname.startsWith('/cdn/');
+    } catch {
+      return false;
+    }
+  }
+
   function captureOriginal(el) {
     const src = el.currentSrc || el.src;
-    if (!src || src === setUrl) return;
+    if (!src || src === setUrl || generated.has(src) || !isShopImage(src)) return;
     original = {
       src: stripImageSizeParams(publicImageUrl(src)),
       srcset: el.getAttribute('srcset') || '',
@@ -107,6 +120,7 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
       const data = await recolorLensImage(original.src, slug);
       if (my !== reqId) return;
       urlCache.set(slug, data.url);
+      generated.add(data.url);
       setUrl = data.url;
       // Kill the responsive set or the browser keeps showing the original.
       el.srcset = '';
@@ -139,7 +153,7 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
       const current = mainImg();
       if (!current) return;
       const src = current.currentSrc || current.src;
-      if (!src || src === setUrl) return;
+      if (!src || src === setUrl || generated.has(src)) return;
       if (normalize(src) === original?.src) {
         // The theme restored the original (e.g. re-applied srcset). Reassert
         // the recolored image from memory — no new request.
@@ -181,7 +195,12 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
       const slug = queue.shift();
       if (!slug) return;
       await recolorLensImage(original.src, slug)
-        .then((data) => data?.url && urlCache.set(slug, data.url))
+        .then((data) => {
+          if (data?.url) {
+            urlCache.set(slug, data.url);
+            generated.add(data.url);
+          }
+        })
         .catch(() => {});
       return next();
     };
