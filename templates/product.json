@@ -729,12 +729,19 @@
               "block_order": [
                 "accordion_row_LFTGdJ"
               ]
+            },
+            "rx_buy_cta": {
+              "type": "rx-buy-with-prescription",
+              "settings": {
+                "label": "Buy with prescription"
+              }
             }
           },
           "block_order": [
             "group_icgrde",
             "divider_VJhene",
             "variant_picker_cl_jye8jk",
+            "rx_buy_cta",
             "buy_buttons_eYQEYi",
             "group_3mG9LE",
             "text_aEtTtq",
@@ -884,7 +891,7 @@
                 "text_J3DMLa": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Every OTIS lens is made from non-toxic natural materials like sand and soda ash. At the end of their long life, they’re also endlessly recyclable.<br/><br/></p>",
+                    "text": "<p>Every OTIS lens is made from non-toxic natural materials like sand and soda ash. At the end of their long life, they\u2019re also endlessly recyclable.<br/><br/></p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -1184,7 +1191,7 @@
                 "text_6TFqQz": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>OTIS Eyewear is a certified B Corporation. It's the gold standard in making sure businesses use their influence as a force for good in the world. </p>",
+                    "text": "<p>OTIS Eyewear is a certified B Corporation. It's the gold standard in making sure businesses use their influence as a force for good in the world.\u00a0</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "center",
@@ -1907,7 +1914,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>OTIS mineral glass lenses are naturally scratch resistant, optically correct and more sustainable than the plastic alternatives that go in most other eyewear. This makes them easily the best sunglass lenses on the planet. </p>",
+                "text": "<p>OTIS mineral glass lenses are naturally scratch resistant, optically correct and more sustainable than the plastic alternatives that go in most other eyewear. This makes them easily the best sunglass lenses on the planet.\u00a0</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -2209,7 +2216,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>As part of our commitment to the planet, we’ve removed all non-biodegradable plastic from our packaging. Your glasses are instead wrapped in a reusable cleaning cloth, protected by a reusable case, and packaged in a recyclable craft card box.</p>",
+                "text": "<p>As part of our commitment to the planet, we\u2019ve removed all non-biodegradable plastic from our packaging. Your glasses are instead wrapped in a reusable cleaning cloth, protected by a reusable case, and packaged in a recyclable craft card box.</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -2372,7 +2379,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Your sunglasses’ hinges get folded thousands of times throughout their lifetime so it's critical they’re made to last. All of our frames use high-quality, Italian-designed Visottica hinges to keep things together, use after use after use.</p>",
+                "text": "<p>Your sunglasses\u2019 hinges get folded thousands of times throughout their lifetime so it's critical they\u2019re made to last. All of our frames use high-quality, Italian-designed Visottica hinges to keep things together, use after use after use.</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -2673,7 +2680,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Each frame is carefully handcrafted and brought to life. This means every single frame is checked and finished to the highest standard.⁠⁠</p>",
+                "text": "<p>Each frame is carefully handcrafted and brought to life. This means every single frame is checked and finished to the highest standard.\u2060\u2060</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
