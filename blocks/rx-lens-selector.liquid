@@ -1,0 +1,374 @@
+{%- doc -%}
+  RX lens category picker. Renders selectable cards for the configured lens
+  categories (Clear / Sunglasses / Photochromic) and emits the shared RX product
+  data JSON (via `rx-product-data`) that every RX component reads at runtime.
+
+  Categories, lens products and per-base-curve mappings are configured on this
+  block; the JS filters out cards whose category resolved to no product and
+  auto-selects when a single category remains.
+{%- enddoc -%}
+
+{%- liquid
+  assign heading = block.settings.heading
+  assign heading_id = 'RxLensHeading-' | append: block.id
+-%}
+
+<rx-lens-selector
+  class="rx-lens-selector"
+  data-default-category="{{ block.settings.default_category | strip | escape }}"
+  {{ block.shopify_attributes }}
+>
+  {%- if heading != blank -%}
+    <p class="rx-lens-selector__heading" id="{{ heading_id }}">{{ heading | escape }}</p>
+  {%- endif -%}
+
+  <div
+    class="rx-lens-selector__cards"
+    role="radiogroup"
+    {% if heading != blank %}aria-labelledby="{{ heading_id }}"{% else %}aria-label="Lens type"{% endif %}
+  >
+    {%- for i in (1..3) -%}
+      {%- liquid
+        assign key_setting = 'lens_category_' | append: i | append: '_key'
+        assign label_setting = 'lens_category_' | append: i | append: '_label'
+        assign desc_setting = 'lens_category_' | append: i | append: '_description'
+        assign category_key = block.settings[key_setting] | strip
+        assign category_label = block.settings[label_setting] | default: category_key
+        assign category_desc = block.settings[desc_setting]
+      -%}
+      {%- if category_key == blank -%}{%- continue -%}{%- endif -%}
+      <button
+        type="button"
+        class="rx-lens-selector__card"
+        role="radio"
+        aria-checked="false"
+        data-category-key="{{ category_key | escape }}"
+        on:click="/selectCategory?key={{ category_key | url_encode }}"
+      >
+        <span class="rx-lens-selector__card-label">{{ category_label | escape }}</span>
+        <span class="rx-lens-selector__card-price" data-rx-cat-price hidden></span>
+        {%- if category_desc != blank -%}
+          <span class="rx-lens-selector__card-desc">{{ category_desc | escape }}</span>
+        {%- endif -%}
+      </button>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%}
+    Not closest.product: this block has product-type settings (the lens
+    products), and closest.product resolves to those before the page product.
+  {%- endcomment -%}
+  {% render 'rx-product-data', block: block, product: product %}
+</rx-lens-selector>
+
+<script src="{{ 'rx-selectors.js' | asset_url }}" type="module" fetchpriority="low"></script>
+
+{% stylesheet %}
+  rx-lens-selector {
+    display: block;
+    margin-block: var(--padding-md);
+  }
+
+  rx-lens-selector[hidden] {
+    display: none;
+  }
+
+  .rx-lens-selector__heading {
+    margin: 0 0 var(--padding-xs);
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+  }
+
+  .rx-lens-selector__cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-sm);
+  }
+
+  .rx-lens-selector__card {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: var(--padding-sm) var(--padding-md);
+    border: var(--style-border-width-inputs, 1px) solid var(--color-border);
+    border-radius: var(--style-border-radius-buttons);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .rx-lens-selector__card:hover {
+    border-color: var(--color-foreground);
+  }
+
+  .rx-lens-selector__card--selected {
+    border-color: var(--color-foreground);
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .rx-lens-selector__card[hidden] {
+    display: none;
+  }
+
+  .rx-lens-selector__card-label {
+    display: block;
+    font-weight: 600;
+  }
+
+  .rx-lens-selector__card-price {
+    display: block;
+    margin-block-start: var(--padding-3xs, 2px);
+    font-size: var(--font-size--sm);
+  }
+
+  .rx-lens-selector__card-desc {
+    display: block;
+    margin-block-start: var(--padding-2xs, 4px);
+    font-size: var(--font-size--xs);
+    opacity: 0.7;
+    line-height: 1.35;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RX Lens Selector",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Lens type"
+    },
+    {
+      "type": "text",
+      "id": "default_category",
+      "label": "Preselected category key",
+      "info": "Category key selected on page load (e.g. clear). Leave empty for no preselection."
+    },
+    {
+      "type": "header",
+      "content": "Category 1"
+    },
+    {
+      "type": "text",
+      "id": "lens_category_1_key",
+      "label": "Key",
+      "default": "clear",
+      "info": "Stable identifier used by the RX flow. Lowercase, no spaces."
+    },
+    {
+      "type": "text",
+      "id": "lens_category_1_label",
+      "label": "Label",
+      "default": "Clear"
+    },
+    {
+      "type": "text",
+      "id": "lens_category_1_description",
+      "label": "Description"
+    },
+    {
+      "type": "product",
+      "id": "lens_product_1",
+      "label": "Single vision lens product"
+    },
+    {
+      "type": "product",
+      "id": "progressive_product_1",
+      "label": "Progressive lens product"
+    },
+    {
+      "type": "product",
+      "id": "lens_product_high_1",
+      "label": "High Rx lens product",
+      "info": "Used when the prescription exceeds the standard power range."
+    },
+    {
+      "type": "text",
+      "id": "alt_tag_1",
+      "label": "Alternate family frame tag",
+      "info": "Frames carrying this tag (e.g. base_6) use the alternate lens products below."
+    },
+    {
+      "type": "product",
+      "id": "alt_product_1",
+      "label": "Alternate lens product"
+    },
+    {
+      "type": "product",
+      "id": "alt_product_high_1",
+      "label": "Alternate High Rx lens product"
+    },
+    {
+      "type": "header",
+      "content": "Category 2"
+    },
+    {
+      "type": "text",
+      "id": "lens_category_2_key",
+      "label": "Key",
+      "default": "sunglasses"
+    },
+    {
+      "type": "text",
+      "id": "lens_category_2_label",
+      "label": "Label",
+      "default": "Sunglasses"
+    },
+    {
+      "type": "text",
+      "id": "lens_category_2_description",
+      "label": "Description"
+    },
+    {
+      "type": "product",
+      "id": "lens_product_2",
+      "label": "Single vision lens product"
+    },
+    {
+      "type": "product",
+      "id": "progressive_product_2",
+      "label": "Progressive lens product"
+    },
+    {
+      "type": "product",
+      "id": "lens_product_high_2",
+      "label": "High Rx lens product",
+      "info": "Used when the prescription exceeds the standard power range."
+    },
+    {
+      "type": "text",
+      "id": "alt_tag_2",
+      "label": "Alternate family frame tag",
+      "info": "Frames carrying this tag (e.g. base_6) use the alternate lens products below."
+    },
+    {
+      "type": "product",
+      "id": "alt_product_2",
+      "label": "Alternate lens product"
+    },
+    {
+      "type": "product",
+      "id": "alt_product_high_2",
+      "label": "Alternate High Rx lens product"
+    },
+    {
+      "type": "header",
+      "content": "Category 3"
+    },
+    {
+      "type": "text",
+      "id": "lens_category_3_key",
+      "label": "Key",
+      "default": "photochromic"
+    },
+    {
+      "type": "text",
+      "id": "lens_category_3_label",
+      "label": "Label",
+      "default": "Photochromic"
+    },
+    {
+      "type": "text",
+      "id": "lens_category_3_description",
+      "label": "Description"
+    },
+    {
+      "type": "product",
+      "id": "lens_product_3",
+      "label": "Single vision lens product"
+    },
+    {
+      "type": "product",
+      "id": "progressive_product_3",
+      "label": "Progressive lens product"
+    },
+    {
+      "type": "product",
+      "id": "lens_product_high_3",
+      "label": "High Rx lens product",
+      "info": "Used when the prescription exceeds the standard power range."
+    },
+    {
+      "type": "text",
+      "id": "alt_tag_3",
+      "label": "Alternate family frame tag",
+      "info": "Frames carrying this tag (e.g. base_6) use the alternate lens products below."
+    },
+    {
+      "type": "product",
+      "id": "alt_product_3",
+      "label": "Alternate lens product"
+    },
+    {
+      "type": "product",
+      "id": "alt_product_high_3",
+      "label": "Alternate High Rx lens product"
+    },
+    {
+      "type": "header",
+      "content": "Base-curve mappings",
+      "info": "Fallback lens product per frame base-curve tag when a category has no explicit product."
+    },
+    {
+      "type": "text",
+      "id": "special_tag_1",
+      "label": "Base-curve tag 1"
+    },
+    {
+      "type": "product",
+      "id": "special_product_1",
+      "label": "Lens product 1"
+    },
+    {
+      "type": "text",
+      "id": "special_tag_2",
+      "label": "Base-curve tag 2"
+    },
+    {
+      "type": "product",
+      "id": "special_product_2",
+      "label": "Lens product 2"
+    },
+    {
+      "type": "text",
+      "id": "special_tag_3",
+      "label": "Base-curve tag 3"
+    },
+    {
+      "type": "product",
+      "id": "special_product_3",
+      "label": "Lens product 3"
+    },
+    {
+      "type": "text",
+      "id": "special_tag_4",
+      "label": "Base-curve tag 4"
+    },
+    {
+      "type": "product",
+      "id": "special_product_4",
+      "label": "Lens product 4"
+    },
+    {
+      "type": "text",
+      "id": "special_tag_5",
+      "label": "Base-curve tag 5"
+    },
+    {
+      "type": "product",
+      "id": "special_product_5",
+      "label": "Lens product 5"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RX Lens Selector"
+    }
+  ]
+}
+{% endschema %}

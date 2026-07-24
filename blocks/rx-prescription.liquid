@@ -1,0 +1,151 @@
+{%- doc -%}
+  RX prescription block. Shows an "Add prescription" CTA on the RX product page
+  and renders the shared prescription drawer. The CTA stays hidden until a
+  prescription-bearing lens is chosen and opens the drawer by id.
+
+  Prescription limits and App Proxy config (subdomain, provider, expiry check,
+  health-fund numbers) are set here and passed to the drawer snippet.
+{%- enddoc -%}
+
+{%- liquid
+  assign drawer_id = 'RxPrescriptionDrawer-' | append: block.id
+  assign add_label = block.settings.cta_label | default: 'Add prescription'
+  assign edit_label = block.settings.edit_label | default: 'Edit prescription'
+-%}
+
+<rx-prescription
+  class="rx-prescription"
+  data-add-label="{{ add_label | escape }}"
+  data-edit-label="{{ edit_label | escape }}"
+  data-later-label="Add prescription later"
+  hidden
+  {{ block.shopify_attributes }}
+>
+  <button
+    type="button"
+    class="button rx-prescription__cta"
+    on:click="#{{ drawer_id }}/start"
+  >
+    <span data-rx-cta-label>{{ add_label | escape }}</span>
+  </button>
+</rx-prescription>
+
+{% render 'rx-prescription-drawer', rx_settings: block.settings, drawer_id: drawer_id %}
+
+{% stylesheet %}
+  rx-prescription {
+    display: block;
+    margin-block: var(--padding-md);
+  }
+
+  rx-prescription[hidden] {
+    display: none;
+  }
+
+  .rx-prescription__cta {
+    width: 100%;
+  }
+
+  .rx-prescription--done .rx-prescription__cta {
+    --rx-check: '✓ ';
+  }
+
+  .rx-prescription--done .rx-prescription__cta [data-rx-cta-label]::before {
+    content: var(--rx-check);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RX Prescription",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Add prescription label",
+      "default": "Add prescription"
+    },
+    {
+      "type": "text",
+      "id": "edit_label",
+      "label": "Edit prescription label",
+      "default": "Edit prescription"
+    },
+    {
+      "type": "header",
+      "content": "App Proxy"
+    },
+    {
+      "type": "text",
+      "id": "rx_subdomain",
+      "label": "Subdomain",
+      "info": "Store subdomain sent to the EazyVisi App Proxy."
+    },
+    {
+      "type": "text",
+      "id": "rx_provider_number",
+      "label": "Provider number"
+    },
+    {
+      "type": "text",
+      "id": "health_fund_numbers",
+      "label": "Health fund item numbers"
+    },
+    {
+      "type": "checkbox",
+      "id": "rx_check_expiration",
+      "label": "Warn on prescriptions older than 24 months",
+      "default": true
+    },
+    {
+      "type": "number",
+      "id": "rx_tier_sph_threshold",
+      "label": "Standard power range limit (SPH)",
+      "default": 2,
+      "info": "Above this absolute sphere value the High Rx lens products are used."
+    },
+    {
+      "type": "header",
+      "content": "Sphere (SPH) limits"
+    },
+    { "type": "number", "id": "limits_sph_min", "label": "Min", "default": -20 },
+    { "type": "number", "id": "limits_sph_max", "label": "Max", "default": 20 },
+    {
+      "type": "header",
+      "content": "Cylinder (CYL) limits"
+    },
+    { "type": "number", "id": "limits_cyl_min", "label": "Min", "default": -6 },
+    { "type": "number", "id": "limits_cyl_max", "label": "Max", "default": 6 },
+    {
+      "type": "header",
+      "content": "Axis limits"
+    },
+    { "type": "number", "id": "limits_axis_min", "label": "Min", "default": 0 },
+    { "type": "number", "id": "limits_axis_max", "label": "Max", "default": 180 },
+    {
+      "type": "header",
+      "content": "Addition (ADD) limits"
+    },
+    { "type": "number", "id": "limits_add_min", "label": "Min", "default": 0 },
+    { "type": "number", "id": "limits_add_max", "label": "Max", "default": 4 },
+    {
+      "type": "header",
+      "content": "Pupillary distance (PD) limits"
+    },
+    { "type": "number", "id": "limits_pd_min", "label": "Min", "default": 40 },
+    { "type": "number", "id": "limits_pd_max", "label": "Max", "default": 80 },
+    {
+      "type": "header",
+      "content": "Prism limits"
+    },
+    { "type": "number", "id": "limits_prism_min", "label": "Min", "default": 0 },
+    { "type": "number", "id": "limits_prism_max", "label": "Max", "default": 10 }
+  ],
+  "presets": [
+    {
+      "name": "RX Prescription"
+    }
+  ]
+}
+{% endschema %}

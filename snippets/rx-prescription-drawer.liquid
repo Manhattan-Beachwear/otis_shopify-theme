@@ -1,0 +1,583 @@
+{%- doc -%}
+  RX prescription drawer — an over-the-page `<dialog>` driven by `rx-prescription.js`.
+  The component renders its own step content (upload / manual form / "add later"),
+  so this snippet only emits the shell, the file input and the runtime config.
+
+  Reused by the `rx-prescription` block (PDP) and the `rx-my-orders` section, so
+  it takes a generic `rx_settings` bag (a `block.settings` or `section.settings`
+  drop) plus a stable `drawer_id` the trigger targets via `on:click`.
+
+  @param {object} rx_settings - Settings drop holding `limits_*`, `rx_subdomain`,
+    `rx_provider_number`, `rx_check_expiration`, `health_fund_numbers`.
+  @param {string} drawer_id - DOM id for the drawer (trigger uses `#<id>/start`).
+
+  @example
+  {% render 'rx-prescription-drawer', rx_settings: block.settings, drawer_id: 'RxDrawer-1' %}
+{%- enddoc -%}
+
+{%- liquid
+  assign limit_keys = 'sph,cyl,axis,add,pd,prism' | split: ','
+  assign limit_mins = '-20,-6,0,0.75,40,0' | split: ','
+  assign limit_maxs = '20,6,180,3.5,80,10' | split: ','
+  assign limit_steps = '0.25,0.25,1,0.25,0.5,0.25' | split: ','
+
+  assign check_expiration = 'true'
+  if rx_settings.rx_check_expiration == false
+    assign check_expiration = 'false'
+  endif
+-%}
+
+{%- capture limits_json -%}
+{
+  {%- for key in limit_keys -%}
+    {%- liquid
+      assign idx = forloop.index0
+      assign min_key = 'limits_' | append: key | append: '_min'
+      assign max_key = 'limits_' | append: key | append: '_max'
+      assign step_key = 'limits_' | append: key | append: '_step'
+      assign min_val = rx_settings[min_key] | default: limit_mins[idx]
+      assign max_val = rx_settings[max_key] | default: limit_maxs[idx]
+      assign step_val = rx_settings[step_key] | default: limit_steps[idx]
+    -%}
+    {%- unless forloop.first -%},{%- endunless -%}
+    {{ key | json }}: { "min": {{ min_val }}, "max": {{ max_val }}, "step": {{ step_val }} }
+  {%- endfor -%}
+}
+{%- endcapture -%}
+
+<rx-prescription-drawer
+  id="{{ drawer_id }}"
+  class="rx-prescription-drawer"
+  data-limits="{{ limits_json | escape }}"
+  data-subdomain="{{ rx_settings.rx_subdomain | escape }}"
+  data-provider-number="{{ rx_settings.rx_provider_number | escape }}"
+  data-check-expiration="{{ check_expiration }}"
+  data-tier-sph-threshold="{{ rx_settings.rx_tier_sph_threshold | default: 2 }}"
+  data-health-fund-numbers="{{ rx_settings.health_fund_numbers | escape }}"
+>
+  <script src="{{ 'rx-prescription.js' | asset_url }}" type="module" fetchpriority="low"></script>
+
+  <dialog
+    ref="dialog"
+    class="rx-prescription-drawer__dialog dialog-modal color-{{ settings.popover_color_scheme }}"
+    scroll-lock
+    aria-label="Add prescription"
+  >
+    <div class="rx-prescription-drawer__panel">
+      <div class="rx-prescription-drawer__header">
+        <button
+          ref="back"
+          type="button"
+          class="button button-unstyled rx-prescription-drawer__back"
+          data-rx-back
+          hidden
+        >
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+          <span>Back</span>
+        </button>
+        <button
+          type="button"
+          class="button button-unstyled close-button rx-prescription-drawer__close"
+          data-rx-close
+          aria-label="{{ 'accessibility.close_dialog' | t }}"
+        >
+          {{- 'icon-close.svg' | inline_asset_content -}}
+        </button>
+      </div>
+
+      <input
+        type="file"
+        class="rx-prescription-drawer__file"
+        data-rx-file
+        accept=".jpg,.jpeg,.png,.webp,.heic,.pdf"
+        hidden
+      >
+
+      <div
+        ref="body"
+        data-rx-body
+        class="rx-prescription-drawer__body"
+      ></div>
+    </div>
+  </dialog>
+</rx-prescription-drawer>
+
+{% stylesheet %}
+  .rx-prescription-drawer__dialog {
+    width: min(600px, 96vw);
+    max-width: 96vw;
+    max-height: 92dvh;
+    padding: 0;
+    border: var(--style-border-popover);
+    border-radius: var(--style-border-radius-popover);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    overflow: hidden;
+  }
+
+  /* Confirm-with-preview view: two columns need the extra width. */
+  .rx-prescription-drawer__dialog--wide {
+    width: min(1040px, 96vw);
+  }
+
+  /* Doubled class: the base .rx-prescription__step sets display: flex later in
+     the cascade at equal specificity. */
+  .rx-prescription__step.rx-prescription__step--split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: var(--gap-2xl, 40px);
+    align-items: stretch;
+  }
+
+  /* Scale the form up to fill the column so both sides read symmetric. */
+  .rx-prescription__step--split .rx-prescription__form-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md, 16px);
+    min-height: 100%;
+  }
+
+  .rx-prescription__step--split .rx-prescription__row {
+    margin-block-end: var(--gap-sm, 12px);
+  }
+
+  .rx-prescription__step--split .rx-prescription__row-label,
+  .rx-prescription__step--split .rx-prescription__label,
+  .rx-prescription__step--split .rx-prescription__select,
+  .rx-prescription__step--split .rx-prescription__input {
+    font-size: var(--font-size--md, 1rem);
+  }
+
+  .rx-prescription__step--split .rx-prescription__select,
+  .rx-prescription__step--split .rx-prescription__input {
+    padding: var(--padding-xs, 8px) var(--padding-sm, 12px);
+  }
+
+  .rx-prescription__step--split .rx-prescription__row--head {
+    font-size: var(--font-size--sm, 0.875rem);
+  }
+
+  /* In the split view the preview matches the form column height and the
+     image scales to fill it. */
+  .rx-prescription__step--split .rx-prescription__preview {
+    height: 100%;
+  }
+
+  .rx-prescription__step--split .rx-prescription__preview-media {
+    flex: 1 1 0;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .rx-prescription__hi-index-summary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs, 8px);
+    margin-block: var(--gap-md, 16px);
+    padding: var(--padding-sm, 12px);
+    border: var(--style-border-popover, 1px solid rgb(0 0 0 / 10%));
+    border-radius: var(--style-border-radius-popover, 8px);
+  }
+
+  .rx-prescription__hi-index-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size--sm, 0.875rem);
+  }
+
+  .rx-prescription__hi-index-row--total {
+    font-weight: 600;
+  }
+
+  .rx-prescription__preview {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs, 8px);
+    border: var(--style-border-popover, 1px solid rgb(0 0 0 / 10%));
+    border-radius: var(--style-border-radius-popover, 8px);
+    padding: var(--padding-sm, 12px);
+  }
+
+  .rx-prescription__preview-media {
+    width: 100%;
+    max-height: 60dvh;
+    object-fit: contain;
+    border-radius: inherit;
+  }
+
+  embed.rx-prescription__preview-media {
+    height: 60dvh;
+  }
+
+  .rx-prescription__preview-name {
+    margin: 0;
+    font-size: var(--font-size--xs, 0.75rem);
+    overflow-wrap: anywhere;
+    opacity: 0.7;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rx-prescription__step.rx-prescription__step--split {
+      grid-template-columns: 1fr;
+    }
+
+    /* On mobile the image goes first so values can be checked against it. */
+    .rx-prescription__preview {
+      order: -1;
+      position: static;
+    }
+
+    .rx-prescription__preview-media {
+      max-height: 32dvh;
+    }
+
+    embed.rx-prescription__preview-media {
+      height: 32dvh;
+    }
+  }
+
+  .rx-prescription-drawer__dialog[open] {
+    animation: modalSlideInTop var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .rx-prescription-drawer__dialog.dialog-closing {
+    animation: modalSlideOutTop var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rx-prescription-drawer__dialog {
+      width: 100vw;
+      max-width: 100vw;
+      height: 100dvh;
+      max-height: 100dvh;
+      border-radius: 0;
+    }
+  }
+
+  .rx-prescription-drawer__panel {
+    display: flex;
+    flex-direction: column;
+    max-height: 92dvh;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rx-prescription-drawer__panel {
+      max-height: 100dvh;
+      height: 100dvh;
+    }
+  }
+
+  .rx-prescription-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-sm);
+    padding: var(--padding-sm) var(--padding-md);
+    border-bottom: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+
+  .rx-prescription-drawer__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--padding-2xs);
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+  }
+
+  .rx-prescription-drawer__back svg {
+    width: 1em;
+    height: 1em;
+    transform: rotate(90deg);
+  }
+
+  .rx-prescription-drawer__back[hidden] {
+    display: none;
+  }
+
+  .rx-prescription-drawer__close {
+    margin-inline-start: auto;
+  }
+
+  .rx-prescription-drawer__body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1 1 auto;
+  }
+
+  /* --- Steps --------------------------------------------------------------- */
+
+  .rx-prescription__step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+    padding: var(--padding-xl) var(--padding-lg);
+  }
+
+  .rx-prescription__step--initial {
+    text-align: center;
+    gap: var(--gap-lg);
+  }
+
+  .rx-prescription__title {
+    margin: 0;
+    font-size: var(--font-size--lg);
+    font-weight: 600;
+  }
+
+  .rx-prescription__subtitle {
+    margin: 0;
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground-secondary, var(--color-foreground));
+    opacity: 0.75;
+  }
+
+  .rx-prescription__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+  }
+
+  .rx-prescription__action {
+    width: 100%;
+  }
+
+  .rx-prescription__or {
+    font-size: var(--font-size--xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.55;
+  }
+
+  .rx-prescription__subtotal,
+  .rx-prescription__footer-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: var(--font-size--sm);
+  }
+
+  .rx-prescription__subtotal {
+    padding-block: var(--padding-sm);
+    border-block: 1px solid var(--color-border);
+  }
+
+  .rx-prescription__later {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-2xs);
+  }
+
+  .rx-prescription__later-btn {
+    text-decoration: underline;
+    font-size: var(--font-size--sm);
+  }
+
+  .rx-prescription__file {
+    margin: 0;
+    font-size: var(--font-size--xs);
+    opacity: 0.7;
+  }
+
+  .rx-prescription__notice {
+    margin: 0;
+    padding: var(--padding-sm);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    background: var(--color-background-secondary, rgb(0 0 0 / 4%));
+    font-size: var(--font-size--sm);
+  }
+
+  .rx-prescription__notice--warning {
+    background: rgb(180 120 0 / 12%);
+  }
+
+  /* --- Table --------------------------------------------------------------- */
+
+  .rx-prescription__table {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+  }
+
+  .rx-prescription__row {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr 1fr;
+    align-items: start;
+    gap: var(--gap-sm);
+  }
+
+  .rx-prescription__row--head {
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+    opacity: 0.7;
+  }
+
+  .rx-prescription__row-label {
+    align-self: center;
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+  }
+
+  .rx-prescription__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-2xs);
+    min-width: 0;
+  }
+
+  .rx-prescription__select,
+  .rx-prescription__input {
+    width: 100%;
+    min-width: 0;
+    padding: var(--padding-2xs) var(--padding-xs);
+    border: var(--style-border-width-inputs, 1px) solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-size: var(--font-size--sm);
+  }
+
+  .rx-prescription__field--error .rx-prescription__select,
+  .rx-prescription__field--error .rx-prescription__input {
+    border-color: var(--color-error, #c0392b);
+  }
+
+  .rx-prescription__error {
+    font-size: var(--font-size--xs);
+    color: var(--color-error, #c0392b);
+  }
+
+  .rx-prescription__mini {
+    align-self: center;
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+    opacity: 0.7;
+  }
+
+  /* --- PD / prism / date --------------------------------------------------- */
+
+  .rx-prescription__pd,
+  .rx-prescription__date {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-2xs);
+  }
+
+  .rx-prescription__pd-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-sm);
+  }
+
+  .rx-prescription__label {
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+  }
+
+  .rx-prescription__pd-inputs {
+    display: flex;
+    gap: var(--gap-sm);
+    align-items: center;
+  }
+
+  .rx-prescription__pd-inputs .rx-prescription__select {
+    flex: 1 1 auto;
+  }
+
+  .rx-prescription__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--padding-2xs);
+    font-size: var(--font-size--sm);
+    cursor: pointer;
+  }
+
+  .rx-prescription__toggle--block {
+    display: flex;
+  }
+
+  .rx-prescription__prism {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-md);
+  }
+
+  .rx-prescription__prism-eye {
+    flex: 1 1 12rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    padding: var(--padding-sm);
+    margin: 0;
+  }
+
+  .rx-prescription__prism-eye legend {
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+    padding-inline: var(--padding-2xs);
+  }
+
+  .rx-prescription__prism-row {
+    display: grid;
+    grid-template-columns: 4rem 1fr 1fr;
+    align-items: center;
+    gap: var(--gap-xs);
+    margin-block-start: var(--padding-2xs);
+    font-size: var(--font-size--xs);
+  }
+
+  /* --- Loader / footer ----------------------------------------------------- */
+
+  .rx-prescription__loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap-md);
+    padding: var(--padding-4xl) var(--padding-lg);
+    min-height: 40dvh;
+  }
+
+  .rx-prescription__spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-foreground);
+    border-radius: 50%;
+    animation: rx-spin 0.8s linear infinite;
+  }
+
+  @keyframes rx-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .rx-prescription__loader-text {
+    margin: 0;
+    font-size: var(--font-size--sm);
+  }
+
+  .rx-prescription__footer {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+    padding: var(--padding-md) var(--padding-lg);
+    background: var(--color-background);
+    border-top: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+
+  .rx-prescription__footer-price {
+    font-weight: 600;
+  }
+
+  .rx-prescription__submit {
+    width: 100%;
+  }
+{% endstylesheet %}

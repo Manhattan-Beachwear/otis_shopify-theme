@@ -1,0 +1,143 @@
+{%- doc -%}
+  RX lens options — color swatches for the selected lens product. Hidden until a
+  lens category and vision type are chosen; the JS reveals it only for the
+  configured color categories (default sunglasses / photochromic) when the active
+  lens product offers more than one color, then writes the chosen color variant
+  to the shared RX state.
+{%- enddoc -%}
+
+{%- liquid
+  assign heading = block.settings.heading
+  assign heading_id = 'RxLensOptionsHeading-' | append: block.id
+  assign color_categories = block.settings.color_categories | default: 'sunglasses,photochromic'
+-%}
+
+<rx-lens-options
+  class="rx-lens-options"
+  data-color-categories="{{ color_categories | escape }}"
+  hidden
+  {{ block.shopify_attributes }}
+>
+  {%- if heading != blank -%}
+    <p class="rx-lens-options__heading" id="{{ heading_id }}">{{ heading | escape }}</p>
+  {%- endif -%}
+
+  <div
+    class="rx-lens-options__swatches"
+    role="radiogroup"
+    ref="swatches"
+    {% if heading != blank %}aria-labelledby="{{ heading_id }}"{% else %}aria-label="Lens color"{% endif %}
+  ></div>
+  <div class="rx-lens-options__info" ref="info" aria-live="polite"></div>
+
+  {%- comment -%} Per-color overrides (swatch colors, descriptions) as nested blocks. {%- endcomment -%}
+  <div hidden>{% content_for 'blocks' %}</div>
+</rx-lens-options>
+
+<script src="{{ 'rx-lens-options.js' | asset_url }}" type="module" fetchpriority="low"></script>
+
+{% stylesheet %}
+  rx-lens-options {
+    display: block;
+    margin-block: var(--padding-md);
+  }
+
+  rx-lens-options[hidden] {
+    display: none;
+  }
+
+  .rx-lens-options__heading {
+    margin: 0 0 var(--padding-xs);
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+  }
+
+  .rx-lens-options__swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-sm);
+  }
+
+  .rx-lens-options__swatch-item {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  .rx-lens-options__dot {
+    pointer-events: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgb(0 0 0 / 12%);
+    outline: 2px solid transparent;
+    outline-offset: 3px;
+    transition: outline-color 0.15s ease;
+  }
+
+  .rx-lens-options__swatch-item--selected .rx-lens-options__dot {
+    outline-color: var(--color-foreground);
+  }
+
+  .rx-lens-options__info {
+    margin-block-start: var(--padding-xs);
+  }
+
+  .rx-lens-options__info-name {
+    margin: 0;
+    font-size: var(--font-size--md);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .rx-lens-options__info-delta {
+    margin-inline-start: var(--padding-2xs);
+    color: var(--color-accent, #3b6ea5);
+    font-weight: 600;
+  }
+
+  .rx-lens-options__info-desc {
+    margin: var(--padding-2xs) 0 0;
+    font-size: var(--font-size--sm);
+    line-height: 1.4;
+    opacity: 0.8;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RX Lens Options",
+  "tag": null,
+  "blocks": [
+    {
+      "type": "rx-color"
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Lens color"
+    },
+    {
+      "type": "text",
+      "id": "color_categories",
+      "label": "Color category keys",
+      "default": "sunglasses,photochromic",
+      "info": "Comma-separated lens category keys that show a color picker. Leave blank to show colors for any category."
+    }
+  ],
+  "presets": [
+    {
+      "name": "RX Lens Options"
+    }
+  ]
+}
+{% endschema %}
