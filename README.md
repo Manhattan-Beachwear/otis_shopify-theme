@@ -949,7 +949,7 @@ Copyright (c) 2025-present Shopify Inc. See [LICENSE](/LICENSE.md) for further d
 
 Store-specific prescription (RX) eyewear flow for OTIS US. Everything below is **additive** — no
 existing theme file is modified except protected zones. All new files carry the `rx-` prefix; the
-only edited protected file is `snippets/store-custom-body.liquid`. Behaviour references the EazyVisi
+only edited protected file is `snippets/store-custom-body.liquid`. Behaviour references the LenSync
 Prestige theme (`eazyvisitest/shopify/`); logic was re-implemented in Horizon idioms (base
 `Component`, `@theme/` imports, `CartAddEvent`), not copied.
 
@@ -960,7 +960,7 @@ Prestige theme (`eazyvisitest/shopify/`); logic was re-implemented in Horizon id
    template `templates/product.rx.json`, which composes the native `product-information` section
    with the new RX blocks (native `buy-buttons` are intentionally omitted — the RX flow adds to
    cart itself).
-2. **Prescription drawer** — upload a prescription file (OCR via the EazyVisi backend) or type
+2. **Prescription drawer** — upload a prescription file (OCR via the LenSync backend) or type
    values manually, with per-field validation and expiry check. Shared markup lives in
    `snippets/rx-prescription-drawer.liquid` and is reused by the PDP and the my-orders page.
 3. **Need RX page** (`/pages/my-orders`) — a logged-in customer sees their RX orders and can attach
@@ -1020,7 +1020,7 @@ mappings configured on the `rx-lens-selector` block. Lens metafields consumed:
 
 ### Line-item properties (backend contract — do not rename)
 
-These names are a fixed contract with the EazyVisi backend.
+These names are a fixed contract with the LenSync backend.
 
 - **Lens item:** `_bundleHash` (`bundle-hash-{ts}-{lensVariantId}-{frameVariantId}`), `rxOrder: "true"`,
   `_prescription_type`, `RX Style`, `Lens Style`, `Provider number`, `Health Fund Item Numbers`,
@@ -1041,7 +1041,7 @@ additionally hides these non-prefixed service properties in the cart drawer and 
 
 ### App Proxy endpoints (relative, no client-side HMAC)
 
-Signed by the Shopify App Proxy, forwarded to the EazyVisi backend:
+Signed by the Shopify App Proxy, forwarded to the LenSync backend:
 
 - `POST /apps/proxy/analyze-prescription` (FormData) — OCR analysis
 - `POST /apps/proxy/save-prescription` (JSON)
@@ -1069,7 +1069,7 @@ survive parent-theme updates:
 
 ### Prerequisites (outside the theme)
 
-1. EazyVisi app with App Proxy `apps/proxy` installed on the store.
+1. LenSync app with App Proxy `apps/proxy` installed on the store.
 2. Lens products tagged (`eyewear_*`, `basecurve_*`) and carrying the `custom.corresponding_rx_variant`
    / `custom.short_lens_color_description` metafields.
 3. A page with handle `my-orders`.
