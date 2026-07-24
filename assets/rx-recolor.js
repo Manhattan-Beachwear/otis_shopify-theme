@@ -1,0 +1,101 @@
+import { RxState, lensColorSlug, stripImageSizeParams } from './rx-core.js';
+import { recolorLensImage } from './rx-api.js';
+
+// Shared singleton — the first RX component to initialize creates the state.
+function getRxState() {
+  window.rxState ??= new RxState();
+  return window.rxState;
+}
+
+// Featured product image: the first gallery slide only — thumbnails, other
+// slides and variant media stay untouched.
+const MAIN_IMAGE_SELECTOR = 'product-information slideshow-slide img.product-media__image';
+
+(function initRxRecolor() {
+  if (window.__rxRecolorInit) return;
+  window.__rxRecolorInit = true;
+
+  const state = getRxState();
+  // Original (non-recolored) featured image — the recolor source and the
+  // restore target. srcset/sizes are kept so restore is lossless.
+  let original = null;
+  let setUrl = null;
+  let reqId = 0;
+  let debounceTimer = null;
+
+  const mainImg = () => document.querySelector(MAIN_IMAGE_SELECTOR);
+
+  function captureOriginal(el) {
+    const src = el.currentSrc || el.src;
+    if (!src || src === setUrl) return;
+    original = {
+      src: stripImageSizeParams(src),
+      srcset: el.getAttribute('srcset') || '',
+      sizes: el.getAttribute('sizes') || '',
+    };
+  }
+
+  function restore() {
+    const el = mainImg();
+    if (!el || !original) return;
+    el.src = original.src;
+    if (original.srcset) el.setAttribute('srcset', original.srcset);
+    if (original.sizes) el.setAttribute('sizes', original.sizes);
+    setUrl = null;
+  }
+
+  async function apply() {
+    const el = mainImg();
+    if (!el) return;
+    if (!original) captureOriginal(el);
+    if (!original) return;
+
+    const color = state.lensProduct?.color;
+    if (!color) return void restore();
+
+    const my = ++reqId;
+    el.classList.add('rx-recolor-loading');
+    try {
+      // Always recolor from the original source, never from a recolored image.
+      const data = await recolorLensImage(original.src, lensColorSlug(color));
+      if (my !== reqId) return;
+      setUrl = data.url;
+      // Kill the responsive set or the browser keeps showing the original.
+      el.srcset = '';
+      el.removeAttribute('sizes');
+      el.src = data.url;
+    } catch (error) {
+      if (my === reqId) restore();
+      console.warn('rx: recolor failed', error);
+    } finally {
+      if (my === reqId) mainImg()?.classList.remove('rx-recolor-loading');
+    }
+  }
+
+  const scheduleApply = () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(apply, 200);
+  };
+
+  state.addEventListener('rx:change', (event) => {
+    if (event.detail?.key === 'lensProduct') scheduleApply();
+  });
+
+  // The gallery can re-render (variant change, section morph): a src we didn't
+  // set means a new original — re-capture and re-apply the current color.
+  const el = mainImg();
+  if (el) {
+    captureOriginal(el);
+    new MutationObserver(() => {
+      const current = mainImg();
+      if (!current) return;
+      const src = current.currentSrc || current.src;
+      if (src && src !== setUrl && stripImageSizeParams(src) !== original?.src) {
+        captureOriginal(current);
+        if (state.lensProduct?.color) scheduleApply();
+      }
+    }).observe(el.closest('slideshow-slide') ?? el, { attributes: true, subtree: true, attributeFilter: ['src', 'srcset'] });
+  }
+
+  if (state.lensProduct?.color) scheduleApply();
+})();

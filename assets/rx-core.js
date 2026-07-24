@@ -292,3 +292,31 @@ export function formatCents(cents, currency) {
     return `$${((cents || 0) / 100).toFixed(2)}`;
   }
 }
+
+/**
+ * Lens color name → lensgen color slug ("Grey Polar Mirror Blue" →
+ * "grey-polar-mirror-blue", "Clear + AR" → "clear-ar").
+ */
+export function lensColorSlug(name) {
+  return String(name || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+/**
+ * Stable image URL for recolor caching: strip responsive size params (width,
+ * height) so the same product+color always hits the same cache key.
+ */
+export function stripImageSizeParams(url) {
+  if (!url) return '';
+  try {
+    const u = new URL(url, 'https://x.invalid');
+    u.searchParams.delete('width');
+    u.searchParams.delete('height');
+    const qs = u.searchParams.toString();
+    return url.split('?')[0] + (qs ? `?${qs}` : '');
+  } catch {
+    return url;
+  }
+}

@@ -1,5 +1,5 @@
 /**
- * RX App Proxy client: a thin fetch layer over the EazyVisi endpoints exposed
+ * RX App Proxy client: a thin fetch layer over the LenSync endpoints exposed
  * through Shopify App Proxy (/apps/proxy/*). Shopify signs the requests
  * server-side, so there is no client HMAC. No @theme imports — importable in
  * the browser and under `node --test`.
@@ -113,3 +113,19 @@ export async function updateLineItemProperties(payload) {
   return unwrap(await postJson('update-line-item-properties', payload));
 }
 
+
+/**
+ * Recolor the frame's featured image for a lens color (lensgen service).
+ * Unlike the path-based actions above, recolor POSTs to the proxy base with
+ * the action in the body. Returns {url, cached, ...}.
+ */
+export async function recolorLensImage(imageUrl, color) {
+  const json = await request(PROXY_BASE, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'recolor', image_url: imageUrl, color }),
+  });
+  const data = json && json.data != null ? json.data : json;
+  if (!data || !data.url) throw new RxApiError((data && data.error) || 'Recolor failed', 200);
+  return data;
+}
