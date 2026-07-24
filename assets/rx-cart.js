@@ -7,7 +7,23 @@
  * keeps the top-level module node-safe.
  */
 
-import { buildLineItemProperties, RxState } from './rx-core.js';
+
+// Resolve shared RX modules via the versioned import map (see
+// snippets/rx-import-map.liquid) — unversioned relative imports would be
+// CDN-cached for a year. The relative fallback covers node tests.
+function rxImport(name) {
+  let map = {};
+  if (typeof document !== 'undefined') {
+    try {
+      map = JSON.parse(document.querySelector('script[data-rx-imports]')?.textContent ?? '{}');
+    } catch {
+      map = {};
+    }
+  }
+  return import(map[name] ?? new URL(`./${name}`, import.meta.url).href);
+}
+
+const { buildLineItemProperties, RxState } = await rxImport('rx-core.js');
 
 const CART_ADD_URL_FALLBACK = '/cart/add.js';
 

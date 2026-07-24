@@ -49,6 +49,7 @@
 
       {% render 'rx-prescription-drawer', rx_settings: section.settings, drawer_id: 'RxMyOrdersDrawer' %}
 
+      {% render 'rx-import-map' %}
       <script src="{{ 'rx-my-orders.js' | asset_url }}" type="module" fetchpriority="low"></script>
     {%- else -%}
       <div class="rx-my-orders__gate">

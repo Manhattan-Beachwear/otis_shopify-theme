@@ -11,7 +11,23 @@
  */
 
 import { Component } from '@theme/component';
-import { getOrder, getPrescriptionFile, updateLineItemProperties } from './rx-api.js';
+
+// Resolve shared RX modules via the versioned import map (see
+// snippets/rx-import-map.liquid) — unversioned relative imports would be
+// CDN-cached for a year. The relative fallback covers node tests.
+function rxImport(name) {
+  let map = {};
+  if (typeof document !== 'undefined') {
+    try {
+      map = JSON.parse(document.querySelector('script[data-rx-imports]')?.textContent ?? '{}');
+    } catch {
+      map = {};
+    }
+  }
+  return import(map[name] ?? new URL(`./${name}`, import.meta.url).href);
+}
+
+const { getOrder, getPrescriptionFile, updateLineItemProperties } = await rxImport('rx-api.js');
 
 // Lab status → badge label + tone. `rx_needed` is the only state that still
 // offers the "Add prescription" action; everything else reads as submitted.

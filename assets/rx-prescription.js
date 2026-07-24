@@ -1,6 +1,21 @@
 import { Component } from '@theme/component';
 import { DialogComponent } from '@theme/dialog';
-import {
+// Resolve shared RX modules via the versioned import map (see
+// snippets/rx-import-map.liquid) — unversioned relative imports would be
+// CDN-cached for a year. The relative fallback covers node tests.
+function rxImport(name) {
+  let map = {};
+  if (typeof document !== 'undefined') {
+    try {
+      map = JSON.parse(document.querySelector('script[data-rx-imports]')?.textContent ?? '{}');
+    } catch {
+      map = {};
+    }
+  }
+  return import(map[name] ?? new URL(`./${name}`, import.meta.url).href);
+}
+
+const {
   RxState,
   validatePrescription,
   mapOcrToValues,
@@ -9,8 +24,8 @@ import {
   pickTier,
   resolveLensProduct,
   formatCents,
-} from './rx-core.js';
-import { analyzePrescription, savePrescription } from './rx-api.js';
+} = await rxImport('rx-core.js');
+const { analyzePrescription, savePrescription } = await rxImport('rx-api.js');
 
 // Shared singleton — the first RX component to initialize creates the state.
 function getRxState() {

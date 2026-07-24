@@ -55,6 +55,7 @@
   data-tier-sph-threshold="{{ rx_settings.rx_tier_sph_threshold | default: 2 }}"
   data-health-fund-numbers="{{ rx_settings.health_fund_numbers | escape }}"
 >
+  {% render 'rx-import-map' %}
   <script src="{{ 'rx-prescription.js' | asset_url }}" type="module" fetchpriority="low"></script>
 
   <dialog
