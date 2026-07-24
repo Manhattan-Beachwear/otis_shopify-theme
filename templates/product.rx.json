@@ -1,0 +1,385 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-information",
+      "blocks": {
+        "media-gallery": {
+          "type": "_product-media-gallery",
+          "static": true,
+          "settings": {
+            "media_presentation": "carousel",
+            "media_columns": "two",
+            "image_gap": 4,
+            "large_first_image": false,
+            "icons_style": "arrow",
+            "slideshow_controls_style": "counter",
+            "slideshow_mobile_controls_style": "dots",
+            "thumbnail_position": "right",
+            "thumbnail_width": 44,
+            "aspect_ratio": "adapt",
+            "constrain_to_viewport": true,
+            "media_fit": "contain",
+            "media_radius": 0,
+            "extend_media": false,
+            "zoom": true,
+            "video_loop": false,
+            "hide_variants": true,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "product-details": {
+          "type": "_product-details",
+          "static": true,
+          "settings": {
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "details_position": "flex-start",
+            "gap": 20,
+            "sticky_details_desktop": true,
+            "inherit_color_scheme": true,
+            "color_scheme": "scheme-1",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 24,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product-title": {
+              "type": "product-title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h3",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price": {
+              "type": "price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "paragraph",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "rx-lens-selector": {
+              "type": "rx-lens-selector",
+              "settings": {
+                "heading": "Lens type",
+                "lens_category_1_key": "clear",
+                "lens_category_1_label": "Clear",
+                "lens_category_2_key": "sunglasses",
+                "lens_category_2_label": "Polarized",
+                "lens_category_3_key": "photochromic",
+                "lens_category_3_label": "Transitions",
+                "lens_product_1": "otis-rx-lens-everyday-clarity-clear-standard",
+                "lens_product_high_1": "otis-rx-lens-everyday-clarity-clear-high",
+                "alt_tag_1": "base_6",
+                "alt_product_1": "otis-rx-lens-active-protection-clear-standard",
+                "alt_product_high_1": "otis-rx-lens-active-protection-clear-high",
+                "lens_product_2": "otis-rx-lens-everyday-clarity-polar-standard",
+                "lens_product_high_2": "otis-rx-lens-everyday-clarity-polar-high",
+                "alt_tag_2": "base_6",
+                "alt_product_2": "otis-rx-lens-active-protection-polar-standard",
+                "alt_product_high_2": "otis-rx-lens-active-protection-polar-high",
+                "lens_product_3": "otis-rx-lens-everyday-clarity-trans",
+                "alt_tag_3": "base_6",
+                "alt_product_3": "otis-rx-lens-active-protection-trans-standard",
+                "alt_product_high_3": "otis-rx-lens-active-protection-trans-high",
+                "default_category": "clear",
+                "lens_category_1_description": "Everyday optical lenses for indoor and low-light wear",
+                "lens_category_2_description": "Glare-cutting polarized lenses for bright sun",
+                "lens_category_3_description": "Light-adaptive lenses that darken in sunlight"
+              },
+              "blocks": {}
+            },
+            "rx-vision-selector": {
+              "type": "rx-vision-selector",
+              "settings": {
+                "heading": "Vision type",
+                "single_vision_label": "Single Vision",
+                "progressive_label": "Progressive",
+                "show_non_rx": false,
+                "non_rx_label": "No Prescription"
+              },
+              "blocks": {}
+            },
+            "rx-lens-options": {
+              "type": "rx-lens-options",
+              "settings": {
+                "heading": "Lens options",
+                "color_categories": "clear,sunglasses,photochromic"
+              },
+              "blocks": {
+                "color_grey_polar": {
+                  "type": "rx-color",
+                  "settings": {
+                    "swatch_color": "#8d8d8f",
+                    "description": "Neutral grey polarized lens that cuts glare and keeps colors true",
+                    "title": "Grey Polar"
+                  }
+                },
+                "color_grey_polar_mirror_blue": {
+                  "type": "rx-color",
+                  "settings": {
+                    "swatch_color": "#8d8d8f",
+                    "description": "Grey polarized lens with a blue mirror finish",
+                    "swatch_color_2": "#3d6da6",
+                    "title": "Grey Polar Mirror Blue"
+                  }
+                },
+                "color_grey_polar_mirror_green": {
+                  "type": "rx-color",
+                  "settings": {
+                    "swatch_color": "#8d8d8f",
+                    "description": "Grey polarized lens with a green mirror finish",
+                    "swatch_color_2": "#4e5c50",
+                    "title": "Grey Polar Mirror Green"
+                  }
+                },
+                "color_green_polar": {
+                  "type": "rx-color",
+                  "settings": {
+                    "swatch_color": "#4e5c50",
+                    "description": "Classic green polarized lens with crisp contrast in bright light",
+                    "title": "Green Polar"
+                  }
+                },
+                "color_brown_polar": {
+                  "type": "rx-color",
+                  "settings": {
+                    "swatch_color": "#5f4432",
+                    "description": "Warm brown polarized lens that boosts contrast and depth",
+                    "title": "Brown Polar"
+                  }
+                },
+                "color_grey_trans": {
+                  "type": "rx-color",
+                  "settings": {
+                    "swatch_color": "#8d8d8f",
+                    "description": "Light-adaptive grey lens that darkens in the sun",
+                    "title": "Grey Trans"
+                  }
+                },
+                "color_brown_trans": {
+                  "type": "rx-color",
+                  "settings": {
+                    "swatch_color": "#5f4432",
+                    "description": "Light-adaptive brown lens that darkens in the sun",
+                    "title": "Brown Trans"
+                  }
+                },
+                "color_clear": {
+                  "type": "rx-color",
+                  "settings": {
+                    "swatch_color": "#efefef",
+                    "description": "Standard clear lens",
+                    "title": "Clear"
+                  }
+                },
+                "color_clear_ar": {
+                  "type": "rx-color",
+                  "settings": {
+                    "swatch_color": "#e7ecf2",
+                    "description": "Clear lens with premium anti-reflective coating",
+                    "title": "Clear + AR"
+                  }
+                },
+                "color_clear_blue_blocking_ar": {
+                  "type": "rx-color",
+                  "settings": {
+                    "swatch_color": "#ece5c8",
+                    "description": "Clear lens with blue-light filtering and anti-reflective coating",
+                    "title": "Clear Blue Blocking + AR"
+                  }
+                }
+              },
+              "block_order": [
+                "color_grey_polar",
+                "color_grey_polar_mirror_blue",
+                "color_grey_polar_mirror_green",
+                "color_green_polar",
+                "color_brown_polar",
+                "color_grey_trans",
+                "color_brown_trans",
+                "color_clear",
+                "color_clear_ar",
+                "color_clear_blue_blocking_ar"
+              ]
+            },
+            "rx-prescription": {
+              "type": "rx-prescription",
+              "settings": {
+                "cta_label": "Add prescription",
+                "edit_label": "Edit prescription",
+                "rx_subdomain": "otis",
+                "rx_provider_number": "",
+                "health_fund_numbers": "",
+                "rx_check_expiration": true,
+                "limits_sph_min": -20,
+                "limits_sph_max": 20,
+                "limits_cyl_min": -6,
+                "limits_cyl_max": 6,
+                "limits_axis_min": 0,
+                "limits_axis_max": 180,
+                "limits_add_min": 0,
+                "limits_add_max": 4,
+                "limits_pd_min": 40,
+                "limits_pd_max": 80,
+                "limits_prism_min": 0,
+                "limits_prism_max": 10,
+                "rx_tier_sph_threshold": 2
+              },
+              "blocks": {}
+            },
+            "rx-price-summary": {
+              "type": "rx-price-summary",
+              "settings": {
+                "frame_label": "Frame",
+                "lens_label": "Lenses",
+                "total_label": "Total",
+                "cta_label": "Add to cart"
+              },
+              "blocks": {}
+            },
+            "description": {
+              "type": "accordion",
+              "settings": {
+                "icon": "caret",
+                "dividers": true
+              },
+              "blocks": {
+                "description-row": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Description",
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "description-text": {
+                      "type": "text",
+                      "settings": {
+                        "text": "{{ closest.product.description }}",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-primary--family)",
+                        "font_size": "",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "description-text"
+                  ]
+                }
+              },
+              "block_order": [
+                "description-row"
+              ]
+            },
+            "frame-colors": {
+              "type": "variant-picker-cl",
+              "settings": {
+                "variant_style": "buttons",
+                "show_swatches": true,
+                "show_product_image_swatches": true,
+                "product_image_swatch_style": "square",
+                "product_image_swatch_size": 64,
+                "show_product_image_swatch_variant_name": false,
+                "show_horizontal_scroll": false,
+                "alignment": "left",
+                "padding-block-start": 0,
+                "padding-block-end": 8,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            }
+          },
+          "block_order": [
+            "product-title",
+            "price",
+            "frame-colors",
+            "rx-lens-selector",
+            "rx-vision-selector",
+            "rx-lens-options",
+            "rx-prescription",
+            "rx-price-summary",
+            "description"
+          ]
+        }
+      },
+      "settings": {
+        "content_width": "content-center-aligned",
+        "desktop_media_position": "left",
+        "equal_columns": false,
+        "limit_details_width": false,
+        "gap": 48,
+        "color_scheme": "",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
+

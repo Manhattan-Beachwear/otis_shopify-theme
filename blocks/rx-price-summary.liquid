@@ -1,0 +1,145 @@
+{%- doc -%}
+  RX price summary + add to cart. Shows the Frame + Lenses = Total breakdown and
+  the RX add-to-cart button. The button stays disabled until the configurator is
+  complete; on success rx-cart.js dispatches the theme's CartAddEvent so the
+  native cart drawer opens and refreshes.
+
+  Prices and availability update live from the shared rx state; the lens line is
+  hidden until a lens product is chosen.
+{%- enddoc -%}
+
+{%- liquid
+  assign summary_id = 'RxPriceSummary-' | append: block.id
+  assign frame_label = block.settings.frame_label | default: 'Frame'
+  assign lens_label = block.settings.lens_label | default: 'Lenses'
+  assign total_label = block.settings.total_label | default: 'Total'
+  assign cta_label = block.settings.cta_label | default: 'Add to cart'
+-%}
+
+<rx-price-summary id="{{ summary_id }}" class="rx-price-summary" hidden {{ block.shopify_attributes }}>
+  <template data-rx-money-format>{{ shop.money_format }}</template>
+
+  <div class="rx-price-summary__lines">
+    <div class="rx-price-summary__line">
+      <span class="rx-price-summary__label">{{ frame_label | escape }}</span>
+      <span class="rx-price-summary__value" data-rx-frame-price></span>
+    </div>
+    <div class="rx-price-summary__line" data-rx-lens-line hidden>
+      <span class="rx-price-summary__label">{{ lens_label | escape }}</span>
+      <span class="rx-price-summary__value" data-rx-lens-price></span>
+    </div>
+    <div class="rx-price-summary__line rx-price-summary__line--total">
+      <span class="rx-price-summary__label">{{ total_label | escape }}</span>
+      <span class="rx-price-summary__value" data-rx-total-price></span>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="button rx-price-summary__atc"
+    data-rx-atc
+    on:click="/addToCart"
+    disabled
+  >
+    {{ cta_label | escape }}
+  </button>
+
+  <p class="rx-price-summary__error" role="alert" data-rx-error hidden></p>
+</rx-price-summary>
+
+<script src="{{ 'rx-cart.js' | asset_url }}" type="module" fetchpriority="low"></script>
+
+{% stylesheet %}
+  rx-price-summary {
+    display: block;
+    margin-block: var(--padding-md);
+  }
+
+  rx-price-summary[hidden] {
+    display: none;
+  }
+
+  .rx-price-summary__lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-2xs);
+    margin-block-end: var(--padding-sm);
+  }
+
+  .rx-price-summary__line {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--gap-sm);
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground);
+  }
+
+  .rx-price-summary__line[hidden] {
+    display: none;
+  }
+
+  .rx-price-summary__line--total {
+    margin-block-start: var(--padding-2xs);
+    padding-block-start: var(--padding-2xs);
+    border-block-start: var(--style-border-width-inputs, 1px) solid var(--color-border);
+    font-size: var(--font-size--md);
+    font-weight: 600;
+  }
+
+  .rx-price-summary__atc {
+    width: 100%;
+  }
+
+  .rx-price-summary--busy .rx-price-summary__atc {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .rx-price-summary__error {
+    margin-block-start: var(--padding-xs);
+    color: var(--color-error, var(--color-foreground));
+    font-size: var(--font-size--xs);
+  }
+
+  .rx-price-summary__error[hidden] {
+    display: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RX Price Summary",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "frame_label",
+      "label": "Frame label",
+      "default": "Frame"
+    },
+    {
+      "type": "text",
+      "id": "lens_label",
+      "label": "Lenses label",
+      "default": "Lenses"
+    },
+    {
+      "type": "text",
+      "id": "total_label",
+      "label": "Total label",
+      "default": "Total"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Add to cart label",
+      "default": "Add to cart"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RX Price Summary"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,399 @@
+{% comment %}
+  Need RX page. Logged-in customers see their prescription orders and can attach
+  a prescription (upload or manual) to any order still awaiting one. Reuses the
+  shared prescription drawer (rx-prescription-drawer) and App Proxy client.
+
+  Placed via templates/page.my-orders.json; App Proxy config and prescription
+  limits are set in that template (protected zone).
+{% endcomment %}
+
+<rx-my-orders
+  class="rx-my-orders section"
+  data-section-id="{{ section.id }}"
+  data-subdomain="{{ section.settings.rx_subdomain | escape }}"
+  data-provider-number="{{ section.settings.rx_provider_number | escape }}"
+>
+  <div class="rx-my-orders__inner">
+    {%- if customer -%}
+      <h1 class="rx-my-orders__title">{{ section.settings.title | escape }}</h1>
+
+      {%- liquid
+        assign has_rx_orders = false
+        for order in customer.orders
+          for item in order.line_items
+            for prop in item.properties
+              if prop.first == 'rxOrder' and prop.last == 'true'
+                assign has_rx_orders = true
+                break
+              endif
+            endfor
+            if has_rx_orders
+              break
+            endif
+          endfor
+          if has_rx_orders
+            break
+          endif
+        endfor
+      -%}
+
+      {%- if has_rx_orders -%}
+        <div class="rx-my-orders__grid">
+          {%- for order in customer.orders -%}
+            {% render 'rx-order-card', order: order %}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p class="rx-my-orders__empty">{{ section.settings.empty_text | escape }}</p>
+      {%- endif -%}
+
+      {% render 'rx-prescription-drawer', rx_settings: section.settings, drawer_id: 'RxMyOrdersDrawer' %}
+
+      {% render 'rx-import-map' %}
+      <script src="{{ 'rx-my-orders.js' | asset_url }}" type="module" fetchpriority="low"></script>
+    {%- else -%}
+      <div class="rx-my-orders__gate">
+        <h1 class="rx-my-orders__title">{{ section.settings.login_heading | escape }}</h1>
+        <p class="rx-my-orders__gate-text">{{ section.settings.login_text | escape }}</p>
+        <a class="button rx-my-orders__login" href="/customer_identity/login?return_to={{ request.path | url_encode }}">
+          {{ section.settings.login_button_label | escape }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</rx-my-orders>
+
+{% stylesheet %}
+  .rx-my-orders {
+    display: block;
+  }
+
+  .rx-my-orders__inner {
+    max-width: var(--page-width, 1200px);
+    margin-inline: auto;
+    padding: var(--padding-2xl, 3rem) var(--padding-lg);
+  }
+
+  .rx-my-orders__title {
+    margin: 0 0 var(--padding-lg);
+    font-size: var(--font-size--xl, 1.5rem);
+    font-weight: 600;
+  }
+
+  .rx-my-orders__empty {
+    margin: 0;
+    color: var(--color-foreground-secondary, var(--color-foreground));
+    opacity: 0.75;
+  }
+
+  .rx-my-orders__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--gap-lg);
+  }
+
+  @media screen and (min-width: 750px) {
+    .rx-my-orders__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .rx-my-orders__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* --- Gate ---------------------------------------------------------------- */
+
+  .rx-my-orders__gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-sm);
+    text-align: center;
+    padding-block: var(--padding-4xl, 4rem);
+  }
+
+  .rx-my-orders__gate-text {
+    margin: 0;
+    color: var(--color-foreground-secondary, var(--color-foreground));
+    opacity: 0.75;
+  }
+
+  .rx-my-orders__login {
+    margin-block-start: var(--padding-sm);
+  }
+
+  /* --- Order card ---------------------------------------------------------- */
+
+  .rx-order-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+    padding: var(--padding-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs, 4px);
+  }
+
+  .rx-order-card__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--gap-sm);
+  }
+
+  .rx-order-card__name {
+    font-weight: 600;
+  }
+
+  .rx-order-card__date {
+    font-size: var(--font-size--xs);
+    opacity: 0.6;
+  }
+
+  .rx-order-card__products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-xs);
+  }
+
+  .rx-order-card__thumb {
+    display: block;
+    width: 4.5rem;
+    height: 4.5rem;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs, 4px);
+  }
+
+  .rx-order-card__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rx-order-card__titles {
+    margin: 0;
+    font-size: var(--font-size--sm);
+    opacity: 0.75;
+  }
+
+  .rx-order-card__status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-2xs);
+  }
+
+  .rx-order-card__loading {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--padding-2xs);
+    font-size: var(--font-size--sm);
+    opacity: 0.7;
+  }
+
+  .rx-order-card__spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--color-border);
+    border-top-color: var(--color-foreground);
+    border-radius: 50%;
+    animation: rx-spin 0.8s linear infinite;
+  }
+
+  @keyframes rx-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .rx-order-card__badge {
+    align-self: flex-start;
+    padding: var(--padding-2xs) var(--padding-sm);
+    border-radius: 999px;
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+  }
+
+  .rx-order-card__badge--pending {
+    background: rgb(180 120 0 / 14%);
+    color: rgb(120 80 0);
+  }
+
+  .rx-order-card__badge--info {
+    background: rgb(30 90 180 / 12%);
+    color: rgb(30 80 150);
+  }
+
+  .rx-order-card__badge--success {
+    background: rgb(30 140 70 / 14%);
+    color: rgb(20 110 55);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .rx-order-card__badge--pending {
+      color: rgb(230 190 120);
+    }
+
+    .rx-order-card__badge--info {
+      color: rgb(150 190 240);
+    }
+
+    .rx-order-card__badge--success {
+      color: rgb(140 210 165);
+    }
+  }
+
+  .rx-order-card__tracking {
+    display: flex;
+    align-items: center;
+    gap: var(--padding-2xs);
+    font-size: var(--font-size--xs);
+  }
+
+  .rx-order-card__tracking-label {
+    opacity: 0.6;
+  }
+
+  .rx-order-card__tracking-value {
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    word-break: break-all;
+  }
+
+  .rx-order-card__tracking-value--copied {
+    color: rgb(20 110 55);
+  }
+
+  .rx-order-card__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+  }
+
+  .rx-order-card__add,
+  .rx-order-card__view {
+    width: 100%;
+  }
+
+  .rx-order-card__submitted {
+    display: flex;
+    align-items: center;
+    gap: var(--padding-2xs);
+    margin: 0;
+    font-size: var(--font-size--sm);
+    color: rgb(20 110 55);
+  }
+
+  .rx-order-card__check {
+    font-weight: 700;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Need RX",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page title",
+      "default": "My orders"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty state text",
+      "default": "You don't have any prescription orders yet."
+    },
+    {
+      "type": "header",
+      "content": "Login gate"
+    },
+    {
+      "type": "text",
+      "id": "login_heading",
+      "label": "Heading",
+      "default": "Please log in to view your orders"
+    },
+    {
+      "type": "text",
+      "id": "login_text",
+      "label": "Text",
+      "default": "Log in to see your prescription orders and attach a prescription."
+    },
+    {
+      "type": "text",
+      "id": "login_button_label",
+      "label": "Button label",
+      "default": "Log in"
+    },
+    {
+      "type": "header",
+      "content": "App Proxy"
+    },
+    {
+      "type": "text",
+      "id": "rx_subdomain",
+      "label": "Subdomain",
+      "info": "Store subdomain sent to the LenSync App Proxy."
+    },
+    {
+      "type": "text",
+      "id": "rx_provider_number",
+      "label": "Provider number"
+    },
+    {
+      "type": "text",
+      "id": "health_fund_numbers",
+      "label": "Health fund item numbers"
+    },
+    {
+      "type": "checkbox",
+      "id": "rx_check_expiration",
+      "label": "Warn on prescriptions older than 24 months",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Sphere (SPH) limits"
+    },
+    { "type": "number", "id": "limits_sph_min", "label": "Min", "default": -20 },
+    { "type": "number", "id": "limits_sph_max", "label": "Max", "default": 20 },
+    {
+      "type": "header",
+      "content": "Cylinder (CYL) limits"
+    },
+    { "type": "number", "id": "limits_cyl_min", "label": "Min", "default": -6 },
+    { "type": "number", "id": "limits_cyl_max", "label": "Max", "default": 6 },
+    {
+      "type": "header",
+      "content": "Axis limits"
+    },
+    { "type": "number", "id": "limits_axis_min", "label": "Min", "default": 0 },
+    { "type": "number", "id": "limits_axis_max", "label": "Max", "default": 180 },
+    {
+      "type": "header",
+      "content": "Addition (ADD) limits"
+    },
+    { "type": "number", "id": "limits_add_min", "label": "Min", "default": 0 },
+    { "type": "number", "id": "limits_add_max", "label": "Max", "default": 4 },
+    {
+      "type": "header",
+      "content": "Pupillary distance (PD) limits"
+    },
+    { "type": "number", "id": "limits_pd_min", "label": "Min", "default": 40 },
+    { "type": "number", "id": "limits_pd_max", "label": "Max", "default": 80 },
+    {
+      "type": "header",
+      "content": "Prism limits"
+    },
+    { "type": "number", "id": "limits_prism_min", "label": "Min", "default": 0 },
+    { "type": "number", "id": "limits_prism_max", "label": "Max", "default": 10 }
+  ]
+}
+{% endschema %}

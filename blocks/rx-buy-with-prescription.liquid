@@ -1,0 +1,51 @@
+{%- doc -%}
+  "Buy with prescription" button for the default PDP. Renders only when the
+  product's `custom.rx_product` metafield is true and links to the same product
+  rendered with the RX template (`?view=rx`). Label is a block setting.
+{%- enddoc -%}
+
+{%- liquid
+  assign rx_product = closest.product
+  assign show_rx_cta = rx_product.metafields.custom.rx_product.value | default: false, allow_false: true
+-%}
+
+{%- if show_rx_cta -%}
+  <div class="rx-buy-cta" {{ block.shopify_attributes }}>
+    <a
+      class="button button-secondary rx-buy-cta__link"
+      href="{{ rx_product.url }}?view=rx"
+    >
+      {{ block.settings.label | default: 'Buy with prescription' | escape }}
+    </a>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .rx-buy-cta {
+    margin-block-end: var(--padding-sm);
+  }
+
+  .rx-buy-cta__link {
+    width: 100%;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "RX Buy With Prescription",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Button label",
+      "default": "Buy with prescription"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RX Buy With Prescription"
+    }
+  ]
+}
+{% endschema %}
