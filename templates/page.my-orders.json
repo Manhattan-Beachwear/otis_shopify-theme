@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "main": {
+      "type": "rx-my-orders",
+      "settings": {
+        "title": "My orders",
+        "empty_text": "You don't have any prescription orders yet.",
+        "login_heading": "Please log in to view your orders",
+        "login_text": "Log in to see your prescription orders and attach a prescription.",
+        "login_button_label": "Log in",
+        "rx_subdomain": "otis",
+        "rx_provider_number": "",
+        "health_fund_numbers": "",
+        "rx_check_expiration": true,
+        "limits_sph_min": -20,
+        "limits_sph_max": 20,
+        "limits_cyl_min": -6,
+        "limits_cyl_max": 6,
+        "limits_axis_min": 0,
+        "limits_axis_max": 180,
+        "limits_add_min": 0,
+        "limits_add_max": 4,
+        "limits_pd_min": 40,
+        "limits_pd_max": 80,
+        "limits_prism_min": 0,
+        "limits_prism_max": 10
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
