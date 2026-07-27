@@ -23,20 +23,22 @@ function getRxState() {
   return window.rxState;
 }
 
-// Product data JSON emitted once by the rx-lens-selector block. Cached on first
-// successful parse; re-tried while absent so component init order doesn't matter.
-let productDataCache = null;
+// Product data JSON emitted by the rx-lens-selector block. Cached per DOM node:
+// a combined-listing morph swaps the page product, so a fresh script element
+// must invalidate the parsed data.
+/** @type {{el: Element, data: any} | null} */
+let productDataCache = null; // { el, data }
 function getRxProductData() {
-  if (productDataCache) return productDataCache;
   const el = document.querySelector('[data-rx-product-data]');
-  if (!el) return null;
+  if (!el) return productDataCache?.data ?? null;
+  if (productDataCache?.el === el) return productDataCache.data;
   try {
-    productDataCache = JSON.parse(el.textContent);
+    productDataCache = { el, data: JSON.parse(el.textContent) };
   } catch (error) {
     console.error('rx: invalid product data', error);
     return null;
   }
-  return productDataCache;
+  return productDataCache.data;
 }
 
 // Categories that actually resolved to at least one lens product.
@@ -246,4 +248,40 @@ if (!customElements.get('rx-lens-selector')) {
 
 if (!customElements.get('rx-vision-selector')) {
   customElements.define('rx-vision-selector', RxVisionSelector);
+}
+
+// --- Keep the RX view through frame-color switches ---------------------------
+
+// The combined-listing picker navigates to sibling frame products by fetching
+// and morphing `data-connected-product-url`. Those URLs carry no view param, so
+// the morph would land on the default template and drop the whole RX flow.
+// Rewrite them to keep ?view=rx; re-applied after every morph, because the
+// fetched markup arrives un-rewritten.
+function applyRxViewParam() {
+  for (const el of document.querySelectorAll('[data-connected-product-url]')) {
+    if (!(el instanceof HTMLElement)) continue;
+    // Product cards / quick-add handle their own navigation — leave them alone.
+    if (el.closest('product-card, quick-add-dialog')) continue;
+
+    let url = el.dataset.connectedProductUrl;
+    if (!url || url.includes('view=rx')) continue;
+    if (!url.includes('?variant=')) {
+      // The picker appends "?variant=<id>" to bare URLs; pre-build the query
+      // ourselves so view=rx can ride along without producing a second "?".
+      const variantId = el.dataset.variantId;
+      if (!variantId) continue;
+      url = `${url.split('?')[0]}?variant=${variantId}`;
+    }
+    el.dataset.connectedProductUrl = `${url}&view=rx`;
+  }
+}
+
+let rxViewRaf = 0;
+applyRxViewParam();
+const rxMain = document.querySelector('main');
+if (rxMain) {
+  new MutationObserver(() => {
+    cancelAnimationFrame(rxViewRaf);
+    rxViewRaf = requestAnimationFrame(applyRxViewParam);
+  }).observe(rxMain, { childList: true, subtree: true });
 }

@@ -75,18 +75,19 @@ function getRxState() {
 }
 
 // Product data JSON emitted once by the rx-lens-selector block.
-let productDataCache = null;
+/** @type {{el: Element, data: any} | null} */
+let productDataCache = null; // { el, data } — re-parsed when a morph swaps the node
 function getRxProductData() {
-  if (productDataCache) return productDataCache;
   const el = document.querySelector('[data-rx-product-data]');
-  if (!el) return null;
+  if (!el) return productDataCache?.data ?? null;
+  if (productDataCache?.el === el) return productDataCache.data;
   try {
-    productDataCache = JSON.parse(el.textContent);
+    productDataCache = { el, data: JSON.parse(el.textContent) };
   } catch (error) {
     console.error('rx: invalid product data', error);
     return null;
   }
-  return productDataCache;
+  return productDataCache.data;
 }
 
 // Proxy config lives on the rx-prescription block; sibling blocks can't read it

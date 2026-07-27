@@ -78,8 +78,14 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
   function captureOriginal(el) {
     const src = el.currentSrc || el.src;
     if (!src || src === setUrl || generated.has(src) || !isShopImage(src)) return;
+    const normalized = stripImageSizeParams(publicImageUrl(src));
+    if (original && normalized !== original.src) {
+      // Different frame (combined-listing morph): its renders start over.
+      urlCache.clear();
+      setUrl = null;
+    }
     original = {
-      src: stripImageSizeParams(publicImageUrl(src)),
+      src: normalized,
       srcset: el.getAttribute('srcset') || '',
       sizes: el.getAttribute('sizes') || '',
     };
@@ -143,11 +149,13 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
     if (event.detail?.key === 'lensProduct') scheduleApply();
   });
 
-  // The gallery can re-render (variant change, section morph): a src we didn't
-  // set means a new original — re-capture and re-apply the current color.
+  // The gallery can re-render (variant change, combined-listing morph): a src
+  // we didn't set means a new original — re-capture and re-apply the current
+  // color. Observed on <main>: morphs replace the slide nodes, but <main> stays.
   const el = mainImg();
-  if (el) {
-    captureOriginal(el);
+  if (el) captureOriginal(el);
+  const mainEl = document.querySelector('main');
+  if (mainEl) {
     const normalize = (src) => stripImageSizeParams(publicImageUrl(src));
     new MutationObserver(() => {
       const current = mainImg();
@@ -166,7 +174,7 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
       }
       captureOriginal(current);
       if (state.lensProduct?.color) scheduleApply();
-    }).observe(el.closest('slideshow-slide') ?? el, { attributes: true, subtree: true, attributeFilter: ['src', 'srcset'] });
+    }).observe(mainEl, { childList: true, subtree: true, attributes: true, attributeFilter: ['src', 'srcset'] });
   }
 
   if (state.lensProduct?.color) scheduleApply();
