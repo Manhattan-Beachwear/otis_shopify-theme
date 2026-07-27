@@ -81,7 +81,7 @@
                 "text_b68jDn": {
                   "type": "text",
                   "settings": {
-                    "text": "<h2><strong>New arrivals</strong></h2>",
+                    "text": "<h2><strong>SUMMER 2026 EYEWEAR</strong></h2>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -106,7 +106,7 @@
                 "text_Tt36EV": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Introducing our 2026 collection of sunglasses. Mineral glass eyewear, designed to last. </p>",
+                    "text": "<p>Explore our collection of sunglasses. </p><p>Mineral glass eyewear, designed to last. </p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
