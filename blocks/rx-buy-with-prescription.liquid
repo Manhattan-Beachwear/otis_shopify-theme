@@ -1,12 +1,18 @@
 {%- doc -%}
-  "Buy with prescription" button for the default PDP. Renders only when the
-  product's `custom.rx_product` metafield is true and links to the same product
-  rendered with the RX template (`?view=rx`). Label is a block setting.
+  "Buy with prescription" button for the default PDP. Renders when the product
+  is RX-capable — the `custom.rx_product` metafield is true, or (fallback) the
+  product carries the `rx-product` tag — and links to the same product rendered
+  with the RX template (`?view=rx`). Label is a block setting.
 {%- enddoc -%}
 
 {%- liquid
   assign rx_product = closest.product
   assign show_rx_cta = rx_product.metafields.custom.rx_product.value | default: false, allow_false: true
+  unless show_rx_cta
+    if rx_product.tags contains 'rx-product'
+      assign show_rx_cta = true
+    endif
+  endunless
 -%}
 
 {%- if show_rx_cta -%}
