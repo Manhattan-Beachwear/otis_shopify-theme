@@ -252,36 +252,28 @@ if (!customElements.get('rx-vision-selector')) {
 
 // --- Keep the RX view through frame-color switches ---------------------------
 
-// The combined-listing picker navigates to sibling frame products by fetching
-// and morphing `data-connected-product-url`. Those URLs carry no view param, so
-// the morph would land on the default template and drop the whole RX flow.
-// Rewrite them to keep ?view=rx; re-applied after every morph, because the
-// fetched markup arrives un-rewritten.
-function applyRxViewParam() {
-  for (const el of document.querySelectorAll('[data-connected-product-url]')) {
-    if (!(el instanceof HTMLElement)) continue;
+// The combined-listing picker switches sibling frame products by fetching and
+// morphing URLs it builds itself (`data-connected-product-url`, or the
+// `data-combinations` JSON in #navigateToMatchingProduct) — none carry
+// ?view=rx, so any of those paths lands the shopper back on the default
+// template. Instead of chasing every internal path, intercept the selection
+// before the picker sees it (capture phase) and do a plain full navigation to
+// the sibling product's RX view. No ?variant param: sibling frame products are
+// their own pages, and a bare URL avoids the picker's init-time URL sync.
+document.addEventListener(
+  'change',
+  (event) => {
+    const input = event.target;
+    if (!(input instanceof HTMLElement) || !input.dataset.connectedProductUrl) return;
     // Product cards / quick-add handle their own navigation — leave them alone.
-    if (el.closest('product-card, quick-add-dialog')) continue;
+    if (input.closest('product-card, quick-add-dialog')) return;
 
-    let url = el.dataset.connectedProductUrl;
-    if (!url || url.includes('view=rx')) continue;
-    if (!url.includes('?variant=')) {
-      // The picker appends "?variant=<id>" to bare URLs; pre-build the query
-      // ourselves so view=rx can ride along without producing a second "?".
-      const variantId = el.dataset.variantId;
-      if (!variantId) continue;
-      url = `${url.split('?')[0]}?variant=${variantId}`;
-    }
-    el.dataset.connectedProductUrl = `${url}&view=rx`;
-  }
-}
+    const path = input.dataset.connectedProductUrl.split('?')[0];
+    if (!path.includes('/products/')) return;
 
-let rxViewRaf = 0;
-applyRxViewParam();
-const rxMain = document.querySelector('main');
-if (rxMain) {
-  new MutationObserver(() => {
-    cancelAnimationFrame(rxViewRaf);
-    rxViewRaf = requestAnimationFrame(applyRxViewParam);
-  }).observe(rxMain, { childList: true, subtree: true });
-}
+    event.stopImmediatePropagation();
+    event.preventDefault();
+    if (path !== window.location.pathname) window.location.assign(`${path}?view=rx`);
+  },
+  { capture: true }
+);
