@@ -106,7 +106,7 @@
                 "text_Tt36EV": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Explore our collection of sunglasses. </p><p>Mineral glass eyewear, designed to last. </p>",
+                    "text": "<p>Explore our collection of sunglasses</p><p>Mineral glass eyewear, designed to last</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
