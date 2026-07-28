@@ -100,6 +100,27 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
     setUrl = null;
   }
 
+  // Fetch the image off-screen first; resolves false on error or timeout so an
+  // unreachable CDN (e.g. DNS failure) can never blank or hang the visible photo.
+  function preloadImage(url, timeoutMs = 15000) {
+    return new Promise((resolve) => {
+      const probe = new Image();
+      const timer = setTimeout(() => {
+        probe.src = '';
+        resolve(false);
+      }, timeoutMs);
+      probe.onload = () => {
+        clearTimeout(timer);
+        resolve(true);
+      };
+      probe.onerror = () => {
+        clearTimeout(timer);
+        resolve(false);
+      };
+      probe.src = url;
+    });
+  }
+
   async function apply() {
     const el = mainImg();
     if (!el) return;
@@ -110,28 +131,34 @@ const MAIN_IMAGE_SELECTOR = '.product-information__media slideshow-slide img.pro
     if (!color) return void restore();
 
     const slug = recolorSlug(color);
-    const known = urlCache.get(slug);
-    if (known) {
-      setUrl = known;
-      el.srcset = '';
-      el.removeAttribute('sizes');
-      el.src = known;
-      return;
-    }
-
     const my = ++reqId;
     el.classList.add('rx-recolor-loading');
     try {
       // Always recolor from the original source, never from a recolored image.
-      const data = await recolorLensImage(original.src, slug);
+      let url = urlCache.get(slug);
+      if (!url) {
+        const data = await recolorLensImage(original.src, slug);
+        if (my !== reqId) return;
+        url = data.url;
+        urlCache.set(slug, url);
+        generated.add(url);
+      }
+
+      // Swap only once the render actually loaded; otherwise stay on the
+      // original (and forget the url so a later attempt can retry).
+      const loaded = await preloadImage(url);
       if (my !== reqId) return;
-      urlCache.set(slug, data.url);
-      generated.add(data.url);
-      setUrl = data.url;
+      if (!loaded) {
+        urlCache.delete(slug);
+        restore();
+        return;
+      }
+
+      setUrl = url;
       // Kill the responsive set or the browser keeps showing the original.
       el.srcset = '';
       el.removeAttribute('sizes');
-      el.src = data.url;
+      el.src = url;
     } catch (error) {
       if (my === reqId) restore();
       console.warn('rx: recolor failed', error);

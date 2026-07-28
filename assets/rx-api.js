@@ -124,6 +124,8 @@ export async function recolorLensImage(imageUrl, color) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'recolor', image_url: imageUrl, color }),
+    // Cold generations take seconds; a stalled backend must not hang the UI.
+    signal: typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(30000) : undefined,
   });
   const data = json && json.data != null ? json.data : json;
   if (!data || !data.url) throw new RxApiError((data && data.error) || 'Recolor failed', 200);
