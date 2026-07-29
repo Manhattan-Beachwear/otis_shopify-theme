@@ -115,6 +115,11 @@ const { recolorLensImage } = await rxImport('rx-api.js');
     }
   }
 
+  // Normalized original url → loaded render url. Lets the hover swap-back
+  // (cards restore their stock src on mouseout) be re-recolored without a
+  // network round-trip.
+  const renders = new Map();
+
   async function recolorCard(img) {
     const src = img.currentSrc || img.src;
     if (!src || !isShopImage(src)) return;
@@ -124,11 +129,28 @@ const { recolorLensImage } = await rxImport('rx-api.js');
       // Swap only once the render actually loaded — an unreachable CDN must
       // never blank a card; the original photo simply stays.
       if (!data?.url || !(await preloadImage(data.url))) return;
+      renders.set(original, data.url);
       img.srcset = '';
       img.removeAttribute('sizes');
       img.src = data.url;
     } catch {
       // keep the original photo
+    }
+  }
+
+  // Re-assert a known render when a card restores its stock photo (hover-out,
+  // grid morphs). Hover's secondary photos aren't in the map and stay as is.
+  function reassertRenders() {
+    if (!slug || renders.size === 0) return;
+    for (const img of document.querySelectorAll(`${GRID} img.product-media__image`)) {
+      const src = img.currentSrc || img.src;
+      if (!src || !isShopImage(src)) continue;
+      const render = renders.get(stripImageSizeParams(publicImageUrl(src)));
+      if (render && img.src !== render) {
+        img.srcset = '';
+        img.removeAttribute('sizes');
+        img.src = render;
+      }
     }
   }
 
@@ -156,6 +178,7 @@ const { recolorLensImage } = await rxImport('rx-api.js');
   }
 
   let debounceTimer = null;
+  let reassertRaf = 0;
   function refresh() {
     rewriteLinks();
     observeCards();
@@ -163,12 +186,15 @@ const { recolorLensImage } = await rxImport('rx-api.js');
 
   refresh();
 
-  // Pagination, filtering and sorting morph the grid — re-apply to new cards.
+  // Pagination, filtering and sorting morph the grid (childList); the hover
+  // swap-back only touches src/srcset (attributes) — both need a pass.
   const main = document.querySelector('main');
   if (main) {
     new MutationObserver(() => {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(refresh, 150);
-    }).observe(main, { childList: true, subtree: true });
+      cancelAnimationFrame(reassertRaf);
+      reassertRaf = requestAnimationFrame(reassertRenders);
+    }).observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ['src', 'srcset'] });
   }
 })();
