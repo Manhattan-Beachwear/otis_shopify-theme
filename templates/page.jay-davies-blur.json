@@ -69,6 +69,7 @@
         "heading",
         "text_YTnWJP"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -76,9 +77,27 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "hero_video_3tLWgb": {
+      "type": "hero-video",
+      "name": "Video hero",
+      "settings": {
+        "title": "",
+        "title_size": 80,
+        "subheading": "",
+        "link_text": "",
+        "link": "",
+        "color_accent": "rgba(0,0,0,0)",
+        "text_align": "vertical-center horizontal-center",
+        "video_url": "https://cdn.shopify.com/videos/c/o/v/dd88fbdadfad4550b2f7f994c8452907.mp4",
+        "overlay_opacity": 0,
+        "section_height": "650px",
+        "mobile_height": "auto"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "hero_video_3tLWgb"
   ]
 }
