@@ -26,6 +26,7 @@
   # shadows the var() fallback instead of falling through to it.
   capture inline_style
     echo '--rx-steps-ratio: ' | append: ratio | append: ';'
+    echo '--rx-steps-content-width: ' | append: section.settings.content_width | append: 'px;'
     if section.settings.tab_active_background != blank
       echo '--rx-steps-tab-active-bg: ' | append: section.settings.tab_active_background | append: ';'
     endif
@@ -79,31 +80,31 @@
           <div class="rx-steps__heading">{{ heading }}</div>
         {%- endif -%}
 
-        <div class="rx-steps__nav">
-          <button
-            type="button"
-            class="rx-steps__arrow rx-steps__arrow--prev"
-            aria-label="{{ 'content.pagination.previous' | t }}"
-            on:click="/prev"
-          >
-            <span class="svg-wrapper icon-caret">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            class="rx-steps__arrow rx-steps__arrow--next"
-            aria-label="{{ 'content.pagination.next' | t }}"
-            on:click="/next"
-          >
-            <span class="svg-wrapper icon-caret">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
-          </button>
-        </div>
-
         <div class="rx-steps__panels">
+          <div class="rx-steps__nav">
+            <button
+              type="button"
+              class="rx-steps__arrow rx-steps__arrow--prev"
+              aria-label="{{ 'content.pagination.previous' | t }}"
+              on:click="/prev"
+            >
+              <span class="svg-wrapper icon-caret">
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              class="rx-steps__arrow rx-steps__arrow--next"
+              aria-label="{{ 'content.pagination.next' | t }}"
+              on:click="/next"
+            >
+              <span class="svg-wrapper icon-caret">
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </span>
+            </button>
+          </div>
+
           {%- for block in steps -%}
             <div
               class="rx-steps__panel"
@@ -160,10 +161,16 @@
     --rx-steps-ratio: 1;
     --rx-steps-tab-active-bg: var(--color-foreground);
     --rx-steps-tab-active-fg: var(--color-background);
-    --rx-steps-arrow-size: var(--slideshow-controls-size);
-    --rx-steps-arrow-icon: var(--slideshow-controls-icon);
+    --rx-steps-arrow-size: 1.75rem;
+    --rx-steps-arrow-icon: 1rem;
+    --rx-steps-arrow-offset: calc(var(--rx-steps-arrow-size) + var(--gap-md));
 
+    /* Narrower than the page-width column the section sits in. The second term
+       reserves room for the arrows, which hang outside this box — the content
+       gives way before they would overlap it. */
     display: block;
+    width: min(var(--rx-steps-content-width), 100% - var(--rx-steps-arrow-offset) * 2);
+    margin-inline: auto;
   }
 
   /* Tabs */
@@ -250,18 +257,18 @@
   }
 
   .rx-steps__panels {
+    position: relative;
     grid-row: 2;
     grid-column: 1 / 3;
   }
 
-  /* Top-aligned so the step heading reads as the next line of the copy column,
-     right under the section heading, instead of floating against the image.
-     Auto-fit instead of a breakpoint: the pair splits only while both columns
-     hold 24rem, so the tablet band gets full-width copy rather than a ribbon. */
+  /* Copy sits centred against the photo. Auto-fit instead of a breakpoint: the
+     pair splits only while both columns hold 20rem, so the tablet band gets
+     full-width copy rather than a ribbon. */
   .rx-steps__panel {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr));
-    align-items: start;
+    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+    align-items: center;
     gap: var(--gap-2xl) var(--rx-steps-gap);
   }
 
@@ -305,13 +312,17 @@
 
   /* Arrows */
 
+  /* Flanks the panel: a full-width strip whose ends carry the buttons, so both
+     arrows land on the vertical centre of whichever step is open. The strip
+     itself must not swallow clicks aimed at the copy underneath. */
   .rx-steps__nav {
-    grid-row: 1;
-    grid-column: 2;
-    align-self: end;
-    justify-self: end;
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline: calc(var(--rx-steps-arrow-offset) * -1);
     display: flex;
-    gap: var(--gap-lg);
+    justify-content: space-between;
+    translate: 0 -50%;
+    pointer-events: none;
   }
 
   .rx-steps__arrow {
@@ -325,13 +336,14 @@
     border-radius: 50%;
     background-color: var(--color-background);
     color: var(--color-foreground);
-    box-shadow: 0 2px 12px rgb(var(--color-shadow-rgb) / var(--opacity-20));
+    box-shadow: 0 1px 6px rgb(var(--color-shadow-rgb) / var(--opacity-20));
     cursor: pointer;
+    pointer-events: auto;
   }
 
   .rx-steps__arrow:hover,
   .rx-steps__arrow:focus-visible {
-    box-shadow: 0 4px 18px rgb(var(--color-shadow-rgb) / var(--opacity-30));
+    box-shadow: 0 2px 10px rgb(var(--color-shadow-rgb) / var(--opacity-30));
   }
 
   /* The chevron is a stroke asset, so the stroke thins out as the box grows —
@@ -421,13 +433,23 @@
       margin-block-end: var(--margin-lg);
     }
 
-    /* Arrows drop below the panel rather than crowding the heading. */
+    /* No room to hang the arrows outside, so the content takes the full column
+       and they return to the flow under the panel. */
+    .rx-steps {
+      --rx-steps-arrow-size: 2.25rem;
+      --rx-steps-arrow-icon: 1.25rem;
+
+      width: 100%;
+    }
+
     .rx-steps__nav {
-      grid-row: 3;
-      grid-column: 1;
-      justify-self: stretch;
-      justify-content: space-between;
-      margin-block-start: var(--margin-xs);
+      position: static;
+      inset: auto;
+      justify-content: center;
+      gap: var(--gap-2xl);
+      margin-block-start: var(--margin-lg);
+      translate: none;
+      pointer-events: auto;
     }
   }
 {% endstylesheet %}
@@ -446,6 +468,17 @@
       "id": "heading",
       "label": "Heading",
       "default": "<h2>How to order OTIS Rx online</h2>"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content width",
+      "info": "Narrower than the section, so the arrows sit in the margin beside it.",
+      "min": 600,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 900
     },
     {
       "type": "text",
