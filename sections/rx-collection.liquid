@@ -4,18 +4,23 @@
   (e.g. ?view=rx) and card photos are recolored to a chosen lens color via the
   LenSync recolor service (lazily, as cards approach the viewport).
   With both settings empty the section renders nothing and has no effect.
+
+  Applies to the collection grid by default; `scope` retargets it, e.g. at the
+  product-list section used on content pages.
 {%- enddoc -%}
 
 {%- liquid
   assign view_suffix = section.settings.product_view | strip
   assign lens_color = section.settings.lens_color | strip
+  assign scope = section.settings.scope | strip
 -%}
 
 {%- if view_suffix != blank or lens_color != blank -%}
   <script type="application/json" data-rx-collection>
     {
       "view": {{ view_suffix | json }},
-      "lensColor": {{ lens_color | json }}
+      "lensColor": {{ lens_color | json }},
+      "scope": {{ scope | json }}
     }
   </script>
   {% render 'rx-import-map' %}
@@ -37,6 +42,12 @@
       "id": "lens_color",
       "label": "Card lens color",
       "info": "Recolor card photos to this lens color (e.g. Clear or Grey Polar). Empty = original photos."
+    },
+    {
+      "type": "text",
+      "id": "scope",
+      "label": "Card container selector",
+      "info": "CSS selector wrapping the cards to affect. Empty = the collection grid (.product-grid-container). Use .section-resource-list__content for a product list on a page."
     }
   ],
   "presets": [

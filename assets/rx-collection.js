@@ -35,9 +35,10 @@ const { recolorLensImage } = await rxImport('rx-api.js');
   const rawSlug = lensColorSlug(config.lensColor || '');
   const slug = rawSlug.startsWith('clear') ? 'clear' : rawSlug;
 
-  // The main collection grid only — recommendations and other sections keep
-  // their default links and photos.
-  const GRID = '.product-grid-container';
+  // Scoped so recommendations and other sections keep their default links and
+  // photos. Defaults to the collection grid; pages that show a product-list
+  // section point it at that container instead.
+  const GRID = (config.scope || '').trim() || '.product-grid-container';
 
   // --- Card links → alternate product view -----------------------------------
 
@@ -187,7 +188,9 @@ const { recolorLensImage } = await rxImport('rx-api.js');
   refresh();
 
   // Pagination, filtering and sorting morph the grid (childList); the hover
-  // swap-back only touches src/srcset (attributes) — both need a pass.
+  // swap-back only touches src/srcset, and picking a swatch rewrites the card's
+  // href back to the plain product URL — all of them need a pass. Rewrites of
+  // our own skip links that already carry the view, so this cannot loop.
   const main = document.querySelector('main');
   if (main) {
     new MutationObserver(() => {
@@ -195,6 +198,11 @@ const { recolorLensImage } = await rxImport('rx-api.js');
       debounceTimer = setTimeout(refresh, 150);
       cancelAnimationFrame(reassertRaf);
       reassertRaf = requestAnimationFrame(reassertRenders);
-    }).observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ['src', 'srcset'] });
+    }).observe(main, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['src', 'srcset', 'href'],
+    });
   }
 })();
