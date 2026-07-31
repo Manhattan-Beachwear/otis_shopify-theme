@@ -14,6 +14,7 @@
       "blocks": {
         "heading": {
           "type": "text",
+          "name": "Title",
           "settings": {
             "text": "<p>{{ closest.page.title }}</p>",
             "width": "100%",
@@ -35,8 +36,7 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Title"
+          "blocks": {}
         }
       },
       "block_order": [
@@ -56,6 +56,7 @@
       "blocks": {
         "text_heading": {
           "type": "text",
+          "name": "Heading",
           "settings": {
             "text": "<h1>Prescription in every OTIS frame</h1>",
             "width": "fit-content",
@@ -77,11 +78,11 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Heading"
+          "blocks": {}
         },
         "text_subheading": {
           "type": "text",
+          "name": "Subheading",
           "settings": {
             "text": "<p>Pick your frame, build your lenses, add your script. Delivered to your door.</p>",
             "width": "fit-content",
@@ -103,11 +104,11 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Subheading"
+          "blocks": {}
         },
         "group_buttons": {
           "type": "group",
+          "name": "Buttons",
           "settings": {
             "content_direction": "row",
             "vertical_on_mobile": true,
@@ -177,8 +178,7 @@
           "block_order": [
             "button_rx_sun",
             "button_optical"
-          ],
-          "name": "Buttons"
+          ]
         }
       },
       "block_order": [
@@ -189,7 +189,7 @@
       "name": "Prescription hero",
       "settings": {
         "media_type_1": "image",
-        "image_1": "shopify://shop_images/OTIS_BANNER_JACK_MEDLAND_desktop.jpg",
+        "image_1": "shopify://shop_images/hero_1.webp",
         "media_type_2": "image",
         "stack_media_on_mobile": true,
         "custom_mobile_media": false,
@@ -217,8 +217,7 @@
         "reflection_opacity": 75,
         "image_zoom_fade_animation": false,
         "padding-block-start": 40,
-        "padding-block-end": 40,
-        "image_1_mobile": ""
+        "padding-block-end": 40
       }
     },
     "marquee_rx": {
@@ -380,7 +379,7 @@
             "icon": "clipboard",
             "heading": "Add your prescription",
             "text": "<p>Upload a photo or PDF of your script and we’ll read the values across, or type them in yourself. No script on hand? Check out now and add it later from <a href=\"/pages/my-orders\" title=\"My orders\">My orders</a>.</p>",
-            "image": "shopify://shop_images/Hinge-detail-sqr.jpg"
+            "image": "shopify://shop_images/2step.webp"
           }
         },
         "step_four": {
@@ -404,6 +403,7 @@
       "name": "How to order",
       "settings": {
         "heading": "<h2>How to order OTIS Rx online</h2>",
+        "content_width": 900,
         "tablist_label": "Ordering steps",
         "icon_size": 24,
         "tab_active_background": "#fbb163",
@@ -420,6 +420,7 @@
       "blocks": {
         "text_lens_heading": {
           "type": "text",
+          "name": "Heading",
           "settings": {
             "text": "<h2>Hand crafted clarity for everyday adventures.</h2>",
             "width": "fit-content",
@@ -441,11 +442,11 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Heading"
+          "blocks": {}
         },
         "text_lens_body": {
           "type": "text",
+          "name": "Body",
           "settings": {
             "text": "<p>Every OTIS Rx lens is cut to your script and finished with scratch-resistant, anti-reflective and UV-protective coatings. Everyday Clarity CR-39 for acetate frames, Active Protection polycarbonate for our 6-base sun frames.</p>",
             "width": "fit-content",
@@ -467,8 +468,7 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Body"
+          "blocks": {}
         },
         "button_lens_shop": {
           "type": "button",
@@ -493,7 +493,7 @@
       "name": "Lens hero",
       "settings": {
         "media_type_1": "image",
-        "image_1": "shopify://shop_images/OTIS_LIT_LENS_HERO.jpg",
+        "image_1": "shopify://shop_images/GIKLLYl.webp",
         "media_type_2": "image",
         "stack_media_on_mobile": true,
         "custom_mobile_media": false,
@@ -514,7 +514,7 @@
         "section_height_custom": 50,
         "color_scheme": "scheme-6",
         "toggle_overlay": true,
-        "overlay_color": "#00000026",
+        "overlay_color": "#0000006E",
         "overlay_style": "gradient",
         "gradient_direction": "to top",
         "blurred_reflection": false,
@@ -613,6 +613,7 @@
       "blocks": {
         "text_focus_heading": {
           "type": "text",
+          "name": "Heading",
           "settings": {
             "text": "<h2>Sharper focus. Clearer vision. Every time.</h2>",
             "width": "100%",
@@ -634,11 +635,11 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Heading"
+          "blocks": {}
         },
         "text_focus_body": {
           "type": "text",
+          "name": "Body",
           "settings": {
             "text": "<p>Getting your favorite frames fitted with your prescription has never been easier. Order online, or find OTIS at one of our premium independent optical retailers through our <a href=\"/pages/store-locator\" title=\"Store locator\">Store Locator</a>.</p>",
             "width": "100%",
@@ -660,14 +661,14 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Body"
+          "blocks": {}
         }
       },
       "block_order": [
         "text_focus_heading",
         "text_focus_body"
       ],
+      "name": "Intro text",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -695,8 +696,7 @@
         "gradient_direction": "to top",
         "padding-block-start": 48,
         "padding-block-end": 48
-      },
-      "name": "Intro text"
+      }
     },
     "product_list_rx": {
       "type": "product-list",
@@ -903,7 +903,7 @@
       },
       "name": "Rx-ready frames",
       "settings": {
-        "collection": "",
+        "collection": "2026-collection",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 10,
@@ -932,6 +932,7 @@
       "blocks": {
         "text_faq_heading": {
           "type": "text",
+          "name": "Heading",
           "settings": {
             "text": "<h2>Prescription FAQ</h2>",
             "width": "100%",
@@ -953,8 +954,7 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Heading"
+          "blocks": {}
         },
         "accordion_faq": {
           "type": "accordion",
@@ -1184,6 +1184,7 @@
         "text_faq_heading",
         "accordion_faq"
       ],
+      "name": "Prescription FAQ",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -1211,14 +1212,14 @@
         "gradient_direction": "to top",
         "padding-block-start": 48,
         "padding-block-end": 48
-      },
-      "name": "Prescription FAQ"
+      }
     },
     "section_seo": {
       "type": "section",
       "blocks": {
         "text_seo_heading": {
           "type": "text",
+          "name": "Heading",
           "settings": {
             "text": "<h2>OTIS prescription lenses</h2>",
             "width": "100%",
@@ -1240,11 +1241,11 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Heading"
+          "blocks": {}
         },
         "text_seo_body_1": {
           "type": "text",
+          "name": "Body",
           "settings": {
             "text": "<p>OTIS Rx lenses are made to your script and finished with scratch-resistant, anti-reflective and UV-protective coatings as standard. Everyday Clarity CR-39 lenses suit our acetate frames and everyday wear; Active Protection polycarbonate lenses are built for 6-base sun frames and impact resistance. Both are available clear, polarized or as Transitions, in standard and high Rx powers. No lens is scratch proof, but the coatings we use hold up to daily wear.</p>",
             "width": "100%",
@@ -1266,11 +1267,11 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Body"
+          "blocks": {}
         },
         "text_seo_body_2": {
           "type": "text",
+          "name": "Body",
           "settings": {
             "text": "<p>Sustainability runs through the collection too. Our Eco Acetate frames are certified biodegradable at the end of their life, and we work with our suppliers to keep materials responsibly sourced. Browse the <a href=\"/collections/mens-eyewear\" title=\"Men’s eyewear\">men’s</a> and <a href=\"/collections/womens-eyewear\" title=\"Women’s eyewear\">women’s</a> ranges to find a frame that suits you, then build it with the lenses you need.</p>",
             "width": "100%",
@@ -1292,8 +1293,7 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Body"
+          "blocks": {}
         }
       },
       "block_order": [
@@ -1301,6 +1301,7 @@
         "text_seo_body_1",
         "text_seo_body_2"
       ],
+      "name": "Prescription copy",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -1328,14 +1329,14 @@
         "gradient_direction": "to top",
         "padding-block-start": 48,
         "padding-block-end": 24
-      },
-      "name": "Prescription copy"
+      }
     },
     "section_support": {
       "type": "section",
       "blocks": {
         "text_support": {
           "type": "text",
+          "name": "Support",
           "settings": {
             "text": "<p><em>If you have any questions, check our <a href=\"/pages/faq\" title=\"FAQ\">FAQ</a> or reach out to <a href=\"/pages/contact\" title=\"Contact us\">customer support</a>.</em></p>",
             "width": "100%",
@@ -1357,13 +1358,13 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "name": "Support"
+          "blocks": {}
         }
       },
       "block_order": [
         "text_support"
       ],
+      "name": "Support",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -1391,8 +1392,15 @@
         "gradient_direction": "to top",
         "padding-block-start": 0,
         "padding-block-end": 48
-      },
-      "name": "Support"
+      }
+    },
+    "rx_settings": {
+      "type": "rx-collection",
+      "settings": {
+        "product_view": "rx",
+        "lens_color": "",
+        "scope": ".resource-list"
+      }
     }
   },
   "order": [
@@ -1406,6 +1414,7 @@
     "product_list_rx",
     "section_faq",
     "section_seo",
-    "section_support"
+    "section_support",
+    "rx_settings"
   ]
 }
