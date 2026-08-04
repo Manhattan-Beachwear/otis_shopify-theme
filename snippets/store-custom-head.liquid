@@ -10,7 +10,34 @@
   
   IMPORTANT: This file must be protected in Child store .gitattributes with:
   snippets/store-custom-head.liquid   merge=ours
-  
+
   See README.md for deployment configuration details.
 {% endcomment %}
+
+<script>
+  // Shim for a parent-theme race: the _header-split-menu inline script sets
+  // attributes on deferred <overflow-list> elements before they initialize,
+  // and the resulting throw inside attributeChangedCallback aborts
+  // critical.js's deferred component init queue (page ends up half-dead).
+  //
+  // The registry captures attributeChangedCallback AT DEFINE TIME, so the
+  // wrap must happen before customElements.define runs — hence this hook in
+  // <head>, ahead of critical.js. Remove once fixed upstream.
+  (function () {
+    var originalDefine = window.customElements.define.bind(window.customElements);
+    window.customElements.define = function (name, ctor, options) {
+      if (name === 'overflow-list' && ctor && ctor.prototype && ctor.prototype.attributeChangedCallback) {
+        var callback = ctor.prototype.attributeChangedCallback;
+        ctor.prototype.attributeChangedCallback = function () {
+          try {
+            return callback.apply(this, arguments);
+          } catch (error) {
+            // Element not initialized yet — state settles after its init runs.
+          }
+        };
+      }
+      return originalDefine(name, ctor, options);
+    };
+  })();
+</script>
 

@@ -942,3 +942,163 @@ We are not accepting contributions to Horizon at this time.
 ## License
 
 Copyright (c) 2025-present Shopify Inc. See [LICENSE](/LICENSE.md) for further details.
+
+---
+
+## OTIS store customizations: RX
+
+Store-specific prescription (RX) eyewear flow for OTIS US. Everything below is **additive** — no
+existing theme file is modified except protected zones. All new files carry the `rx-` prefix; the
+only edited protected file is `snippets/store-custom-body.liquid`. Behaviour references the LenSync
+Prestige theme (`eazyvisitest/shopify/`); logic was re-implemented in Horizon idioms (base
+`Component`, `@theme/` imports, `CartAddEvent`), not copied.
+
+### What it adds
+
+1. **RX PDP** — a lens configurator on the frame product page: lens type → vision type → lens
+   color → prescription → add the frame + lenses bundle to cart. Rendered through the protected
+   template `templates/product.rx.json`, which composes the native `product-information` section
+   with the new RX blocks (native `buy-buttons` are intentionally omitted — the RX flow adds to
+   cart itself).
+2. **Prescription drawer** — upload a prescription file (OCR via the LenSync backend) or type
+   values manually, with per-field validation and expiry check. Shared markup lives in
+   `snippets/rx-prescription-drawer.liquid` and is reused by the PDP and the my-orders page.
+3. **Need RX page** (`/pages/my-orders`) — a logged-in customer sees their RX orders and can attach
+   a prescription to an already-placed order.
+
+### New files
+
+| File | Role |
+|---|---|
+| `assets/rx-core.js` | Pure logic (no `@theme` imports, node-testable): `RxState`, `validatePrescription`, `buildLineItemProperties`, `mapOcrToValues` |
+| `assets/rx-api.js` | Thin App Proxy fetch layer + `RxApiError` |
+| `assets/rx-selectors.js` | `<rx-lens-selector>`, `<rx-vision-selector>` web components |
+| `assets/rx-lens-options.js` | `<rx-lens-options>` lens-color swatches |
+| `assets/rx-prescription.js` | Prescription drawer controller (upload / manual / add-later) |
+| `assets/rx-cart.js` | `<rx-price-summary>` + `addRxBundle` (2-line-item cart add, native `CartAddEvent`) |
+| `assets/rx-my-orders.js` | Need RX page controller (status badges, live refresh, attach RX) |
+| `blocks/rx-lens-selector.liquid` | Lens-type cards; renders `rx-product-data`; holds lens-product mapping settings |
+| `blocks/rx-vision-selector.liquid` | Single Vision / Progressive / Non-RX |
+| `blocks/rx-lens-options.liquid` | Lens color selection (sunglasses / photochromic) |
+| `blocks/rx-prescription.liquid` | "Add prescription" CTA + drawer; holds RX limits / subdomain / provider settings |
+| `blocks/rx-price-summary.liquid` | Frame + Lenses = Total breakdown and Add-to-cart button |
+| `snippets/rx-product-data.liquid` | Serializes frame ↔ lens data + limits + config into `<script type="application/json" data-rx-product-data>` |
+| `snippets/rx-prescription-drawer.liquid` | Shared drawer markup (PDP block + my-orders section) |
+| `snippets/rx-order-card.liquid` | Order card for the Need RX page (groups line items by `_bundleHash`) |
+| `sections/rx-my-orders.liquid` | Need RX page section (login gate + order list) |
+| `templates/product.rx.json` | **Protected.** RX product template — assign via product template suffix `rx` |
+| `templates/page.my-orders.json` | **Protected.** Wires the `my-orders` page to `sections/rx-my-orders.liquid` |
+| `snippets/store-custom-body.liquid` | **Protected, edited.** Appended a script that hides service line-item properties in the cart |
+| `tests/rx/*.test.mjs`, `package.json` | Node test suite + dev-only manifest (ignored by `shopify theme push/dev`) |
+| `docs/superpowers/specs/…`, `docs/superpowers/plans/…` | Design spec and implementation plan |
+
+`tests/`, `docs/` and `package.json` are repo-root dev infrastructure only — they are not theme
+directories, so `shopify theme push/dev` ignores them.
+
+### Product-data JSON schema
+
+`snippets/rx-product-data.liquid` emits one `<script type="application/json" data-rx-product-data>`
+that the RX JS reads:
+
+```json
+{
+  "frame":   { "productId": 0, "variantId": 0, "sku": "", "price": 0, "title": "",
+               "frameTag": "", "baseCurveTag": "DEFAULT" },
+  "lensCategories": [
+    { "key": "clear", "label": "Clear",
+      "products": [ { "id": 0, "variantId": 0, "sku": "", "price": 0, "title": "",
+                      "visionType": "single_vision", "color": null, "colorDescription": null } ] }
+  ],
+  "limits": { "sph": {"min":-20,"max":20,"step":0.25}, "cyl": {}, "axis": {}, "add": {}, "pd": {}, "prism": {} },
+  "config": { "subdomain": "", "providerNumber": "", "checkExpiration": true }
+}
+```
+
+Lens-product resolution uses the frame's `basecurve_*` tags plus the `special_tag_N → special_product_N`
+mappings configured on the `rx-lens-selector` block. Lens metafields consumed:
+`variant.metafields.custom.corresponding_rx_variant` and `variant.metafields.custom.short_lens_color_description`.
+
+### Line-item properties (backend contract — do not rename)
+
+These names are a fixed contract with the LenSync backend.
+
+- **Lens item:** `_bundleHash` (`bundle-hash-{ts}-{lensVariantId}-{frameVariantId}`), `rxOrder: "true"`,
+  `_prescription_type`, `RX Style`, `Lens Style`, `Provider number`, `Health Fund Item Numbers`,
+  `Frame SKU`, `Lens SKU`, `_frame_variant_id`, `uniqueId`, `Prescription RX UID`,
+  `Pupillary Distance` (or split `Pupillary Distance Left` / `Pupillary Distance Right`),
+  and `expiredRX: "true"` only when the prescription is expired.
+- **Frame item:** `_bundleHash`, `Frame SKU`, `Lens SKU`.
+
+Actual SPH/CYL/… values are never stored on the order — they go to the backend via
+`save-prescription`; the order keeps only the `uniqueId` / `Prescription RX UID` references. Lab
+status comes back as order metafields `custom.lab_status` and `custom.tracking_number`.
+
+**Cart visibility:** Horizon hides `_`-prefixed properties natively. `store-custom-body.liquid`
+additionally hides these non-prefixed service properties in the cart drawer and `/cart` via a
+`MutationObserver`: `rxOrder`, `uniqueId`, `Prescription RX UID`, `Provider number`,
+`Health Fund Item Numbers`, `Frame SKU`, `Lens SKU`, `expiredRX`. `RX Style`, `Lens Style` and
+`Pupillary Distance*` remain visible to the shopper.
+
+### App Proxy endpoints (relative, no client-side HMAC)
+
+Signed by the Shopify App Proxy, forwarded to the LenSync backend:
+
+- `POST /apps/proxy/analyze-prescription` (FormData) — OCR analysis
+- `POST /apps/proxy/save-prescription` (JSON)
+- `GET  /apps/proxy/get-order`
+- `GET  /apps/proxy/get-prescription-file`
+- `POST /apps/proxy/update-line-item-properties` (JSON)
+
+If the proxy is unavailable (e.g. app not yet installed → `404`), the flow degrades gracefully: the
+shopper can pick **Add later**, the bundle is added without `uniqueId`, and the prescription is
+attached afterwards on `/pages/my-orders`. The my-orders login gate uses
+`/customer_identity/login?return_to=…` (intentionally not `routes.account_login_url`).
+
+### Configuration
+
+RX settings live in the **protected** template JSON (not in `config/settings_schema.json`), so they
+survive parent-theme updates:
+
+- `rx-lens-selector` block (`templates/product.rx.json`): `lens_category_{1..3}_key/label`,
+  `lens_product_{1..3}` (single-vision picker), `progressive_product_{1..3}`,
+  `special_tag_{1..5}` + `special_product_{1..5}` (base-curve → lens-product mapping).
+- `rx-prescription` block: `rx_subdomain`, `rx_provider_number`, `health_fund_numbers`,
+  `rx_check_expiration`, and `limits_{sph,cyl,axis,add,pd,prism}_{min,max}`.
+- `rx-my-orders` section (`templates/page.my-orders.json`): the same subdomain / provider /
+  health-fund / limit settings plus login and empty-state copy.
+
+### Prerequisites (outside the theme)
+
+1. LenSync app with App Proxy `apps/proxy` installed on the store.
+2. Lens products tagged (`eyewear_*`, `basecurve_*`) and carrying the `custom.corresponding_rx_variant`
+   / `custom.short_lens_color_description` metafields.
+3. A page with handle `my-orders`.
+4. Order metafields `custom.lab_status` and `custom.tracking_number` written by the backend.
+
+### Assigning the RX template to a product
+
+1. Products have the RX flow only when they use the `product.rx` template. Assign it in Admin →
+   product → **Theme template → `rx`**, or preview any product with `?view=rx`.
+2. The `rx-lens-selector` block's product pickers and base-curve mappings must point at the correct
+   lens products for that store.
+
+### Running the checks
+
+- Unit tests (pure logic in `assets/rx-core.js`, API/cart clients):
+  `node --test tests/rx/*.test.mjs` (or `npm test`). 36 tests.
+  Note: on Node 24 the bare-directory form `node --test tests/rx/` treats the path as an entry
+  module — use the glob or `npm test` instead.
+- Theme lint: `shopify theme check --fail-level error`. The RX files add 0 errors; pre-existing
+  parent-theme offenses (mostly locale translation checks) are unrelated.
+### Lens catalog & power tiers (Jul 2026)
+
+- Lens products are imported from `docs/otis-rx-lenses-import.csv` (11 products / 38 SKUs,
+  handles `otis-rx-lens-*`). Active but hidden from search via `seo.hidden`.
+- Two power tiers per category: Standard Rx (SPH within ±2) and High Rx (beyond). The tier is
+  picked automatically from the entered prescription (`pickTier` in `assets/rx-core.js`);
+  threshold configurable on the `rx-prescription` block (`rx_tier_sph_threshold`, default 2).
+- Frame families: acetate frames (4-6 base) use the Everyday Clarity products (default);
+  Grilamid sun frames MUST be tagged `base_6` to get the Active Protection products
+  (`alt_tag_*` settings on the `rx-lens-selector` block in `templates/product.rx.json`).
+- Vision types: Single Vision only at launch. The vision picker auto-hides when a single type
+  is available; Progressive appears once `progressive_product_*` settings are filled.

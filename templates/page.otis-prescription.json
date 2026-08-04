@@ -1,0 +1,1420 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<p>{{ closest.page.title }}</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-heading--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "hero_intro": {
+      "type": "hero",
+      "blocks": {
+        "text_heading": {
+          "type": "text",
+          "name": "Heading",
+          "settings": {
+            "text": "<h1>Prescription in every OTIS frame</h1>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "2.5rem",
+            "line_height": "tight",
+            "letter_spacing": "normal",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_subheading": {
+          "type": "text",
+          "name": "Subheading",
+          "settings": {
+            "text": "<p>Pick your frame, build your lenses, add your script. Delivered to your door.</p>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1.125rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "group_buttons": {
+          "type": "group",
+          "name": "Buttons",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "button_rx_sun": {
+              "type": "button",
+              "settings": {
+                "label": "Shop Rx sunglasses",
+                "link": "",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            },
+            "button_optical": {
+              "type": "button",
+              "settings": {
+                "label": "Shop optical",
+                "link": "",
+                "open_in_new_tab": false,
+                "style_class": "button-secondary",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_rx_sun",
+            "button_optical"
+          ]
+        }
+      },
+      "block_order": [
+        "text_heading",
+        "text_subheading",
+        "group_buttons"
+      ],
+      "name": "Prescription hero",
+      "settings": {
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/hero_1.webp",
+        "media_type_2": "image",
+        "stack_media_on_mobile": true,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "flex-end",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "large",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-6",
+        "toggle_overlay": true,
+        "overlay_color": "#00000026",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "image_zoom_fade_animation": false,
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    },
+    "marquee_rx": {
+      "type": "marquee",
+      "blocks": {
+        "icon_shipping": {
+          "type": "icon",
+          "settings": {
+            "icon": "truck",
+            "width": 24,
+            "link": "",
+            "open_in_new_tab": false
+          },
+          "blocks": {}
+        },
+        "text_shipping": {
+          "type": "text",
+          "settings": {
+            "text": "<p>FREE SHIPPING</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "line_height": "loose",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "icon_warranty": {
+          "type": "icon",
+          "settings": {
+            "icon": "award",
+            "width": 24,
+            "link": "",
+            "open_in_new_tab": false
+          },
+          "blocks": {}
+        },
+        "text_warranty": {
+          "type": "text",
+          "settings": {
+            "text": "<p>LIFETIME WARRANTY</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "line_height": "loose",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "icon_vision": {
+          "type": "icon",
+          "settings": {
+            "icon": "eye",
+            "width": 24,
+            "link": "",
+            "open_in_new_tab": false
+          },
+          "blocks": {}
+        },
+        "text_vision": {
+          "type": "text",
+          "settings": {
+            "text": "<p>SINGLE VISION &amp; PROGRESSIVE</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "line_height": "loose",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "icon_shipping",
+        "text_shipping",
+        "icon_warranty",
+        "text_warranty",
+        "icon_vision",
+        "text_vision"
+      ],
+      "name": "Rx marquee",
+      "settings": {
+        "movement_direction": "reverse",
+        "color_scheme": "scheme-5",
+        "padding-block-start": 15,
+        "padding-block-end": 15,
+        "gap_between_elements": 20
+      }
+    },
+    "rx_steps": {
+      "type": "rx-steps",
+      "blocks": {
+        "step_one": {
+          "type": "step",
+          "name": "Pick your frame",
+          "settings": {
+            "tab_label": "Step one",
+            "icon": "price_tag",
+            "heading": "Pick your frame",
+            "text": "<p>Every OTIS frame can be made to your prescription — sun, clear or photochromic.</p>",
+            "image": "shopify://shop_images/AUDREY_191-2301_L_1_20b9d54b-2a06-4cd7-a399-6d002b943f2e.jpg"
+          }
+        },
+        "step_two": {
+          "type": "step",
+          "name": "Build your lenses",
+          "settings": {
+            "tab_label": "Step two",
+            "icon": "eye",
+            "heading": "Build your lenses",
+            "text": "<p>On the frame page choose your lens type, vision type and lens color. The price updates as you go.</p>",
+            "image": "shopify://shop_images/lens_images.webp"
+          }
+        },
+        "step_three": {
+          "type": "step",
+          "name": "Add your prescription",
+          "settings": {
+            "tab_label": "Step three",
+            "icon": "clipboard",
+            "heading": "Add your prescription",
+            "text": "<p>Upload a photo or PDF of your script and we’ll read the values across, or type them in yourself. No script on hand? Check out now and add it later from <a href=\"/pages/my-orders\" title=\"My orders\">My orders</a>.</p>",
+            "image": "shopify://shop_images/2step.webp"
+          }
+        },
+        "step_four": {
+          "type": "step",
+          "name": "We cut, you wear",
+          "settings": {
+            "tab_label": "Step four",
+            "icon": "truck",
+            "heading": "We cut, you wear",
+            "text": "<p>Each pair is made to your prescription in our lab — allow 1–3 weeks. Your itemized invoice is emailed to you, so you can claim through your vision plan, FSA or HSA.</p>",
+            "image": "shopify://shop_images/Jay_Square.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "step_one",
+        "step_two",
+        "step_three",
+        "step_four"
+      ],
+      "name": "How to order",
+      "settings": {
+        "heading": "<h2>How to order OTIS Rx online</h2>",
+        "content_width": 900,
+        "tablist_label": "Ordering steps",
+        "icon_size": 24,
+        "tab_active_background": "#fbb163",
+        "tab_active_text": "#121212",
+        "image_ratio": "square",
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "hero_lenses": {
+      "type": "hero",
+      "blocks": {
+        "text_lens_heading": {
+          "type": "text",
+          "name": "Heading",
+          "settings": {
+            "text": "<h2>Hand crafted clarity for everyday adventures.</h2>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "1.5rem",
+            "line_height": "tight",
+            "letter_spacing": "normal",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_lens_body": {
+          "type": "text",
+          "name": "Body",
+          "settings": {
+            "text": "<p>Every OTIS Rx lens is cut to your script and finished with scratch-resistant, anti-reflective and UV-protective coatings. Everyday Clarity CR-39 for acetate frames, Active Protection polycarbonate for our 6-base sun frames.</p>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1.125rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_lens_shop": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Rx frames",
+            "link": "",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_lens_heading",
+        "text_lens_body",
+        "button_lens_shop"
+      ],
+      "name": "Lens hero",
+      "settings": {
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/GIKLLYl.webp",
+        "media_type_2": "image",
+        "stack_media_on_mobile": true,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "flex-end",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-6",
+        "toggle_overlay": true,
+        "overlay_color": "#0000006E",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "image_zoom_fade_animation": false,
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    },
+    "rx_compare": {
+      "type": "rx-compare",
+      "blocks": {
+        "row_header": {
+          "type": "row",
+          "settings": {
+            "left_text": "<p>EVERYDAY CLARITY</p>",
+            "right_text": "<p>ACTIVE PROTECTION</p>",
+            "is_header": true
+          }
+        },
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "left_text": "<p>CR-39 lens material</p>",
+            "right_text": "<p>Polycarbonate lens material</p>",
+            "is_header": false
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "left_text": "<p>Built for OTIS acetate frames (4–6 base)</p>",
+            "right_text": "<p>Built for OTIS sun frames (6 base)</p>",
+            "is_header": false
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "left_text": "<p>Clear, polarized or Transitions</p>",
+            "right_text": "<p>Clear, polarized or Transitions</p>",
+            "is_header": false
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "left_text": "<p>Standard and high Rx powers</p>",
+            "right_text": "<p>Standard and high Rx powers</p>",
+            "is_header": false
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "left_text": "<p>Best for everyday wear</p>",
+            "right_text": "<p>Impact resistant for active days</p>",
+            "is_header": false
+          }
+        }
+      },
+      "block_order": [
+        "row_header",
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5"
+      ],
+      "name": "Lens comparison",
+      "settings": {
+        "heading": "<h2>Which lens is right for you?</h2>",
+        "left_image": "shopify://shop_images/regular_lenses.png",
+        "left_title": "EVERYDAY CLARITY",
+        "right_image": "shopify://shop_images/polarised_lens.png",
+        "right_title": "ACTIVE PROTECTION",
+        "versus_label": "VS.",
+        "image_ratio": "landscape",
+        "media_title_color": "#ffffff",
+        "toggle_overlay": true,
+        "overlay_color": "#00000059",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "left_background": "#121212",
+        "left_text_color": "#ffffff",
+        "right_background": "#f3f3f3",
+        "right_text_color": "#121212",
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "section_intro_text": {
+      "type": "section",
+      "blocks": {
+        "text_focus_heading": {
+          "type": "text",
+          "name": "Heading",
+          "settings": {
+            "text": "<h2>Sharper focus. Clearer vision. Every time.</h2>",
+            "width": "100%",
+            "max_width": "narrow",
+            "alignment": "center",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_focus_body": {
+          "type": "text",
+          "name": "Body",
+          "settings": {
+            "text": "<p>Getting your favorite frames fitted with your prescription has never been easier. Order online, or find OTIS at one of our premium independent optical retailers through our <a href=\"/pages/store-locator\" title=\"Store locator\">Store Locator</a>.</p>",
+            "width": "100%",
+            "max_width": "narrow",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_focus_heading",
+        "text_focus_body"
+      ],
+      "name": "Intro text",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "product_list_rx": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "Header",
+          "static": true,
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "flex-end",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_list_text": {
+              "type": "_product-list-text",
+              "name": "Collection title",
+              "settings": {
+                "text": "<h2>Shop Rx-ready frames</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-heading--family)",
+                "font_size": "1.25rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "uppercase",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_list_button": {
+              "type": "_product-list-button",
+              "name": "Button",
+              "settings": {
+                "label": "View all",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_list_text",
+            "product_list_button"
+          ]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "Product card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_card_gallery": {
+              "type": "_product-card-gallery",
+              "name": "Media",
+              "settings": {
+                "show_second_image_on_hover": true,
+                "image_ratio": "adapt",
+                "media_fit": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title": {
+              "type": "product-title",
+              "name": "Title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-heading--family)",
+                "font_size": "0.875rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "uppercase",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_variant_title": {
+              "type": "variant-title",
+              "name": "Frame color",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-subheading--family)",
+                "font_size": "0.75rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "custom_color": "#807b7b",
+                "font_style": "italic",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price": {
+              "type": "price",
+              "name": "Price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "custom",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-subheading--family)",
+                "font_size": "0.75rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_card_gallery",
+            "product_title",
+            "product_variant_title",
+            "price"
+          ]
+        }
+      },
+      "name": "Rx-ready frames",
+      "settings": {
+        "collection": "2026-collection",
+        "layout_type": "carousel",
+        "carousel_on_mobile": true,
+        "max_products": 10,
+        "columns": 4,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "circle",
+        "section_width": "page-width",
+        "horizontal_alignment": "flex-start",
+        "gap": 28,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48,
+        "enable_combined_listings": false,
+        "show_product_image_swatches": false,
+        "product_image_swatch_style": "circle",
+        "product_image_swatch_size": 48,
+        "show_horizontal_scroll": false
+      }
+    },
+    "section_faq": {
+      "type": "section",
+      "blocks": {
+        "text_faq_heading": {
+          "type": "text",
+          "name": "Heading",
+          "settings": {
+            "text": "<h2>Prescription FAQ</h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "accordion_faq": {
+          "type": "accordion",
+          "name": "FAQ",
+          "settings": {
+            "icon": "caret",
+            "dividers": true,
+            "type_preset": "h5",
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "faq_powers": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "What prescriptions can you fill?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_faq_powers": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Single vision and progressive lenses, in standard and high Rx powers. If your script sits outside the range we can make, our customer support team will get in touch before your order goes to the lab.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_faq_powers"
+              ]
+            },
+            "faq_send": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "How do I send you my prescription?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_faq_send": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Upload a photo or PDF of your script while you build your lenses and we’ll read the values across, or type them in yourself. Ordered without it? Add your prescription any time from <a href=\"/pages/my-orders\" title=\"My orders\">My orders</a>.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_faq_send"
+              ]
+            },
+            "faq_time": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "How long does it take?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_faq_time": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Allow 1–3 weeks. Every Rx pair is cut and fitted to your prescription in our lab, so it takes longer than a stock pair.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_faq_time"
+              ]
+            },
+            "faq_insurance": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "Can I use my vision benefits?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_faq_insurance": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>We don’t bill insurers directly. Your emailed invoice is itemized, so you can submit it to your vision plan, FSA or HSA administrator for reimbursement.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_faq_insurance"
+              ]
+            },
+            "faq_change": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "What if my prescription changes?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_faq_change": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Get in touch with <a href=\"/pages/contact\" title=\"Contact us\">customer support</a> and we’ll talk you through re-lensing your existing OTIS frames.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_faq_change"
+              ]
+            }
+          },
+          "block_order": [
+            "faq_powers",
+            "faq_send",
+            "faq_time",
+            "faq_insurance",
+            "faq_change"
+          ]
+        }
+      },
+      "block_order": [
+        "text_faq_heading",
+        "accordion_faq"
+      ],
+      "name": "Prescription FAQ",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 24,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "section_seo": {
+      "type": "section",
+      "blocks": {
+        "text_seo_heading": {
+          "type": "text",
+          "name": "Heading",
+          "settings": {
+            "text": "<h2>OTIS prescription lenses</h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h4",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_seo_body_1": {
+          "type": "text",
+          "name": "Body",
+          "settings": {
+            "text": "<p>OTIS Rx lenses are made to your script and finished with scratch-resistant, anti-reflective and UV-protective coatings as standard. Everyday Clarity CR-39 lenses suit our acetate frames and everyday wear; Active Protection polycarbonate lenses are built for 6-base sun frames and impact resistance. Both are available clear, polarized or as Transitions, in standard and high Rx powers. No lens is scratch proof, but the coatings we use hold up to daily wear.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_seo_body_2": {
+          "type": "text",
+          "name": "Body",
+          "settings": {
+            "text": "<p>Sustainability runs through the collection too. Our Eco Acetate frames are certified biodegradable at the end of their life, and we work with our suppliers to keep materials responsibly sourced. Browse the <a href=\"/collections/mens-eyewear\" title=\"Men’s eyewear\">men’s</a> and <a href=\"/collections/womens-eyewear\" title=\"Women’s eyewear\">women’s</a> ranges to find a frame that suits you, then build it with the lenses you need.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_seo_heading",
+        "text_seo_body_1",
+        "text_seo_body_2"
+      ],
+      "name": "Prescription copy",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-1",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 24
+      }
+    },
+    "section_support": {
+      "type": "section",
+      "blocks": {
+        "text_support": {
+          "type": "text",
+          "name": "Support",
+          "settings": {
+            "text": "<p><em>If you have any questions, check our <a href=\"/pages/faq\" title=\"FAQ\">FAQ</a> or reach out to <a href=\"/pages/contact\" title=\"Contact us\">customer support</a>.</em></p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_support"
+      ],
+      "name": "Support",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-1",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 48
+      }
+    },
+    "rx_settings": {
+      "type": "rx-collection",
+      "settings": {
+        "product_view": "rx",
+        "lens_color": "",
+        "scope": ".resource-list"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "hero_intro",
+    "marquee_rx",
+    "rx_steps",
+    "hero_lenses",
+    "rx_compare",
+    "section_intro_text",
+    "product_list_rx",
+    "section_faq",
+    "section_seo",
+    "section_support",
+    "rx_settings"
+  ]
+}

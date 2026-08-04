@@ -1,0 +1,122 @@
+{%- doc -%}
+  RX order card for the Need RX page. Renders one card per order that contains a
+  prescription line item (`rxOrder == "true"`), grouping the bundle's line items
+  by `_bundleHash`. Live status, tracking and the "Add prescription" action are
+  filled in by `rx-my-orders.js`; this snippet emits the static shell + data.
+
+  @param {object} order - An order from `customer.orders`.
+
+  @example
+  {% render 'rx-order-card', order: order %}
+{%- enddoc -%}
+
+{%- liquid
+  # Find the first line item flagged as an RX order.
+  assign rx_line_item = nil
+  for item in order.line_items
+    for prop in item.properties
+      if prop.first == 'rxOrder' and prop.last == 'true'
+        assign rx_line_item = item
+        break
+      endif
+    endfor
+    if rx_line_item != nil
+      break
+    endif
+  endfor
+-%}
+
+{%- if rx_line_item != nil -%}
+  {%- liquid
+    # Bundle hash groups the lens + frame line items together.
+    assign bundle_hash = ''
+    for prop in rx_line_item.properties
+      if prop.first == '_bundleHash'
+        assign bundle_hash = prop.last
+        break
+      endif
+    endfor
+
+    # Collect sibling line item ids sharing the same bundle hash.
+    assign line_item_ids = ''
+    for item in order.line_items
+      for prop in item.properties
+        if prop.first == '_bundleHash' and prop.last == bundle_hash and bundle_hash != ''
+          if line_item_ids != ''
+            assign line_item_ids = line_item_ids | append: ','
+          endif
+          assign line_item_ids = line_item_ids | append: item.id
+          break
+        endif
+      endfor
+    endfor
+  -%}
+
+  <rx-order-card
+    class="rx-order-card"
+    data-order-id="{{ order.id }}"
+    data-line-item-id="{{ rx_line_item.id }}"
+    data-line-items="[{{ line_item_ids }}]"
+    {%- if order.metafields.custom.tracking_number != blank %}
+      data-tracking-number="{{ order.metafields.custom.tracking_number | escape }}"
+    {%- endif %}
+    {%- if order.metafields.custom.lab_status != blank %}
+      data-lab-status="{{ order.metafields.custom.lab_status | escape }}"
+    {%- endif %}
+  >
+    <div class="rx-order-card__head">
+      <span class="rx-order-card__name">{{ order.name }}</span>
+      <span class="rx-order-card__date">{{ order.created_at | date: '%B %e, %Y' }}</span>
+    </div>
+
+    <div class="rx-order-card__products">
+      {%- for item in order.line_items -%}
+        {%- liquid
+          assign is_sibling = false
+          for prop in item.properties
+            if prop.first == '_bundleHash' and prop.last == bundle_hash and bundle_hash != ''
+              assign is_sibling = true
+              break
+            endif
+          endfor
+        -%}
+        {%- if is_sibling and item.image != blank -%}
+          <span class="rx-order-card__thumb">
+            {{ item.image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 160', alt: item.title | escape }}
+          </span>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- liquid
+      assign product_names = ''
+      for item in order.line_items
+        assign is_sibling = false
+        for prop in item.properties
+          if prop.first == '_bundleHash' and prop.last == bundle_hash and bundle_hash != ''
+            assign is_sibling = true
+            break
+          endif
+        endfor
+        if is_sibling
+          if product_names != ''
+            assign product_names = product_names | append: ' + '
+          endif
+          assign product_names = product_names | append: item.title
+        endif
+      endfor
+    -%}
+    {%- if product_names != '' -%}
+      <p class="rx-order-card__titles">{{ product_names }}</p>
+    {%- endif -%}
+
+    <div class="rx-order-card__status" data-rx-status>
+      <span class="rx-order-card__loading">
+        <span class="rx-order-card__spinner" aria-hidden="true"></span>
+        <span>Loading status…</span>
+      </span>
+    </div>
+
+    <div class="rx-order-card__actions" data-rx-actions></div>
+  </rx-order-card>
+{%- endif -%}
