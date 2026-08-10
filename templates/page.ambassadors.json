@@ -9,6 +9,242 @@
  */
 {
   "sections": {
+    "section_jHpzPT": {
+      "type": "section",
+      "blocks": {
+        "text_KzfQgh": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>AMBASSADORS</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_KzfQgh"
+      ],
+      "name": "t:names.rich_text_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 20,
+        "padding-block-end": 20
+      }
+    },
+    "section_FDgP6B": {
+      "type": "section",
+      "blocks": {
+        "image_8aUime": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/OTIS_Cam_JHook0074.jpg",
+            "image_mobile": "shopify://shop_images/OTIS_Cam_JHook0074.jpg",
+            "link": "",
+            "hover_scale": true,
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "group_A49gXx": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 25,
+            "width": "custom",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_FYtr6m": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Cam Richards</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h3",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_YyDrTG": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Hailing from South Carolina, Cam grew up surfing the small stuff but has since ascended to one of the most well rounded surfers on the planet. Between chasing waves at Pipe, punting airs in Indo and staying barreled on the east coast, there isn't Cam can't do on a surfboard. </p><p>Outside of surfing, he is a skilled angler with enough experience to pull fish out of the most fickle watering holes. A prime example of that jack-of-all-trades who is always on the move. </p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "button_9wYqnK": {
+              "type": "button",
+              "settings": {
+                "label": "@camrichaRDS",
+                "link": "https://www.instagram.com/camrichards/",
+                "open_in_new_tab": false,
+                "style_class": "button-secondary",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_FYtr6m",
+            "text_YyDrTG",
+            "button_9wYqnK"
+          ]
+        }
+      },
+      "block_order": [
+        "image_8aUime",
+        "group_A49gXx"
+      ],
+      "name": "t:names.image_with_text",
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 70,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-4",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "image_zoom_fade_animation": false,
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -168,8 +404,8 @@
         "image_xFtmML": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/GH6_2791_1.jpg",
-            "image_mobile": "shopify://shop_images/GH6_2791_1.jpg",
+            "image": "shopify://shop_images/Screenshot_2026-07-29_123923.png",
+            "image_mobile": "shopify://shop_images/Screenshot_2026-07-29_123923.png",
             "link": "",
             "hover_scale": true,
             "image_ratio": "adapt",
@@ -224,77 +460,14 @@
         "padding-block-end": 40
       }
     },
-    "section_jHpzPT": {
-      "type": "section",
-      "blocks": {
-        "text_KzfQgh": {
-          "type": "text",
-          "name": "t:names.heading",
-          "settings": {
-            "text": "<h2>AMBASSADORS</h2>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "text_KzfQgh"
-      ],
-      "name": "t:names.rich_text_section",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 25,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "color_scheme": "",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "image_zoom_fade_animation": false,
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 20,
-        "padding-block-end": 20
-      }
-    },
     "section_QaAHph": {
       "type": "section",
       "blocks": {
         "image_HzMhf9": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/OTIS_Cam_JHook0074.jpg",
-            "image_mobile": "shopify://shop_images/OTIS_Cam_JHook0074.jpg",
+            "image": "shopify://shop_images/OTIS_X_WAGGY36_1.jpg",
+            "image_mobile": "shopify://shop_images/OTIS_X_WAGGY36_1.jpg",
             "link": "",
             "hover_scale": true,
             "image_ratio": "adapt",
@@ -357,7 +530,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Cam Richards</h2>",
+                "text": "<h2>Noah Wegrich</h2>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -382,7 +555,7 @@
             "text_9rHzVi": {
               "type": "text",
               "settings": {
-                "text": "<p>Hailing from South Carolina, Cam grew up surfing the small stuff but has since ascended to one of the most well rounded surfers on the planet. Between chasing waves at Pipe, punting airs in Indo and staying barreled on the east coast, there isn't Cam can't do on a surfboard. </p><p>Outside of surfing, he is a skilled angler with enough experience to pull fish out of the most fickle watering holes. A prime example of that jack-of-all-trades who is always on the move. </p>",
+                "text": "<p>Known as \"Waggy\", Noah has helped put cold water surf trips on the map. Groomed along the rugged coast of Santa Cruz, his surfing is the perfect blend of technical and classic; from above the lip aerials to iconic carves, Noah has the full bag of tricks.</p><p>His relentless pursuit of perfect waves in remote places has inspired the next generation of surfers to think outside the box when it comes to surf trips. A creative powerhouse with surfing to match, Noah has starred in several iconic surf films, including his latest \"Keeping in the Shadows\", a visually rich surf odyssey that follows Noah for six years on a globe-spanning journey through dive distinct countries. </p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -407,7 +580,7 @@
             "button_KNcTXT": {
               "type": "button",
               "settings": {
-                "label": "@camrichaRDS",
+                "label": "@noahwaggy",
                 "link": "https://www.instagram.com/camrichards/",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
@@ -1325,9 +1498,10 @@
     }
   },
   "order": [
+    "section_jHpzPT",
+    "section_FDgP6B",
     "main",
     "section_HdD4yj",
-    "section_jHpzPT",
     "section_QaAHph",
     "section_NyKtjC",
     "section_WrA9z3",
