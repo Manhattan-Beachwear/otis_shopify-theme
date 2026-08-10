@@ -14,16 +14,17 @@
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
       "blocks": {
-        "announcement_BxgCk9": {
+        "announcement_CktDmA": {
           "type": "_announcement",
+          "name": "t:names.announcement",
           "settings": {
-            "text": "<strong>WAREHOUSE CLOSED UNTIL 8/5 - shipping delays expected.</strong>",
+            "text": "<strong>FREE SHIPPING ON ALL ORDERS</strong>",
             "link": "",
             "font": "var(--font-body--family)",
             "font_size": "0.75rem",
-            "weight": "700",
-            "letter_spacing": "loose",
-            "case": "uppercase"
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "none"
           },
           "blocks": {}
         },
@@ -43,7 +44,7 @@
         }
       },
       "block_order": [
-        "announcement_BxgCk9",
+        "announcement_CktDmA",
         "announcement_y4xynq"
       ],
       "name": "t:names.announcement_bar",
