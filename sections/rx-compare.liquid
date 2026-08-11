@@ -1,0 +1,624 @@
+{%- doc -%}
+  Two-column lens comparison — a pair of photos with a "VS." badge on the seam,
+  then rows of paired plates (dark left, light right) with a check on each.
+
+  Reproduces the comparison table the AU store gets from its Section Store add-on.
+  Exposed to assistive tech as an ARIA table: the photo captions double as the
+  column headers, so a row reads "Everyday clarity, CR-39 lens material".
+{%- enddoc -%}
+
+{%- liquid
+  assign rows = section.blocks
+  assign ratio = '1'
+  case section.settings.image_ratio
+    when 'portrait'
+      assign ratio = '4 / 5'
+    when 'landscape'
+      assign ratio = '16 / 9'
+  endcase
+
+  assign left_title = section.settings.left_title
+  assign right_title = section.settings.right_title
+
+  # A merchant-authored header row replaces the off-screen one, otherwise the
+  # table would announce its column names twice.
+  assign has_header_row = false
+  for block in rows
+    if block.settings.is_header
+      assign has_header_row = true
+      break
+    endif
+  endfor
+
+  assign table_label = section.settings.heading | strip_html | strip | default: 'Lens comparison'
+
+  # Emitted only when set: a `color` setting that the merchant cleared renders as
+  # an empty token stream, which is a valid custom property value and therefore
+  # shadows the var() fallback instead of falling through to it.
+  capture inline_style
+    echo '--rx-compare-ratio: ' | append: ratio | append: ';'
+    if section.settings.left_background != blank
+      echo '--rx-compare-left-bg: ' | append: section.settings.left_background | append: ';'
+    endif
+    if section.settings.left_text_color != blank
+      echo '--rx-compare-left-fg: ' | append: section.settings.left_text_color | append: ';'
+    endif
+    if section.settings.right_background != blank
+      echo '--rx-compare-right-bg: ' | append: section.settings.right_background | append: ';'
+    endif
+    if section.settings.right_text_color != blank
+      echo '--rx-compare-right-fg: ' | append: section.settings.right_text_color | append: ';'
+    endif
+    if section.settings.media_title_color != blank
+      echo '--rx-compare-title-fg: ' | append: section.settings.media_title_color | append: ';'
+    endif
+  endcapture
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="section section--{{ section.settings.section_width }} spacing-style{% if section.settings.color_scheme != blank %} color-{{ section.settings.color_scheme }}{% endif %}"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+  <div class="rx-compare" style="{{ inline_style }}">
+    {%- if section.settings.heading != blank -%}
+      <div class="rx-compare__heading">{{ section.settings.heading }}</div>
+    {%- endif -%}
+
+    <div class="rx-compare__media">
+      <div class="rx-compare__media-item">
+        {%- if section.settings.left_image != blank -%}
+          {{
+            section.settings.left_image
+            | image_url: width: 1600
+            | image_tag:
+              width: section.settings.left_image.width,
+              height: section.settings.left_image.height,
+              widths: '400, 600, 800, 1000, 1200, 1600',
+              sizes: '(min-width: 1520px) 720px, (min-width: 750px) 50vw, 100vw',
+              loading: 'lazy',
+              class: 'rx-compare__image'
+          }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'rx-compare__image rx-compare__image--placeholder' }}
+        {%- endif -%}
+        {%- comment -%}
+          The photos are merchant-uploaded, so the caption needs a scrim it can
+          rely on rather than whatever contrast the image happens to give.
+        {%- endcomment -%}
+        {%- if section.settings.toggle_overlay -%}
+          {%- render 'overlay', settings: section.settings -%}
+        {%- endif -%}
+        {%- if left_title != blank -%}
+          <h3 class="rx-compare__media-title">{{ left_title | escape }}</h3>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.versus_label != blank -%}
+        <span class="rx-compare__versus" aria-hidden="true">
+          {{- section.settings.versus_label | escape -}}
+        </span>
+      {%- endif -%}
+
+      <div class="rx-compare__media-item">
+        {%- if section.settings.right_image != blank -%}
+          {{
+            section.settings.right_image
+            | image_url: width: 1600
+            | image_tag:
+              width: section.settings.right_image.width,
+              height: section.settings.right_image.height,
+              widths: '400, 600, 800, 1000, 1200, 1600',
+              sizes: '(min-width: 1520px) 720px, (min-width: 750px) 50vw, 100vw',
+              loading: 'lazy',
+              class: 'rx-compare__image'
+          }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'rx-compare__image rx-compare__image--placeholder' }}
+        {%- endif -%}
+        {%- if section.settings.toggle_overlay -%}
+          {%- render 'overlay', settings: section.settings -%}
+        {%- endif -%}
+        {%- if right_title != blank -%}
+          <h3 class="rx-compare__media-title">{{ right_title | escape }}</h3>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if rows.size > 0 -%}
+      <div class="rx-compare__table" role="table" aria-label="{{ table_label | escape }}">
+        {%- unless has_header_row -%}
+          <div class="rx-compare__row visually-hidden" role="row">
+            <span role="columnheader">{{ left_title | escape }}</span>
+            <span role="columnheader">{{ right_title | escape }}</span>
+          </div>
+        {%- endunless -%}
+
+        {%- for block in rows -%}
+          {%- liquid
+            assign cell_role = 'cell'
+            if block.settings.is_header
+              assign cell_role = 'columnheader'
+            endif
+          -%}
+          <div
+            class="rx-compare__row{% if block.settings.is_header %} rx-compare__row--header{% endif %}"
+            role="row"
+            {{ block.shopify_attributes }}
+          >
+            <div class="rx-compare__cell rx-compare__cell--left" role="{{ cell_role }}">
+              {%- unless block.settings.is_header -%}
+                <span class="rx-compare__check" aria-hidden="true">
+                  {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                </span>
+              {%- endunless -%}
+              <div class="rx-compare__cell-text rte">{{ block.settings.left_text }}</div>
+            </div>
+
+            <div class="rx-compare__cell rx-compare__cell--right" role="{{ cell_role }}">
+              {%- unless block.settings.is_header -%}
+                <span class="rx-compare__check" aria-hidden="true">
+                  {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                </span>
+              {%- endunless -%}
+              <div class="rx-compare__cell-text rte">{{ block.settings.right_text }}</div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .rx-compare {
+    --rx-compare-gap: var(--gap-xs);
+    --rx-compare-versus-size: 5rem;
+    --rx-compare-ratio: 1;
+    --rx-compare-left-bg: var(--color-foreground);
+    --rx-compare-left-fg: var(--color-background);
+    --rx-compare-right-bg: rgb(var(--color-foreground-rgb) / var(--opacity-5));
+    --rx-compare-right-fg: var(--color-foreground);
+    --rx-compare-title-fg: var(--color-background);
+
+    display: block;
+  }
+
+  .rx-compare__heading {
+    text-align: center;
+  }
+
+  /* Measure is capped per child so it resolves against the heading's own font size. */
+  .rx-compare__heading > * {
+    margin-inline: auto;
+    max-width: var(--max-width--heading-normal);
+  }
+
+  .rx-compare__heading > :first-child {
+    margin-block-start: 0;
+  }
+
+  .rx-compare__heading > :last-child {
+    margin-block-end: 0;
+  }
+
+  .rx-compare__media {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--rx-compare-gap);
+    margin-block-start: var(--margin-4xl);
+  }
+
+  .rx-compare__media-item {
+    position: relative;
+  }
+
+  .rx-compare__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: var(--rx-compare-ratio);
+    object-fit: cover;
+  }
+
+  .rx-compare__media-title {
+    position: absolute;
+    inset: 0;
+    z-index: var(--layer-raised);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: var(--padding-lg);
+    font-family: var(--font-h3--family);
+    font-style: var(--font-h3--style);
+    font-weight: var(--font-h3--weight);
+    /* Grows past the h3 preset so it reads as a caption over the photo. */
+    font-size: clamp(var(--font-size--lg), 2.2vw, var(--font-size--3xl));
+    line-height: var(--font-h3--line-height);
+    letter-spacing: var(--letter-spacing-md);
+    text-align: center;
+    text-transform: uppercase;
+    /* A long single word would otherwise run past the photo it sits on. */
+    overflow-wrap: anywhere;
+    color: var(--rx-compare-title-fg);
+  }
+
+  /* Sits on the seam between the two photos — the middle of the gap in both the
+     side-by-side and the stacked layout. */
+  .rx-compare__versus {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: var(--layer-raised);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--rx-compare-versus-size);
+    height: var(--rx-compare-versus-size);
+    border-radius: var(--style-border-radius-50);
+    background: var(--rx-compare-left-bg);
+    color: var(--rx-compare-left-fg);
+    font-family: var(--font-heading--family);
+    font-size: var(--font-size--xl);
+    letter-spacing: var(--letter-spacing-sm);
+    text-transform: uppercase;
+    translate: -50% -50%;
+  }
+
+  .rx-compare__table {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rx-compare-gap);
+    margin-block-start: var(--rx-compare-gap);
+  }
+
+  .rx-compare__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--rx-compare-gap);
+  }
+
+  .rx-compare__cell {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+    padding: var(--padding-lg) var(--padding-2xl);
+    border-radius: var(--style-border-radius-xs);
+  }
+
+  .rx-compare__cell--left {
+    --rx-compare-check-bg: var(--rx-compare-left-fg);
+    --rx-compare-check-fg: var(--rx-compare-left-bg);
+
+    /* Icon is first in the DOM so mobile keeps it on the left with no reorder. */
+    flex-direction: row-reverse;
+    background: var(--rx-compare-left-bg);
+    color: var(--rx-compare-left-fg);
+    text-align: end;
+  }
+
+  /* Keeps the copy against the gutter once the measure caps its width. */
+  .rx-compare__cell--left .rx-compare__cell-text {
+    margin-inline-start: auto;
+  }
+
+  .rx-compare__cell--right {
+    --rx-compare-check-bg: var(--rx-compare-right-fg);
+    --rx-compare-check-fg: var(--rx-compare-right-bg);
+
+    background: var(--rx-compare-right-bg);
+    color: var(--rx-compare-right-fg);
+  }
+
+  .rx-compare__cell-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: var(--max-width--body-narrow);
+  }
+
+  .rx-compare__cell-text > :first-child {
+    margin-block-start: 0;
+  }
+
+  .rx-compare__cell-text > :last-child {
+    margin-block-end: 0;
+  }
+
+  .rx-compare__row--header .rx-compare__cell {
+    font-weight: 600;
+  }
+
+  /* Header cells carry no check, so pad by its footprint to stay on the same
+     vertical line as the rows below. */
+  .rx-compare__row--header .rx-compare__cell--left {
+    padding-inline-end: calc(var(--padding-2xl) + 1.5rem + var(--gap-sm));
+  }
+
+  .rx-compare__row--header .rx-compare__cell--right {
+    padding-inline-start: calc(var(--padding-2xl) + 1.5rem + var(--gap-sm));
+  }
+
+  .rx-compare__check {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: var(--style-border-radius-50);
+    background: var(--rx-compare-check-bg);
+    color: var(--rx-compare-check-fg);
+  }
+
+  .rx-compare__check svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rx-compare {
+      --rx-compare-versus-size: 3.25rem;
+    }
+
+    .rx-compare__versus {
+      font-size: var(--font-size--sm);
+    }
+
+    /* Side by side each photo is barely 165px wide, which the caption cannot
+       live inside — stack them and the caption gets the full column. */
+    .rx-compare__media {
+      grid-template-columns: 1fr;
+      margin-block-start: var(--margin-2xl);
+    }
+
+    .rx-compare__media-title {
+      padding: var(--padding-md);
+      font-size: clamp(var(--font-size--md), 4vw, var(--font-size--xl));
+      letter-spacing: var(--letter-spacing-sm);
+    }
+
+    .rx-compare__table {
+      gap: var(--gap-lg);
+    }
+
+    /* Pairs stack: left plate, then right plate, both full width. */
+    .rx-compare__row {
+      grid-template-columns: 1fr;
+      gap: var(--gap-3xs);
+    }
+
+    .rx-compare__cell {
+      padding: var(--padding-md) var(--padding-lg);
+    }
+
+    .rx-compare__cell--left {
+      flex-direction: row;
+      text-align: start;
+    }
+
+    .rx-compare__cell--left .rx-compare__cell-text {
+      margin-inline-start: 0;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Rx lens compare",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<h2>Which lens is right for you?</h2>"
+    },
+    {
+      "type": "header",
+      "content": "Left column"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "left_title",
+      "label": "Title",
+      "default": "Everyday clarity"
+    },
+    {
+      "type": "header",
+      "content": "Right column"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "right_title",
+      "label": "Title",
+      "default": "Active protection"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "text",
+      "id": "versus_label",
+      "label": "Versus badge",
+      "info": "Leave empty to hide the badge.",
+      "default": "VS."
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "square", "label": "Square" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "landscape", "label": "Landscape" }
+      ],
+      "default": "landscape"
+    },
+    {
+      "type": "color",
+      "id": "media_title_color",
+      "label": "Title color",
+      "info": "The title sits on top of the photo.",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "toggle_overlay",
+      "label": "Photo overlay",
+      "info": "Keeps the title readable whatever the photo looks like.",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "alpha": true,
+      "default": "#00000059",
+      "visible_if": "{{ section.settings.toggle_overlay }}"
+    },
+    {
+      "type": "select",
+      "id": "overlay_style",
+      "label": "Overlay style",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "gradient", "label": "Gradient" }
+      ],
+      "default": "solid",
+      "visible_if": "{{ section.settings.toggle_overlay }}"
+    },
+    {
+      "type": "select",
+      "id": "gradient_direction",
+      "label": "Gradient direction",
+      "options": [
+        { "value": "to top", "label": "Up" },
+        { "value": "to bottom", "label": "Down" }
+      ],
+      "default": "to top",
+      "visible_if": "{{ section.settings.toggle_overlay and section.settings.overlay_style == 'gradient' }}"
+    },
+    {
+      "type": "header",
+      "content": "Row colors"
+    },
+    {
+      "type": "color",
+      "id": "left_background",
+      "label": "Left background",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "left_text_color",
+      "label": "Left text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "right_background",
+      "label": "Right background",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "color",
+      "id": "right_text_color",
+      "label": "Right text",
+      "default": "#121212"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        { "value": "page-width", "label": "Page" },
+        { "value": "full-width", "label": "Full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "left_text",
+          "label": "Left text"
+        },
+        {
+          "type": "richtext",
+          "id": "right_text",
+          "label": "Right text"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_header",
+          "label": "Use as column headings",
+          "info": "Bolds the row and drops its checkmarks.",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Rx lens compare",
+      "blocks": [
+        { "type": "row" },
+        { "type": "row" },
+        { "type": "row" }
+      ]
+    }
+  ]
+}
+{% endschema %}

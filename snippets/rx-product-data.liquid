@@ -1,0 +1,187 @@
+{%- doc -%}
+  RX product data. Serializes the frame, its resolvable lens products, the
+  prescription limits and the App Proxy config into a single JSON payload that
+  the RX web components (rx-selectors.js et al.) read at runtime.
+
+  Rendered by the `rx-lens-selector` block, which supplies the lens category /
+  product settings via `block`. Prescription limits and App Proxy config live on
+  the `rx-prescription` block and are passed as `prescription_block`; when either
+  block is missing, sensible defaults are emitted so the payload stays valid.
+
+  Lens resolution: the frame's `basecurve_*` tag picks a per-basecurve lens
+  product via the block's `special_tag_N` -> `special_product_N` mappings, used
+  as a fallback when the category has no explicit `lens_product_N`.
+
+  Output: <script type="application/json" data-rx-product-data> with shape
+  { frame, lensCategories[], limits, config }.
+
+  @param {block} block - The rx-lens-selector block holding lens settings
+  @param {block} [prescription_block] - The rx-prescription block holding limits and config
+  @param {product} [product] - Frame product (defaults to the page product)
+
+  @example
+  {% render 'rx-product-data', block: block, prescription_block: rx_block %}
+{%- enddoc -%}
+
+{%- liquid
+  assign frame_product = product
+
+  # Frame tags: base curve drives lens resolution; frame_* groups related colors.
+  assign base_curve_tag = 'DEFAULT'
+  assign frame_tag = ''
+  for tag in frame_product.tags
+    assign clean_tag = tag | strip
+    if clean_tag contains 'basecurve_'
+      assign base_curve_tag = clean_tag
+    endif
+    if clean_tag contains 'frame_'
+      assign frame_tag = clean_tag
+    endif
+  endfor
+
+  assign frame_variant = frame_product.selected_or_first_available_variant
+
+  # Per-limit defaults; overridable via prescription_block settings limits_<key>_<bound>.
+  assign limit_keys = 'sph,cyl,axis,add,pd,prism' | split: ','
+  assign limit_mins = '-20,-6,0,0.75,40,0' | split: ','
+  assign limit_maxs = '20,6,180,3.5,80,10' | split: ','
+  assign limit_steps = '0.25,0.25,1,0.25,0.5,0.25' | split: ','
+-%}
+
+{%- capture lens_categories_json -%}
+[
+  {%- assign category_count = 0 -%}
+  {%- for i in (1..3) -%}
+    {%- liquid
+      assign key_setting = 'lens_category_' | append: i | append: '_key'
+      assign label_setting = 'lens_category_' | append: i | append: '_label'
+      assign sv_setting = 'lens_product_' | append: i
+      assign high_setting = 'lens_product_high_' | append: i
+      assign prog_setting = 'progressive_product_' | append: i
+      assign alt_tag_setting = 'alt_tag_' | append: i
+      assign alt_sv_setting = 'alt_product_' | append: i
+      assign alt_high_setting = 'alt_product_high_' | append: i
+      assign category_key = block.settings[key_setting] | strip
+      assign category_label = block.settings[label_setting] | default: category_key
+      assign sv_product = block.settings[sv_setting]
+      assign high_product = block.settings[high_setting]
+      assign prog_product = block.settings[prog_setting]
+
+      # Frames tagged with the category's alternate-family tag swap both tiers.
+      assign alt_tag = block.settings[alt_tag_setting] | strip
+      if alt_tag != blank and frame_product.tags contains alt_tag
+        assign alt_sv = block.settings[alt_sv_setting]
+        if alt_sv != blank and alt_sv.id != blank
+          assign sv_product = alt_sv
+          assign high_product = block.settings[alt_high_setting]
+        endif
+      endif
+    -%}
+    {%- if category_key == blank -%}{%- continue -%}{%- endif -%}
+
+    {%- comment -%} No explicit SV product: resolve by base curve via special mappings. {%- endcomment -%}
+    {%- if sv_product == blank or sv_product.id == blank -%}
+      {%- for n in (1..5) -%}
+        {%- assign st_key = 'special_tag_' | append: n -%}
+        {%- assign sp_key = 'special_product_' | append: n -%}
+        {%- assign special_tag = block.settings[st_key] | strip -%}
+        {%- if special_tag != blank and special_tag == base_curve_tag -%}
+          {%- assign sv_product = block.settings[sp_key] -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if category_count > 0 -%},{%- endif -%}
+    {%- assign category_count = category_count | plus: 1 -%}
+    {
+      "key": {{ category_key | json }},
+      "label": {{ category_label | json }},
+      "products": [
+        {%- assign product_count = 0 -%}
+        {%- for slot in (1..3) -%}
+          {%- liquid
+            if slot == 1
+              assign lens_product = sv_product
+              assign vision_type = 'single_vision'
+              # Without a high-tier counterpart the standard product covers all powers.
+              if high_product == blank or high_product.id == blank
+                assign lens_tier = 'any'
+              else
+                assign lens_tier = 'standard'
+              endif
+            elsif slot == 2
+              assign lens_product = high_product
+              assign vision_type = 'single_vision'
+              assign lens_tier = 'high'
+            else
+              assign lens_product = prog_product
+              assign vision_type = 'progressive'
+              assign lens_tier = 'any'
+            endif
+          -%}
+          {%- if lens_product == blank or lens_product.id == blank -%}{%- continue -%}{%- endif -%}
+          {%- for variant in lens_product.variants -%}
+            {%- assign rx_variant_id = variant.metafields.custom.corresponding_rx_variant.value.id | default: variant.id -%}
+            {%- assign color_description = variant.metafields.custom.short_lens_color_description.value -%}
+            {%- if product_count > 0 -%},{%- endif -%}
+            {%- assign product_count = product_count | plus: 1 -%}
+            {
+              "id": {{ lens_product.id | json }},
+              "variantId": {{ rx_variant_id | json }},
+              "sku": {{ variant.sku | json }},
+              "price": {{ variant.price | default: 0 | json }},
+              "title": {{ lens_product.title | json }},
+              "visionType": {{ vision_type | json }},
+              "tier": {{ lens_tier | json }},
+              "color": {% if lens_product.has_only_default_variant %}null{% else %}{{ variant.option1 | json }}{% endif %},
+              "colorDescription": {{ color_description | json }}
+            }
+          {%- endfor -%}
+        {%- endfor -%}
+      ]
+    }
+  {%- endfor -%}
+]
+{%- endcapture -%}
+
+{%- capture limits_json -%}
+{
+  {%- for key in limit_keys -%}
+    {%- liquid
+      assign idx = forloop.index0
+      assign min_key = 'limits_' | append: key | append: '_min'
+      assign max_key = 'limits_' | append: key | append: '_max'
+      assign step_key = 'limits_' | append: key | append: '_step'
+      assign min_val = prescription_block.settings[min_key] | default: limit_mins[idx]
+      assign max_val = prescription_block.settings[max_key] | default: limit_maxs[idx]
+      assign step_val = prescription_block.settings[step_key] | default: limit_steps[idx]
+    -%}
+    {%- unless forloop.first -%},{%- endunless -%}
+    {{ key | json }}: { "min": {{ min_val }}, "max": {{ max_val }}, "step": {{ step_val }} }
+  {%- endfor -%}
+}
+{%- endcapture -%}
+
+<script type="application/json" data-rx-product-data>
+{
+  "frame": {
+    "productId": {{ frame_product.id | default: 0 | json }},
+    "variantId": {{ frame_variant.id | default: 0 | json }},
+    "sku": {{ frame_variant.sku | default: '' | json }},
+    "price": {{ frame_variant.price | default: 0 | json }},
+    "title": {{ frame_product.title | default: '' | json }},
+    "frameTag": {{ frame_tag | json }},
+    "baseCurveTag": {{ base_curve_tag | json }}
+  },
+  "lensCategories": {{ lens_categories_json }},
+  "limits": {{ limits_json }},
+  "config": {
+    "subdomain": {{ prescription_block.settings.rx_subdomain | default: '' | json }},
+    "providerNumber": {{ prescription_block.settings.rx_provider_number | default: '' | json }},
+    "checkExpiration": {{ prescription_block.settings.rx_check_expiration | default: true, allow_false: true | json }},
+    "tierSphThreshold": {{ prescription_block.settings.rx_tier_sph_threshold | default: 2 | json }},
+    "healthFundNumbers": {{ prescription_block.settings.health_fund_numbers | default: '' | json }}
+  }
+}
+</script>
