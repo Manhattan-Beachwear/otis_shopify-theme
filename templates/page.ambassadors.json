@@ -1075,7 +1075,7 @@
               "type": "button",
               "settings": {
                 "label": "@jay_davies",
-                "link": "shopify://collections/all",
+                "link": "https://www.instagram.com/jay_davies/",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
@@ -1444,7 +1444,7 @@
               "type": "button",
               "settings": {
                 "label": "@jamaicaselby",
-                "link": "https://www.instagram.com/otisbuckingham/",
+                "link": "https://www.instagram.com/jamaicaselby/",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
