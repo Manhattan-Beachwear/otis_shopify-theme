@@ -16,13 +16,13 @@
           "type": "text",
           "name": "Title",
           "settings": {
-            "text": "<p>{{ closest.page.title }}</p>",
+            "text": "<p><strong>OTIS PRESCRIPTION - FREQUENTLY ASKED QUESTIONS</strong></p>",
             "width": "100%",
             "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
+            "alignment": "center",
+            "type_preset": "custom",
+            "font": "var(--font-subheading--family)",
+            "font_size": "1.125rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
@@ -75,7 +75,7 @@
             "accordion_row_e6jTk8": {
               "type": "_accordion-row",
               "settings": {
-                "heading": "How does OTIS ensure the quality and durability of its lenses? What should I do if my mineral glass lenses become scratched or damaged?",
+                "heading": "What will I need to order my prescription lenses?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -84,9 +84,9 @@
                 "text_LDD8wt": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>All OTIS non prescription lenses exceed the strictest Australian, United States, and European standards for quality and strength. Mineral glass is the most scratch resistant lens material available, but it is not scratch proof and can crack or scratch if not cared for properly, which is why we have our replacement service in place.</p>",
+                    "text": "<p>You will need your prescription and PD (pupillary distance) measurement. Any optician can provide you with these and you are under no obligation to purchase your glasses from your optician. We will need to know if you are after distance or readers (single vision lenses) or if you need them for both and have multifocal lenses (progressive lenses).</p><p><strong>We require all prescriptions to be within the last 12 months. We suggest customers upload their scripts to ensure all prescription information is delivered accurately to our lab. </strong></p>",
                     "width": "100%",
-                    "max_width": "normal",
+                    "max_width": "none",
                     "alignment": "left",
                     "type_preset": "rte",
                     "font": "var(--font-body--family)",
@@ -114,7 +114,7 @@
             "accordion_row_HtAKVC": {
               "type": "_accordion-row",
               "settings": {
-                "heading": "Replacement service!? How does that work?",
+                "heading": "How do I obtain my prescription?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -123,9 +123,9 @@
                 "text_jPJDXm": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Simply head to our <a href=\"https://au.otiseyewear.com/pages/repair-request-form\" title=\"Repair Request\">replacement service form, </a>fill in the details required, attach images requested and our customer service team will reach out within two business days to provide you with a unique 45% off discount code to use on our OTIS website. This code does not expire and cannot be used in conjunction with any other offer. </p>",
+                    "text": "<p>To obtain an eye prescription, schedule a comprehensive eye exam with a licensed optometrist or ophthalmologist. Following the refraction test, the doctor is legally required to hand you a physical or digital copy of your prescription at no extra charge. If you already had an exam, simply call your eye doctor's office to request a copy.<br/></p><p>You are not under any obligation to purchase your glasses from your optician - so do not feel pressured into doing so!</p>",
                     "width": "100%",
-                    "max_width": "normal",
+                    "max_width": "none",
                     "alignment": "left",
                     "type_preset": "rte",
                     "font": "var(--font-body--family)",
@@ -154,7 +154,7 @@
               "type": "_accordion-row",
               "name": "t:names.accordion_row",
               "settings": {
-                "heading": "Do you offer returns?",
+                "heading": "What are progressive lenses?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -164,9 +164,9 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Yes - if you are not completely satisfied with your online purchase you must contact OTIS within 7 days of receiving your order. Please contact our customer service team via email: <a href=\"mailto:cs_otis@leisurecollective.com.au\" target=\"_blank\">cs_otis@leisurecollective.com.au</a> </p><p>Products may be returned if the items are unworn and in the same condition as they were received. They must be returned in their original packaging within 30 days of your purchase.</p><p>Head to our <a href=\"https://au.otiseyewear.com/pages/returns\" title=\"Returns\">returns page</a> for all info.</p>",
+                    "text": "<p>Progressive lenses are Multifocal lenses with different sections of vision correction. With a seamless transition in the lens from distance on top, to reading correction at the bottom, they can provide much sharper overall vision.</p>",
                     "width": "100%",
-                    "max_width": "normal",
+                    "max_width": "none",
                     "alignment": "left",
                     "type_preset": "rte",
                     "font": "var(--font-body--family)",
@@ -195,7 +195,7 @@
               "type": "_accordion-row",
               "name": "t:names.accordion_row",
               "settings": {
-                "heading": "Are my damaged OTIS covered under your Lifetime Warranty?",
+                "heading": "What do Blue Light lenses do?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -205,9 +205,9 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Our Lifetime Warranty will guarantee your shades from any defects that are the direct result of poor workmanship or faulty materials. We stand by the premium materials we’ve chosen and if a legitimate warranty is presented to us, we’ll do everything we possibly can to get the defective pair of shades out of your hands and replaced immediately. If you need to make a warranty claim, please head to the <a href=\"https://au.otiseyewear.com/pages/warranty-claim\" target=\"_blank\" title=\"Warranty Claim\">Warranty Claims </a>page below.</p>",
+                    "text": "<p>Blue light glasses filter the blue light emissions from digital devices, artificial light from screens and lights and are used to minimise the impact on your circadian rhythm, which is particularly important for those who spend a lot of time using digital screens or in LED lit rooms. Blue light lenses can help mitigate the impact of blue light by limiting how much reaches the eyes, supporting the natural release of melatonin. Blue light lenses may contribute to improved hormone regulation and alertness.</p><p></p>",
                     "width": "100%",
-                    "max_width": "normal",
+                    "max_width": "none",
                     "alignment": "left",
                     "type_preset": "rte",
                     "font": "var(--font-body--family)",
@@ -236,7 +236,7 @@
               "type": "_accordion-row",
               "name": "t:names.accordion_row",
               "settings": {
-                "heading": "My hinge screw is coming loose, is this covered under warranty?",
+                "heading": "What are Transition lenses?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -246,9 +246,9 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Yes, if it’s necessary. Our technicians will gladly assess your OTIS shades to determine whether or not the stainless steel hinge has been threaded (and causing the screw to loosen) or it’s just a case of the screw and hinge needing a service. An alternative to your OTIS shades being with our Technicians for a couple of weeks is to cruise down to your local optometrist. Most of the time they’ll happily tighten your hinge screw for a smile and or a small charge. Either way, remember that a screw is a moving component and it’s bound to show small signs of wear, over time.<br/><br/></p>",
+                    "text": "<p>Transition lenses are photochromic that darken outdoors in seconds, and indoors they return to clear faster than ever. They block 100% of UVA and UVB ray and filter up to 26% of blue-violet light indoors and up to 86% of blue-violet light outdoors. They are lenses you can wear all the time in all conditions.</p>",
                     "width": "100%",
-                    "max_width": "normal",
+                    "max_width": "none",
                     "alignment": "left",
                     "type_preset": "rte",
                     "font": "var(--font-body--family)",
@@ -277,7 +277,7 @@
               "type": "_accordion-row",
               "name": "t:names.accordion_row",
               "settings": {
-                "heading": "My OTIS have a scratch in the lens, I thought you said they were scratch resistant?",
+                "heading": "What if I need specific lenses that I can’t see in the menu?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -287,9 +287,9 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Yes they are the most scratch resistant lenses on the market, but we’ve never claimed our lenses to be scratch PROOF. What we do claim though, is that OTIS lenses are made from the most scratch RESISTANT and optically correct lens material in the world - hands down.<br/><br/></p>",
+                    "text": "<p>You can email us directly if you require a custom lens, we are happy to work with you to fill your order.</p>",
                     "width": "100%",
-                    "max_width": "normal",
+                    "max_width": "none",
                     "alignment": "left",
                     "type_preset": "rte",
                     "font": "var(--font-body--family)",
@@ -318,7 +318,7 @@
               "type": "_accordion-row",
               "name": "t:names.accordion_row",
               "settings": {
-                "heading": "Can you please detail your standards?",
+                "heading": "How long will it take to get my prescription order?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -328,9 +328,9 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>These sunglasses meet or exceed the following standards:</p><p>US Standard ANSIZ80.3 (2018)</p><p>Australian and New Zealand Standard AS/NZS 1067, 1, 2016 & AS/NZ 1067, 2, 2016</p><p>European Standard ISO 1:2013 & ISO 12311:2013</p><p>All Otis sunglasses bear the CE mark which demonstrates that our products meet the requirement of the European directive Regulation (EU) 2016/425</p><p>89/686 EEC and meet the requirements of prEN 1836:1996</p>",
+                    "text": "<p>Please note that prescription orders may take 1-3 weeks to process due to the manufacturing time required by our lab. Each pair of glasses is custom-made to ensure the highest quality and accuracy for your prescription. We appreciate your patience and understanding as we work to provide you with the best possible product. If you have any questions or need updates on the status of your order, feel free to reach out to us! <em>This timeframe excludes weekends, public holidays, and peak seasonal closures, which did apply over the Christmas and New Year period.</em></p><p></p>",
                     "width": "100%",
-                    "max_width": "normal",
+                    "max_width": "none",
                     "alignment": "left",
                     "type_preset": "rte",
                     "font": "var(--font-body--family)",
@@ -359,7 +359,7 @@
               "type": "_accordion-row",
               "name": "t:names.accordion_row",
               "settings": {
-                "heading": "Do you offer prescription lenses?",
+                "heading": "What is the returns policy for prescription eyewear?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -369,9 +369,9 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Yes we do! We are stocked at a range of premium retailers which can be found on our <a href=\"https://us.otiseyewear.com/pages/store-locator\" target=\"_blank\">store locator</a>. You can also fill your script on our website - for more on this -<a href=\"https://us.otiseyewear.com/pages/optical-faq\">head here.</a></p>",
+                    "text": "<p>As prescription lenses are considered a medical item they can’t be returned unless there is a manufacturing issue. OTIS Lifetime Warranty on manufacturing defects of the frame still apply. However if you have a problem please email tlccs@mbwswim.com with your order number and we will happily look after you to make sure you are happy with the outcome.</p>",
                     "width": "100%",
-                    "max_width": "normal",
+                    "max_width": "none",
                     "alignment": "left",
                     "type_preset": "rte",
                     "font": "var(--font-body--family)",
@@ -400,7 +400,7 @@
               "type": "_accordion-row",
               "name": "t:names.accordion_row",
               "settings": {
-                "heading": "I have a general enquiry - who do I reach out to?",
+                "heading": "What is the warranty policy for prescription eyewear?",
                 "open_by_default": false,
                 "icon": "none",
                 "width": 20
@@ -410,9 +410,9 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>For all general enquiries, you can call our customer support team on (08) 9756 7311, or email them here:<strong> </strong><a target=\"_blank\">cs_otis@leisurecollective.com.au.</a></p><p>If you are seeking help from somewhere els e in the world - check out more inforamtion on our <a href=\"https://us.otiseyewear.com/pages/contact\" title=\"https://us.otiseyewear.com/pages/contact\">contact page.</a></p>",
+                    "text": "<p> OTIS Lifetime Warranty on manufacturing defects of the frame still apply. Damages to lenses like scratches are not covered under warranty. Learn more about our lifetime warranty <a href=\"https://us.otiseyewear.com/pages/warranty-claim\" target=\"_blank\" title=\"https://us.otiseyewear.com/pages/warranty-claim\">here</a>. </p>",
                     "width": "100%",
-                    "max_width": "normal",
+                    "max_width": "none",
                     "alignment": "left",
                     "type_preset": "rte",
                     "font": "var(--font-body--family)",
@@ -436,6 +436,47 @@
               "block_order": [
                 "text_8h4NrF"
               ]
+            },
+            "accordion_row_7DK7KH": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_row",
+              "settings": {
+                "heading": "What is my prescription came out wrong?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_hXjtK3": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>We will connect you directly with our trusted lab, so you can speak with a licensed optician to ensure your prescription eyewear is fixed. </p>",
+                    "width": "100%",
+                    "max_width": "none",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_hXjtK3"
+              ]
             }
           },
           "block_order": [
@@ -447,7 +488,8 @@
             "accordion_row_hJqEzW",
             "accordion_row_CdgqLg",
             "accordion_row_E3LBWM",
-            "accordion_row_98DJbg"
+            "accordion_row_98DJbg",
+            "accordion_row_7DK7KH"
           ]
         },
         "video_Bk4QwX": {
@@ -614,6 +656,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
+                "show_second_image_on_hover": true,
                 "image_ratio": "portrait",
                 "media_fit": "cover",
                 "border": "none",
