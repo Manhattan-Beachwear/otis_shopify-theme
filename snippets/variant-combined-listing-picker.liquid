@@ -1321,8 +1321,6 @@
     data-product-id="{{ product_resource.id }}"
     data-product-url="{{ product_resource.url }}"
     data-horizontal-scroll="{{ show_horizontal_scroll }}"
-    data-debug-picker="cl"
-    data-debug-spi="{{ show_product_image_swatches }}"
     {% if product.id == product_resource.id %}
       data-template-product-match="true"
     {% endif %}
@@ -3704,8 +3702,6 @@
     <swatches-variant-picker-component
       data-product-id="{{ product_resource.id }}"
       data-product-url="{{ product_resource.url }}"
-      data-debug-picker="cl"
-      data-debug-spi="{{ show_product_image_swatches }}"
       {% if product.id == product_resource.id %}
         data-template-product-match="true"
       {% endif %}

@@ -12,6 +12,7 @@ alwaysApply: false
 - **Use `for (const item of items)`** over `items.forEach()`
 - **Add new lines before blocks** with `{` and `}`
 - **Use the component framework** - See [the framework code](mdc:assets/component.js) and the [component documentation](mdc:codex/component-framework.md)
+- **No leftover debug instrumentation** - Do not ship `console.log`/`console.group` debug dumps, `data-debug-*` attributes, or agent ingest `fetch('http://127.0.0.1:...')` telemetry. Keep `console.error`/`console.warn` only for real failure paths.
 
 ## Async/Await Syntax
 
