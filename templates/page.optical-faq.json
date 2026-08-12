@@ -477,6 +477,47 @@
               "block_order": [
                 "text_hXjtK3"
               ]
+            },
+            "accordion_row_dnp9PT": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_row",
+              "settings": {
+                "heading": "What is your cancellation policy?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_VKhRQY": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>We offer a 24-hour cancellation policy from the time of your order. This allows our team to catch the cancellation before the lens is made by our lab. </p>",
+                    "width": "100%",
+                    "max_width": "none",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_VKhRQY"
+              ]
             }
           },
           "block_order": [
@@ -489,7 +530,8 @@
             "accordion_row_CdgqLg",
             "accordion_row_E3LBWM",
             "accordion_row_98DJbg",
-            "accordion_row_7DK7KH"
+            "accordion_row_7DK7KH",
+            "accordion_row_dnp9PT"
           ]
         },
         "video_Bk4QwX": {
