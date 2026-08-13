@@ -32,9 +32,35 @@
         assign key_setting = 'lens_category_' | append: i | append: '_key'
         assign label_setting = 'lens_category_' | append: i | append: '_label'
         assign desc_setting = 'lens_category_' | append: i | append: '_description'
+        assign alt_tag_setting = 'alt_tag_' | append: i
+        assign alt_product_setting = 'alt_product_' | append: i
+        assign alt_label_setting = 'alt_label_' | append: i
+        assign alt_desc_setting = 'alt_description_' | append: i
+
         assign category_key = block.settings[key_setting] | strip
         assign category_label = block.settings[label_setting] | default: category_key
         assign category_desc = block.settings[desc_setting]
+
+        # A frame in the alternate family gets a different lens product, so it
+        # gets that lens's wording too. Same condition as rx-product-data uses
+        # to swap the product — the two must not drift apart.
+        assign alt_product = block.settings[alt_product_setting]
+        assign use_alt = false
+        if alt_product != blank and alt_product.id != blank
+          assign alt_tags = block.settings[alt_tag_setting] | split: ','
+          for alt_tag in alt_tags
+            assign clean_alt_tag = alt_tag | strip
+            if clean_alt_tag != blank and product.tags contains clean_alt_tag
+              assign use_alt = true
+              break
+            endif
+          endfor
+        endif
+
+        if use_alt
+          assign category_label = block.settings[alt_label_setting] | default: category_label
+          assign category_desc = block.settings[alt_desc_setting] | default: category_desc
+        endif
       -%}
       {%- if category_key == blank -%}{%- continue -%}{%- endif -%}
       <button
@@ -172,12 +198,13 @@
       "type": "text",
       "id": "lens_category_1_label",
       "label": "Label",
-      "default": "Clear"
+      "default": "Everyday Clarity - Clear"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "lens_category_1_description",
-      "label": "Description"
+      "label": "Description",
+      "default": "Everyday optical lenses for indoor and low light wear, suitable for moderate prescriptions and offer a good balance between cost and appearance."
     },
     {
       "type": "product",
@@ -200,6 +227,19 @@
       "id": "alt_tag_1",
       "label": "Alternate family frame tag",
       "info": "Frames carrying this tag (e.g. base_6) use the alternate lens products below."
+    },
+    {
+      "type": "text",
+      "id": "alt_label_1",
+      "label": "Alternate label",
+      "default": "Active Protection - Clear",
+      "info": "Shown instead of the label above on frames matching the tag."
+    },
+    {
+      "type": "textarea",
+      "id": "alt_description_1",
+      "label": "Alternate description",
+      "default": "Exceptional impact resistance, with a thinner, lighter profile. Best for individuals with strong prescriptions who need lighter lenses to avoid the bulkiness of traditional lenses."
     },
     {
       "type": "product",
@@ -225,12 +265,13 @@
       "type": "text",
       "id": "lens_category_2_label",
       "label": "Label",
-      "default": "Sunglasses"
+      "default": "Everyday Clarity - Polarized"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "lens_category_2_description",
-      "label": "Description"
+      "label": "Description",
+      "default": "Glare-cutting polarized lenses for bright sun. Suitable for moderate prescriptions and offer a good balance between cost and appearance."
     },
     {
       "type": "product",
@@ -253,6 +294,19 @@
       "id": "alt_tag_2",
       "label": "Alternate family frame tag",
       "info": "Frames carrying this tag (e.g. base_6) use the alternate lens products below."
+    },
+    {
+      "type": "text",
+      "id": "alt_label_2",
+      "label": "Alternate label",
+      "default": "Active Protection - Polarized",
+      "info": "Shown instead of the label above on frames matching the tag."
+    },
+    {
+      "type": "textarea",
+      "id": "alt_description_2",
+      "label": "Alternate description",
+      "default": "Glare-cutting, impact resistance polarized lenses with a thinner, lighter profile. Best for individuals with strong prescriptions who need lighter lenses to avoid the bulkiness of traditional lenses."
     },
     {
       "type": "product",
@@ -278,12 +332,13 @@
       "type": "text",
       "id": "lens_category_3_label",
       "label": "Label",
-      "default": "Photochromic"
+      "default": "Everyday Clarity - Transitions"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "lens_category_3_description",
-      "label": "Description"
+      "label": "Description",
+      "default": "Light adaptive lenses that darken in sunlight. Suitable for moderate prescriptions and offer a good balance between cost and appearance."
     },
     {
       "type": "product",
@@ -306,6 +361,19 @@
       "id": "alt_tag_3",
       "label": "Alternate family frame tag",
       "info": "Frames carrying this tag (e.g. base_6) use the alternate lens products below."
+    },
+    {
+      "type": "text",
+      "id": "alt_label_3",
+      "label": "Alternate label",
+      "default": "Active Protection - Transitions",
+      "info": "Shown instead of the label above on frames matching the tag."
+    },
+    {
+      "type": "textarea",
+      "id": "alt_description_3",
+      "label": "Alternate description",
+      "default": "Light adaptive, impact resistant lenses that darken in sunlight. Featuring a thinner, lighter profile and best for individuals with stronger prescriptions who need lighter lenses to avoid the bulkiness of traditional lenses."
     },
     {
       "type": "product",

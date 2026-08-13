@@ -109,11 +109,11 @@
               "settings": {
                 "heading": "Lens type",
                 "lens_category_1_key": "clear",
-                "lens_category_1_label": "Clear",
+                "lens_category_1_label": "Everyday Clarity - Clear",
                 "lens_category_2_key": "sunglasses",
-                "lens_category_2_label": "Polarized",
+                "lens_category_2_label": "Everyday Clarity - Polarized",
                 "lens_category_3_key": "photochromic",
-                "lens_category_3_label": "Transitions",
+                "lens_category_3_label": "Everyday Clarity - Transitions",
                 "lens_product_1": "otis-rx-lens-everyday-clarity-clear-standard",
                 "lens_product_high_1": "otis-rx-lens-everyday-clarity-clear-high",
                 "alt_tag_1": "base_6",
@@ -129,9 +129,15 @@
                 "alt_product_3": "otis-rx-lens-active-protection-trans-standard",
                 "alt_product_high_3": "otis-rx-lens-active-protection-trans-high",
                 "default_category": "clear",
-                "lens_category_1_description": "Everyday optical lenses for indoor and low-light wear",
-                "lens_category_2_description": "Glare-cutting polarized lenses for bright sun",
-                "lens_category_3_description": "Light-adaptive lenses that darken in sunlight"
+                "lens_category_1_description": "Everyday optical lenses for indoor and low light wear, suitable for moderate prescriptions and offer a good balance between cost and appearance.",
+                "lens_category_2_description": "Glare-cutting polarized lenses for bright sun. Suitable for moderate prescriptions and offer a good balance between cost and appearance.",
+                "lens_category_3_description": "Light adaptive lenses that darken in sunlight. Suitable for moderate prescriptions and offer a good balance between cost and appearance.",
+                "alt_label_1": "Active Protection - Clear",
+                "alt_description_1": "Exceptional impact resistance, with a thinner, lighter profile. Best for individuals with strong prescriptions who need lighter lenses to avoid the bulkiness of traditional lenses.",
+                "alt_label_2": "Active Protection - Polarized",
+                "alt_description_2": "Glare-cutting, impact resistance polarized lenses with a thinner, lighter profile. Best for individuals with strong prescriptions who need lighter lenses to avoid the bulkiness of traditional lenses.",
+                "alt_label_3": "Active Protection - Transitions",
+                "alt_description_3": "Light adaptive, impact resistant lenses that darken in sunlight. Featuring a thinner, lighter profile and best for individuals with stronger prescriptions who need lighter lenses to avoid the bulkiness of traditional lenses."
               },
               "blocks": {}
             },
@@ -382,4 +388,3 @@
     "main"
   ]
 }
-

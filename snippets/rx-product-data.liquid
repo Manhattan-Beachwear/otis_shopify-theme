@@ -67,13 +67,25 @@
       assign high_product = block.settings[high_setting]
       assign prog_product = block.settings[prog_setting]
 
-      # Frames tagged with the category's alternate-family tag swap both tiers.
-      assign alt_tag = block.settings[alt_tag_setting] | strip
-      if alt_tag != blank and frame_product.tags contains alt_tag
+      # Frames tagged with any of the category's alternate-family tags swap both
+      # tiers, and take that lens family's label with them.
+      assign alt_label_setting = 'alt_label_' | append: i
+      assign alt_tags = block.settings[alt_tag_setting] | split: ','
+      assign frame_in_alt_family = false
+      for alt_tag in alt_tags
+        assign clean_alt_tag = alt_tag | strip
+        if clean_alt_tag != blank and frame_product.tags contains clean_alt_tag
+          assign frame_in_alt_family = true
+          break
+        endif
+      endfor
+
+      if frame_in_alt_family
         assign alt_sv = block.settings[alt_sv_setting]
         if alt_sv != blank and alt_sv.id != blank
           assign sv_product = alt_sv
           assign high_product = block.settings[alt_high_setting]
+          assign category_label = block.settings[alt_label_setting] | default: category_label
         endif
       endif
     -%}
