@@ -15,7 +15,7 @@ function rxImport(name) {
   return import(map[name] ?? new URL(`./${name}`, import.meta.url).href);
 }
 
-const { RxState, formatCents } = await rxImport('rx-core.js');
+const { RxState, formatCents, pickTier, lensColorOptions, lensColorSlug } = await rxImport('rx-core.js');
 
 // Shared singleton — the first RX component to initialize creates the state.
 function getRxState() {
@@ -164,16 +164,18 @@ class RxLensOptions extends Component {
     return (data?.lensCategories ?? []).find((category) => category.key === this.#state.lensCategory) ?? null;
   }
 
-  // Color variants of the currently selected lens product.
+  // Colors offered by the active category. Each color is its own product now
+  // (one SKU, one product), so they are gathered across the category rather
+  // than from the variants of the selected one.
   #colorVariants() {
     const category = this.#activeCategory();
-    const lens = this.#state.lensProduct;
-    if (!category || !lens) return [];
-    // Non-RX ships the single-vision lens; match its vision type for lookup.
-    const lookup = this.#state.visionType === 'non_rx' ? 'single_vision' : this.#state.visionType;
-    return category.products.filter(
-      (product) => product.id === lens.id && product.visionType === lookup && product.color != null
-    );
+    if (!category || !this.#state.visionType) return [];
+
+    const threshold = getRxProductData()?.config?.tierSphThreshold ?? 2;
+    return lensColorOptions(category.products, {
+      visionType: this.#state.visionType,
+      tier: pickTier(this.#state.prescription?.values, threshold),
+    });
   }
 
   /** @param {{index: number}} data */
@@ -192,14 +194,22 @@ class RxLensOptions extends Component {
 
   #swatchHtml(variant, index, selected) {
     const label = variant.color || '';
-    const itemClass = `rx-lens-options__swatch-item${selected ? ' rx-lens-options__swatch-item--selected' : ''}`;
+    const soldOut = variant.available === false;
+    const itemClass = [
+      'rx-lens-options__swatch-item',
+      selected ? 'rx-lens-options__swatch-item--selected' : '',
+      soldOut ? 'rx-lens-options__swatch-item--unavailable' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
     return `
       <button
         type="button"
         class="${itemClass}"
         role="radio"
         aria-checked="${selected ? 'true' : 'false'}"
-        aria-label="${escapeHtml(label)}"
+        aria-label="${escapeHtml(soldOut ? `${label} — unavailable` : label)}"
+        ${soldOut ? 'disabled' : ''}
         on:click="/selectColor?index=${index}"
       >
         <span class="rx-lens-options__dot" style="background: ${this.#fillFor(variant.color)};"></span>
@@ -242,13 +252,14 @@ class RxLensOptions extends Component {
     this.#colors = colors;
     this.hidden = false;
 
-    const selectedVariantId = this.#state.lensProduct?.variantId;
-    const selected = colors.find((variant) => variant.variantId === selectedVariantId) ?? null;
+    // Matched on colour, not variant id: entering a prescription can swap the
+    // selected lens to the other tier, which is a different product entirely.
+    const selectedColor = lensColorSlug(this.#state.lensProduct?.color ?? '');
+    const isSelected = (variant) => selectedColor !== '' && lensColorSlug(variant.color) === selectedColor;
+    const selected = colors.find(isSelected) ?? null;
     const basePrice = Math.min(...colors.map((variant) => variant.price || 0));
 
-    container.innerHTML = colors
-      .map((variant, index) => this.#swatchHtml(variant, index, variant.variantId === selectedVariantId))
-      .join('');
+    container.innerHTML = colors.map((variant, index) => this.#swatchHtml(variant, index, isSelected(variant))).join('');
     if (info) info.innerHTML = this.#infoHtml(selected, basePrice);
   }
 }

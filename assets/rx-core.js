@@ -264,18 +264,74 @@ export function pickTier(values, threshold = 2) {
   return powers.some((v) => v > threshold) ? 'high' : 'standard';
 }
 
+// Sold-out entries stay selectable only when nothing else fits; among the rest
+// the cheapest wins, which makes plain Clear the natural default.
+function bestOf(entries) {
+  if (!entries.length) return null;
+  const sellable = entries.filter((p) => p.available !== false);
+  const pool = sellable.length ? sellable : entries;
+  return pool.reduce((best, p) => ((p.price ?? Infinity) < (best.price ?? Infinity) ? p : best), pool[0]);
+}
+
+// "Clear + AR" and "Clear + Ar" are the same lens: the catalogue and the
+// theme's colour blocks disagree on case.
+function colorsMatch(a, b) {
+  return lensColorSlug(a) === lensColorSlug(b);
+}
+
 /**
  * Pick the lens catalog entry for a vision type, color and power tier.
  * Entries without a tier (or tier 'any') match every tier; an exact tier match
- * wins, then 'any', then 'standard' as the last resort.
+ * wins, then 'any', then the remaining tiers — the acetate Transitions lenses
+ * only exist as high-tier SKUs, so a standard prescription has to reach them.
+ *
+ * With `anyColor` the color filter is dropped, which is how a category's
+ * default lens is chosen before the shopper has picked a color.
  */
-export function resolveLensProduct(products = [], { visionType, color = null, tier = 'standard' } = {}) {
+export function resolveLensProduct(
+  products = [],
+  { visionType, color = null, tier = 'standard', anyColor = false, exactTier = false } = {}
+) {
   const vision = visionType === 'non_rx' ? 'single_vision' : visionType;
-  const candidates = products.filter(
-    (p) => p.visionType === vision && (color == null ? p.color == null : p.color === color)
-  );
-  const byTier = (t) => candidates.find((p) => (p.tier ?? 'any') === t);
-  return byTier(tier) ?? byTier('any') ?? byTier('standard') ?? null;
+  const candidates = products.filter((p) => {
+    if (p.visionType !== vision) return false;
+    if (anyColor) return true;
+    return color == null ? p.color == null : colorsMatch(p.color, color);
+  });
+
+  // 'any' covers catalogue entries that carry no tier at all, so it stays even
+  // in the strict pass; the wider fallbacks are what strict mode rules out.
+  const chain = exactTier ? [tier, 'any'] : [tier, 'any', 'standard', 'high'];
+  for (const t of chain) {
+    const match = bestOf(candidates.filter((p) => (p.tier ?? 'any') === t));
+    if (match) return match;
+  }
+  return null;
+}
+
+/**
+ * Distinct lens colors offered by a category, each resolved to the entry that
+ * fits the current tier. Colors the catalogue does not carry simply do not
+ * appear.
+ *
+ * @returns {object[]} one catalog entry per color
+ */
+export function lensColorOptions(products = [], { visionType, tier = 'standard' } = {}) {
+  const vision = visionType === 'non_rx' ? 'single_vision' : visionType;
+  const seen = new Set();
+  const colors = [];
+
+  for (const product of products) {
+    if (product.visionType !== vision || product.color == null) continue;
+    const slug = lensColorSlug(product.color);
+    if (seen.has(slug)) continue;
+    seen.add(slug);
+    colors.push(product.color);
+  }
+
+  return colors
+    .map((color) => resolveLensProduct(products, { visionType, color, tier }))
+    .filter(Boolean);
 }
 
 

@@ -185,6 +185,30 @@
     },
     {
       "type": "header",
+      "content": "Lens catalogue"
+    },
+    {
+      "type": "product_list",
+      "id": "lens_products",
+      "label": "Lens products",
+      "limit": 50,
+      "info": "One product per SKU. Tier and family are read from the SKU (S/EH, 46CR/6PC), the colour from the lens_color-* tag. Leave empty to fall back to the per-category products below."
+    },
+    {
+      "type": "collection",
+      "id": "lens_collection",
+      "label": "Lens collection",
+      "info": "Used only when no products are selected above. Unlisted products never show up in a collection on the storefront, so a list is usually needed."
+    },
+    {
+      "type": "text",
+      "id": "alt_frame_tag",
+      "label": "Alternate family frame tag",
+      "default": "base_6",
+      "info": "Frames with this tag take the 6PC (Active Protection) lenses; every other frame takes 46CR (Everyday Clarity). Comma-separated for several tags."
+    },
+    {
+      "type": "header",
       "content": "Category 1"
     },
     {
