@@ -444,6 +444,9 @@ class RxPrescriptionDrawer extends DialogComponent {
     const back = this.refs.back;
     if (back instanceof HTMLElement) back.hidden = this.#step === 'INITIAL' || this.#analyzing;
 
+    const headline = this.refs.headline;
+    if (headline instanceof HTMLElement) headline.textContent = this.#headline();
+
     // Confirm view with a file preview gets the wide two-column dialog.
     const dialog = this.refs.dialog;
     if (dialog instanceof HTMLElement) {
@@ -465,12 +468,19 @@ class RxPrescriptionDrawer extends DialogComponent {
           : this.#initialHtml();
   }
 
+  // Sits in the drawer header, so each step states its own job once.
+  #headline() {
+    if (this.#analyzing) return 'Reading your prescription';
+    if (this.#step === 'HI_INDEX') return 'High Index lenses required';
+    if (this.#step !== 'MANUAL') return 'Add prescription';
+    return this.#method === 'upload' && Object.keys(this.#values).length ? 'Confirm your prescription' : 'Enter your prescription';
+  }
+
   #hiIndexHtml() {
     const up = this.#pendingUpgrade;
     if (!up) return this.#manualHtml();
     return `
       <div class="rx-prescription__step rx-prescription__step--hi-index">
-        <h2 class="rx-prescription__title">High Index lenses required</h2>
         <p class="rx-prescription__text">
           Your prescription is outside the standard power range, so these frames
           need thinner, lighter High Index lenses.
@@ -508,7 +518,6 @@ class RxPrescriptionDrawer extends DialogComponent {
     const total = this.#state.totalPrice;
     return `
       <div class="rx-prescription__step rx-prescription__step--initial">
-        <h2 class="rx-prescription__title">Do you have a prescription?</h2>
         <p class="rx-prescription__subtitle">Upload it and we'll read the values for you, or enter them by hand.</p>
 
         <div class="rx-prescription__actions">
@@ -546,28 +555,41 @@ class RxPrescriptionDrawer extends DialogComponent {
     return `
       <div class="rx-prescription__step${preview ? ' rx-prescription__step--split' : ''}">
       <div class="rx-prescription__form-col">
-        <h2 class="rx-prescription__title">${filled ? 'Confirm your prescription' : 'Enter your prescription'}</h2>
         ${filled && !preview ? `<p class="rx-prescription__file">Uploaded: ${escapeHtml(this.#fileName)}</p>` : ''}
         ${this.#apiError ? `<p class="rx-prescription__notice" role="alert">${escapeHtml(this.#apiError)}</p>` : ''}
 
-        <div class="rx-prescription__table">
-          <div class="rx-prescription__row rx-prescription__row--head" aria-hidden="true">
-            <span></span><span>OD (Right)</span><span>OS (Left)</span>
+        <div class="rx-prescription__rxcard">
+          <span></span>
+          <span class="rx-prescription__rxcol">SPH</span>
+          <span class="rx-prescription__rxcol">CYL</span>
+          <span class="rx-prescription__rxcol">Axis</span>
+          <span class="rx-prescription__rxcol">Add</span>
+          ${this.#eyeRowHtml('OD', 'right', 'od')}
+          ${this.#eyeRowHtml('OS', 'left', 'os')}
+        </div>
+
+        <div class="rx-prescription__rule"></div>
+
+        <div class="rx-prescription__subgrid">
+          ${this.#pdHtml()}
+          <div class="rx-prescription__field-group">
+            <label class="rx-prescription__label" for="rx-date-${this.id}">Prescription date</label>
+            <input type="date" id="rx-date-${this.id}" class="rx-prescription__input" data-rx-field="date" value="${escapeHtml(this.#values.date || '')}">
           </div>
-          ${this.#rowHtml('SPH', 'sph', 'sph', true)}
-          ${this.#rowHtml('CYL', 'cyl', 'cyl', true)}
-          ${this.#rowHtml('Axis', 'axis', 'axis', false, { pad: 3 })}
-          ${this.#rowHtml('Add', 'add', 'add', true)}
         </div>
 
-        ${this.#pdHtml()}
-        ${this.#prismHtml()}
-
-        <div class="rx-prescription__date">
-          <label class="rx-prescription__label" for="rx-date-${this.id}">Prescription date</label>
-          <input type="date" id="rx-date-${this.id}" class="rx-prescription__input" data-rx-field="date" value="${escapeHtml(this.#values.date || '')}">
+        <div class="rx-prescription__extras">
+          <label class="rx-prescription__check">
+            <input type="checkbox" data-rx-dual-pd ${this.#dualPd ? 'checked' : ''}>
+            <span>Two PD values</span>
+          </label>
+          <label class="rx-prescription__check">
+            <input type="checkbox" data-rx-prism-toggle ${this.#showPrism ? 'checked' : ''}>
+            <span>I have prism values</span>
+          </label>
         </div>
 
+        ${this.#showPrism ? this.#prismHtml() : ''}
         <div data-rx-expiry>${this.#expiryWarningHtml()}</div>
       </div>
       ${preview}
@@ -575,13 +597,24 @@ class RxPrescriptionDrawer extends DialogComponent {
 
       <div class="rx-prescription__footer">
         <div class="rx-prescription__footer-summary">
-          <span>Total</span>
+          <span>Frame + lenses</span>
           <span class="rx-prescription__footer-price">${formatCents(this.#state.totalPrice)}</span>
         </div>
         <button type="button" class="button rx-prescription__submit" data-rx-submit ${this.#submitting ? 'disabled aria-busy="true"' : ''}>
           ${this.#submitting ? 'Saving…' : 'Save prescription'}
         </button>
       </div>
+    `;
+  }
+
+  // One eye across the four power columns.
+  #eyeRowHtml(abbr, side, key) {
+    return `
+      <span class="rx-prescription__rxeye">${abbr}<small>${side}</small></span>
+      ${this.#cellHtml(`sph_${key}`, 'sph', true, {})}
+      ${this.#cellHtml(`cyl_${key}`, 'cyl', true, {})}
+      ${this.#cellHtml(`axis_${key}`, 'axis', false, { pad: 3 })}
+      ${this.#cellHtml(`add_${key}`, 'add', true, {})}
     `;
   }
 
@@ -609,15 +642,9 @@ class RxPrescriptionDrawer extends DialogComponent {
   #pdHtml() {
     const error = this.#errors.pd;
     return `
-      <div class="rx-prescription__pd">
-        <div class="rx-prescription__pd-head">
-          <span class="rx-prescription__label">Pupillary distance (PD)</span>
-          <label class="rx-prescription__toggle">
-            <input type="checkbox" data-rx-dual-pd ${this.#dualPd ? 'checked' : ''}>
-            <span>Two values</span>
-          </label>
-        </div>
-        <div class="rx-prescription__pd-inputs${error ? ' rx-prescription__field--error' : ''}">
+      <div class="rx-prescription__field-group${error ? ' rx-prescription__field--error' : ''}">
+        <span class="rx-prescription__label">Pupillary distance (PD)</span>
+        <div class="rx-prescription__pd-inputs">
           ${
             this.#dualPd
               ? `${this.#selectHtml('pd_right', 'pd', false, { half: true, prefix: 'R' })}
@@ -631,14 +658,6 @@ class RxPrescriptionDrawer extends DialogComponent {
   }
 
   #prismHtml() {
-    if (!this.#showPrism) {
-      return `
-        <label class="rx-prescription__toggle rx-prescription__toggle--block">
-          <input type="checkbox" data-rx-prism-toggle>
-          <span>I have prism values</span>
-        </label>
-      `;
-    }
     const eye = (side, label) => `
       <fieldset class="rx-prescription__prism-eye">
         <legend>${label}</legend>
@@ -661,31 +680,70 @@ class RxPrescriptionDrawer extends DialogComponent {
 
   #prismDirHtml(field, axis) {
     const options = axis === 'vertical' ? [['U', 'Up'], ['D', 'Down']] : [['I', 'In'], ['O', 'Out']];
-    const current = this.#values[field] || '';
     return `
-      <select class="rx-prescription__select" data-rx-field="${field}">
-        <option value="">Base</option>
-        ${options.map(([value, text]) => `<option value="${value}"${value === current ? ' selected' : ''}>${text}</option>`).join('')}
-      </select>
+      <rx-select
+        class="rx-select"
+        data-rx-field="${field}"
+        data-options="${escapeHtml(JSON.stringify(options))}"
+        data-placeholder="Base"
+        value="${escapeHtml(this.#values[field] || '')}"
+      >
+        <button
+          type="button"
+          class="rx-select__trigger"
+          ref="trigger"
+          role="combobox"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-label="${escapeHtml(field)}"
+          on:click="/toggle"
+        >Base</button>
+        <div class="rx-select__panel" role="listbox" ref="panel" hidden></div>
+      </rx-select>
     `;
   }
 
-  // Build a value <select> from the configured limit range.
+  // Two-column value picker over the configured limit range. Columns fan out
+  // from the value people start at: 0 for powers, 64 (32 monocular) for PD.
   #selectHtml(field, limitKey, signed, opts = {}) {
     const current = this.#values[field];
     const options = this.#options(limitKey, signed, opts);
     const label = opts.prefix ? `<span class="rx-prescription__mini">${opts.prefix}</span>` : '';
+    const anchor = this.#anchorFor(limitKey, opts);
+    // PD splits by whole millimetre and half step; powers fan out from zero.
+    const split = limitKey === 'pd' ? 'halves' : 'anchor';
+
     return `
-      ${label}<select class="rx-prescription__select" data-rx-field="${field}" aria-label="${escapeHtml(field)}">
-        <option value="">Select</option>
-        ${options
-          .map((option) => {
-            const selected = isFilled(current) && parseFloat(option) === parseFloat(current) ? ' selected' : '';
-            return `<option value="${option}"${selected}>${option}</option>`;
-          })
-          .join('')}
-      </select>
+      ${label}<rx-select
+        class="rx-select"
+        data-rx-field="${field}"
+        data-options="${escapeHtml(JSON.stringify(options))}"
+        ${anchor == null ? '' : `data-anchor="${anchor}"`}
+        ${split === 'halves' ? 'data-split="halves"' : ''}
+        data-placeholder="Select"
+        value="${isFilled(current) ? escapeHtml(String(current)) : ''}"
+      >
+        <button
+          type="button"
+          class="rx-select__trigger"
+          ref="trigger"
+          role="combobox"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-label="${escapeHtml(field)}"
+          on:click="/toggle"
+        >Select</button>
+        <div class="rx-select__panel" role="listbox" ref="panel" hidden></div>
+      </rx-select>
     `;
+  }
+
+  // The value the columns fan out from, shown once above them. Zero for every
+  // power field — axis and add start there too, they just never go negative.
+  #anchorFor(limitKey, opts) {
+    if (limitKey === 'pd') return opts.half ? 32 : 64;
+    if (limitKey === 'prism') return null;
+    return 0;
   }
 
   #options(limitKey, signed, opts) {

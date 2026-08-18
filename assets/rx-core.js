@@ -376,3 +376,69 @@ export function stripImageSizeParams(url) {
     return url;
   }
 }
+
+// --- prescription form value picker ----------------------------------------
+
+/**
+ * Lay values out in two columns for the prescription pickers.
+ *
+ * `anchor` — the shared starting value (0 for powers) heads the panel on its
+ * own full-width row, then the columns walk away from it: plus side one way,
+ * minus the other.
+ *
+ * `halves` — whole numbers on the left, their .5 counterparts on the right, so
+ * each row reads as one PD value and its half step.
+ *
+ * Anything else is simply cut in half, first part left.
+ *
+ * @param {(string | [string, string])[]} options
+ * @param {{anchor?: number | null, leftGoes?: 'up' | 'down', split?: 'anchor' | 'halves'}} config
+ * @returns {{head: string[], left: (string | [string, string])[], right: (string | [string, string])[]}}
+ */
+export function splitIntoColumns(options, { anchor = null, leftGoes = 'up', split = 'anchor' } = {}) {
+  const numberOf = (option) => parseFloat(lensOptionPair(option)[0]);
+
+  if (split === 'halves') {
+    const left = [];
+    const right = [];
+    for (const option of options) {
+      const n = numberOf(option);
+      if (Number.isNaN(n)) continue;
+      (Number.isInteger(n) ? left : right).push(option);
+    }
+    return { head: [], left, right };
+  }
+
+  if (anchor == null || Number.isNaN(anchor)) {
+    const half = Math.ceil(options.length / 2);
+    return { head: [], left: options.slice(0, half), right: options.slice(half) };
+  }
+
+  const head = [];
+  const above = [];
+  const below = [];
+  for (const option of options) {
+    const n = numberOf(option);
+    if (Number.isNaN(n)) continue;
+    if (n === anchor) head.push(option);
+    else if (n > anchor) above.push(option);
+    else below.push(option);
+  }
+
+  above.sort((a, b) => numberOf(a) - numberOf(b));
+  below.sort((a, b) => numberOf(b) - numberOf(a));
+
+  // Axis and add only run one way from zero, so there is no second side to
+  // fill: split what is left down the middle instead of leaving a blank column.
+  if (!above.length || !below.length) {
+    const rest = above.length ? above : below;
+    const half = Math.ceil(rest.length / 2);
+    return { head, left: rest.slice(0, half), right: rest.slice(half) };
+  }
+
+  return leftGoes === 'up' ? { head, left: above, right: below } : { head, left: below, right: above };
+}
+
+export function lensOptionPair(option) {
+  return Array.isArray(option) ? [String(option[0]), String(option[1])] : [String(option), String(option)];
+}

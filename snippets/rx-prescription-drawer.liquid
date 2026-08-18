@@ -56,6 +56,7 @@
   data-health-fund-numbers="{{ rx_settings.health_fund_numbers | escape }}"
 >
   {% render 'rx-import-map' %}
+  <script src="{{ 'rx-select.js' | asset_url }}" type="module" fetchpriority="low"></script>
   <script src="{{ 'rx-prescription.js' | asset_url }}" type="module" fetchpriority="low"></script>
 
   <dialog
@@ -76,14 +77,7 @@
           {{- 'icon-caret.svg' | inline_asset_content -}}
           <span>Back</span>
         </button>
-        <button
-          type="button"
-          class="button button-unstyled close-button rx-prescription-drawer__close"
-          data-rx-close
-          aria-label="{{ 'accessibility.close_dialog' | t }}"
-        >
-          {{- 'icon-close.svg' | inline_asset_content -}}
-        </button>
+        <p ref="headline" class="rx-prescription-drawer__headline">Add prescription</p>
       </div>
 
       <input
@@ -105,7 +99,7 @@
 
 {% stylesheet %}
   .rx-prescription-drawer__dialog {
-    width: min(600px, 96vw);
+    width: min(880px, 96vw);
     max-width: 96vw;
     max-height: 92dvh;
     padding: 0;
@@ -273,8 +267,7 @@
   .rx-prescription-drawer__header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--gap-sm);
+    gap: var(--gap-xl);
     padding: var(--padding-sm) var(--padding-md);
     border-bottom: 1px solid var(--color-border);
     flex-shrink: 0;
@@ -296,6 +289,15 @@
 
   .rx-prescription-drawer__back[hidden] {
     display: none;
+  }
+
+  .rx-prescription-drawer__headline {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-sm);
+    text-transform: uppercase;
   }
 
   .rx-prescription-drawer__close {
@@ -581,4 +583,189 @@
   .rx-prescription__submit {
     width: 100%;
   }
+
+  /* --- two-column value picker (rx-select) ------------------------------- */
+
+  .rx-select {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+
+  .rx-select__trigger {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--padding-2xs);
+    padding: var(--padding-2xs) var(--padding-xs);
+    border: 1px solid var(--color-border, rgb(var(--color-foreground-rgb) / var(--opacity-20)));
+    border-radius: var(--style-border-radius-inputs, 0);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .rx-select__trigger::after {
+    content: '';
+    width: 0.4em;
+    height: 0.4em;
+    border-right: 1px solid currentcolor;
+    border-bottom: 1px solid currentcolor;
+    rotate: 45deg;
+    translate: 0 -0.15em;
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+
+  .rx-select__trigger--empty {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-55, 0.55));
+  }
+
+  .rx-prescription__field--error .rx-select__trigger {
+    border-color: var(--color-error, #c0362c);
+  }
+
+  .rx-select__panel {
+    position: absolute;
+    z-index: 3;
+    inset-block-start: calc(100% + 2px);
+    inset-inline-start: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-width: 100%;
+    max-height: 15rem;
+    overflow-y: auto;
+    border: 1px solid var(--color-border, rgb(var(--color-foreground-rgb) / var(--opacity-20)));
+    background: var(--color-background);
+    box-shadow: 0 4px 16px rgb(var(--color-shadow-rgb) / var(--opacity-20));
+    overscroll-behavior: contain;
+  }
+
+  .rx-select__panel[hidden] {
+    display: none;
+  }
+
+  /* The shared starting value (0) sits above both columns. */
+  .rx-select__head {
+    grid-column: 1 / -1;
+    border-block-end: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .rx-select__head .rx-select__option {
+    font-weight: 600;
+  }
+
+  .rx-select__column + .rx-select__column {
+    border-inline-start: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .rx-select__option {
+    display: block;
+    width: 100%;
+    padding: var(--padding-2xs) var(--padding-xs);
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .rx-select__option:hover,
+  .rx-select__option:focus-visible {
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .rx-select__option[aria-selected='true'] {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+
+  /* --- Rx card: eyes as rows, powers as columns, like the paper script --- */
+
+  .rx-prescription__rxcard {
+    display: grid;
+    grid-template-columns: 4.25rem repeat(4, minmax(0, 1fr));
+    gap: var(--gap-sm) var(--gap-md);
+    align-items: center;
+  }
+
+  .rx-prescription__rxcol {
+    font-family: var(--font-heading--family);
+    font-size: var(--font-size--2xs);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-sm);
+    text-align: center;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-55, 0.55));
+  }
+
+  .rx-prescription__rxeye {
+    font-family: var(--font-heading--family);
+    font-size: var(--font-size--sm);
+    font-weight: 700;
+    letter-spacing: var(--letter-spacing-sm);
+  }
+
+  .rx-prescription__rxeye small {
+    display: block;
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--2xs);
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: lowercase;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-40, 0.4));
+  }
+
+  .rx-prescription__rule {
+    height: 1px;
+    margin-block: var(--margin-xl);
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .rx-prescription__subgrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-lg) var(--gap-2xl);
+    align-items: start;
+  }
+
+  .rx-prescription__field-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-2xs);
+  }
+
+  .rx-prescription__extras {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-lg);
+    margin-block-start: var(--margin-lg);
+  }
+
+  .rx-prescription__check {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--padding-2xs);
+    font-size: var(--font-size--sm);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70, 0.7));
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rx-prescription__rxcard {
+      grid-template-columns: 3.25rem repeat(4, minmax(0, 1fr));
+      gap: var(--gap-2xs) var(--gap-xs);
+    }
+
+    .rx-prescription__subgrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
 {% endstylesheet %}
