@@ -259,9 +259,7 @@
           function checkTabletMode() {
             const isTablet = window.matchMedia('(min-width: 750px) and (max-width: 989px)').matches;
             const overflowLists = document.querySelectorAll('.split-header-menu overflow-list');
-            
-            console.log('Tablet mode:', isTablet, 'Found overflow-lists:', overflowLists.length);
-            
+
             overflowLists.forEach(list => {
               if (isTablet) {
                 list.setAttribute('disabled', 'true');

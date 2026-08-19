@@ -1,0 +1,16 @@
+{%- doc -%}
+  Versioned URLs for the shared RX modules. Inter-module imports can't use
+  plain relative paths: unversioned asset URLs are CDN-cached for a year, so a
+  deploy would leave returning visitors importing stale modules. RX entry
+  modules read this map and dynamically import the versioned URL instead
+  (falling back to the relative path when the map is absent, e.g. under tests).
+
+  Safe to render more than once per page — consumers read the first occurrence.
+{%- enddoc -%}
+
+<script type="application/json" data-rx-imports>
+  {
+    "rx-core.js": {{ 'rx-core.js' | asset_url | json }},
+    "rx-api.js": {{ 'rx-api.js' | asset_url | json }}
+  }
+</script>

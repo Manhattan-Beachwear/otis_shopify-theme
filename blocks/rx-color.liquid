@@ -1,0 +1,52 @@
+{%- doc -%}
+  RX lens color definition — a nested block of `rx-lens-options`. Matches a lens
+  variant by its option value (`title`) and overrides the swatch color(s)
+  and the description shown under the picker. Emits a JSON data node consumed by
+  rx-lens-options.js; renders nothing visible itself.
+{%- enddoc -%}
+
+<script type="application/json" data-rx-color-def {{ block.shopify_attributes }}>
+  {
+    "name": {{ block.settings.title | strip | json }},
+    "color": {{ block.settings.swatch_color | json }},
+    "color2": {{ block.settings.swatch_color_2 | json }},
+    "description": {{ block.settings.description | json }}
+  }
+</script>
+
+{% schema %}
+{
+  "name": "RX Color",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Color name",
+      "info": "Must exactly match the lens variant option value, e.g. Grey Polar."
+    },
+    {
+      "type": "color",
+      "id": "swatch_color",
+      "label": "Swatch color"
+    },
+    {
+      "type": "color",
+      "id": "swatch_color_2",
+      "label": "Second swatch color",
+      "info": "Optional: makes a two-color gradient (mirror finishes)."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RX Color"
+    }
+  ]
+}
+{% endschema %}
+
