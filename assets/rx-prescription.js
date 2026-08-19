@@ -669,13 +669,8 @@ class RxPrescriptionDrawer extends DialogComponent {
         </div>
       </fieldset>
     `;
-    return `
-      <label class="rx-prescription__toggle rx-prescription__toggle--block">
-        <input type="checkbox" data-rx-prism-toggle checked>
-        <span>I have prism values</span>
-      </label>
-      <div class="rx-prescription__prism">${eye('od', 'Right (OD)')}${eye('os', 'Left (OS)')}</div>
-    `;
+    // The toggle lives with the other checkboxes above; this only draws fields.
+    return `<div class="rx-prescription__prism">${eye('od', 'Right (OD)')}${eye('os', 'Left (OS)')}</div>`;
   }
 
   #prismDirHtml(field, axis) {
