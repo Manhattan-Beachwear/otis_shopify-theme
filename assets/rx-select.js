@@ -91,10 +91,9 @@ class RxSelect extends Component {
     this.refs.trigger.setAttribute('aria-expanded', 'true');
     this.#markSelected();
     // A picked value can sit far down a long list (axis runs to 180); with
-    // nothing picked yet, centre on the value most people start from.
-    const focal =
-      this.querySelector('[aria-selected="true"]') ??
-      (this.dataset.anchor ? this.querySelector(`[data-value="${CSS.escape(this.dataset.anchor)}"]`) : null);
+    // nothing picked yet, centre on the value most people start from. The
+    // anchor is compared numerically — it is written '64' but listed as '64.0'.
+    const focal = this.querySelector('[aria-selected="true"]') ?? this.#anchorOption();
     focal?.scrollIntoView({ block: 'center' });
   }
 
@@ -105,12 +104,32 @@ class RxSelect extends Component {
     this.refs.trigger.setAttribute('aria-expanded', 'false');
   }
 
-  /** @param {{value?: string}} data */
-  pick(data) {
-    this.value = data?.value ?? '';
+  /**
+   * The value is read off the clicked option rather than passed through the
+   * binding: the theme's parser coerces numeric-looking parameters, which
+   * turns '+0.25' into 0.25 and '090' into 90 — neither matches an option.
+   *
+   * @param {Event} event
+   */
+  pick(event) {
+    const target = event.target;
+    const option = target instanceof Element ? target.closest('.rx-select__option') : null;
+    if (!option) return;
+
+    this.value = option.getAttribute('data-value') ?? '';
     this.close();
     this.refs.trigger.focus();
     this.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  #anchorOption() {
+    const anchor = Number(this.dataset.anchor);
+    if (Number.isNaN(anchor)) return null;
+    return (
+      [...this.querySelectorAll('.rx-select__option')].find(
+        (option) => parseFloat(option.getAttribute('data-value') ?? '') === anchor
+      ) ?? null
+    );
   }
 
   #renderTrigger() {
@@ -143,7 +162,7 @@ class RxSelect extends Component {
         role="option"
         aria-selected="false"
         data-value="${escapeAttr(value)}"
-        on:click="/pick?value=${encodeURIComponent(value)}"
+        on:click="/pick"
       >${escapeAttr(label)}</button>
     `;
   }
