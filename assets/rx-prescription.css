@@ -1,0 +1,727 @@
+/*
+ * Prescription drawer styles.
+ *
+ * Kept as an asset rather than a {% stylesheet %} block: this markup ships from
+ * a snippet, and Shopify only collects stylesheet tags from sections and blocks
+ * — inside a snippet they are dropped silently, which left the drawer unstyled
+ * and its dropdown panels in the flow, pushing the form around.
+ */
+
+  .rx-prescription-drawer__dialog {
+    width: min(880px, 96vw);
+    max-width: 96vw;
+    /* Height follows the content — max-height is the only limit. */
+    height: fit-content;
+    max-height: 92dvh;
+    /* Only the bottom edge moves as steps change height. The UA `margin: auto`
+       re-centres the dialog on every step, sliding the header out from under
+       the cursor; 4dvh + 92dvh + auto keeps an even gap at the cap. */
+    margin-block: 4dvh auto;
+    padding: 0;
+    border: var(--style-border-popover);
+    border-radius: var(--style-border-radius-popover);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    overflow: hidden;
+  }
+
+  /* Confirm-with-preview view: two columns need the extra width. */
+  .rx-prescription-drawer__dialog--wide {
+    width: min(1040px, 96vw);
+  }
+
+  /* Doubled class: the base .rx-prescription__step sets display: flex later in
+     the cascade at equal specificity. */
+  .rx-prescription__step.rx-prescription__step--split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: var(--gap-2xl, 40px);
+    align-items: stretch;
+  }
+
+  /* Scale the form up to fill the column so both sides read symmetric. */
+  .rx-prescription__step--split .rx-prescription__form-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md, 16px);
+    min-height: 100%;
+  }
+
+  .rx-prescription__step--split .rx-prescription__row {
+    margin-block-end: var(--gap-sm, 12px);
+  }
+
+  .rx-prescription__step--split .rx-prescription__row-label,
+  .rx-prescription__step--split .rx-prescription__label,
+  .rx-prescription__step--split .rx-prescription__select,
+  .rx-prescription__step--split .rx-prescription__input {
+    font-size: var(--font-size--md, 1rem);
+  }
+
+  .rx-prescription__step--split .rx-prescription__select,
+  .rx-prescription__step--split .rx-prescription__input {
+    padding: var(--padding-xs, 8px) var(--padding-sm, 12px);
+  }
+
+  .rx-prescription__step--split .rx-prescription__row--head {
+    font-size: var(--font-size--sm, 0.875rem);
+  }
+
+  /* In the split view the preview matches the form column height and the
+     image scales to fill it. */
+  .rx-prescription__step--split .rx-prescription__preview {
+    height: 100%;
+  }
+
+  .rx-prescription__step--split .rx-prescription__preview-media {
+    flex: 1 1 0;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .rx-prescription__hi-index-summary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs, 8px);
+    margin-block: var(--gap-md, 16px);
+    padding: var(--padding-sm, 12px);
+    border: var(--style-border-popover, 1px solid rgb(0 0 0 / 10%));
+    border-radius: var(--style-border-radius-popover, 8px);
+  }
+
+  .rx-prescription__hi-index-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size--sm, 0.875rem);
+  }
+
+  .rx-prescription__hi-index-row--total {
+    font-weight: 600;
+  }
+
+  .rx-prescription__preview {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs, 8px);
+    border: var(--style-border-popover, 1px solid rgb(0 0 0 / 10%));
+    border-radius: var(--style-border-radius-popover, 8px);
+    padding: var(--padding-sm, 12px);
+  }
+
+  .rx-prescription__preview-media {
+    width: 100%;
+    max-height: 60dvh;
+    object-fit: contain;
+    border-radius: inherit;
+  }
+
+  embed.rx-prescription__preview-media {
+    height: 60dvh;
+  }
+
+  .rx-prescription__preview-name {
+    margin: 0;
+    font-size: var(--font-size--xs, 0.75rem);
+    overflow-wrap: anywhere;
+    opacity: 0.7;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rx-prescription__step.rx-prescription__step--split {
+      grid-template-columns: 1fr;
+    }
+
+    /* On mobile the image goes first so values can be checked against it. */
+    .rx-prescription__preview {
+      order: -1;
+      position: static;
+    }
+
+    .rx-prescription__preview-media {
+      max-height: 32dvh;
+    }
+
+    embed.rx-prescription__preview-media {
+      height: 32dvh;
+    }
+  }
+
+  /* Flex only while open: an unconditional `display` would beat the UA rule
+     `dialog:not([open]) { display: none }` and leave the closed drawer on the
+     page. `dialog.close()` runs after the closing animation, so [open] holds
+     throughout it.
+
+     No `forwards` on the way in: modalSlideInTop ends on `transform:
+     translateY(0)`, and a filled-forwards transform — zero or not — makes the
+     dialog the containing block for its `position: fixed` descendants. The
+     final frame is identical to the unanimated state, so dropping the fill
+     changes nothing visually and keeps the value pickers in viewport
+     coordinates on browsers that fall back to the popover polyfill. */
+  .rx-prescription-drawer__dialog[open] {
+    display: flex;
+    flex-direction: column;
+    animation: modalSlideInTop var(--animation-speed) var(--animation-easing);
+  }
+
+  /* `forwards` stays here — it holds the faded-out state until close(). */
+  .rx-prescription-drawer__dialog.dialog-closing {
+    animation: modalSlideOutTop var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rx-prescription-drawer__dialog {
+      width: 100vw;
+      max-width: 100vw;
+      /* fit-content, not auto: a modal dialog has inset: 0 from the UA sheet,
+         and `auto` height stretches to fill it, leaving a third of the sheet
+         empty under the button on short steps. */
+      height: fit-content;
+      max-height: 100dvh;
+      margin-block: auto 0;
+      border-radius: 0;
+    }
+  }
+
+  .rx-prescription-drawer__panel {
+    display: flex;
+    flex-direction: column;
+    /* Sole flex item of the dialog: grows with the content and shrinks once the
+       dialog hits its cap. No cap of its own — one source of truth, and no
+       rounding fight with the dialog's border box. */
+    flex: 1 1 auto;
+    /* The panel is not a scroll container, so its automatic minimum size is its
+       content height and it would refuse to shrink — the footer would then fall
+       outside the dialog and be cut by `overflow: hidden`. */
+    min-height: 0;
+  }
+
+  .rx-prescription-drawer__header {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xl);
+    padding: var(--padding-sm) var(--padding-md);
+    border-bottom: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+
+  .rx-prescription-drawer__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--padding-2xs);
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+  }
+
+  .rx-prescription-drawer__back svg {
+    width: 1em;
+    height: 1em;
+    transform: rotate(90deg);
+  }
+
+  .rx-prescription-drawer__back[hidden] {
+    display: none;
+  }
+
+  .rx-prescription-drawer__headline {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-sm);
+    text-transform: uppercase;
+  }
+
+  .rx-prescription-drawer__close {
+    margin-inline-start: auto;
+  }
+
+  .rx-prescription-drawer__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    /* `overflow-y` already zeroes the automatic minimum size; stated so it
+       survives anyone changing the overflow later. */
+    min-height: 0;
+    overflow-y: auto;
+    /* Reserve the scrollbar track so the form doesn't shift sideways when a
+       step goes from non-scrolling to scrolling. */
+    scrollbar-gutter: stable;
+  }
+
+  /* --- Steps --------------------------------------------------------------- */
+
+  .rx-prescription__step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+    padding: var(--padding-xl) var(--padding-lg);
+  }
+
+  .rx-prescription__step--initial {
+    text-align: center;
+    gap: var(--gap-lg);
+  }
+
+  .rx-prescription__title {
+    margin: 0;
+    font-size: var(--font-size--lg);
+    font-weight: 600;
+  }
+
+  .rx-prescription__subtitle {
+    margin: 0;
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground-secondary, var(--color-foreground));
+    opacity: 0.75;
+  }
+
+  .rx-prescription__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+  }
+
+  .rx-prescription__action {
+    width: 100%;
+  }
+
+  .rx-prescription__or {
+    font-size: var(--font-size--xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.55;
+  }
+
+  .rx-prescription__subtotal,
+  .rx-prescription__footer-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: var(--font-size--sm);
+  }
+
+  .rx-prescription__subtotal {
+    padding-block: var(--padding-sm);
+    border-block: 1px solid var(--color-border);
+  }
+
+  .rx-prescription__later {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-2xs);
+  }
+
+  .rx-prescription__later-btn {
+    text-decoration: underline;
+    font-size: var(--font-size--sm);
+  }
+
+  .rx-prescription__file {
+    margin: 0;
+    font-size: var(--font-size--xs);
+    opacity: 0.7;
+  }
+
+  .rx-prescription__notice {
+    margin: 0;
+    padding: var(--padding-sm);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    background: var(--color-background-secondary, rgb(0 0 0 / 4%));
+    font-size: var(--font-size--sm);
+  }
+
+  .rx-prescription__notice--warning {
+    background: rgb(180 120 0 / 12%);
+  }
+
+  /* --- Table --------------------------------------------------------------- */
+
+  .rx-prescription__table {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+  }
+
+  .rx-prescription__row {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr 1fr;
+    align-items: start;
+    gap: var(--gap-sm);
+  }
+
+  .rx-prescription__row--head {
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+    opacity: 0.7;
+  }
+
+  .rx-prescription__row-label {
+    align-self: center;
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+  }
+
+  .rx-prescription__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-2xs);
+    min-width: 0;
+  }
+
+  .rx-prescription__select,
+  .rx-prescription__input {
+    width: 100%;
+    min-width: 0;
+    padding: var(--padding-2xs) var(--padding-xs);
+    border: var(--style-border-width-inputs, 1px) solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-size: var(--font-size--sm);
+  }
+
+  .rx-prescription__field--error .rx-prescription__select,
+  .rx-prescription__field--error .rx-prescription__input {
+    border-color: var(--color-error, #c0392b);
+  }
+
+  .rx-prescription__error {
+    font-size: var(--font-size--xs);
+    color: var(--color-error, #c0392b);
+  }
+
+  .rx-prescription__mini {
+    align-self: center;
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+    opacity: 0.7;
+  }
+
+  /* --- PD / prism / date --------------------------------------------------- */
+
+  .rx-prescription__pd,
+  .rx-prescription__date {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-2xs);
+  }
+
+  .rx-prescription__pd-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-sm);
+  }
+
+  .rx-prescription__label {
+    font-size: var(--font-size--sm);
+    font-weight: 600;
+  }
+
+  .rx-prescription__pd-inputs {
+    display: flex;
+    gap: var(--gap-sm);
+    align-items: center;
+  }
+
+  .rx-prescription__pd-inputs .rx-prescription__select {
+    flex: 1 1 auto;
+  }
+
+  .rx-prescription__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--padding-2xs);
+    font-size: var(--font-size--sm);
+    cursor: pointer;
+  }
+
+  .rx-prescription__toggle--block {
+    display: flex;
+  }
+
+  .rx-prescription__prism {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-md);
+  }
+
+  .rx-prescription__prism-eye {
+    flex: 1 1 12rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    padding: var(--padding-sm);
+    margin: 0;
+  }
+
+  .rx-prescription__prism-eye legend {
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+    padding-inline: var(--padding-2xs);
+  }
+
+  .rx-prescription__prism-row {
+    display: grid;
+    grid-template-columns: minmax(5.5rem, auto) minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--gap-xs);
+    margin-block-start: var(--padding-2xs);
+    font-size: var(--font-size--xs);
+  }
+
+  /* --- Loader / footer ----------------------------------------------------- */
+
+  .rx-prescription__loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap-md);
+    padding: var(--padding-4xl) var(--padding-lg);
+    min-height: 40dvh;
+  }
+
+  .rx-prescription__spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-foreground);
+    border-radius: 50%;
+    animation: rx-spin 0.8s linear infinite;
+  }
+
+  @keyframes rx-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .rx-prescription__loader-text {
+    margin: 0;
+    font-size: var(--font-size--sm);
+  }
+
+  .rx-prescription__footer {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+    padding: var(--padding-md) var(--padding-lg);
+    background: var(--color-background);
+    border-top: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+
+  .rx-prescription__footer-price {
+    font-weight: 600;
+  }
+
+  .rx-prescription__submit {
+    width: 100%;
+  }
+
+  /* --- two-column value picker (rx-select) ------------------------------- */
+
+  .rx-select {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+
+  .rx-select__trigger {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--padding-2xs);
+    padding: var(--padding-2xs) var(--padding-xs);
+    border: 1px solid var(--color-border, rgb(var(--color-foreground-rgb) / var(--opacity-20)));
+    border-radius: var(--style-border-radius-inputs, 0);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .rx-select__trigger::after {
+    content: '';
+    width: 0.4em;
+    height: 0.4em;
+    border-right: 1px solid currentcolor;
+    border-bottom: 1px solid currentcolor;
+    rotate: 45deg;
+    translate: 0 -0.15em;
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+
+  .rx-select__trigger--empty {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-55, 0.55));
+  }
+
+  .rx-prescription__field--error .rx-select__trigger {
+    border-color: var(--color-error, #c0362c);
+  }
+
+  /* The list is a popover (see rx-select.js), so it paints in the top layer:
+     neither the scrolling drawer body nor the dialog's `overflow: hidden` can
+     clip it, and it is laid out against the viewport rather than against any
+     transformed ancestor. The component sets left/top/width when it opens. */
+  .rx-select__panel {
+    position: fixed;
+    /* Undo the UA popover box — it centres itself with `inset: 0; margin: auto`
+       and paints a system border and background. */
+    inset: auto;
+    margin: 0;
+    padding: 0;
+    z-index: 30;
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    width: fit-content;
+    height: fit-content;
+    max-height: 15rem;
+    overflow: hidden auto;
+    border: 1px solid var(--color-border, rgb(var(--color-foreground-rgb) / var(--opacity-20)));
+    background: var(--color-background);
+    color: var(--color-foreground);
+    box-shadow: 0 4px 16px rgb(var(--color-shadow-rgb) / var(--opacity-20));
+    overscroll-behavior: contain;
+  }
+
+  /* Granted only while open: an unconditional `display: grid` is an author rule
+     and would beat the UA `[popover]:not(:popover-open) { display: none }`, so
+     the list would never hide. The @supports twin covers the theme's polyfill,
+     which marks the open popover with a class instead. */
+  .rx-select__panel:popover-open {
+    display: grid;
+  }
+
+  @supports not selector(:popover-open) {
+    .rx-select__panel.\:popover-open {
+      display: grid;
+    }
+  }
+
+  /* The shared starting value (0) sits above both columns. */
+  .rx-select__head {
+    grid-column: 1 / -1;
+    border-block-end: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .rx-select__head .rx-select__option {
+    font-weight: 600;
+  }
+
+  .rx-select__column + .rx-select__column {
+    border-inline-start: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .rx-select__option {
+    display: block;
+    width: 100%;
+    padding: var(--padding-2xs) var(--padding-xs);
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .rx-select__option:hover,
+  .rx-select__option:focus-visible {
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .rx-select__option[aria-selected='true'] {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+
+  /* --- Rx card: eyes as rows, powers as columns, like the paper script --- */
+
+  .rx-prescription__rxcard {
+    display: grid;
+    grid-template-columns: 4.25rem repeat(4, minmax(0, 1fr));
+    gap: var(--gap-sm) var(--gap-md);
+    align-items: center;
+  }
+
+  .rx-prescription__rxcol {
+    font-family: var(--font-heading--family);
+    font-size: var(--font-size--2xs);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing-sm);
+    text-align: center;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-55, 0.55));
+  }
+
+  .rx-prescription__rxeye {
+    font-family: var(--font-heading--family);
+    font-size: var(--font-size--sm);
+    font-weight: 700;
+    letter-spacing: var(--letter-spacing-sm);
+  }
+
+  .rx-prescription__rxeye small {
+    display: block;
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--2xs);
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: lowercase;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-40, 0.4));
+  }
+
+  .rx-prescription__rule {
+    height: 1px;
+    margin-block: var(--margin-xl);
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .rx-prescription__subgrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-lg) var(--gap-2xl);
+    align-items: start;
+  }
+
+  .rx-prescription__field-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-2xs);
+  }
+
+  .rx-prescription__extras {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-lg);
+    margin-block-start: var(--margin-lg);
+  }
+
+  .rx-prescription__check {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--padding-2xs);
+    font-size: var(--font-size--sm);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70, 0.7));
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rx-prescription__rxcard {
+      grid-template-columns: 3.25rem repeat(4, minmax(0, 1fr));
+      gap: var(--gap-2xs) var(--gap-xs);
+    }
+
+    .rx-prescription__subgrid {
+      grid-template-columns: 1fr;
+    }
+  }
