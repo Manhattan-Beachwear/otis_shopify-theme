@@ -237,13 +237,12 @@
       %}
       {% capture children %}
         {% for product in collection.products %}
-          {% comment %}=== DEBUG START: Product {{ product.id }} - {{ product.title }} ==={% endcomment %}
           {% liquid
             assign should_display = true
             assign product_group_ids = ''
             
             if enable_combined
-              # Build product_group_ids for debug output (always build this)
+              # Build product_group_ids for combined listing deduplication
               assign combined_listings_metafield = product.metafields.custom.combined_listing
               
               # If current product has the metafield, collect all linked products
@@ -385,8 +384,6 @@
               {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
               {% # theme-check-enable %}
             </li>
-          {% else %}
-            {% comment %}DEBUG: SKIPPED Product {{ product.id }} - {{ product.title }} (duplicate or filtered){% endcomment %}
           {% endif %}
         {% endfor %}
       {% endcapture %}

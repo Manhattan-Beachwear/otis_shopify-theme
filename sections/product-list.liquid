@@ -214,13 +214,12 @@
           assign displayed_product_ids = ''
         %}
         {% for product in section.settings.collection.products limit: max_items %}
-          {% comment %}=== DEBUG START: Product {{ product.id }} - {{ product.title }} ==={% endcomment %}
           {% liquid
             assign should_display = true
             assign product_group_ids = ''
             
             if enable_combined
-              # Build product_group_ids for debug output (always build this)
+              # Build product_group_ids for combined listing deduplication
               assign combined_listings_metafield = product.metafields.custom.combined_listing
               # Check if this product is part of a combined listing group
               assign product_group_ids = ''
@@ -353,24 +352,10 @@
               # This happens when enable_combined is false or pre-processing didn't run
             endif
             
-            # Store debug info in variables for output
-            assign debug_has_metafield = 'false'
-            if enable_combined and combined_listings_metafield != blank
-              assign debug_has_metafield = 'true'
-            endif
           %}
-          {% comment %}=== DEBUG END: Product {{ product.id }} - {{ product.title }} ==={% endcomment %}
-          {% comment %}DEBUG: should_display={{ should_display }}{% endcomment %}
-          {% comment %}DEBUG: has_metafield={{ debug_has_metafield }}{% endcomment %}
-          {% comment %}DEBUG: product_group_ids={{ product_group_ids }}{% endcomment %}
-          {% comment %}DEBUG: displayed_product_ids={{ displayed_product_ids }}{% endcomment %}
           {% if should_display %}
             <div
               class="resource-list__item"
-              data-debug-product-id="{{ product.id }}"
-              data-debug-product-title="{{ product.title }}"
-              data-debug-product-group="{{ product_group_ids }}"
-              data-debug-should-display="{{ should_display }}"
             >
               {% # theme-check-disable UniqueStaticBlockId %}
                 {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: product %}
@@ -380,8 +365,6 @@
             {% unless forloop.last %}
               <!--@list/split-->
             {% endunless %}
-          {% else %}
-            {% comment %}DEBUG: SKIPPED Product {{ product.id }} - {{ product.title }} (duplicate or filtered){% endcomment %}
           {% endif %}
         {% endfor %}
       {% endpaginate %}

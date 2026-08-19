@@ -167,7 +167,7 @@
             "text_YyDrTG": {
               "type": "text",
               "settings": {
-                "text": "<p>Hailing from South Carolina, Cam grew up surfing the small stuff but has since ascended to one of the most well rounded surfers on the planet. Between chasing waves at Pipe, punting airs in Indo and staying barreled on the east coast, there isn't Cam can't do on a surfboard. </p><p>Outside of surfing, he is a skilled angler with enough experience to pull fish out of the most fickle watering holes. A prime example of that jack-of-all-trades who is always on the move. </p>",
+                "text": "<p>Hailing from South Carolina, Cam grew up surfing the small stuff but has since ascended to one of the most well rounded surfers on the planet. Between chasing waves at Pipe, punting airs in Indo and staying barreled on the east coast, there isn't anything Cam can't do on a surfboard. </p><p>Outside of surfing, he is a skilled angler with enough experience to pull fish out of the most fickle watering holes. A prime example of that jack-of-all-trades who is always on the move. </p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -384,7 +384,7 @@
               "type": "button",
               "settings": {
                 "label": "@shaneborland",
-                "link": "https://www.instagram.com/jquinny/",
+                "link": "https://www.instagram.com/shaneborland/",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
@@ -555,7 +555,7 @@
             "text_9rHzVi": {
               "type": "text",
               "settings": {
-                "text": "<p>Known as \"Waggy\", Noah has helped put cold water surf trips on the map. Groomed along the rugged coast of Santa Cruz, his surfing is the perfect blend of technical and classic; from above the lip aerials to iconic carves, Noah has the full bag of tricks.</p><p>His relentless pursuit of perfect waves in remote places has inspired the next generation of surfers to think outside the box when it comes to surf trips. A creative powerhouse with surfing to match, Noah has starred in several iconic surf films, including his latest \"Keeping in the Shadows\", a visually rich surf odyssey that follows Noah for six years on a globe-spanning journey through dive distinct countries. </p>",
+                "text": "<p>Known as \"Waggy\", Noah has helped put cold water surf trips on the map. Groomed along the rugged coast of Santa Cruz, his surfing is the perfect blend of technical and classic; from above the lip aerials to iconic carves, Noah has the full bag of tricks.</p><p>His relentless pursuit of perfect waves in remote places has inspired the next generation of surfers to think outside the box when it comes to surf trips. A creative powerhouse with surfing to match, Noah has starred in several iconic surf films, including his latest \"Keeping in the Shadows\", a visually rich surf odyssey that follows Noah for six years on a globe-spanning journey through five distinct countries. </p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -581,7 +581,7 @@
               "type": "button",
               "settings": {
                 "label": "@noahwaggy",
-                "link": "https://www.instagram.com/camrichards/",
+                "link": "https://www.instagram.com/noahwaggy/",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
@@ -926,7 +926,7 @@
               "type": "button",
               "settings": {
                 "label": "@imogencaldwell",
-                "link": "shopify://collections/all",
+                "link": "https://www.instagram.com/imogencaldwell/",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
@@ -1075,7 +1075,7 @@
               "type": "button",
               "settings": {
                 "label": "@jay_davies",
-                "link": "shopify://collections/all",
+                "link": "https://www.instagram.com/jay_davies/",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
@@ -1444,7 +1444,7 @@
               "type": "button",
               "settings": {
                 "label": "@jamaicaselby",
-                "link": "https://www.instagram.com/otisbuckingham/",
+                "link": "https://www.instagram.com/jamaicaselby/",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",

@@ -48,7 +48,20 @@
   assign limit_steps = '0.25,0.25,1,0.25,0.5,0.25' | split: ','
 -%}
 
+{%- liquid
+  # New catalogue: one product per SKU, picked as a flat list (or a collection
+  # once the lens products stop being `unlisted` — collections hide those).
+  # Falls back to the per-category product settings below for the old catalogue.
+  assign lens_list = block.settings.lens_products
+  if lens_list == blank or lens_list.size == 0
+    assign lens_list = block.settings.lens_collection.products
+  endif
+-%}
+
 {%- capture lens_categories_json -%}
+{%- if lens_list != blank and lens_list.size > 0 -%}
+  {%- render 'rx-lens-matrix', lens_products: lens_list, frame_product: frame_product, block: block -%}
+{%- else -%}
 [
   {%- assign category_count = 0 -%}
   {%- for i in (1..3) -%}
@@ -67,13 +80,25 @@
       assign high_product = block.settings[high_setting]
       assign prog_product = block.settings[prog_setting]
 
-      # Frames tagged with the category's alternate-family tag swap both tiers.
-      assign alt_tag = block.settings[alt_tag_setting] | strip
-      if alt_tag != blank and frame_product.tags contains alt_tag
+      # Frames tagged with any of the category's alternate-family tags swap both
+      # tiers, and take that lens family's label with them.
+      assign alt_label_setting = 'alt_label_' | append: i
+      assign alt_tags = block.settings[alt_tag_setting] | split: ','
+      assign frame_in_alt_family = false
+      for alt_tag in alt_tags
+        assign clean_alt_tag = alt_tag | strip
+        if clean_alt_tag != blank and frame_product.tags contains clean_alt_tag
+          assign frame_in_alt_family = true
+          break
+        endif
+      endfor
+
+      if frame_in_alt_family
         assign alt_sv = block.settings[alt_sv_setting]
         if alt_sv != blank and alt_sv.id != blank
           assign sv_product = alt_sv
           assign high_product = block.settings[alt_high_setting]
+          assign category_label = block.settings[alt_label_setting] | default: category_label
         endif
       endif
     -%}
@@ -143,6 +168,7 @@
     }
   {%- endfor -%}
 ]
+{%- endif -%}
 {%- endcapture -%}
 
 {%- capture limits_json -%}
@@ -181,7 +207,13 @@
     "providerNumber": {{ prescription_block.settings.rx_provider_number | default: '' | json }},
     "checkExpiration": {{ prescription_block.settings.rx_check_expiration | default: true, allow_false: true | json }},
     "tierSphThreshold": {{ prescription_block.settings.rx_tier_sph_threshold | default: 2 | json }},
-    "healthFundNumbers": {{ prescription_block.settings.health_fund_numbers | default: '' | json }}
+    "healthFundNumbers": {{ prescription_block.settings.health_fund_numbers | default: '' | json }},
+    {%- comment -%}
+      App Proxy only exists on the canonical storefront domain. In the theme
+      editor the page runs on *.shopifypreview.com, where a relative
+      /apps/proxy goes nowhere — the client falls back to this origin there.
+    {%- endcomment -%}
+    "storefrontOrigin": {{ shop.url | json }}
   }
 }
 </script>

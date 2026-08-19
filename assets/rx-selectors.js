@@ -173,6 +173,9 @@ class RxVisionSelector extends Component {
         visionType: type,
         color: null,
         tier: currentTier(this.#state),
+        // Every lens carries a colour now, so a colour-less match no longer
+        // exists — take the cheapest sellable one in the category instead.
+        anyColor: true,
       }) ?? category.products[0];
 
     this.#state.set('visionType', type);
@@ -186,11 +189,22 @@ class RxVisionSelector extends Component {
     const category = this.#activeCategory();
     if (!category || !state.visionType || !state.lensProduct) return;
 
-    const product = resolveLensProduct(category.products, {
-      visionType: state.visionType,
-      color: state.lensProduct.color ?? null,
-      tier: currentTier(state),
-    });
+    const tier = currentTier(state);
+    const color = state.lensProduct.color ?? null;
+
+    // The tier must hold: selling a standard lens against a high prescription
+    // would ship the wrong product. If this colour has no lens in the required
+    // tier, move to one that does rather than quietly downgrading.
+    const product =
+      resolveLensProduct(category.products, { visionType: state.visionType, color, tier, exactTier: true }) ??
+      resolveLensProduct(category.products, {
+        visionType: state.visionType,
+        tier,
+        anyColor: true,
+        exactTier: true,
+      }) ??
+      resolveLensProduct(category.products, { visionType: state.visionType, color, tier });
+
     if (product && product.variantId !== state.lensProduct.variantId) {
       state.set('lensProduct', toLensSelection(product));
     }

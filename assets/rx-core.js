@@ -264,18 +264,74 @@ export function pickTier(values, threshold = 2) {
   return powers.some((v) => v > threshold) ? 'high' : 'standard';
 }
 
+// Sold-out entries stay selectable only when nothing else fits; among the rest
+// the cheapest wins, which makes plain Clear the natural default.
+function bestOf(entries) {
+  if (!entries.length) return null;
+  const sellable = entries.filter((p) => p.available !== false);
+  const pool = sellable.length ? sellable : entries;
+  return pool.reduce((best, p) => ((p.price ?? Infinity) < (best.price ?? Infinity) ? p : best), pool[0]);
+}
+
+// "Clear + AR" and "Clear + Ar" are the same lens: the catalogue and the
+// theme's colour blocks disagree on case.
+function colorsMatch(a, b) {
+  return lensColorSlug(a) === lensColorSlug(b);
+}
+
 /**
  * Pick the lens catalog entry for a vision type, color and power tier.
  * Entries without a tier (or tier 'any') match every tier; an exact tier match
- * wins, then 'any', then 'standard' as the last resort.
+ * wins, then 'any', then the remaining tiers — the acetate Transitions lenses
+ * only exist as high-tier SKUs, so a standard prescription has to reach them.
+ *
+ * With `anyColor` the color filter is dropped, which is how a category's
+ * default lens is chosen before the shopper has picked a color.
  */
-export function resolveLensProduct(products = [], { visionType, color = null, tier = 'standard' } = {}) {
+export function resolveLensProduct(
+  products = [],
+  { visionType, color = null, tier = 'standard', anyColor = false, exactTier = false } = {}
+) {
   const vision = visionType === 'non_rx' ? 'single_vision' : visionType;
-  const candidates = products.filter(
-    (p) => p.visionType === vision && (color == null ? p.color == null : p.color === color)
-  );
-  const byTier = (t) => candidates.find((p) => (p.tier ?? 'any') === t);
-  return byTier(tier) ?? byTier('any') ?? byTier('standard') ?? null;
+  const candidates = products.filter((p) => {
+    if (p.visionType !== vision) return false;
+    if (anyColor) return true;
+    return color == null ? p.color == null : colorsMatch(p.color, color);
+  });
+
+  // 'any' covers catalogue entries that carry no tier at all, so it stays even
+  // in the strict pass; the wider fallbacks are what strict mode rules out.
+  const chain = exactTier ? [tier, 'any'] : [tier, 'any', 'standard', 'high'];
+  for (const t of chain) {
+    const match = bestOf(candidates.filter((p) => (p.tier ?? 'any') === t));
+    if (match) return match;
+  }
+  return null;
+}
+
+/**
+ * Distinct lens colors offered by a category, each resolved to the entry that
+ * fits the current tier. Colors the catalogue does not carry simply do not
+ * appear.
+ *
+ * @returns {object[]} one catalog entry per color
+ */
+export function lensColorOptions(products = [], { visionType, tier = 'standard' } = {}) {
+  const vision = visionType === 'non_rx' ? 'single_vision' : visionType;
+  const seen = new Set();
+  const colors = [];
+
+  for (const product of products) {
+    if (product.visionType !== vision || product.color == null) continue;
+    const slug = lensColorSlug(product.color);
+    if (seen.has(slug)) continue;
+    seen.add(slug);
+    colors.push(product.color);
+  }
+
+  return colors
+    .map((color) => resolveLensProduct(products, { visionType, color, tier }))
+    .filter(Boolean);
 }
 
 
@@ -319,4 +375,70 @@ export function stripImageSizeParams(url) {
   } catch {
     return url;
   }
+}
+
+// --- prescription form value picker ----------------------------------------
+
+/**
+ * Lay values out in two columns for the prescription pickers.
+ *
+ * `anchor` — the shared starting value (0 for powers) heads the panel on its
+ * own full-width row, then the columns walk away from it: plus side one way,
+ * minus the other.
+ *
+ * `halves` — whole numbers on the left, their .5 counterparts on the right, so
+ * each row reads as one PD value and its half step.
+ *
+ * Anything else is simply cut in half, first part left.
+ *
+ * @param {(string | [string, string])[]} options
+ * @param {{anchor?: number | null, leftGoes?: 'up' | 'down', split?: 'anchor' | 'halves'}} config
+ * @returns {{head: string[], left: (string | [string, string])[], right: (string | [string, string])[]}}
+ */
+export function splitIntoColumns(options, { anchor = null, leftGoes = 'up', split = 'anchor' } = {}) {
+  const numberOf = (option) => parseFloat(lensOptionPair(option)[0]);
+
+  if (split === 'halves') {
+    const left = [];
+    const right = [];
+    for (const option of options) {
+      const n = numberOf(option);
+      if (Number.isNaN(n)) continue;
+      (Number.isInteger(n) ? left : right).push(option);
+    }
+    return { head: [], left, right };
+  }
+
+  if (anchor == null || Number.isNaN(anchor)) {
+    const half = Math.ceil(options.length / 2);
+    return { head: [], left: options.slice(0, half), right: options.slice(half) };
+  }
+
+  const head = [];
+  const above = [];
+  const below = [];
+  for (const option of options) {
+    const n = numberOf(option);
+    if (Number.isNaN(n)) continue;
+    if (n === anchor) head.push(option);
+    else if (n > anchor) above.push(option);
+    else below.push(option);
+  }
+
+  above.sort((a, b) => numberOf(a) - numberOf(b));
+  below.sort((a, b) => numberOf(b) - numberOf(a));
+
+  // Axis and add only run one way from zero, so there is no second side to
+  // fill: split what is left down the middle instead of leaving a blank column.
+  if (!above.length || !below.length) {
+    const rest = above.length ? above : below;
+    const half = Math.ceil(rest.length / 2);
+    return { head, left: rest.slice(0, half), right: rest.slice(half) };
+  }
+
+  return leftGoes === 'up' ? { head, left: above, right: below } : { head, left: below, right: above };
+}
+
+export function lensOptionPair(option) {
+  return Array.isArray(option) ? [String(option[0]), String(option[1])] : [String(option), String(option)];
 }

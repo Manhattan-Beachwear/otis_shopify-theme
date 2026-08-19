@@ -5,7 +5,24 @@
  * the browser and under `node --test`.
  */
 
-const PROXY_BASE = '/apps/proxy';
+// App Proxy is mounted on the storefront domain only. The theme editor renders
+// the page on *.shopifypreview.com, where a relative path resolves to nothing,
+// so there we address the storefront directly — the proxy allows that origin.
+function proxyBase() {
+  const path = '/apps/proxy';
+  if (!globalThis.location?.hostname?.endsWith('.shopifypreview.com')) return path;
+
+  let origin = '';
+  try {
+    origin = JSON.parse(document.querySelector('[data-rx-product-data]')?.textContent ?? '{}')?.config
+      ?.storefrontOrigin;
+  } catch {
+    // no product data on this page — stay relative
+  }
+  return origin ? `${origin.replace(/\/$/, '')}${path}` : path;
+}
+
+const PROXY_BASE = proxyBase();
 
 // Thrown on any non-2xx (or network-level) proxy failure; carries the status.
 export class RxApiError extends Error {

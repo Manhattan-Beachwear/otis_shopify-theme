@@ -1,0 +1,138 @@
+{%- doc -%}
+  Builds the lens catalogue from a flat list of one-variant lens products — the
+  shape BlueCherry now exports, where every SKU is its own product and the old
+  `eyewear_*` / `base_*` / `rx_power_*` tags are gone.
+
+  Everything the configurator needs is encoded in the SKU:
+
+      S 46CR PGYMB
+      │  │    └─ colour code: CL* clear · TN* photochromic · P* polarized
+      │  └────── lens family: 46CR Everyday Clarity · 6PC Active Protection
+      └───────── Rx tier: S standard · EH high
+
+  The frame decides the family: frames carrying one of `alt_frame_tag` (6-base
+  Grilamid) take 6PC, the rest take 46CR. Colour names come from the
+  `lens_color-*` tag, price and availability straight from the single variant.
+
+  Emits the same JSON array of categories `rx-product-data` produced before, so
+  the JS side is unchanged apart from the added `available` flag. Category keys
+  must be `clear`, `sunglasses` or `photochromic` — those are what the SKU
+  colour codes map onto.
+
+  @param {product[]} lens_products - Flat list of lens products
+  @param {product} frame_product - The frame being configured
+  @param {block} block - The rx-lens-selector block, for labels and frame tags
+
+  @example
+  {% capture lens_categories_json %}
+    {% render 'rx-lens-matrix', lens_products: picked, frame_product: product, block: block %}
+  {% endcapture %}
+{%- enddoc -%}
+
+{%- liquid
+  assign alt_tags = block.settings.alt_frame_tag | default: 'base_6' | split: ','
+  assign family_code = '46CR'
+  for alt_tag in alt_tags
+    assign clean_alt_tag = alt_tag | strip
+    if clean_alt_tag != blank and frame_product.tags contains clean_alt_tag
+      assign family_code = '6PC'
+      break
+    endif
+  endfor
+-%}
+
+[
+  {%- assign category_count = 0 -%}
+  {%- for i in (1..3) -%}
+    {%- liquid
+      assign key_setting = 'lens_category_' | append: i | append: '_key'
+      assign label_setting = 'lens_category_' | append: i | append: '_label'
+      assign alt_label_setting = 'alt_label_' | append: i
+
+      assign category_key = block.settings[key_setting] | strip
+      assign category_label = block.settings[label_setting] | default: category_key
+      if family_code == '6PC'
+        assign category_label = block.settings[alt_label_setting] | default: category_label
+      endif
+    -%}
+    {%- if category_key == blank -%}{%- continue -%}{%- endif -%}
+
+    {%- if category_count > 0 -%},{%- endif -%}
+    {%- assign category_count = category_count | plus: 1 -%}
+    {
+      "key": {{ category_key | json }},
+      "label": {{ category_label | json }},
+      "products": [
+        {%- assign product_count = 0 -%}
+        {%- for lens in lens_products -%}
+          {%- liquid
+            assign variant = lens.variants.first
+            assign sku = variant.sku | strip | upcase
+
+            # Tier, then family, then whatever is left is the colour code.
+            assign lens_tier = ''
+            assign rest = ''
+            assign head_2 = sku | slice: 0, 2
+            assign head_1 = sku | slice: 0, 1
+            if head_2 == 'EH'
+              assign lens_tier = 'high'
+              assign rest = sku | slice: 2, 40
+            elsif head_1 == 'S'
+              assign lens_tier = 'standard'
+              assign rest = sku | slice: 1, 40
+            endif
+
+            assign sku_family = ''
+            assign colour_code = ''
+            assign family_4 = rest | slice: 0, 4
+            assign family_3 = rest | slice: 0, 3
+            if family_4 == '46CR'
+              assign sku_family = '46CR'
+              assign colour_code = rest | slice: 4, 40
+            elsif family_3 == '6PC'
+              assign sku_family = '6PC'
+              assign colour_code = rest | slice: 3, 40
+            endif
+
+            assign colour_2 = colour_code | slice: 0, 2
+            assign colour_1 = colour_code | slice: 0, 1
+            assign sku_category = ''
+            if colour_2 == 'CL'
+              assign sku_category = 'clear'
+            elsif colour_2 == 'TN'
+              assign sku_category = 'photochromic'
+            elsif colour_1 == 'P'
+              assign sku_category = 'sunglasses'
+            endif
+
+            # The colour name shown to the shopper; the option value repeats it.
+            assign colour_name = variant.option1 | default: ''
+            for tag in lens.tags
+              if tag contains 'lens_color-'
+                assign colour_name = tag | remove_first: 'lens_color-' | strip
+              endif
+            endfor
+          -%}
+          {%- if lens_tier == blank -%}{%- continue -%}{%- endif -%}
+          {%- if sku_family != family_code -%}{%- continue -%}{%- endif -%}
+          {%- if sku_category != category_key -%}{%- continue -%}{%- endif -%}
+
+          {%- if product_count > 0 -%},{%- endif -%}
+          {%- assign product_count = product_count | plus: 1 -%}
+          {
+            "id": {{ lens.id | json }},
+            "variantId": {{ variant.id | json }},
+            "sku": {{ variant.sku | json }},
+            "price": {{ variant.price | default: 0 | json }},
+            "title": {{ lens.title | json }},
+            "visionType": "single_vision",
+            "tier": {{ lens_tier | json }},
+            "color": {{ colour_name | json }},
+            "colorDescription": null,
+            "available": {% if variant.available %}true{% else %}false{% endif %}
+          }
+        {%- endfor -%}
+      ]
+    }
+  {%- endfor -%}
+]
